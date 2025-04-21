@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Döngüsü</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .video-slide {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: left 1s ease, opacity 1s ease;
+    }
+
+    @media (max-width: 768px) {
+      .video-container {
+        max-width: 100%;
+        height: 200px;
+      }
+      .video-slide {
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container">
+    <video class="video-slide" id="video1" src="35427-407130886_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" id="video2" src="44798-440001069_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" id="video3" src="159627-819346937_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" id="video4" src="228847_small.mp4" autoplay muted loop></video>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const videos = document.querySelectorAll('.video-slide');
+    const totalVideos = videos.length;
+
+    function changeVideo() {
+      videos.forEach((video, index) => {
+        video.style.left = `${(index - currentIndex) * 100}%`;
+        video.style.opacity = index === currentIndex ? 1 : 0;
+      });
+
+      currentIndex = (currentIndex + 1) % totalVideos;
+    }
+
+    setInterval(changeVideo, 10000); // 10 saniye arayla değişim
+    changeVideo(); // İlk video için başlat
+  </script>
+</body>
+</html>
