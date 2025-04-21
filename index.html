@@ -51,10 +51,9 @@
 </head>
 <body>
   <div class="video-container">
-    <video class="video-slide" id="video1" src="35427-407130886_small.mp4" autoplay muted loop></video>
-    <video class="video-slide" id="video2" src="44798-440001069_small.mp4" autoplay muted loop></video>
+<video class="video-slide" id="video1" src="35427-407130886_small.mp4" autoplay muted loop></video>
     <video class="video-slide" id="video3" src="159627-819346937_small.mp4" autoplay muted loop></video>
-   
+    <video class="video-slide" id="video2" src="44798-440001069_small.mp4" autoplay muted loop></video>
   </div>
 
   <script>
@@ -62,17 +61,28 @@
     const videos = document.querySelectorAll('.video-slide');
     const totalVideos = videos.length;
 
+    // Her video için farklı süreler (milisaniye cinsinden)
+    const videoDurations = [
+    14000, // 1. video 14 saniye
+      6000, // 2. video 6 saniye
+     15000, // 3. video 15 saniye
+    ];
+
     function changeVideo() {
       videos.forEach((video, index) => {
         video.style.left = `${(index - currentIndex) * 100}%`;
         video.style.opacity = index === currentIndex ? 1 : 0;
       });
 
+      // Sonraki video için süresini belirle
       currentIndex = (currentIndex + 1) % totalVideos;
+
+      // Gelecek video süresi için bir sonraki video süresini ayarlıyoruz
+      setTimeout(changeVideo, videoDurations[currentIndex]);
     }
 
-    setInterval(changeVideo, 6000); // 10 saniye arayla değişim
-    changeVideo(); // İlk video için başlat
+    // İlk video için başlatıyoruz
+    changeVideo();
   </script>
 </body>
 </html>
