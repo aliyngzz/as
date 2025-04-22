@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Döngüsü</title>
+  <title>Doğa ve Hayvan Sevgisi</title>
   <style>
     * {
       margin: 0;
@@ -12,52 +12,126 @@
     }
 
     body {
-      background-color: #000;
       height: 100vh;
-      width: 100vw;
       overflow: hidden;
+      font-family: Arial, sans-serif;
     }
 
+    /* Video */
     .video-container {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
     }
 
     .video-slide {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      position: absolute;
       opacity: 0;
       transition: opacity 1s ease;
     }
 
-    @media (max-width: 768px) {
-      .video-slide {
-        width: 100vw;
-        height: 100vh;
-      }
+    /* Menü */
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 20;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: yellow;
+    }
+
+    /* Başlık */
+    .banner {
+      margin-top: 50px;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 4px black;
+      animation: colorFlash 1s infinite;
+      z-index: 10;
+      position: relative;
+    }
+
+    @keyframes colorFlash {
+      0% { color: yellow; }
+      50% { color: red; }
+      100% { color: yellow; }
+    }
+
+    /* Baloncuklar */
+    .bubbles-container {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -20px;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: rise 5s linear infinite;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0.7; }
+      100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Menü -->
+  <nav>
+    <a href="#">Ana Sayfa</a>
+    <a href="#">Galeri</a>
+    <a href="#">İletişim</a>
+  </nav>
+
+  <!-- Başlık -->
+  <div class="banner">DOĞAYI SEV, HAYVANLARI SEV, MUTLU OL!!</div>
+
+  <!-- Baloncuklar -->
+  <div class="bubbles-container" id="bubbles"></div>
+
+  <!-- Video Arka Plan -->
   <div class="video-container">
     <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
   </div>
 
-  <audio id="bg-music" src="birds-in-forest-on-sunny-day-14444.mp3" autoplay loop></audio>
+  <!-- Arka Plan Müzik -->
+  <audio id="bg-music" autoplay></audio>
 
   <script>
-    // Video geçişleri
+    // Video geçişi
     const videos = document.querySelectorAll('.video-slide');
     const durations = [8000, 3000, 9000];
     let currentIndex = 0;
@@ -66,19 +140,56 @@
       videos.forEach((video, index) => {
         video.style.opacity = index === currentIndex ? 1 : 0;
       });
-
-      const nextIndex = (currentIndex + 1) % videos.length;
-      setTimeout(changeVideo, durations[nextIndex]);
-      currentIndex = nextIndex;
+      currentIndex = (currentIndex + 1) % videos.length;
+      setTimeout(changeVideo, durations[currentIndex]);
     }
 
-    // İlk video başlat
     videos[0].style.opacity = 1;
     setTimeout(changeVideo, durations[currentIndex]);
 
-    // Müzik ayarı ve oynatma
+    // Baloncuklar
+    function createBubble() {
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble");
+      const size = Math.random() * 15 + 10;
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${Math.random() * 100}vw`;
+      bubble.style.backgroundColor = `rgba(255,255,255,0.6)`;
+      document.getElementById("bubbles").appendChild(bubble);
+      setTimeout(() => bubble.remove(), 5000);
+    }
+
+    setInterval(createBubble, 300);
+
+    // Müzik listesi
+    const musicList = [
+      "birds-in-forest-on-sunny-day-14444.mp3",
+      "forest-birds-summer-sweden-18333.mp3",
+      "woodpecker-and-other-birds-23488.mp3",
+      "bees-29400.mp3",
+      "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+      "fire-sound-310285.mp3",
+      "forest-atmosphere-002localization-poland-329733.mp3",
+      "forest-atmosphere-007localization-poland-330007.mp3",
+      "nature-sound-near-river-or-waterfall-247409.mp3",
+      "relaxing-rain-and-birds-6-minutes-52191.mp3",
+      "soft-wind-314945.mp3",
+      "soft-wind-318856.mp3",
+      "waterfall-176958 (1).mp3",
+      "waterfall-176958.mp3"
+    ];
+
+    let musicIndex = 0;
     const music = document.getElementById("bg-music");
-    music.volume = 0.5; // 0 ile 1 arası: 1 en yüksek
+    music.src = musicList[musicIndex];
+    music.volume = 0.5;
+
+    music.addEventListener("ended", () => {
+      musicIndex = (musicIndex + 1) % musicList.length;
+      music.src = musicList[musicIndex];
+      music.play();
+    });
 
     window.addEventListener("load", () => {
       music.play().catch(() => {
