@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Döngüsü</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animasyonlu Resimler</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -52,20 +52,45 @@
       0% { transform: rotate(0deg); opacity: 0; }
       100% { transform: rotate(360deg); opacity: 1; }
     }
+
     .image-container img {
       position: absolute;
       width: 10vw;
       height: auto;
       opacity: 0;
-      transition: opacity 1s ease;
       z-index: 1;
     }
-    @media (max-width: 768px) {
-      .video-slide {
-        width: 100vw; height: 100vh;
-      }
+
+    .fade-in {
+      animation: fadeIn 1s forwards;
     }
-    #intro-message {
+
+    .scale-up {
+      transform: scale(0.5);
+      animation: scaleUp 1s forwards;
+    }
+
+    .slide-in {
+      transform: translateX(-100vw);
+      animation: slideIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-100vw); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .click-message {
       position: fixed;
       top: 50%;
       left: 50%;
@@ -73,18 +98,16 @@
       color: white;
       font-size: 2rem;
       font-weight: bold;
-      z-index: 2000;
       text-align: center;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 10px black;
+      z-index: 2000;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
-
-  <div id="intro-message">SAYFAYI TIKLA DOĞA SESİNİ HUZUR İLE DİNLE</div>
 
   <div class="banner" id="banner"></div>
 
@@ -101,18 +124,11 @@
     <img src="fox-1883658_1280.jpg" id="image4">
   </div>
 
+  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
+
   <audio id="bg-music" autoplay loop></audio>
 
   <script>
-    // Intro mesaj tıklama ile kaybolsun
-    document.addEventListener("click", () => {
-      const intro = document.getElementById("intro-message");
-      if (intro) {
-        intro.style.display = "none";
-      }
-    }, { once: true });
-
-    // Tüm ses dosyaları
     const musicList = [
       "birds-in-forest-on-sunny-day-14444.mp3",
       "forest-birds-summer-sweden-18333.mp3",
@@ -156,14 +172,12 @@
         }, { once: true });
       });
 
-      // 8 saniyede bir ses değiştir
       setInterval(() => {
         musicIndex = (musicIndex + 1) % musicList.length;
         music.src = musicList[musicIndex];
         music.play();
       }, 8000);
 
-      // Video geçişleri
       const videos = document.querySelectorAll('.video-slide');
       const durations = [8000, 3000, 9000];
       let currentIndex = 0;
@@ -180,7 +194,6 @@
       videos[0].style.opacity = 1;
       setTimeout(changeVideo, durations[currentIndex]);
 
-      // Görsel rastgele gösterme
       const images = document.querySelectorAll('.image-container img');
       let imageIndex = 0;
 
@@ -190,13 +203,22 @@
         return { x, y };
       }
 
+      function getRandomAnimation() {
+        const animations = ['fade-in', 'scale-up', 'slide-in'];
+        return animations[Math.floor(Math.random() * animations.length)];
+      }
+
       function changeImage() {
         const { x, y } = getRandomPosition();
         const image = images[imageIndex];
+        const anim = getRandomAnimation();
 
         image.style.left = `${x}vw`;
         image.style.top = `${y}vh`;
-        image.style.opacity = 1;
+
+        image.className = ""; // remove previous classes
+        image.offsetWidth; // trigger reflow
+        image.classList.add(anim);
 
         setTimeout(() => {
           image.style.opacity = 0;
@@ -207,10 +229,9 @@
         setTimeout(changeImage, delay);
       }
 
-      setTimeout(changeImage, 4000);
+      setTimeout(changeImage, 3000);
     });
 
-    // Banner harf döndürme
     const bannerText = "DOĞAYI,SEV,HAYVANLARI,SEV,MUTLU,OL,UMUTLU,KAL!!";
     const banner = document.getElementById("banner");
     let i = 0;
@@ -239,7 +260,11 @@
     }
 
     showLetters();
-  </script>
 
+    document.body.addEventListener("click", () => {
+      const msg = document.getElementById("clickMessage");
+      if (msg) msg.style.display = "none";
+    });
+  </script>
 </body>
 </html>
