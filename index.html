@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doğa ve Hayvan Sevgisi</title>
+  <title>Video Döngüsü</title>
   <style>
     * {
       margin: 0;
@@ -12,157 +12,111 @@
     }
 
     body {
+      background-color: #000;
       height: 100vh;
+      width: 100vw;
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
 
-    /* Video */
     .video-container {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
     }
 
     .video-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      position: absolute;
       opacity: 0;
       transition: opacity 1s ease;
     }
 
-    /* Menü */
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
+    .banner {
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
-      z-index: 20;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      color: yellow;
-    }
-
-    /* Başlık */
-    .banner {
-      margin-top: 50px;
-      padding: 20px 0;
+      padding: 15px;
       text-align: center;
       font-size: 2rem;
       font-weight: bold;
       color: white;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.6);
       text-shadow: 2px 2px 4px black;
-      animation: colorFlash 1s infinite;
-      z-index: 10;
-      position: relative;
     }
 
-    @keyframes colorFlash {
-      0% { color: yellow; }
-      50% { color: red; }
-      100% { color: yellow; }
+    .letter {
+      display: inline-block;
+      opacity: 0;
     }
 
-    /* Baloncuklar */
-    .bubbles-container {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      width: 100%;
-      height: 100px;
-      pointer-events: none;
-      z-index: 5;
+    .rotate-animate {
+      animation: rotateIn 0.6s ease-out forwards;
     }
 
-    .bubble {
+    @keyframes rotateIn {
+      0% {
+        transform: rotate(0deg);
+        opacity: 0;
+      }
+      100% {
+        transform: rotate(360deg);
+        opacity: 1;
+      }
+    }
+
+    .image-container img {
       position: absolute;
-      bottom: -20px;
-      border-radius: 50%;
-      opacity: 0.7;
-      animation: rise 5s linear infinite;
+      width: 10vw;
+      height: auto;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 1;
     }
 
-    @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 0.7; }
-      100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
+    @media (max-width: 768px) {
+      .video-slide {
+        width: 100vw;
+        height: 100vh;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Menü -->
-  <nav>
-    <a href="#">Ana Sayfa</a>
-    <a href="#">Galeri</a>
-    <a href="#">İletişim</a>
-  </nav>
+  <!-- Banner alanı -->
+  <div class="banner" id="banner"></div>
 
-  <!-- Başlık -->
-  <div class="banner">DOĞAYI SEV, HAYVANLARI SEV, MUTLU OL!!</div>
-
-  <!-- Baloncuklar -->
-  <div class="bubbles-container" id="bubbles"></div>
-
-  <!-- Video Arka Plan -->
+  <!-- Video arka plan -->
   <div class="video-container">
     <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
   </div>
 
-  <!-- Arka Plan Müzik -->
-  <audio id="bg-music" autoplay></audio>
+  <!-- Görseller arka plan -->
+  <div class="image-container">
+    <img src="dog-8198719_1280.jpg" id="image1">
+    <img src="ai-generated-8620359_1280.png" id="image2">
+    <img src="hummingbird-5111260_1280.jpg" id="image3">
+    <img src="fox-1883658_1280.jpg" id="image4">
+  </div>
+
+  <!-- Ses çalar -->
+  <audio id="bg-music" autoplay loop></audio>
 
   <script>
-    // Video geçişi
-    const videos = document.querySelectorAll('.video-slide');
-    const durations = [8000, 3000, 9000];
-    let currentIndex = 0;
-
-    function changeVideo() {
-      videos.forEach((video, index) => {
-        video.style.opacity = index === currentIndex ? 1 : 0;
-      });
-      currentIndex = (currentIndex + 1) % videos.length;
-      setTimeout(changeVideo, durations[currentIndex]);
-    }
-
-    videos[0].style.opacity = 1;
-    setTimeout(changeVideo, durations[currentIndex]);
-
-    // Baloncuklar
-    function createBubble() {
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-      const size = Math.random() * 15 + 10;
-      bubble.style.width = `${size}px`;
-      bubble.style.height = `${size}px`;
-      bubble.style.left = `${Math.random() * 100}vw`;
-      bubble.style.backgroundColor = `rgba(255,255,255,0.6)`;
-      document.getElementById("bubbles").appendChild(bubble);
-      setTimeout(() => bubble.remove(), 5000);
-    }
-
-    setInterval(createBubble, 300);
-
-    // Müzik listesi
+    // Arka plan ses listesi
     const musicList = [
       "birds-in-forest-on-sunny-day-14444.mp3",
       "forest-birds-summer-sweden-18333.mp3",
@@ -192,12 +146,97 @@
     });
 
     window.addEventListener("load", () => {
+      // Ses oynatma için kullanıcı etkileşimi gerekebilir
       music.play().catch(() => {
         document.addEventListener("click", () => {
           music.play();
         }, { once: true });
       });
+
+      // Video arka plan geçişleri
+      const videos = document.querySelectorAll('.video-slide');
+      const durations = [8000, 3000, 9000];
+      let currentIndex = 0;
+
+      function changeVideo() {
+        videos.forEach((video, index) => {
+          video.style.opacity = index === currentIndex ? 1 : 0;
+        });
+
+        currentIndex = (currentIndex + 1) % videos.length;
+        setTimeout(changeVideo, durations[currentIndex]);
+      }
+
+      videos[0].style.opacity = 1;
+      setTimeout(changeVideo, durations[currentIndex]);
+
+      // Resimlerin rastgele yerlerde görünmesi
+      const images = document.querySelectorAll('.image-container img');
+      let imageIndex = 0;
+
+      function getRandomPosition() {
+        const x = Math.random() * 90; // %90 genişlik
+        const y = Math.random() * 80; // %80 yükseklik
+        return { x, y };
+      }
+
+      function changeImage() {
+        const { x, y } = getRandomPosition();
+        const image = images[imageIndex];
+
+        // Yeni pozisyona yerleştir
+        image.style.left = `${x}vw`;
+        image.style.top = `${y}vh`;
+
+        image.style.opacity = 1;
+
+        // Resmin kaybolması
+        setTimeout(() => {
+          image.style.opacity = 0;
+        }, 2000); // Resim 2 saniye boyunca görünür kalacak
+
+        imageIndex = (imageIndex + 1) % images.length;
+
+        // Yeniden başlamak için gecikme
+        const delay = 2000 + Math.random() * 3000; // 2-5 saniye arası gecikme
+        setTimeout(changeImage, delay);
+      }
+
+      // Başlangıçta ilk resmi göstermek için 4 saniye bekleyelim
+      setTimeout(changeImage, 4000);
     });
+
+    // Sıralı harf döndürme ve sabitleme
+    const bannerText = "DOĞAYI,SEV,HAYVANLARI,SEV,MUTLU,OL,UMUTLU,KAL!!";
+    const banner = document.getElementById("banner");
+    let i = 0;
+
+    function showLetters() {
+      if (i < bannerText.length) {
+        const span = document.createElement("span");
+        span.classList.add("letter", "rotate-animate");
+        span.textContent = bannerText[i];
+        banner.appendChild(span);
+
+        // Sadece döndükten sonra animasyon sınıfını kaldır
+        setTimeout(() => {
+          span.classList.remove("rotate-animate");
+          span.style.opacity = "1";
+        }, 600);
+
+        i++;
+        setTimeout(showLetters, 300);
+      } else {
+        setTimeout(() => {
+          banner.innerHTML = "";
+          i = 0;
+          showLetters();
+        }, 6000); // Metin tamamlandıktan sonra biraz bekleyip tekrar başa dön
+      }
+    }
+
+    showLetters();
   </script>
+
 </body>
 </html>
