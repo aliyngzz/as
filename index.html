@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Video Döngüsü</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background-color: #000;
       height: 100vh;
@@ -18,32 +13,24 @@
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
-
     .video-container {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       z-index: -1;
       overflow: hidden;
     }
-
     .video-slide {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
       transition: opacity 1s ease;
     }
-
     .banner {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       padding: 15px;
       text-align: center;
@@ -54,27 +41,17 @@
       background: rgba(0, 0, 0, 0.6);
       text-shadow: 2px 2px 4px black;
     }
-
     .letter {
       display: inline-block;
       opacity: 0;
     }
-
     .rotate-animate {
       animation: rotateIn 0.6s ease-out forwards;
     }
-
     @keyframes rotateIn {
-      0% {
-        transform: rotate(0deg);
-        opacity: 0;
-      }
-      100% {
-        transform: rotate(360deg);
-        opacity: 1;
-      }
+      0% { transform: rotate(0deg); opacity: 0; }
+      100% { transform: rotate(360deg); opacity: 1; }
     }
-
     .image-container img {
       position: absolute;
       width: 10vw;
@@ -83,28 +60,40 @@
       transition: opacity 1s ease;
       z-index: 1;
     }
-
     @media (max-width: 768px) {
       .video-slide {
-        width: 100vw;
-        height: 100vh;
+        width: 100vw; height: 100vh;
       }
+    }
+    #intro-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      z-index: 2000;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px black;
     }
   </style>
 </head>
 <body>
 
-  <!-- Banner alanı -->
+  <div id="intro-message">SAYFAYI TIKLA DOĞA SESİNİ HUZUR İLE DİNLE</div>
+
   <div class="banner" id="banner"></div>
 
-  <!-- Video arka plan -->
   <div class="video-container">
     <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
   </div>
 
-  <!-- Görseller arka plan -->
   <div class="image-container">
     <img src="dog-8198719_1280.jpg" id="image1">
     <img src="ai-generated-8620359_1280.png" id="image2">
@@ -112,11 +101,18 @@
     <img src="fox-1883658_1280.jpg" id="image4">
   </div>
 
-  <!-- Ses çalar -->
   <audio id="bg-music" autoplay loop></audio>
 
   <script>
-    // Arka plan ses listesi
+    // Intro mesaj tıklama ile kaybolsun
+    document.addEventListener("click", () => {
+      const intro = document.getElementById("intro-message");
+      if (intro) {
+        intro.style.display = "none";
+      }
+    }, { once: true });
+
+    // Tüm ses dosyaları
     const musicList = [
       "birds-in-forest-on-sunny-day-14444.mp3",
       "forest-birds-summer-sweden-18333.mp3",
@@ -131,7 +127,21 @@
       "soft-wind-314945.mp3",
       "soft-wind-318856.mp3",
       "waterfall-176958 (1).mp3",
-      "waterfall-176958.mp3"
+      "waterfall-176958.mp3",
+      "water-splashing-108887.mp3",
+      "tui-birdsong-new-zealand-31660.mp3",
+      "smallwaterfall-218855.mp3",
+      "small-mountain-waterfall_nature-sound-203003.mp3",
+      "singing-barn-swallows-3-306979.mp3",
+      "mar-agitado-272999.mp3",
+      "french-coutryside-sunrise-17100.mp3",
+      "forest-woodpecker-322636.mp3",
+      "deep-drizzle-green-noise-mix-11-241597.mp3",
+      "croaking-sound-of-frogs-in-the-forest-water-309353.mp3",
+      "cooing-doves-73616.mp3",
+      "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+      "bird-sounds-of-knysna-20130.mp3",
+      "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
     ];
 
     let musicIndex = 0;
@@ -139,21 +149,21 @@
     music.src = musicList[musicIndex];
     music.volume = 0.5;
 
-    music.addEventListener("ended", () => {
-      musicIndex = (musicIndex + 1) % musicList.length;
-      music.src = musicList[musicIndex];
-      music.play();
-    });
-
     window.addEventListener("load", () => {
-      // Ses oynatma için kullanıcı etkileşimi gerekebilir
       music.play().catch(() => {
         document.addEventListener("click", () => {
           music.play();
         }, { once: true });
       });
 
-      // Video arka plan geçişleri
+      // 8 saniyede bir ses değiştir
+      setInterval(() => {
+        musicIndex = (musicIndex + 1) % musicList.length;
+        music.src = musicList[musicIndex];
+        music.play();
+      }, 8000);
+
+      // Video geçişleri
       const videos = document.querySelectorAll('.video-slide');
       const durations = [8000, 3000, 9000];
       let currentIndex = 0;
@@ -170,13 +180,13 @@
       videos[0].style.opacity = 1;
       setTimeout(changeVideo, durations[currentIndex]);
 
-      // Resimlerin rastgele yerlerde görünmesi
+      // Görsel rastgele gösterme
       const images = document.querySelectorAll('.image-container img');
       let imageIndex = 0;
 
       function getRandomPosition() {
-        const x = Math.random() * 90; // %90 genişlik
-        const y = Math.random() * 80; // %80 yükseklik
+        const x = Math.random() * 90;
+        const y = Math.random() * 80;
         return { x, y };
       }
 
@@ -184,29 +194,23 @@
         const { x, y } = getRandomPosition();
         const image = images[imageIndex];
 
-        // Yeni pozisyona yerleştir
         image.style.left = `${x}vw`;
         image.style.top = `${y}vh`;
-
         image.style.opacity = 1;
 
-        // Resmin kaybolması
         setTimeout(() => {
           image.style.opacity = 0;
-        }, 2000); // Resim 2 saniye boyunca görünür kalacak
+        }, 2000);
 
         imageIndex = (imageIndex + 1) % images.length;
-
-        // Yeniden başlamak için gecikme
-        const delay = 2000 + Math.random() * 3000; // 2-5 saniye arası gecikme
+        const delay = 2000 + Math.random() * 3000;
         setTimeout(changeImage, delay);
       }
 
-      // Başlangıçta ilk resmi göstermek için 4 saniye bekleyelim
       setTimeout(changeImage, 4000);
     });
 
-    // Sıralı harf döndürme ve sabitleme
+    // Banner harf döndürme
     const bannerText = "DOĞAYI,SEV,HAYVANLARI,SEV,MUTLU,OL,UMUTLU,KAL!!";
     const banner = document.getElementById("banner");
     let i = 0;
@@ -218,7 +222,6 @@
         span.textContent = bannerText[i];
         banner.appendChild(span);
 
-        // Sadece döndükten sonra animasyon sınıfını kaldır
         setTimeout(() => {
           span.classList.remove("rotate-animate");
           span.style.opacity = "1";
@@ -231,7 +234,7 @@
           banner.innerHTML = "";
           i = 0;
           showLetters();
-        }, 6000); // Metin tamamlandıktan sonra biraz bekleyip tekrar başa dön
+        }, 6000);
       }
     }
 
