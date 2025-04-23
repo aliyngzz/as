@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -59,6 +60,8 @@
       height: auto;
       opacity: 0;
       z-index: 1;
+      border: none;
+      background: transparent;
     }
 
     .fade-in {
@@ -118,10 +121,8 @@
   </div>
 
   <div class="image-container">
-    <img src="dog-8198719_1280.jpg" id="image1">
-    <img src="ai-generated-8620359_1280.png" id="image2">
-    <img src="hummingbird-5111260_1280.jpg" id="image3">
-    <img src="fox-1883658_1280.jpg" id="image4">
+   
+    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" id="image5">
   </div>
 
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
@@ -176,7 +177,7 @@
         musicIndex = (musicIndex + 1) % musicList.length;
         music.src = musicList[musicIndex];
         music.play();
-      }, 8000);
+      }, 120000);
 
       const videos = document.querySelectorAll('.video-slide');
       const durations = [8000, 3000, 9000];
@@ -217,7 +218,7 @@
         image.style.top = `${y}vh`;
 
         image.className = ""; // remove previous classes
-        image.offsetWidth; // trigger reflow
+        image.offsetWidth;
         image.classList.add(anim);
 
         setTimeout(() => {
@@ -232,34 +233,50 @@
       setTimeout(changeImage, 3000);
     });
 
-    const bannerText = "DOĞAYI,SEV,HAYVANLARI,SEV,MUTLU,OL,UMUTLU,KAL!!";
+    // --- Banner yazısı sıralı şekilde gösteriliyor ---
     const banner = document.getElementById("banner");
-    let i = 0;
 
-    function showLetters() {
-      if (i < bannerText.length) {
-        const span = document.createElement("span");
-        span.classList.add("letter", "rotate-animate");
-        span.textContent = bannerText[i];
-        banner.appendChild(span);
+    const parts = [
+      { text: "DOĞAYI-SEV,", duration: 12000 },
+      { text: "HAYVANLARI-SEV,", duration: 12000 },
+      { text: "MUTLU-OL,", duration: 12000 },
+      { text: "UMUTLU-KAL", duration: 12000 },
+    ];
 
-        setTimeout(() => {
-          span.classList.remove("rotate-animate");
-          span.style.opacity = "1";
-        }, 600);
+    let partIndex = 0;
 
-        i++;
-        setTimeout(showLetters, 300);
-      } else {
-        setTimeout(() => {
-          banner.innerHTML = "";
-          i = 0;
-          showLetters();
-        }, 6000);
+    function showPart() {
+      banner.innerHTML = "";
+      const current = parts[partIndex];
+      let i = 0;
+
+      function showLetters() {
+        if (i < current.text.length) {
+          const span = document.createElement("span");
+          span.classList.add("letter", "rotate-animate");
+          span.textContent = current.text[i];
+          banner.appendChild(span);
+
+          setTimeout(() => {
+            span.classList.remove("rotate-animate");
+            span.style.opacity = "1";
+          }, 600);
+
+          i++;
+          setTimeout(showLetters, 300);
+        }
       }
+
+      showLetters();
+
+      setTimeout(() => {
+        banner.innerHTML = "";
+        partIndex = (partIndex + 1) % parts.length;
+        showPart();
+      }, current.duration);
     }
 
-    showLetters();
+    showPart();
 
     document.body.addEventListener("click", () => {
       const msg = document.getElementById("clickMessage");
