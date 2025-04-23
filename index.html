@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Animasyonlu Resimler</title>
+  <title>Animasyonlu Resimler ve Doğa Sesleri</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -13,6 +13,7 @@
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
+
     .video-container {
       position: fixed;
       top: 0; left: 0;
@@ -28,9 +29,9 @@
       opacity: 0;
       transition: opacity 1s ease-in-out;
     }
-   
+
     .banner {
-white-space: pre;
+      white-space: pre;
       position: fixed;
       top: 0;
       left: 0;
@@ -40,8 +41,8 @@ white-space: pre;
       font-size: 2rem;
       font-weight: bold;
       z-index: 1000;
-      background: none; 
-      color: white; 
+      background: none;
+      color: white;
     }
 
     .letter {
@@ -58,43 +59,29 @@ white-space: pre;
       100% { transform: rotate(360deg); opacity: 1; }
     }
 
-    .image-container img {
+    .nature-image {
       position: absolute;
       width: 10vw;
       height: auto;
       opacity: 0;
       z-index: 1;
-      border: none;
       background: transparent;
+      transition: opacity 1s, transform 1s;
     }
 
     .fade-in {
-      animation: fadeIn 1s forwards;
+      opacity: 1 !important;
+      transform: scale(1);
     }
 
     .scale-up {
       transform: scale(0.5);
-      animation: scaleUp 1s forwards;
+      opacity: 1;
     }
 
     .slide-in {
       transform: translateX(-100vw);
-      animation: slideIn 1s forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes scaleUp {
-      from { opacity: 0; transform: scale(0.5); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-100vw); }
-      to { opacity: 1; transform: translateX(0); }
+      opacity: 1;
     }
 
     .click-message {
@@ -116,23 +103,30 @@ white-space: pre;
 </head>
 <body>
 
+  <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 
+  <!-- Videolar -->
   <div class="video-container">
     <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
   </div>
 
+  <!-- Resimler -->
   <div class="image-container">
-    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" id="image5">
+    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
+    <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
   </div>
 
+  <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
 
+  <!-- Arka Plan Müzikleri -->
   <audio id="bg-music" autoplay loop></audio>
 
   <script>
+    // Müzik dosyaları
     const musicList = [
       "birds-in-forest-on-sunny-day-14444.mp3",
       "forest-birds-summer-sweden-18333.mp3",
@@ -180,8 +174,9 @@ white-space: pre;
         musicIndex = (musicIndex + 1) % musicList.length;
         music.src = musicList[musicIndex];
         music.play();
-      }, 120000);
+      }, 120000); // 2 dakika sonra müzik değişir
 
+      // Videoların değişmesi
       const videos = document.querySelectorAll('.video-slide');
       const durations = [8000, 3000, 9000];
       let currentIndex = 0;
@@ -198,67 +193,75 @@ white-space: pre;
       videos[0].style.opacity = 1;
       setTimeout(changeVideo, durations[currentIndex]);
 
-      const images = document.querySelectorAll('.image-container img');
+      // Resimlerin sıralı görünmesi
+      const images = document.querySelectorAll('.nature-image');
       let imageIndex = 0;
 
-      function getRandomPosition() {
-        const x = Math.random() * 90;
-        const y = Math.random() * 80;
-        return { x, y };
-      }
-
-      function getRandomAnimation() {
-        const animations = ['fade-in', 'scale-up', 'slide-in'];
-        return animations[Math.floor(Math.random() * animations.length)];
-      }
-
-      function changeImage() {
-        const { x, y } = getRandomPosition();
+      function showNextImage() {
         const image = images[imageIndex];
+        const { x, y } = getRandomPosition();
         const anim = getRandomAnimation();
 
         image.style.left = `${x}vw`;
         image.style.top = `${y}vh`;
 
-        image.className = ""; 
-        image.offsetWidth;
         image.classList.add(anim);
+        image.style.opacity = 1;
 
         setTimeout(() => {
+          image.classList.remove(anim);
           image.style.opacity = 0;
-        }, 2000);
-
-        imageIndex = (imageIndex + 1) % images.length;
-        const delay = 2000 + Math.random() * 3000;
-        setTimeout(changeImage, delay);
+          imageIndex = (imageIndex + 1) % images.length;
+          setTimeout(showNextImage, 1000); // Next image without delay
+        }, 2500); // Show each image for 2.5 seconds
       }
 
-      setTimeout(changeImage, 3000);
+      setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
     });
 
-    // Banner yazısı sıralı şekilde gösteriliyor
-    const banner = document.getElementById("banner");
+    // Rastgele konum ve animasyon
+    function getRandomPosition() {
+      return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
+    }
 
+    function getRandomAnimation() {
+      const animations = ['fade-in', 'scale-up', 'slide-in'];
+      return animations[Math.floor(Math.random() * animations.length)];
+    }
+
+    // Banner Yazısı Efekti
+    const banner = document.getElementById("banner");
     const parts = [
       { text: "DOĞAYI SEV,", duration: 7000 },
       { text: "HAYVANLARI  SEV,", duration: 7000 },
       { text: "MUTLU OL,", duration: 7000 },
-      { text: "Doğa  ve hayvan sevgisi, hayatın en temel", duration: 15000 }, 
-       { text: "ve  değerli unsurlarından biridir", duration: 18000 },
- { text: "Doğa, bizlere huzur, barış ve denge sunar", duration: 20000 },
-{ text: "Her  ağaç, çiçek ve hayvan, ekosistemin", duration: 20000 },
-{ text: "önemli bir parçasıdır", duration: 20000 },
- { text: "Hayvanlar, dünyamızın dengesini  sağlayan", duration: 20000 },
-  { text: "bazen sessizce bazen  de çığlıkla- doğanın", duration: 20000 },
- { text: "sesini duyuran varlıklardır", duration: 20000 },
- { text: "Onlara saygı göstermek, sadece onların", duration: 20000 }, 
- { text: "yaşam hakkını savunmakla kalmaz", duration: 20000 },
-{ text: "aynı zamanda çevremizdeki tüm -canlılara", duration: 20000 }, 
-{ text: "değer verdiğimizi de gösterir", duration: 2000 },
-{ text: "Doğayı sevdiğimizde, bu dünyanın  korunması", duration: 20000 },
-  { text: "için küçük adımlar atmış oluruz", duration: 20000 },
-{ text: "ve- hayvanları sevdiğimizde, onların yaşamlarını", duration: 20000 }, 
-{ text: "daha anlamlı kılmaya yardımcı oluruz", duration: 2000 },
+      { text: "Doğa ve hayvan sevgisi", duration: 10000 },
+      { text: "hayatın en temel ve", duration: 10000 },
+      { text: "değerli unsurlarından biridir", duration: 12000 },
+      { text: "Doğa, bizlere huzur", duration: 10000 },
+      { text: "barış ve denge sunar", duration: 10000 },
+      { text: "Her ağaç, çiçek ve", duration: 10000 },
+      { text: "hayvan, ekosistemin", duration: 10000 },
+      { text: "önemli bir parçasıdır", duration: 10000 },
+      { text: "Hayvanlar, dünyamızın", duration: 10000 }, 
+      { text: "dengesini sağlayan", duration: 10000 },
+      { text: "bazen sessizce", duration: 10000 }, 
+      { text: "bazen de çığlıkla- doğanın", duration: 10000 },
+      { text: "sesini duyuran varlıklardır", duration: 10000 },
+      { text: "Onlara saygı göstermek", duration: 10000 },
+      { text: "sadece onların", duration: 10000 },
+      { text: "yaşam hakkını", duration: 10000 }, 
+      { text: "savunmakla kalmaz", duration: 10000 },
+      { text: "aynı zamanda çevremizdeki", duration: 10000 }, 
+      { text: "tüm -canlılara", duration: 10000 },
+      { text: "değer verdiğimizi de gösterir", duration: 10000 },
+      { text: "Doğayı sevdiğimizde", duration: 10000 },
+      { text: "bu dünyanın korunması", duration: 10000 },
+      { text: "için küçük adımlar atmış oluruz", duration: 10000 },
+      { text: "ve  hayvanları sevdiğimizde", duration: 10000 }, 
+      { text: "onların yaşamlarını", duration: 10000 },
+      { text: "daha anlamlı kılmaya", duration: 1000 }, 
+      { text: "yardımcı oluruz", duration: 10000 },
     ];
 
     let partIndex = 0;
@@ -296,6 +299,7 @@ white-space: pre;
 
     showPart();
 
+    // Sayfayı tıklayınca mesaj kaybolur
     document.body.addEventListener("click", () => {
       const msg = document.getElementById("clickMessage");
       if (msg) msg.style.display = "none";
