@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Animasyonlu Resimler ve Doğa Sesleri</title>
   <style>
-    /* Genel stil ayarları */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background-color: #000;
@@ -22,7 +21,6 @@
       z-index: -1;
       overflow: hidden;
     }
-
     .video-slide {
       position: absolute;
       top: 0; left: 0;
@@ -47,56 +45,60 @@
       color: white;
     }
 
-    .contact-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 30px;
-      background-color: #28a745;
-      color: white;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 2000;
+    .letter {
+      display: inline-block;
+      opacity: 0;
     }
 
-    .contact-form-container {
+    .rotate-animate {
+      animation: rotateIn 0.6s ease-out forwards;
+    }
+
+    @keyframes rotateIn {
+      0% { transform: rotate(0deg); opacity: 0; }
+      100% { transform: rotate(360deg); opacity: 1; }
+    }
+
+    .nature-image {
+      position: absolute;
+      width: 10vw;
+      height: auto;
+      opacity: 0;
+      z-index: 1;
+      background: transparent;
+      transition: opacity 1s, transform 1s;
+    }
+
+    .fade-in {
+      opacity: 1 !important;
+      transform: scale(1);
+    }
+
+    .scale-up {
+      transform: scale(0.5);
+      opacity: 1;
+    }
+
+    .slide-in {
+      transform: translateX(-100vw);
+      opacity: 1;
+    }
+
+    .click-message {
       position: fixed;
-      top: 30%;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(0, 0, 0, 0.7);
+      transform: translate(-50%, -50%);
       color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      display: none;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
       z-index: 2000;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
-
-    .contact-form-container input,
-    .contact-form-container textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      background-color: #333;
-      border: 1px solid #555;
-      color: white;
-      border-radius: 5px;
-    }
-
-    .contact-form-container button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-
   </style>
 </head>
 <body>
@@ -111,18 +113,14 @@
     <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
   </div>
 
-  <!-- İletişim Butonu -->
-  <button class="contact-btn" id="contactBtn">İletişim</button>
-
-  <!-- İletişim Formu -->
-  <div class="contact-form-container" id="contactForm">
-    <h3>Mesaj Gönder</h3>
-    <form action="https://formspree.io/f/xovdqzng" method="POST">
-      <input type="text" name="name" placeholder="Adınız" required>
-      <textarea name="message" rows="4" placeholder="Mesajınızı yazın" required></textarea>
-      <button type="submit">Gönder</button>
-    </form>
+  <!-- Resimler -->
+  <div class="image-container">
+    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
+    <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
   </div>
+
+  <!-- Tıklama Mesajı -->
+  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
 
   <!-- Arka Plan Müzikleri -->
   <audio id="bg-music" autoplay loop></audio>
@@ -140,7 +138,24 @@
       "forest-atmosphere-007localization-poland-330007.mp3",
       "nature-sound-near-river-or-waterfall-247409.mp3",
       "relaxing-rain-and-birds-6-minutes-52191.mp3",
-      "soft-wind-314945.mp3"
+      "soft-wind-314945.mp3",
+      "soft-wind-318856.mp3",
+      "waterfall-176958 (1).mp3",
+      "waterfall-176958.mp3",
+      "water-splashing-108887.mp3",
+      "tui-birdsong-new-zealand-31660.mp3",
+      "smallwaterfall-218855.mp3",
+      "small-mountain-waterfall_nature-sound-203003.mp3",
+      "singing-barn-swallows-3-306979.mp3",
+      "mar-agitado-272999.mp3",
+      "french-coutryside-sunrise-17100.mp3",
+      "forest-woodpecker-322636.mp3",
+      "deep-drizzle-green-noise-mix-11-241597.mp3",
+      "croaking-sound-of-frogs-in-the-forest-water-309353.mp3",
+      "cooing-doves-73616.mp3",
+      "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+      "bird-sounds-of-knysna-20130.mp3",
+      "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
     ];
 
     let musicIndex = 0;
@@ -178,15 +193,50 @@
       videos[0].style.opacity = 1;
       setTimeout(changeVideo, durations[currentIndex]);
 
-      // Banner Yazısı Efekti
-      const banner = document.getElementById("banner");
-      const parts = [
-        { text: "DOĞAYI SEV,", duration: 9000 },
-        { text: "HAYVANLARI SEV,", duration: 9000 },
-        { text: "MUTLU OL,", duration: 9000 },
-        { text: "Doğa ve hayvan sevgisi", duration: 10000 }
-        { text: " hayatın en temel", duration: 15000 },
-        { text: "ve değerli unsurlarından biridir", duration: 18000 },
+      // Resimlerin sıralı görünmesi
+      const images = document.querySelectorAll('.nature-image');
+      let imageIndex = 0;
+
+      function showNextImage() {
+        const image = images[imageIndex];
+        const { x, y } = getRandomPosition();
+        const anim = getRandomAnimation();
+
+        image.style.left = `${x}vw`;
+        image.style.top = `${y}vh`;
+
+        image.classList.add(anim);
+        image.style.opacity = 1;
+
+        setTimeout(() => {
+          image.classList.remove(anim);
+          image.style.opacity = 0;
+          imageIndex = (imageIndex + 1) % images.length;
+          setTimeout(showNextImage, 1000); // Next image without delay
+        }, 2500); // Show each image for 2.5 seconds
+      }
+
+      setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
+    });
+
+    // Rastgele konum ve animasyon
+    function getRandomPosition() {
+      return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
+    }
+
+    function getRandomAnimation() {
+      const animations = ['fade-in', 'scale-up', 'slide-in'];
+      return animations[Math.floor(Math.random() * animations.length)];
+    }
+
+    // Banner Yazısı Efekti
+    const banner = document.getElementById("banner");
+    const parts = [
+      { text: "DOĞAYI SEV,", duration: 7000 },
+      { text: "HAYVANLARI  SEV,", duration: 7000 },
+      { text: "MUTLU OL,", duration: 7000 },
+      { text: "Doğa ve hayvan sevgisi, hayatın en temel", duration: 15000 },
+      { text: "ve değerli unsurlarından biridir", duration: 18000 },
       { text: "Doğa, bizlere huzur, barış ve denge sunar", duration: 20000 },
       { text: "Her ağaç, çiçek ve hayvan, ekosistemin", duration: 20000 },
       { text: "önemli bir parçasıdır", duration: 20000 },
@@ -201,43 +251,47 @@
       { text: "için küçük adımlar atmış oluruz", duration: 20000 },
       { text: "ve- hayvanları sevdiğimizde, onların yaşamlarını", duration: 20000 },
       { text: "daha anlamlı kılmaya yardımcı oluruz", duration: 2000 },
+    ];
 
-      ];
+    let partIndex = 0;
 
-      let partIndex = 0;
-      function showPart() {
-        banner.innerHTML = "";
-        const current = parts[partIndex];
-        let i = 0;
+    function showPart() {
+      banner.innerHTML = "";
+      const current = parts[partIndex];
+      let i = 0;
 
-        function showLetters() {
-          if (i < current.text.length) {
-            const span = document.createElement("span");
-            span.textContent = current.text[i];
-            banner.appendChild(span);
-            setTimeout(() => { span.style.opacity = "1"; }, 600);
-            i++;
-            setTimeout(showLetters, 300);
-          }
+      function showLetters() {
+        if (i < current.text.length) {
+          const span = document.createElement("span");
+          span.classList.add("letter", "rotate-animate");
+          span.textContent = current.text[i];
+          banner.appendChild(span);
+
+          setTimeout(() => {
+            span.classList.remove("rotate-animate");
+            span.style.opacity = "1";
+          }, 600);
+
+          i++;
+          setTimeout(showLetters, 300);
         }
-
-        showLetters();
-        setTimeout(() => {
-          banner.innerHTML = "";
-          partIndex = (partIndex + 1) % parts.length;
-          showPart();
-        }, current.duration);
       }
 
-      showPart();
-    });
+      showLetters();
 
-    // İletişim butonuna tıklama
-    const contactBtn = document.getElementById("contactBtn");
-    const contactForm = document.getElementById("contactForm");
+      setTimeout(() => {
+        banner.innerHTML = "";
+        partIndex = (partIndex + 1) % parts.length;
+        showPart();
+      }, current.duration);
+    }
 
-    contactBtn.addEventListener("click", () => {
-      contactForm.style.display = "block";
+    showPart();
+
+    // Sayfayı tıklayınca mesaj kaybolur
+    document.body.addEventListener("click", () => {
+      const msg = document.getElementById("clickMessage");
+      if (msg) msg.style.display = "none";
     });
   </script>
 </body>
