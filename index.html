@@ -13,6 +13,7 @@
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
+
     #contactBtn {
       position: fixed;
       bottom: 20px;
@@ -90,88 +91,6 @@
       background-color: #dc3545;
       color: white;
     }
-
-    .video-container {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .video-slide {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-
-    .banner {
-      white-space: pre;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 15px;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      z-index: 1000;
-      background: none;
-      color: white;
-    }
-
-    .letter {
-      display: inline-block;
-      opacity: 0;
-    }
-
-    .rotate-animate {
-      animation: rotateIn 0.6s ease-out forwards;
-    }
-
-    @keyframes rotateIn {
-      0% { transform: rotate(0deg); opacity: 0; }
-      100% { transform: rotate(360deg); opacity: 1; }
-    }
-
-    .image-container img {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      opacity: 0;
-      z-index: 1;
-      border: none;
-      background: transparent;
-    }
-
-    .fade-in {
-      animation: fadeIn 1s forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .click-message {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      z-index: 2000;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    }
   </style>
 </head>
 <body>
@@ -193,6 +112,20 @@
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
 
   <audio id="bg-music" autoplay loop></audio>
+
+  <button id="contactBtn">İletişim</button>
+
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <h2>İletişim</h2>
+      <input type="text" id="nameInput" placeholder="Adınız">
+      <textarea id="descInput" placeholder="Açıklama"></textarea>
+      <div class="modal-buttons">
+        <button id="sendBtn">Gönder</button>
+        <button id="cancelBtn">İptal</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const musicList = [
@@ -243,153 +176,35 @@
         music.src = musicList[musicIndex];
         music.play();
       }, 120000);
-
-      const videos = document.querySelectorAll('.video-slide');
-      const durations = [8000, 3000, 9000];
-      let currentIndex = 0;
-
-      function changeVideo() {
-        videos.forEach((video, index) => {
-          video.style.opacity = index === currentIndex ? 1 : 0;
-        });
-
-        currentIndex = (currentIndex + 1) % videos.length;
-        setTimeout(changeVideo, durations[currentIndex]);
-      }
-
-      videos[0].style.opacity = 1;
-      setTimeout(changeVideo, durations[currentIndex]);
-
-      const images = document.querySelectorAll('.image-container img');
-      let imageIndex = 0;
-
-      function getRandomPosition() {
-        const x = Math.random() * 90;
-        const y = Math.random() * 80;
-        return { x, y };
-      }
-
-      function getRandomAnimation() {
-        const animations = ['fade-in'];
-        return animations[Math.floor(Math.random() * animations.length)];
-      }
-
-      function changeImage() {
-        const { x, y } = getRandomPosition();
-        const image = images[imageIndex];
-        const anim = getRandomAnimation();
-
-        image.style.left = `${x}vw`;
-        image.style.top = `${y}vh`;
-
-        image.className = ""; 
-        image.offsetWidth;
-        image.classList.add(anim);
-
-        setTimeout(() => {
-          image.style.opacity = 0;
-        }, 2000);
-
-        imageIndex = (imageIndex + 1) % images.length;
-        const delay = 2000 + Math.random() * 3000;
-        setTimeout(changeImage, delay);
-      }
-
-      setTimeout(changeImage, 3000);
     });
 
-    // Banner yazısı sıralı şekilde gösteriliyor
-    const banner = document.getElementById("banner");
+    // İletişim butonu işlevleri
+    const contactBtn = document.getElementById("contactBtn");
+    const contactModal = document.getElementById("contactModal");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const sendBtn = document.getElementById("sendBtn");
 
-    const parts = [
-      { text: "DOĞAYI SEV,", duration: 7000 },
-      { text: "HAYVANLARI  SEV,", duration: 7000 },
-      { text: "MUTLU OL,", duration: 7000 },
-      { text: "Doğa  ve hayvan sevgisi", duration: 15000 },  
-      { text: "hayatın en temel ve", duration: 15000 }, 
-      { text: "değerli unsurlarından biridir", duration: 18000 },
-      { text: "Doğa, bizlere huzur", duration: 20000 }, 
-      { text: "barış ve denge sunar", duration: 20000 },
-      { text: "Her  ağaç, çiçek ve", duration: 20000 },
-      { text: "hayvan, ekosistemin", duration: 20000 },
-      { text: "önemli bir parçasıdır", duration: 20000 },
-      { text: "Hayvanlar, dünyamızın", duration: 20000 },
-      { text: "dengesini  sağlayan", duration: 20000 },
-      { text: "bazen sessizce bazen", duration: 20000 },  
-      { text: "de çığlıkla  doğanın", duration: 20000 },
-      { text: "sesini duyuran varlıklardır", duration: 20000 },
-      { text: "Onlara saygı göstermek", duration: 20000 }, 
-      { text: "sadece onların", duration: 20000 }, 
-      { text: "yaşam hakkını savunmakla kalmaz", duration: 20000 },
-      { text: "aynı zamanda çevremizdeki", duration: 20000 },  
-      { text: "tüm -canlılara", duration: 20000 }, 
-      { text: "değer verdiğimizi de gösterir", duration: 2000 },
-      { text: "Doğayı sevdiğimizde", duration: 25000 },
-      { text: "bu dünyanın  korunması", duration: 25000 },
-      { text: "için küçük adımlar", duration: 20000 },
-      { text: "atmış oluruz", duration: 20000 },
-      { text: "ve  hayvanları sevdiğimizde", duration: 20000 },
-      { text: "onların yaşamlarını", duration: 20000 }, 
-      { text: "daha anlamlı kılmaya", duration: 20000 },  
-      { text: "yardımcı oluruz", duration: 2000 },
-    ];
+    contactBtn.addEventListener("click", () => {
+      contactModal.style.display = "flex";
+    });
 
-    let partIndex = 0;
+    cancelBtn.addEventListener("click", () => {
+      contactModal.style.display = "none";
+    });
 
-    function showPart() {
-      banner.innerHTML = "";
-      const current = parts[partIndex];
-      let i = 0;
+    sendBtn.addEventListener("click", () => {
+      const name = document.getElementById("nameInput").value.trim();
+      const desc = document.getElementById("descInput").value.trim();
 
-      function showLetters() {
-        if (i < current.text.length) {
-          const span = document.createElement("span");
-          span.classList.add("letter", "rotate-animate");
-          span.textContent = current.text[i];
-          banner.appendChild(span);
-
-          setTimeout(() => {
-            span.classList.remove("rotate-animate");
-            span.style.opacity = "1";
-          }, 600);
-
-          i++;
-          setTimeout(showLetters, 300);
-        }
+      if (name && desc) {
+        alert(`Teşekkürler ${name}, mesajınız gönderildi!`);
+        contactModal.style.display = "none";
+        document.getElementById("nameInput").value = "";
+        document.getElementById("descInput").value = "";
+      } else {
+        alert("Lütfen tüm alanları doldurun.");
       }
-
-      showLetters();
-
-      setTimeout(() => {
-        banner.innerHTML = "";
-        partIndex = (partIndex + 1) % parts.length;
-        showPart();
-      }, current.duration);
-    }
-
-    showPart();
-
-    document.body.addEventListener("click", () => {
-      const msg = document.getElementById("clickMessage");
-      if (msg) msg.style.display = "none";
     });
   </script>
-
-  <!-- İletişim Butonu -->
-  <button id="contactBtn">İletişim</button>
-
-  <!-- Modal Form -->
-  <div id="contactModal" class="modal">
-    <div class="modal-content">
-      <h2>İletişim</h2>
-      <input type="text" id="nameInput" placeholder="Adınız">
-      <textarea id="descInput" placeholder="Açıklama"></textarea>
-      <div class="modal-buttons">
-        <button id="sendBtn">Gönder</button>
-        <button id="cancelBtn">İptal</button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
