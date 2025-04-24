@@ -12,6 +12,85 @@
       width: 100vw;
       overflow: hidden;
       font-family: Arial, sans-serif;
+#contactBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 3000;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transition: background-color 0.3s;
+}
+
+#contactBtn:hover {
+  background-color: #218838;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 4000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.modal-buttons {
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  margin: 5px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#sendBtn {
+  background-color: #007bff;
+  color: white;
+}
+
+#cancelBtn {
+  background-color: #dc3545;
+  color: white;
+}
+
+      
     }
     .video-container {
       position: fixed;
@@ -145,6 +224,35 @@
       "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
       "bird-sounds-of-knysna-20130.mp3",
       "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+// İletişim butonu işlevleri
+const contactBtn = document.getElementById("contactBtn");
+const contactModal = document.getElementById("contactModal");
+const cancelBtn = document.getElementById("cancelBtn");
+const sendBtn = document.getElementById("sendBtn");
+
+contactBtn.addEventListener("click", () => {
+  contactModal.style.display = "flex";
+});
+
+cancelBtn.addEventListener("click", () => {
+  contactModal.style.display = "none";
+});
+
+sendBtn.addEventListener("click", () => {
+  const name = document.getElementById("nameInput").value.trim();
+  const desc = document.getElementById("descInput").value.trim();
+
+  if (name && desc) {
+    alert(`Teşekkürler ${name}, mesajınız gönderildi!`);
+    contactModal.style.display = "none";
+    document.getElementById("nameInput").value = "";
+    document.getElementById("descInput").value = "";
+  } else {
+    alert("Lütfen tüm alanları doldurun.");
+  }
+});
+
+      
     ];
 
     let musicIndex = 0;
@@ -295,5 +403,18 @@
       if (msg) msg.style.display = "none";
     });
   </script>
+  <!-- İletişim Butonu -->
+<button id="contactBtn">İletişim</button>
+
+<!-- Modal Form -->
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <h2>İletişim</h2>
+    <input type="text" id="nameInput" placeholder="Adınız">
+    <textarea id="descInput" placeholder="Açıklama"></textarea>
+    <div class="modal-buttons">
+      <button id="sendBtn">Gönder</button>
+      <button id="cancelBtn">İptal</button>
+    </div>
 </body>
 </html>
