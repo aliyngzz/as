@@ -89,52 +89,65 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
-    /* 💬 İletişim İkonu ve Penceresi */
-    .contact-icon {
+    /* İletişim İkonu */
+    #contactIcon {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
+      background-color: #ffffffaa;
+      color: black;
       font-size: 2rem;
-      background-color: #28a745;
-      color: white;
-      padding: 10px 15px;
+      padding: 12px 16px;
       border-radius: 50%;
       cursor: pointer;
-      z-index: 1500;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      transition: transform 0.3s;
+      z-index: 3000;
+      box-shadow: 0 0 10px rgba(255,255,255,0.6);
+      transition: transform 0.2s;
     }
-    .contact-icon:hover {
+    #contactIcon:hover {
       transform: scale(1.1);
     }
 
     .contact-popup {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background: white;
-      color: black;
-      padding: 20px;
-      border-radius: 10px;
       display: none;
-      z-index: 1600;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background-color: #fff;
+      color: #000;
+      padding: 20px;
+      width: 280px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      border-radius: 12px;
+      z-index: 3001;
     }
+
     .contact-popup textarea {
       width: 100%;
-      margin-top: 10px;
-      padding: 5px;
-      border-radius: 5px;
+      padding: 10px;
       resize: none;
+      margin-top: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
-    .contact-popup button {
+
+    .contact-popup .btn-group {
       margin-top: 10px;
-      padding: 5px 10px;
-      background-color: #dc3545;
+      text-align: right;
+    }
+
+    .contact-popup button {
+      padding: 6px 12px;
+      margin-left: 5px;
+      background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
+    }
+
+    .contact-popup button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -159,19 +172,21 @@
   <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
 
-  <!-- Müzik -->
+  <!-- Arka Plan Müzikleri -->
   <audio id="bg-music" autoplay loop></audio>
 
-  <!-- 📞 İletişim İkonu -->
-  <div class="contact-icon" id="contactIcon">📞</div>
+  <!-- İletişim İkonu -->
+  <div id="contactIcon" title="İletişim">✉️</div>
 
-  <!-- 📨 İletişim Penceresi -->
+  <!-- İletişim Paneli -->
   <div class="contact-popup" id="contactPopup">
-    <h3>İletişim</h3>
-    <p>Mesajınızı bırakın:</p>
-    <textarea rows="4" cols="30" placeholder="Mesajınız..."></textarea>
-    <br>
-    <button onclick="closePopup()">Kapat</button>
+    <h2>İletişim Paneli</h2>
+    <label for="message">Açıklama:</label><br>
+    <textarea id="message" rows="5" placeholder="Mesajınızı buraya yazınız..."></textarea><br>
+    <div class="btn-group">
+      <button onclick="sendMessage()">Gönder</button>
+      <button onclick="closePopup()">Kapat</button>
+    </div>
   </div>
 
   <!-- Script -->
@@ -233,7 +248,6 @@
         videos.forEach((video, index) => {
           video.style.opacity = index === currentIndex ? 1 : 0;
         });
-
         currentIndex = (currentIndex + 1) % videos.length;
         setTimeout(changeVideo, durations[currentIndex]);
       }
@@ -251,7 +265,6 @@
 
         image.style.left = `${x}vw`;
         image.style.top = `${y}vh`;
-
         image.classList.add(anim);
         image.style.opacity = 1;
 
@@ -299,38 +312,31 @@
     ];
 
     let partIndex = 0;
-
     function showPart() {
       banner.innerHTML = "";
       const current = parts[partIndex];
       let i = 0;
-
       function showLetters() {
         if (i < current.text.length) {
           const span = document.createElement("span");
           span.classList.add("letter", "rotate-animate");
           span.textContent = current.text[i];
           banner.appendChild(span);
-
           setTimeout(() => {
             span.classList.remove("rotate-animate");
             span.style.opacity = "1";
           }, 600);
-
           i++;
           setTimeout(showLetters, 300);
         }
       }
-
       showLetters();
-
       setTimeout(() => {
         banner.innerHTML = "";
         partIndex = (partIndex + 1) % parts.length;
         showPart();
       }, current.duration);
     }
-
     showPart();
 
     document.body.addEventListener("click", () => {
@@ -338,16 +344,25 @@
       if (msg) msg.style.display = "none";
     });
 
-    // 📞 İletişim Popup
-    const contactIcon = document.getElementById("contactIcon");
-    const contactPopup = document.getElementById("contactPopup");
-
-    contactIcon.addEventListener("click", () => {
-      contactPopup.style.display = contactPopup.style.display === "block" ? "none" : "block";
+    // İletişim paneli
+    document.getElementById("contactIcon").addEventListener("click", () => {
+      const popup = document.getElementById("contactPopup");
+      popup.style.display = popup.style.display === "block" ? "none" : "block";
     });
 
     function closePopup() {
-      contactPopup.style.display = "none";
+      document.getElementById("contactPopup").style.display = "none";
+    }
+
+    function sendMessage() {
+      const message = document.getElementById("message").value.trim();
+      if (message) {
+        alert("Mesajınız alındı! Teşekkür ederiz.");
+        document.getElementById("message").value = "";
+        closePopup();
+      } else {
+        alert("Lütfen bir açıklama giriniz.");
+      }
     }
   </script>
 </body>
