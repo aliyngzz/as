@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Animasyonlu Resimler</title>
+  <title>Animasyonlu Resimler ve Doğa</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -28,9 +28,9 @@
       opacity: 0;
       transition: opacity 1s ease-in-out;
     }
-   
+
     .banner {
-white-space: pre;
+      white-space: pre;
       position: fixed;
       top: 0;
       left: 0;
@@ -40,8 +40,8 @@ white-space: pre;
       font-size: 2rem;
       font-weight: bold;
       z-index: 1000;
-      background: none; 
-      color: white; 
+      background: none;
+      color: white;
     }
 
     .letter {
@@ -60,8 +60,9 @@ white-space: pre;
 
     .image-container img {
       position: absolute;
-      width: 10vw;
-      height: auto;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
       opacity: 0;
       z-index: 1;
       border: none;
@@ -72,29 +73,9 @@ white-space: pre;
       animation: fadeIn 1s forwards;
     }
 
-    .scale-up {
-      transform: scale(0.5);
-      animation: scaleUp 1s forwards;
-    }
-
-    .slide-in {
-      transform: translateX(-100vw);
-      animation: slideIn 1s forwards;
-    }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
-    }
-
-    @keyframes scaleUp {
-      from { opacity: 0; transform: scale(0.5); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-100vw); }
-      to { opacity: 1; transform: translateX(0); }
     }
 
     .click-message {
@@ -110,10 +91,7 @@ white-space: pre;
       background-color: rgba(0, 0, 0, 0.7);
       padding: 20px 30px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
- 
-
-
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
@@ -128,8 +106,9 @@ white-space: pre;
   </div>
 
   <div class="image-container">
-  <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" id="image1" alt="Resim 1">
-  <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" id="image1" alt="Resim 1">
+    <img src="kedi.jpg" id="image1" alt="Kedi">
+    <img src="kopek.jpg" id="image2" alt="Köpek">
+    <img src="kus.jpg" id="image3" alt="Kuş">
   </div>
 
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
@@ -202,45 +181,17 @@ white-space: pre;
       videos[0].style.opacity = 1;
       setTimeout(changeVideo, durations[currentIndex]);
 
+      const images = document.querySelectorAll('.image-container img');
+      let imageIndex = 0;
 
-
-
-     const images = document.querySelectorAll('.image-container img');
-let index = 0;
-
-function showImage() {
-  images.forEach((img, i) => {
-    img.classList.remove('visible');
-    if (i === index) img.classList.add('visible');
-  });
-
-  index = (index + 1) % images.length;
-  setTimeout(showImage, 4000); // Her 4 saniyede bir değiş
-
-
-
-
+      function getRandomPosition() {
+        const x = Math.random() * 90;
+        const y = Math.random() * 80;
+        return { x, y };
       }
-showImage();
-
-
-
-
-const images = document.querySelectorAll('.image-container img');
-let index = 0;
-
-function showImage() {
-  images.forEach((img, i) => {
-    img.classList.remove('visible');
-    if (i === index) img.classList.add('visible');
-  });
-
-  index = (index + 1) % images.length;
-  setTimeout(showImage, 4000); // Her 4 saniyede bir değiş
-
 
       function getRandomAnimation() {
-        const animations = ['fade-in', 'scale-up', 'slide-in'];
+        const animations = ['fade-in'];
         return animations[Math.floor(Math.random() * animations.length)];
       }
 
@@ -249,8 +200,8 @@ function showImage() {
         const image = images[imageIndex];
         const anim = getRandomAnimation();
 
-        image.style.left = ${x}vw;
-        image.style.top = ${y}vh;
+        image.style.left = `${x}vw`;
+        image.style.top = `${y}vh`;
 
         image.className = ""; 
         image.offsetWidth;
@@ -276,32 +227,32 @@ function showImage() {
       { text: "HAYVANLARI  SEV,", duration: 7000 },
       { text: "MUTLU OL,", duration: 7000 },
       { text: "Doğa  ve hayvan sevgisi", duration: 15000 },  
- { text: "hayatın en temel ve", duration: 15000 }, 
-       { text: "değerli unsurlarından biridir", duration: 18000 },
- { text: "Doğa, bizlere huzur", duration: 20000 }, 
- { text: "barış ve denge sunar", duration: 20000 },
-{ text: "Her  ağaç, çiçek ve", duration: 20000 },
-{ text: "hayvan, ekosistemin", duration: 20000 },
-{ text: "önemli bir parçasıdır", duration: 20000 },
- { text: "Hayvanlar, dünyamızın", duration: 20000 },
- { text: "dengesini  sağlayan", duration: 20000 },
-  { text: "bazen sessizce bazen", duration: 20000 },  
-{ text: "de çığlıkla  doğanın", duration: 20000 },
- { text: "sesini duyuran varlıklardır", duration: 20000 },
- { text: "Onlara saygı göstermek", duration: 20000 }, 
- { text: "sadece onların", duration: 20000 }, 
- { text: "yaşam hakkını savunmakla kalmaz", duration: 20000 },
-{ text: "aynı zamanda çevremizdeki", duration: 20000 },  
-{ text: "tüm -canlılara", duration: 20000 }, 
-{ text: "değer verdiğimizi de gösterir", duration: 2000 },
-{ text: "Doğayı sevdiğimizde", duration: 25000 },
-{ text: "bu dünyanın  korunması", duration: 25000 },
-  { text: "için küçük adımlar", duration: 20000 },
-   { text: "atmış oluruz", duration: 20000 },
-{ text: "ve  hayvanları sevdiğimizde", duration: 20000 },
-{ text: "onların yaşamlarını", duration: 20000 }, 
-{ text: "daha anlamlı kılmaya", duration: 20000 },  
-{ text: "yardımcı oluruz", duration: 2000 },
+      { text: "hayatın en temel ve", duration: 15000 }, 
+      { text: "değerli unsurlarından biridir", duration: 18000 },
+      { text: "Doğa, bizlere huzur", duration: 20000 }, 
+      { text: "barış ve denge sunar", duration: 20000 },
+      { text: "Her  ağaç, çiçek ve", duration: 20000 },
+      { text: "hayvan, ekosistemin", duration: 20000 },
+      { text: "önemli bir parçasıdır", duration: 20000 },
+      { text: "Hayvanlar, dünyamızın", duration: 20000 },
+      { text: "dengesini  sağlayan", duration: 20000 },
+      { text: "bazen sessizce bazen", duration: 20000 },  
+      { text: "de çığlıkla  doğanın", duration: 20000 },
+      { text: "sesini duyuran varlıklardır", duration: 20000 },
+      { text: "Onlara saygı göstermek", duration: 20000 }, 
+      { text: "sadece onların", duration: 20000 }, 
+      { text: "yaşam hakkını savunmakla kalmaz", duration: 20000 },
+      { text: "aynı zamanda çevremizdeki", duration: 20000 },  
+      { text: "tüm -canlılara", duration: 20000 }, 
+      { text: "değer verdiğimizi de gösterir", duration: 2000 },
+      { text: "Doğayı sevdiğimizde", duration: 25000 },
+      { text: "bu dünyanın  korunması", duration: 25000 },
+      { text: "için küçük adımlar", duration: 20000 },
+      { text: "atmış oluruz", duration: 20000 },
+      { text: "ve  hayvanları sevdiğimizde", duration: 20000 },
+      { text: "onların yaşamlarını", duration: 20000 }, 
+      { text: "daha anlamlı kılmaya", duration: 20000 },  
+      { text: "yardımcı oluruz", duration: 2000 },
     ];
 
     let partIndex = 0;
@@ -345,4 +296,4 @@ function showImage() {
     });
   </script>
 </body>
-</html> 
+</html>
