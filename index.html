@@ -69,20 +69,9 @@
       transition: opacity 1s, transform 1s;
     }
 
-    .fade-in {
-      opacity: 1 !important;
-      transform: scale(1);
-    }
-
-    .scale-up {
-      transform: scale(0.5);
-      opacity: 1;
-    }
-
-    .slide-in {
-      transform: translateX(-100vw);
-      opacity: 1;
-    }
+    .fade-in { opacity: 1 !important; transform: scale(1); }
+    .scale-up { transform: scale(0.5); opacity: 1; }
+    .slide-in { transform: translateX(-100vw); opacity: 1; }
 
     .click-message {
       position: fixed;
@@ -99,11 +88,59 @@
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
+
+    /* 💬 İletişim İkonu ve Penceresi */
+    .contact-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 2rem;
+      background-color: #28a745;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1500;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+    .contact-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .contact-popup {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      z-index: 1600;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    .contact-popup textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 5px;
+      border-radius: 5px;
+      resize: none;
+    }
+    .contact-popup button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Banner Yazısı -->
+  <!-- Banner -->
   <div class="banner" id="banner"></div>
 
   <!-- Videolar -->
@@ -122,11 +159,23 @@
   <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
 
-  <!-- Arka Plan Müzikleri -->
+  <!-- Müzik -->
   <audio id="bg-music" autoplay loop></audio>
 
+  <!-- 📞 İletişim İkonu -->
+  <div class="contact-icon" id="contactIcon">📞</div>
+
+  <!-- 📨 İletişim Penceresi -->
+  <div class="contact-popup" id="contactPopup">
+    <h3>İletişim</h3>
+    <p>Mesajınızı bırakın:</p>
+    <textarea rows="4" cols="30" placeholder="Mesajınız..."></textarea>
+    <br>
+    <button onclick="closePopup()">Kapat</button>
+  </div>
+
+  <!-- Script -->
   <script>
-    // Müzik dosyaları
     const musicList = [
       "birds-in-forest-on-sunny-day-14444.mp3",
       "forest-birds-summer-sweden-18333.mp3",
@@ -174,9 +223,8 @@
         musicIndex = (musicIndex + 1) % musicList.length;
         music.src = musicList[musicIndex];
         music.play();
-      }, 120000); // 2 dakika sonra müzik değişir
+      }, 120000);
 
-      // Videoların değişmesi
       const videos = document.querySelectorAll('.video-slide');
       const durations = [8000, 3000, 9000];
       let currentIndex = 0;
@@ -193,7 +241,6 @@
       videos[0].style.opacity = 1;
       setTimeout(changeVideo, durations[currentIndex]);
 
-      // Resimlerin sıralı görünmesi
       const images = document.querySelectorAll('.nature-image');
       let imageIndex = 0;
 
@@ -212,16 +259,15 @@
           image.classList.remove(anim);
           image.style.opacity = 0;
           imageIndex = (imageIndex + 1) % images.length;
-          setTimeout(showNextImage, 1000); // Next image without delay
-        }, 2500); // Show each image for 2.5 seconds
+          setTimeout(showNextImage, 1000);
+        }, 2500);
       }
 
-      setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
+      setTimeout(showNextImage, 3000);
     });
 
-    // Rastgele konum ve animasyon
     function getRandomPosition() {
-      return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
+      return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 };
     }
 
     function getRandomAnimation() {
@@ -229,7 +275,6 @@
       return animations[Math.floor(Math.random() * animations.length)];
     }
 
-    // Banner Yazısı Efekti
     const banner = document.getElementById("banner");
     const parts = [
       { text: "DOĞAYI SEV,", duration: 7000 },
@@ -288,11 +333,22 @@
 
     showPart();
 
-    // Sayfayı tıklayınca mesaj kaybolur
     document.body.addEventListener("click", () => {
       const msg = document.getElementById("clickMessage");
       if (msg) msg.style.display = "none";
     });
+
+    // 📞 İletişim Popup
+    const contactIcon = document.getElementById("contactIcon");
+    const contactPopup = document.getElementById("contactPopup");
+
+    contactIcon.addEventListener("click", () => {
+      contactPopup.style.display = contactPopup.style.display === "block" ? "none" : "block";
+    });
+
+    function closePopup() {
+      contactPopup.style.display = "none";
+    }
   </script>
 </body>
 </html>
