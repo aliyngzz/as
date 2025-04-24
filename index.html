@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Animasyonlu Resimler ve Doğa Sesleri</title>
+  <title>Doğa ve Hayvan Sevgisi</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -23,7 +23,6 @@
     }
     .video-slide {
       position: absolute;
-      top: 0; left: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
@@ -49,11 +48,9 @@
       display: inline-block;
       opacity: 0;
     }
-
     .rotate-animate {
       animation: rotateIn 0.6s ease-out forwards;
     }
-
     @keyframes rotateIn {
       0% { transform: rotate(0deg); opacity: 0; }
       100% { transform: rotate(360deg); opacity: 1; }
@@ -89,139 +86,131 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
-    /* İletişim İkonu */
-    #contactIcon {
+    /* İletişim Paneli Stilleri */
+    .contact-button {
       position: fixed;
       bottom: 30px;
       right: 30px;
-      background-color: #ffffffaa;
-      color: black;
-      font-size: 2rem;
-      padding: 12px 16px;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 3000;
-      box-shadow: 0 0 10px rgba(255,255,255,0.6);
-      transition: transform 0.2s;
-    }
-    #contactIcon:hover {
-      transform: scale(1.1);
-    }
-
-    .contact-popup {
-      display: none;
-      position: fixed;
-      bottom: 100px;
-      right: 30px;
-      background-color: #fff;
-      color: #000;
-      padding: 20px;
-      width: 280px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      border-radius: 12px;
-      z-index: 3001;
-    }
-
-    .contact-popup textarea {
-      width: 100%;
-      padding: 10px;
-      resize: none;
-      margin-top: 8px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .contact-popup .btn-group {
-      margin-top: 10px;
-      text-align: right;
-    }
-
-    .contact-popup button {
-      padding: 6px 12px;
-      margin-left: 5px;
-      background-color: #007bff;
+      background-color: #28a745;
       color: white;
       border: none;
+      padding: 15px 20px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1001;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .contact-panel {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 30px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      width: 300px;
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .contact-panel h2 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .contact-panel label {
+      display: block;
+      margin-bottom: 10px;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .contact-panel input,
+    .contact-panel textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
       border-radius: 6px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+
+    .contact-panel button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
-    .contact-popup button:hover {
-      background-color: #0056b3;
+    .contact-panel button:hover {
+      background-color: #218838;
+    }
+
+    .close-panel {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #888;
     }
   </style>
 </head>
 <body>
 
-  <!-- Banner -->
+  <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 
   <!-- Videolar -->
   <div class="video-container">
-    <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
-    <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
-    <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="video1.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="video2.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="video3.mp4" autoplay muted loop></video>
   </div>
 
   <!-- Resimler -->
   <div class="image-container">
-    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
-    <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
+    <img src="resim1.png" class="nature-image" alt="Doğa resmi 1">
+    <img src="resim2.png" class="nature-image" alt="Doğa resmi 2">
   </div>
 
   <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
 
-  <!-- Arka Plan Müzikleri -->
+  <!-- Müzik -->
   <audio id="bg-music" autoplay loop></audio>
 
-  <!-- İletişim İkonu -->
-  <div id="contactIcon" title="İletişim">✉️</div>
+  <!-- İletişim Butonu -->
+  <button class="contact-button" onclick="toggleContactPanel()">✉</button>
 
   <!-- İletişim Paneli -->
-  <div class="contact-popup" id="contactPopup">
+  <div class="contact-panel" id="contactPanel">
+    <div class="close-panel" onclick="toggleContactPanel()">×</div>
     <h2>İletişim Paneli</h2>
-    <label for="message">Açıklama:</label><br>
-    <textarea id="message" rows="5" placeholder="Mesajınızı buraya yazınız..."></textarea><br>
-    <div class="btn-group">
-      <button onclick="sendMessage()">Gönder</button>
-      <button onclick="closePopup()">Kapat</button>
-    </div>
+    <form action="https://formspree.io/f/mjkwvqoy" method="POST">
+      <label>
+        Email Adresiniz:
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        Açıklama:
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+      <button type="submit">Gönder</button>
+    </form>
   </div>
 
-  <!-- Script -->
   <script>
-    const musicList = [
-      "birds-in-forest-on-sunny-day-14444.mp3",
-      "forest-birds-summer-sweden-18333.mp3",
-      "woodpecker-and-other-birds-23488.mp3",
-      "bees-29400.mp3",
-      "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
-      "fire-sound-310285.mp3",
-      "forest-atmosphere-002localization-poland-329733.mp3",
-      "forest-atmosphere-007localization-poland-330007.mp3",
-      "nature-sound-near-river-or-waterfall-247409.mp3",
-      "relaxing-rain-and-birds-6-minutes-52191.mp3",
-      "soft-wind-314945.mp3",
-      "soft-wind-318856.mp3",
-      "waterfall-176958 (1).mp3",
-      "waterfall-176958.mp3",
-      "water-splashing-108887.mp3",
-      "tui-birdsong-new-zealand-31660.mp3",
-      "smallwaterfall-218855.mp3",
-      "small-mountain-waterfall_nature-sound-203003.mp3",
-      "singing-barn-swallows-3-306979.mp3",
-      "mar-agitado-272999.mp3",
-      "french-coutryside-sunrise-17100.mp3",
-      "forest-woodpecker-322636.mp3",
-      "deep-drizzle-green-noise-mix-11-241597.mp3",
-      "croaking-sound-of-frogs-in-the-forest-water-309353.mp3",
-      "cooing-doves-73616.mp3",
-      "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
-      "bird-sounds-of-knysna-20130.mp3",
-      "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
-    ];
-
+    // Müzikler
+    const musicList = ["birds.mp3", "forest.mp3"];
     let musicIndex = 0;
     const music = document.getElementById("bg-music");
     music.src = musicList[musicIndex];
@@ -240,6 +229,7 @@
         music.play();
       }, 120000);
 
+      // Video Geçişleri
       const videos = document.querySelectorAll('.video-slide');
       const durations = [8000, 3000, 9000];
       let currentIndex = 0;
@@ -248,6 +238,7 @@
         videos.forEach((video, index) => {
           video.style.opacity = index === currentIndex ? 1 : 0;
         });
+
         currentIndex = (currentIndex + 1) % videos.length;
         setTimeout(changeVideo, durations[currentIndex]);
       }
@@ -255,6 +246,7 @@
       videos[0].style.opacity = 1;
       setTimeout(changeVideo, durations[currentIndex]);
 
+      // Resim Animasyonu
       const images = document.querySelectorAll('.nature-image');
       let imageIndex = 0;
 
@@ -265,6 +257,7 @@
 
         image.style.left = `${x}vw`;
         image.style.top = `${y}vh`;
+
         image.classList.add(anim);
         image.style.opacity = 1;
 
@@ -291,52 +284,44 @@
     const banner = document.getElementById("banner");
     const parts = [
       { text: "DOĞAYI SEV,", duration: 7000 },
-      { text: "HAYVANLARI  SEV,", duration: 7000 },
+      { text: "HAYVANLARI SEV,", duration: 7000 },
       { text: "MUTLU OL,", duration: 7000 },
       { text: "Doğa ve hayvan sevgisi, hayatın en temel", duration: 20000 },
-      { text: "ve değerli unsurlarından biridir", duration: 28000 },
-      { text: "Doğa, bizlere huzur, barış ve denge sunar", duration: 20000 },
-      { text: "Her ağaç, çiçek ve hayvan, ekosistemin", duration: 20000 },
-      { text: "önemli bir parçasıdır", duration: 20000 },
-      { text: "Hayvanlar, dünyamızın dengesini sağlayan", duration: 20000 },
-      { text: "bazen sessizce bazen de çığlıkla- doğanın", duration: 20000 },
-      { text: "sesini duyuran varlıklardır", duration: 20000 },
-      { text: "Onlara saygı göstermek, sadece onların", duration: 20000 },
-      { text: "yaşam hakkını savunmakla kalmaz", duration: 20000 },
-      { text: "aynı zamanda çevremizdeki tüm -canlılara", duration: 20000 },
-      { text: "değer verdiğimizi de gösterir", duration: 20000 },
-      { text: "Doğayı sevdiğimizde, bu dünyanın korunması", duration: 20000 },
-      { text: "için küçük adımlar atmış oluruz", duration: 20000 },
-      { text: "ve- hayvanları sevdiğimizde, onların yaşamlarını", duration: 20000 },
-      { text: "daha anlamlı kılmaya yardımcı oluruz", duration: 20000 },
+      { text: "ve değerli unsurlarından biridir", duration: 28000 }
     ];
-
     let partIndex = 0;
+
     function showPart() {
       banner.innerHTML = "";
       const current = parts[partIndex];
       let i = 0;
+
       function showLetters() {
         if (i < current.text.length) {
           const span = document.createElement("span");
           span.classList.add("letter", "rotate-animate");
           span.textContent = current.text[i];
           banner.appendChild(span);
+
           setTimeout(() => {
             span.classList.remove("rotate-animate");
             span.style.opacity = "1";
           }, 600);
+
           i++;
           setTimeout(showLetters, 300);
         }
       }
+
       showLetters();
+
       setTimeout(() => {
         banner.innerHTML = "";
         partIndex = (partIndex + 1) % parts.length;
         showPart();
       }, current.duration);
     }
+
     showPart();
 
     document.body.addEventListener("click", () => {
@@ -344,25 +329,9 @@
       if (msg) msg.style.display = "none";
     });
 
-    // İletişim paneli
-    document.getElementById("contactIcon").addEventListener("click", () => {
-      const popup = document.getElementById("contactPopup");
-      popup.style.display = popup.style.display === "block" ? "none" : "block";
-    });
-
-    function closePopup() {
-      document.getElementById("contactPopup").style.display = "none";
-    }
-
-    function sendMessage() {
-      const message = document.getElementById("message").value.trim();
-      if (message) {
-        alert("Mesajınız alındı! Teşekkür ederiz.");
-        document.getElementById("message").value = "";
-        closePopup();
-      } else {
-        alert("Lütfen bir açıklama giriniz.");
-      }
+    function toggleContactPanel() {
+      const panel = document.getElementById("contactPanel");
+      panel.style.display = panel.style.display === "block" ? "none" : "block";
     }
   </script>
 </body>
