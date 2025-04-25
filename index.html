@@ -314,5 +314,126 @@
       if (msg) msg.style.display = "none";
     });
   </script>
+<!-- İletişim İkonu -->
+<div id="contact-icon" title="İletişim">📧</div>
+
+<!-- İletişim Formu Penceresi -->
+<div id="contact-modal">
+  <form action="https://formspree.io/f/xvgaonbz" method="POST">
+    <label>
+    Adınız:
+    <input type="text" name="name" required>
+</label>
+</label>
+    
+
+   
+    <textarea name="message" id="message" rows="4" required></textarea>
+Mesaj
+    <div class="button-group">
+      <button type="submit">Gönder</button>
+      <button type="button" id="cancel-btn">İptal</button>
+    </div>
+  </form>
+</div>
+
+<style>
+  #contact-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 2rem;
+    background-color: #ffffff33;
+    color: white;
+    padding: 10px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1001;
+    transition: background 0.3s;
+  }
+
+  #contact-icon:hover {
+    background-color: #ffffff55;
+  }
+
+  #contact-modal {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #111;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    z-index: 1002;
+    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    max-width: 90vw;
+    width: 400px;
+  }
+
+  #contact-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #contact-form label {
+    margin: 10px 0 5px;
+  }
+
+  #contact-form input,
+  #contact-form textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .button-group button {
+    flex: 1;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .button-group button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .button-group button#cancel-btn {
+    background-color: #f44336;
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    #contact-modal {
+      width: 90%;
+      padding: 15px;
+    }
+  }
+</style>
+
+<script>
+  const icon = document.getElementById("contact-icon");
+  const modal = document.getElementById("contact-modal");
+  const cancelBtn = document.getElementById("cancel-btn");
+
+  icon.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+
+  cancelBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+</script>
 </body>
 </html>
