@@ -99,58 +99,6 @@
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
-
-    /* İletişim Butonu ve Popup Stilleri */
-    .contact-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 30px;
-      background-color: #28a745;
-      color: white;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 2000;
-    }
-
-    .contact-form-container {
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      display: none;
-      z-index: 2000;
-    }
-
-    .contact-form-container input,
-    .contact-form-container textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      background-color: #333;
-      border: 1px solid #555;
-      color: white;
-      border-radius: 5px;
-    }
-
-    .contact-form-container button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-
   </style>
 </head>
 <body>
@@ -163,30 +111,25 @@
     <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
     <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
+
+
+
+
   </div>
 
   <!-- Resimler -->
   <div class="image-container">
     <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
     <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
-    <img src="WhatsApp_Image_2025-04-23_at_23.06.54__1_-removebg-preview.png" class="nature-image" alt="Doğa resmi 3">
-    <img src="hummingbird-5111260_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="ai-generated-8620359_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 5">
+  <img src="WhatsApp_Image_2025-04-23_at_23.06.54__1_-removebg-preview.png" class="nature-image" alt="Doğa resmi 3">
+<img src="hummingbird-5111260_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+<img src="ai-generated-8620359_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 5">
+
+
   </div>
 
   <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
-
-  <!-- İletişim Butonu -->
-  <button class="contact-btn" id="contactBtn">İletişim</button>
-
-  <!-- İletişim Formu -->
-  <div class="contact-form-container" id="contactForm">
-    <h3>Mesaj Gönder</h3>
-    <input type="text" id="name" placeholder="Adınız" required>
-    <textarea id="message" rows="4" placeholder="Mesajınızı yazın" required></textarea>
-    <button id="sendMessage">Gönder</button>
-  </div>
 
   <!-- Arka Plan Müzikleri -->
   <audio id="bg-music" autoplay loop></audio>
@@ -268,8 +211,8 @@
         const { x, y } = getRandomPosition();
         const anim = getRandomAnimation();
 
-        image.style.left = ${x}vw;
-        image.style.top = ${y}vh;
+        image.style.left = `${x}vw`;
+         image.style.top = `${y}vh`;
 
         image.classList.add(anim);
         image.style.opacity = 1;
@@ -370,27 +313,6 @@
       const msg = document.getElementById("clickMessage");
       if (msg) msg.style.display = "none";
     });
-
-    // İletişim butonuna tıklama
-    const contactBtn = document.getElementById("contactBtn");
-    const contactForm = document.getElementById("contactForm");
-
-    contactBtn.addEventListener("click", () => {
-      contactForm.style.display = "block";
-    });
-
-    // Mesaj gönderildiğinde iletişim formunu kapatma
-    const sendMessageBtn = document.getElementById("sendMessage");
-
-    sendMessageBtn.addEventListener("click", () => {
-      const name = document.getElementById("name").value;
-      const message = document.getElementById("message").value;
-      alert(Mesajınız alındı!\nAd: ${name}\nMesaj: ${message});
-      contactForm.style.display = "none";
-      document.getElementById("name").value = "";
-      document.getElementById("message").value = "";
-    });
-
   </script>
 </body>
-</html>asasasas
+</html>
