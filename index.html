@@ -475,13 +475,14 @@ toggleIcon();  // Fonksiyonu başlat
   <p>Bu sayfa <span id="visitorCount">...</span> kez ziyaret edildi.</p>
 </div>
 
-<script>
-// Ziyaretçi sayısını çeken küçük kod
-fetch('https://api.countapi.xyz/hit/aliyngzz.github.io/as/visits')
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('visitorCount').textContent = data.value;
-  });
-</script>
+fetch('https://api.countapi.xyz/hit/yourwebsite.com/yournamespace')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('visitorCount').textContent = data.value;
+    })
+    .catch(error => {
+      console.error('API Error:', error);
+      document.getElementById('visitorCount').textContent = 'Veri alınamadı';
+    });
 </body>
 </html>
