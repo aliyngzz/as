@@ -474,7 +474,7 @@ toggleIcon();  // Fonksiyonu başlat
 
 <script>
 // Ziyaretçi sayısını çeken küçük kod
-fetch('https://api.countapi.xyz/hit/senin-site-adin.com/visits')
+fetch(''https://api.countapi.xyz/hit/senin-site-adin.com/visits')
   .then(response => response.json())
   .then(data => {
     document.getElementById('visitorCount').textContent = data.value;
