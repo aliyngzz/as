@@ -471,18 +471,7 @@ toggleIcon();  // Fonksiyonu başlat
     modal.style.display = "none";
   });
 </script>
-  <div id="counter" style="text-align:center; margin-top: 40px;">
-  <p>Bu sayfa <span id="visitorCount">...</span> kez ziyaret edildi.</p>
-</div>
-
-fetch('https://api.countapi.xyz/hit/yourwebsite.com/yournamespace')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('visitorCount').textContent = data.value;
-    })
-    .catch(error => {
-      console.error('API Error:', error);
-      document.getElementById('visitorCount').textContent = 'Veri alınamadı';
-    });
+ 
+  
 </body>
 </html>
