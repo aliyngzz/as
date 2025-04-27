@@ -193,8 +193,14 @@ p<!DOCTYPE html>
       let currentIndex = 0;
 
       function changeVideo() {
-        videos.forEach((video, index) => {
-          video.style.opacity = index === currentIndex ? 1 : 0;
+       videos.forEach((video, index) => {
+  if (index === currentIndex) {
+    video.style.opacity = 1;
+    video.play(); // sadece aktif videoyu çalıştır
+  } else {
+    video.style.opacity = 0;
+    video.pause(); // diğer videoları durdur
+  }
         });
 
         currentIndex = (currentIndex + 1) % videos.length;
