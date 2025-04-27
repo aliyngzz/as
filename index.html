@@ -189,7 +189,7 @@ p<!DOCTYPE html>
 
       // Videoların değişmesi
       const videos = document.querySelectorAll('.video-slide');
-      const durations = [9000,9000,9000,9000,9000,9000,3000,];
+      const durations = [9000,9000,9000,9000,9000,3000,9000,];
       let currentIndex = 0;
 
       function changeVideo() {
@@ -467,6 +467,18 @@ toggleIcon();  // Fonksiyonu başlat
 
   cancelBtn.addEventListener("click", () => {
     modal.style.display = "none";
+  });
+</script>
+  <div id="counter" style="text-align:center; margin-top: 20px;">
+  <p>Bu sayfa <span id="visitorCount">...</span> kez ziyaret edildi.</p>
+</div>
+
+<script>
+// Ziyaretçi sayısını çeken küçük kod
+fetch('https://api.countapi.xyz/hit/senin-site-adin.com/visits')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('visitorCount').textContent = data.value;
   });
 </script>
 </body>
