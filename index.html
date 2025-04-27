@@ -386,8 +386,8 @@ p<!DOCTYPE html>
   transition: background 0.3s;
   background-image: url('kus-ikon.png');  /* Kuş ikonu ekleniyor */
   background-size: cover;  /* Resmin boyutlandırılması */
-  width: 250px;  /* İkonun genişliği */
-  height: 250px; /* İkonun yüksekliği */
+  width:400px;  /* İkonun genişliği */
+  height:400px; /* İkonun yüksekliği */
 }
 
 #contact-icon:hover {
@@ -479,7 +479,7 @@ function toggleIcon() {
   icon.style.display = "block";  // İkonu görünür yap
   setTimeout(() => {
     icon.style.display = "none";  // 10 saniye sonra ikonu gizle
-    setTimeout(toggleIcon, 30000);  // 30 saniye sonra tekrar görünür yap
+    setTimeout(toggleIcon, 10000);  // 10 saniye sonra tekrar görünür yap
   }, 10000);  // 10 saniye sonra ikonu gizle
 }
 
