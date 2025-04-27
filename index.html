@@ -194,15 +194,16 @@ p<!DOCTYPE html>
         }, { once: true });
       });
 
-      setInterval(() => {
-        musicIndex = (musicIndex + 1) % musicList.length;
-        music.src = musicList[musicIndex];
-        music.play();
+     setInterval(function() {
+    videos[currentIndex].style.display = "none"; // Mevcut videoyu gizle
+    currentIndex = (currentIndex + 1) % videos.length;  // Bir sonraki videoya geç
+    videos[currentIndex].style.display = "block";  // Yeni videoyu göster
+}, videoDuration);
       }, 120000); // 2 dakika sonra müzik değişir
 
       // Videoların değişmesi
       const videos = document.querySelectorAll('.video-slide');
-      const durations = [3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,];
+     const videoDuration = 3000;  // 3 saniye (tüm videolar için aynı süre)
       let currentIndex = 0;
 
       function changeVideo() {
