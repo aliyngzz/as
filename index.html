@@ -474,7 +474,7 @@ toggleIcon();  // Fonksiyonu başlat
 
 <script>
 // Ziyaretçi sayısını çeken küçük kod
-fetch(''https://api.countapi.xyz/hit/aliyngzz.github.io/as/visits')
+fetch('https://api.countapi.xyz/hit/aliyngzz.github.io/as/visits')
   .then(response => response.json())
   .then(data => {
     document.getElementById('visitorCount').textContent = data.value;
