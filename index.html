@@ -106,6 +106,7 @@
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 
+
   <!-- Videolar -->
     <div class="video-container">
        <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
@@ -124,7 +125,7 @@
       <video class="video-slide" src="186405-877993676_tiny.mp4" autoplay muted loop></video>
       <video class="video-slide" src="57647-486227472_tiny.mp4" autoplay muted loop></video>
       <video class="video-slide" src="214732_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
       
      
     
@@ -200,7 +201,7 @@
 
       // Videoların değişmesi
       const videos = document.querySelectorAll('.video-slide');
-      const durations = [8000, 8000, 9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000,9000];
+      const durations = [8000, 8000, 9000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000,8000];
       let currentIndex = 0;
 
 
@@ -208,11 +209,11 @@
       function changeVideo() {
         videos.forEach((video, index) => {
           video.style.opacity = 0;  // Bütün videoları önce gizle
-          video.style.zIndex = 0;
         });
 
        videos[currentIndex].style.opacity = 1;
-videos[currentIndex].style.zIndex = 1;
+         currentIndex = (currentIndex + 1) % videos.length;
+ setTimeout(changeVideo, durations[currentIndex]);
       }
 
       videos[0].style.opacity = 1;
@@ -222,23 +223,23 @@ videos[currentIndex].style.zIndex = 1;
       const images = document.querySelectorAll('.nature-image');
       let imageIndex = 0;
 
-     function changeImage() {
-  images.forEach((image, index) => {
-    image.style.opacity = 0;  // Tüm resimleri gizle
-  });
+      function showNextImage() {
+        const image = images[imageIndex];
+        const { x, y } = getRandomPosition();
+        const anim = getRandomAnimation();
 
-  images[imageIndex].style.opacity = 1;  // Geçerli resmi görünür yap
-  imageIndex = (imageIndex + 1) % images.length;  // Bir sonraki resme geç
-  setTimeout(changeImage, 5000);  // Her 5 saniyede bir resim değişsin
-}
+        image.style.left = `${x}vw`;
+         image.style.top = `${y}vh`;
 
-images[0].style.opacity = 1;  // Başlangıçta ilk resmi görünür yap
-setTimeout(changeImage, 5000);  // Resim değiştirme işlevini başlat
-        
+        image.classList.add(anim);
+        image.style.opacity = 1;
+
+        setTimeout(() => {
+          image.classList.remove(anim);
           image.style.opacity = 0;
           imageIndex = (imageIndex + 1) % images.length;
-          
-        }, setTimeout(showNextImage, imageDuration); // 2.5 saniye sonra bir sonraki resmi göster
+          setTimeout(showNextImage, 1000); // Next image without delay
+        }, 2500); // Show each image for 2.5 seconds
       }
 
       setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
@@ -260,9 +261,9 @@ setTimeout(changeImage, 5000);  // Resim değiştirme işlevini başlat
       { text: "DOĞAYI SEV,", duration: 9000 },
       { text: "HAYVANLARI  SEV,", duration: 9000 },
       { text: "MUTLU OL,", duration: 9000 },
-      { text: "Doğa ve hayvan sevgisi", duration: 12000 },
+      { text: "Doğa ve hayvan sevgisi", duration: 10000 },
       { text: "hayatın en temel ve", duration: 10000 },
-      { text: "değerli unsurlarından biridir", duration: 16000 },
+      { text: "değerli unsurlarından biridir", duration: 12000 },
       { text: "Doğa, bizlere huzur", duration: 10000 },
       { text: "barış ve denge sunar", duration: 10000 },
       { text: "Her ağaç, çiçek ve", duration: 10000 },
@@ -271,21 +272,21 @@ setTimeout(changeImage, 5000);  // Resim değiştirme işlevini başlat
       { text: "Hayvanlar, dünyamızın", duration: 10000 }, 
       { text: "dengesini sağlayan", duration: 10000 },
       { text: "bazen sessizce", duration: 10000 }, 
-      { text: "bazen de çığlıkla- doğanın", duration: 15000 },
+      { text: "bazen de çığlıkla- doğanın", duration: 10000 },
       { text: "sesini duyuran varlıklardır", duration: 10000 },
       { text: "Onlara saygı göstermek", duration: 10000 },
       { text: "sadece onların", duration: 10000 },
       { text: "yaşam hakkını", duration: 10000 }, 
       { text: "savunmakla kalmaz", duration: 10000 },
-      { text: "aynı zamanda çevremizdeki", duration: 15000 }, 
+      { text: "aynı zamanda çevremizdeki", duration: 10000 }, 
       { text: "tüm -canlılara", duration: 10000 },
-      { text: "değer verdiğimizi de gösterir", duration: 16000 },
+      { text: "değer verdiğimizi de gösterir", duration: 10000 },
       { text: "Doğayı sevdiğimizde", duration: 10000 },
       { text: "bu dünyanın korunması", duration: 10000 },
-      { text: "için küçük adımlar atmış oluruz", duration: 16000 },
-      { text: "ve  hayvanları sevdiğimizde", duration: 16000 }, 
+      { text: "için küçük adımlar atmış oluruz", duration: 10000 },
+      { text: "ve  hayvanları sevdiğimizde", duration: 10000 }, 
       { text: "onların yaşamlarını", duration: 10000 },
-      { text: "daha anlamlı kılmaya", duration: 15000 }, 
+      { text: "daha anlamlı kılmaya", duration: 10000 }, 
       { text: "yardımcı oluruz", duration: 10000 },
     ];
 
