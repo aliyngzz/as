@@ -1,1 +1,466 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animasyonlu Resimler ve Doğa Sesleri</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #000;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
 
+    .video-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .video-slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .banner {
+      white-space: pre;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      z-index: 1000;
+      background: none;
+      color: white;
+    }
+
+    .letter {
+      display: inline-block;
+      opacity: 0;
+    }
+
+    .rotate-animate {
+      animation: rotateIn 0.6s ease-out forwards;
+    }
+
+    @keyframes rotateIn {
+      0% { transform: rotate(0deg); opacity: 0; }
+      100% { transform: rotate(360deg); opacity: 1; }
+    }
+
+    .nature-image {
+      position: absolute;
+      width: 10vw;
+      height: auto;
+      opacity: 0;
+      z-index: 1;
+      background: transparent;
+      transition: opacity 1s, transform 1s;
+    }
+
+    .fade-in {
+      opacity: 1 !important;
+      transform: scale(1);
+    }
+
+    .scale-up {
+      transform: scale(0.5);
+      opacity: 1;
+    }
+
+    .slide-in {
+      transform: translateX(-100vw);
+      opacity: 1;
+    }
+
+    .click-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      z-index: 2000;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Banner Yazısı -->
+  <div class="banner" id="banner"></div>
+
+  <!-- Videolar -->
+  <div class="video-container">
+<video class="video-slide" src="184972-874460313_medium.mp4" autoplay muted loop></video>
+     <video class="video-slide" src="120844-724673592_medium.mp4" autoplay muted loop></video>
+     <video class="video-slide" src="21723-320725678_medium.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
+     
+    
+  </div>
+
+  <!-- Resimler -->
+  <div class="image-container">
+    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
+    <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
+  <img src="WhatsApp_Image_2025-04-23_at_23.06.54__1_-removebg-preview.png" class="nature-image" alt="Doğa resmi 3">
+<img src="hummingbird-5111260_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+<img src="ai-generated-8620359_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 5">
+
+
+  </div>
+
+  <!-- Tıklama Mesajı -->
+  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE</div>
+
+  <!-- Arka Plan Müzikleri -->
+  <audio id="bg-music" autoplay loop></audio>
+
+  <script>
+    // Müzik dosyaları
+    const musicList = [
+      "birds-in-forest-on-sunny-day-14444.mp3",
+      "forest-birds-summer-sweden-18333.mp3",
+      "woodpecker-and-other-birds-23488.mp3",
+      "bees-29400.mp3",
+      "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+      "fire-sound-310285.mp3",
+      "forest-atmosphere-002localization-poland-329733.mp3",
+      "forest-atmosphere-007localization-poland-330007.mp3",
+      "nature-sound-near-river-or-waterfall-247409.mp3",
+      "relaxing-rain-and-birds-6-minutes-52191.mp3",
+      "soft-wind-314945.mp3",
+      "soft-wind-318856.mp3",
+      "waterfall-176958 (1).mp3",
+      "waterfall-176958.mp3",
+      "water-splashing-108887.mp3",
+      "tui-birdsong-new-zealand-31660.mp3",
+      "smallwaterfall-218855.mp3",
+      "small-mountain-waterfall_nature-sound-203003.mp3",
+      "singing-barn-swallows-3-306979.mp3",
+      "mar-agitado-272999.mp3",
+      "french-coutryside-sunrise-17100.mp3",
+      "forest-woodpecker-322636.mp3",
+      "deep-drizzle-green-noise-mix-11-241597.mp3",
+      "croaking-sound-of-frogs-in-the-forest-water-309353.mp3",
+      "cooing-doves-73616.mp3",
+      "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+      "bird-sounds-of-knysna-20130.mp3",
+      "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+    ];
+
+    let musicIndex = 0;
+    const music = document.getElementById("bg-music");
+    music.src = musicList[musicIndex];
+    music.volume = 0.5;
+
+    window.addEventListener("load", () => {
+      music.play().catch(() => {
+        document.addEventListener("click", () => {
+          music.play();
+        }, { once: true });
+      });
+
+      setInterval(() => {
+        musicIndex = (musicIndex + 1) % musicList.length;
+        music.src = musicList[musicIndex];
+        music.play();
+      }, 120000); // 2 dakika sonra müzik değişir
+
+      // Videoların değişmesi
+      const videos = document.querySelectorAll('.video-slide');
+      const durations = [8000, 3000, 9000];
+      let currentIndex = 0;
+
+
+
+      function changeVideo() {
+        videos.forEach((video, index) => {
+          video.style.opacity = 0;  // Bütün videoları önce gizle
+        });
+
+       videos[currentIndex].style.opacity = 1;
+         currentIndex = (currentIndex + 1) % videos.length;
+ setTimeout(changeVideo, durations[currentIndex]);
+      }
+
+      videos[0].style.opacity = 1;
+      setTimeout(changeVideo, durations[currentIndex]);
+
+      // Resimlerin sıralı görünmesi
+      const images = document.querySelectorAll('.nature-image');
+      let imageIndex = 0;
+
+      function showNextImage() {
+        const image = images[imageIndex];
+        const { x, y } = getRandomPosition();
+        const anim = getRandomAnimation();
+
+        image.style.left = `${x}vw`;
+         image.style.top = `${y}vh`;
+
+        image.classList.add(anim);
+        image.style.opacity = 1;
+
+        setTimeout(() => {
+          image.classList.remove(anim);
+          image.style.opacity = 0;
+          imageIndex = (imageIndex + 1) % images.length;
+          setTimeout(showNextImage, 1000); // Next image without delay
+        }, 2500); // Show each image for 2.5 seconds
+      }
+
+      setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
+    });
+
+    // Rastgele konum ve animasyon
+    function getRandomPosition() {
+      return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
+    }
+
+    function getRandomAnimation() {
+      const animations = ['fade-in', 'scale-up', 'slide-in'];
+      return animations[Math.floor(Math.random() * animations.length)];
+    }
+
+    // Banner Yazısı Efekti
+    const banner = document.getElementById("banner");
+    const parts = [
+      { text: "DOĞAYI SEV,", duration: 9000 },
+      { text: "HAYVANLARI  SEV,", duration: 9000 },
+      { text: "MUTLU OL,", duration: 9000 },
+      { text: "Doğa ve hayvan sevgisi", duration: 10000 },
+      { text: "hayatın en temel ve", duration: 10000 },
+      { text: "değerli unsurlarından biridir", duration: 12000 },
+      { text: "Doğa, bizlere huzur", duration: 10000 },
+      { text: "barış ve denge sunar", duration: 10000 },
+      { text: "Her ağaç, çiçek ve", duration: 10000 },
+      { text: "hayvan, ekosistemin", duration: 10000 },
+      { text: "önemli bir parçasıdır", duration: 10000 },
+      { text: "Hayvanlar, dünyamızın", duration: 10000 }, 
+      { text: "dengesini sağlayan", duration: 10000 },
+      { text: "bazen sessizce", duration: 10000 }, 
+      { text: "bazen de çığlıkla- doğanın", duration: 10000 },
+      { text: "sesini duyuran varlıklardır", duration: 10000 },
+      { text: "Onlara saygı göstermek", duration: 10000 },
+      { text: "sadece onların", duration: 10000 },
+      { text: "yaşam hakkını", duration: 10000 }, 
+      { text: "savunmakla kalmaz", duration: 10000 },
+      { text: "aynı zamanda çevremizdeki", duration: 10000 }, 
+      { text: "tüm -canlılara", duration: 10000 },
+      { text: "değer verdiğimizi de gösterir", duration: 10000 },
+      { text: "Doğayı sevdiğimizde", duration: 10000 },
+      { text: "bu dünyanın korunması", duration: 10000 },
+      { text: "için küçük adımlar atmış oluruz", duration: 10000 },
+      { text: "ve  hayvanları sevdiğimizde", duration: 10000 }, 
+      { text: "onların yaşamlarını", duration: 10000 },
+      { text: "daha anlamlı kılmaya", duration: 10000 }, 
+      { text: "yardımcı oluruz", duration: 10000 },
+    ];
+
+    let partIndex = 0;
+
+    function showPart() {
+      banner.innerHTML = "";
+      const current = parts[partIndex];
+      let i = 0;
+
+      function showLetters() {
+        if (i < current.text.length) {
+          const span = document.createElement("span");
+          span.classList.add("letter", "rotate-animate");
+          span.textContent = current.text[i];
+          banner.appendChild(span);
+
+          setTimeout(() => {
+            span.classList.remove("rotate-animate");
+            span.style.opacity = "1";
+          }, 600);
+
+          i++;
+          setTimeout(showLetters, 300);
+        }
+      }
+
+      showLetters();
+
+      setTimeout(() => {
+        banner.innerHTML = "";
+        partIndex = (partIndex + 1) % parts.length;
+        showPart();
+      }, current.duration);
+    }
+
+    showPart();
+
+    // Sayfayı tıklayınca mesaj kaybolur
+    document.body.addEventListener("click", () => {
+      const msg = document.getElementById("clickMessage");
+      if (msg) msg.style.display = "none";
+    });
+  </script>
+<!-- İletişim İkonu -->
+
+
+
+<div id="contact-icon" title="İletişim"></div>
+ 
+<!-- İletişim Formu Penceresi -->
+
+
+<div id="contact-modal">
+  <form action="https://formspree.io/f/xvgaonbz" method="POST">
+    <label>
+    Adınız:
+    <input type="text" name="name" required>
+</label>
+</label>
+    
+
+     
+    <textarea name="message" id="message" rows="4" required></textarea>
+      Mesaj Yaz Lütfen
+    <div class="button-group">
+      <button type="submit">Gönder</button>
+      <button type="button" id="cancel-btn">İptal</button>
+    </div>
+  </form>
+</div>
+
+<style>
+  #contact-icon {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  background-color: #ffffff33;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1001;
+  transition: background 0.3s;
+  background-image: url('kus-ikon.png');  /* Kuş ikonu ekleniyor */
+  background-size: cover;  /* Resmin boyutlandırılması */
+  width: 150px;  /* İkonun genişliği */
+  height: 150px; /* İkonun yüksekliği */
+}
+
+#contact-icon:hover {
+  background-color: #ffffff55;
+  }
+
+  #contact-modal {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #111;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    z-index: 1002;
+    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    max-width: 90vw;
+    width: 400px;
+  }
+
+  #contact-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #contact-form label {
+    margin: 10px 0 5px;
+  }
+
+  #contact-form input,
+  #contact-form textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .button-group button {
+    flex: 1;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .button-group button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .button-group button#cancel-btn {
+    background-color: #f44336;
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    #contact-modal {
+      width: 90%;
+      padding: 15px;
+    }
+  }
+</style>
+
+<script>
+
+
+
+  const icon = document.getElementById("contact-icon");
+  const modal = document.getElementById("contact-modal");
+  const cancelBtn = document.getElementById("cancel-btn");
+
+  icon.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+
+function toggleIcon() {
+  icon.style.display = "block";  // İkonu görünür yap
+  setTimeout(() => {
+    icon.style.display = "none";  // 10 saniye sonra ikonu gizle
+    setTimeout(toggleIcon, 10000);  // 30 saniye sonra tekrar görünür yap
+  }, 10000);  // 10 saniye sonra ikonu gizle
+}
+
+toggleIcon();  // Fonksiyonu başlat
+
+  cancelBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+</script>
+</body>
+</html>
