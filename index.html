@@ -232,10 +232,12 @@
       background-size: cover;
       width: 150px;
       height: 150px;
+      display: none;  /* Başlangıçta gizli *
     }
 
-    #contact-icon:hover {
-      background-color: #ffffff55;
+ #contact-icon.show {
+  display: block;  /* Buton görünür hale gelir */
+}
     }
 
     #contact-modal {
@@ -327,6 +329,27 @@
     document.getElementById("clickMessage").addEventListener("click", () => {
       document.getElementById("clickMessage").style.display = "none";
     });
+
+    
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const contactButton = document.getElementById("contact-icon");
+
+      // Butonun ekranda 4 saniye görünmesini sağla
+      function toggleButtonVisibility() {
+        contactButton.classList.add("show"); // Butonu göster
+        setTimeout(() => {
+          contactButton.classList.remove("show"); // 4 saniye sonra butonu gizle
+        }, 4000); // 4 saniye ekranda kalacak
+
+        // 10 saniye sonra butonu tekrar göster
+        setTimeout(toggleButtonVisibility, 14000); // 4 saniye görünme + 10 saniye gizlenme
+      }
+
+      toggleButtonVisibility(); // İlk gösterim
+    });
+  </script>
+
   </script>
 
 </body>
