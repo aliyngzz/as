@@ -100,6 +100,26 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
   </style>
+.video-container {
+    width: 80%;
+    margin: 50px auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #background-video {
+    width: 100%;
+    border-radius: 20px;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+  }
+
+  .slide-out {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+</style>
+
+  
 </head>
 <body>
 
@@ -109,23 +129,7 @@
 
   <!-- Videolar -->
     <div class="video-container">
-       <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="28746-371345147_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="186405-877993676_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="57647-486227472_tiny.mp4" autoplay muted loop></video>
-     <video class="video-slide" src="214732_tiny.mp4" autoplay muted loop></video>
-    <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="3904-175596530_medium.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="184972-874460313_medium.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="111179-689949805_tiny.mp4" autoplay muted loop></video>
-     <video class="video-slide" src="158349-816637197_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="246856_tiny.mp4" autoplay muted loop></video>
-     <video class="video-slide" src="120739-724673230_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="28746-371345147_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="186405-877993676_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="57647-486227472_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="214732_tiny.mp4" autoplay muted loop></video>
-    <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
+      
       
      
     
@@ -475,5 +479,27 @@ toggleIcon();  // Fonksiyonu başlat
     modal.style.display = "none";
   });
 </script>
+<div class="video-container">
+  <video id="background-video" autoplay muted loop></video>
+</div>
+<script>
+  const videoList = [
+   "44798-440001069_small.mp4" 
+      "28746-371345147_tiny.mp4" 
+      "186405-877993676_tiny.mp4" 
+      "57647-486227472_tiny.mp4"
+     "214732_tiny.mp4" 
+    "35427-407130886_small.mp4" 
+      "3904-175596530_medium.mp4" 
+     "184972-874460313_medium.mp4"
+      "111179-689949805_tiny.mp4"
+     "158349-816637197_tiny.mp4" 
+      "246856_tiny.mp4" autoplay 
+     "120739-724673230_tiny.mp4" 
+      "28746-371345147_tiny.mp4"
+     "186405-877993676_tiny.mp4" 
+      "57647-486227472_tiny.mp4" 
+      "214732_tiny.mp4" autoplay 
+     "35427-407130886_small.mp4" 
 </body>
 </html>
