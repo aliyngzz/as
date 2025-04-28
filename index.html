@@ -208,11 +208,11 @@
       function changeVideo() {
         videos.forEach((video, index) => {
           video.style.opacity = 0;  // Bütün videoları önce gizle
+          video.style.zIndex = 0;
         });
 
        videos[currentIndex].style.opacity = 1;
-         currentIndex = (currentIndex + 1) % videos.length;
- setTimeout(changeVideo, durations[currentIndex]);
+videos[currentIndex].style.zIndex = 1;
       }
 
       videos[0].style.opacity = 1;
@@ -222,23 +222,23 @@
       const images = document.querySelectorAll('.nature-image');
       let imageIndex = 0;
 
-      function showNextImage() {
-        const image = images[imageIndex];
-        const { x, y } = getRandomPosition();
-        const anim = getRandomAnimation();
+     function changeImage() {
+  images.forEach((image, index) => {
+    image.style.opacity = 0;  // Tüm resimleri gizle
+  });
 
-        image.style.left = `${x}vw`;
-         image.style.top = `${y}vh`;
+  images[imageIndex].style.opacity = 1;  // Geçerli resmi görünür yap
+  imageIndex = (imageIndex + 1) % images.length;  // Bir sonraki resme geç
+  setTimeout(changeImage, 5000);  // Her 5 saniyede bir resim değişsin
+}
 
-        image.classList.add(anim);
-        image.style.opacity = 1;
-
-        setTimeout(() => {
-          image.classList.remove(anim);
+images[0].style.opacity = 1;  // Başlangıçta ilk resmi görünür yap
+setTimeout(changeImage, 5000);  // Resim değiştirme işlevini başlat
+        
           image.style.opacity = 0;
           imageIndex = (imageIndex + 1) % images.length;
-          setTimeout(showNextImage, 1000); // Next image without delay
-        }, 2500); // Show each image for 2.5 seconds
+          
+        }, setTimeout(showNextImage, imageDuration); // 2.5 saniye sonra bir sonraki resmi göster
       }
 
       setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
