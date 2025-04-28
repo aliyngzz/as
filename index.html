@@ -140,25 +140,29 @@
       }, 120000); // 2 dakika sonra müzik değişir
 
       // Video değişimi (videoların sırayla oynatılması)
-      const video = document.getElementById("background-video");
-      const videoList = [
-        "44798-440001069_small.mp4",
-        "28746-371345147_tiny.mp4",
-        "186405-877993676_tiny.mp4",
-        "57647-486227472_tiny.mp4"
-      ];
-      let videoIndex = 0;
+      // Video değişimi (videoların sırayla oynatılması)
+  const video = document.getElementById("background-video");
+  const videoList = [
+    "44798-440001069_small.mp4",
+    "28746-371345147_tiny.mp4",
+    "186405-877993676_tiny.mp4",
+    "57647-486227472_tiny.mp4"
+  ];
+  let videoIndex = 0;
 
-      function changeVideo() {
-        video.src = videoList[videoIndex];
-        video.play();
-        videoIndex = (videoIndex + 1) % videoList.length;
-      }
-
-      setInterval(changeVideo, 8000); // Videolar 8 saniyede bir değişir
-      changeVideo(); // İlk videoyu başlat
+  function changeVideo() {
+    video.src = videoList[videoIndex];
+    video.play().catch(() => {
+      console.error("Video yüklenemedi veya oynatılmadı.");
     });
+    videoIndex = (videoIndex + 1) % videoList.length;
+  }
 
+  video.addEventListener('ended', changeVideo); // Video bittiğinde bir sonraki videoyu başlat
+
+  setInterval(changeVideo, 8000); // Videolar 8 saniyede bir değişir
+  changeVideo(); // İlk videoyu başlat
+</script>
     // Rastgele konum ve animasyon
     function getRandomPosition() {
       return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
