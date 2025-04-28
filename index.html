@@ -466,29 +466,33 @@ p<!DOCTYPE html>
 <script>
 
 
+  
 
   const icon = document.getElementById("contact-icon");
-const modal = document.getElementById("contact-modal");
-const cancelBtn = document.getElementById("cancel-btn");
+  const modal = document.getElementById("contact-modal");
+  const cancelBtn = document.getElementById("cancel-btn");
 
-icon.addEventListener("click", () => {
-  modal.style.display = "block"; // Formu açmak için
-});
-
-cancelBtn.addEventListener("click", () => {
-  modal.style.display = "none"; // Formu kapatmak için
-});
+  // İkon tıklama olayını dinleyin, modali gösterin
+  icon.addEventListener("click", () => {
+    modal.style.display = "block"; // Modal'ı açmak için
   });
 
-function toggleIcon() {
-  icon.style.display = "block";  // İkonu görünür yap
-  setTimeout(() => {
-    icon.style.display = "none";  // 10 saniye sonra ikonu gizle
-    setTimeout(toggleIcon, 12000);  // 4 saniye sonra tekrar görünür yap
-  }, 3000);  // 12 saniye sonra ikonu gizle
-}
+  // İptal butonuna tıklanırsa modalı kapatın
+  cancelBtn.addEventListener("click", () => {
+    modal.style.display = "none"; // Modal'ı kapatmak için
+  });
 
-toggleIcon();  // Fonksiyonu başlat
+  // Toggle icon görünür yapma işlemi
+  function toggleIcon() {
+    icon.style.display = "block";  // İkonu görünür yap
+    setTimeout(() => {
+      icon.style.display = "none";  // 12 saniye sonra ikonu gizle
+      setTimeout(toggleIcon, 12000);  // 12 saniye sonra tekrar görünür yap
+    }, 3000);  // 3 saniye sonra ikonu gizle
+  }
+
+  // İlk toggle işlemini başlat
+  toggleIcon();
 
   cancelBtn.addEventListener("click", () => {
     modal.style.display = "none";
