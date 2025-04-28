@@ -1,15 +1,13 @@
-p<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="color-scheme" content="light only">
   <title>Animasyonlu Resimler ve Doğa Sesleri</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-     background: none;
-      color: white;
+      background-color: #000;
       height: 100vh;
       width: 100vw;
       overflow: hidden;
@@ -28,7 +26,7 @@ p<!DOCTYPE html>
       top: 0; left: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      opacity: 1;
+      opacity: 0;
       transition: opacity 1s ease-in-out;
     }
 
@@ -88,15 +86,15 @@ p<!DOCTYPE html>
 
     .click-message {
       position: fixed;
-      top: 25%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: white !important;
+      color: white;
       font-size: 2rem;
       font-weight: bold;
       text-align: center;
       z-index: 2000;
-      background-color: rgba(255, 255, 255, 0.2); /* yarı saydam beyaz zemin */
+      background-color: rgba(0, 0, 0, 0.7);
       padding: 20px 30px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
@@ -109,29 +107,14 @@ p<!DOCTYPE html>
   <div class="banner" id="banner"></div>
 
   <!-- Videolar -->
-    <div class="video-container">
-       <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="28746-371345147_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="186405-877993676_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="57647-486227472_tiny.mp4" autoplay muted loop></video>
-     <video class="video-slide" src="214732_tiny.mp4" autoplay muted loop></video>
+  <div class="video-container">
+<video class="video-slide" src="184972-874460313_medium.mp4" autoplay muted loop></video>
+     <video class="video-slide" src="120844-724673592_medium.mp4" autoplay muted loop></video>
+     <video class="video-slide" src="21723-320725678_medium.mp4" autoplay muted loop></video>
     <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="3904-175596530_medium.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="184972-874460313_medium.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="111179-689949805_tiny.mp4" autoplay muted loop></video>
-     <video class="video-slide" src="158349-816637197_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="246856_tiny.mp4" autoplay muted loop></video>
-     <video class="video-slide" src="120739-724673230_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="28746-371345147_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="186405-877993676_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="57647-486227472_tiny.mp4" autoplay muted loop></video>
-      <video class="video-slide" src="214732_tiny.mp4" autoplay muted loop></video>
-    <video class="video-slide" src="35427-407130886_small.mp4" autoplay muted loop></video>
-      
-
-
-
-    
+    <video class="video-slide" src="44798-440001069_small.mp4" autoplay muted loop></video>
+    <video class="video-slide" src="159627-819346937_small.mp4" autoplay muted loop></video>
+     
     
   </div>
 
@@ -139,14 +122,11 @@ p<!DOCTYPE html>
   <div class="image-container">
     <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
     <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
+  <img src="WhatsApp_Image_2025-04-23_at_23.06.54__1_-removebg-preview.png" class="nature-image" alt="Doğa resmi 3">
+<img src="hummingbird-5111260_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+<img src="ai-generated-8620359_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 5">
 
-<img src="hummingbird-5111260_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 3">
 
-<img src="ChatGPT Image 22 Nis 2025 23_48_17.png" class="nature-image" alt="Doğa resmi 4">
-<img src="ChatGPT Image 23 Nis 2025 21_33_36.png" class="nature-image" alt="Doğa resmi 5">
-    <img src="dog-8198719_1280.jpg" class="nature-image" alt="Doğa resmi 6">
-<img src="fox-1883658_1280.jpg" class="nature-image" alt="Doğa resmi 7">
-    
   </div>
 
   <!-- Tıklama Mesajı -->
@@ -199,31 +179,28 @@ p<!DOCTYPE html>
           music.play();
         }, { once: true });
       });
-  setInterval(() => {
+
+      setInterval(() => {
         musicIndex = (musicIndex + 1) % musicList.length;
         music.src = musicList[musicIndex];
         music.play();
-    
       }, 120000); // 2 dakika sonra müzik değişir
 
       // Videoların değişmesi
       const videos = document.querySelectorAll('.video-slide');
-       const durations = [3000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,];
+      const durations = [8000, 3000, 9000];
       let currentIndex = 0;
 
+
+
       function changeVideo() {
-       videos.forEach((video, index) => {
-  if (index === currentIndex) {
-    video.style.opacity = 1;
-    video.play(); // sadece aktif videoyu çalıştır
-  } else {
-    video.style.opacity = 0;
-    video.pause(); // diğer videoları durdur
-  }
+        videos.forEach((video, index) => {
+          video.style.opacity = 0;  // Bütün videoları önce gizle
         });
 
-        currentIndex = (currentIndex + 1) % videos.length;
-        setTimeout(changeVideo, durations[currentIndex]);
+       videos[currentIndex].style.opacity = 1;
+         currentIndex = (currentIndex + 1) % videos.length;
+ setTimeout(changeVideo, durations[currentIndex]);
       }
 
       videos[0].style.opacity = 1;
@@ -272,32 +249,32 @@ p<!DOCTYPE html>
       { text: "HAYVANLARI  SEV,", duration: 9000 },
       { text: "MUTLU OL,", duration: 9000 },
       { text: "Doğa ve hayvan sevgisi", duration: 10000 },
-      { text: "hayatın en temel ve", duration: 14000 },
+      { text: "hayatın en temel ve", duration: 10000 },
       { text: "değerli unsurlarından biridir", duration: 12000 },
-      { text: "Doğa, bizlere huzur", duration: 15000 },
-      { text: "barış ve denge sunar", duration: 14000 },
-      { text: "Her ağaç, çiçek ve", duration: 15000 },
-      { text: "hayvan, ekosistemin", duration: 15000 },
-      { text: "önemli bir parçasıdır", duration: 14000 },
-      { text: "Hayvanlar, dünyamızın", duration: 15000 }, 
-      { text: "dengesini sağlayan", duration: 15000 },
-      { text: "bazen sessizce", duration: 14000 }, 
+      { text: "Doğa, bizlere huzur", duration: 10000 },
+      { text: "barış ve denge sunar", duration: 10000 },
+      { text: "Her ağaç, çiçek ve", duration: 10000 },
+      { text: "hayvan, ekosistemin", duration: 10000 },
+      { text: "önemli bir parçasıdır", duration: 10000 },
+      { text: "Hayvanlar, dünyamızın", duration: 10000 }, 
+      { text: "dengesini sağlayan", duration: 10000 },
+      { text: "bazen sessizce", duration: 10000 }, 
       { text: "bazen de çığlıkla- doğanın", duration: 10000 },
       { text: "sesini duyuran varlıklardır", duration: 10000 },
       { text: "Onlara saygı göstermek", duration: 10000 },
-      { text: "sadece onların", duration: 14000 },
-      { text: "yaşam hakkını", duration: 12000 }, 
-      { text: "savunmakla kalmaz", duration: 14000 },
-      { text: "aynı zamanda çevremizdeki", duration: 14000 }, 
-      { text: "tüm -canlılara", duration: 14000 },
+      { text: "sadece onların", duration: 10000 },
+      { text: "yaşam hakkını", duration: 10000 }, 
+      { text: "savunmakla kalmaz", duration: 10000 },
+      { text: "aynı zamanda çevremizdeki", duration: 10000 }, 
+      { text: "tüm -canlılara", duration: 10000 },
       { text: "değer verdiğimizi de gösterir", duration: 10000 },
-      { text: "Doğayı sevdiğimizde", duration: 14000 },
-      { text: "bu dünyanın korunması", duration: 14000 },
-      { text: "için küçük adımlar atmış oluruz", duration: 18000 },
-      { text: "ve  hayvanları sevdiğimizde", duration: 14000 }, 
-      { text: "onların yaşamlarını", duration: 14000 },
-      { text: "daha anlamlı kılmaya", duration: 14000 }, 
-      { text: "yardımcı oluruz", duration: 14000 },
+      { text: "Doğayı sevdiğimizde", duration: 10000 },
+      { text: "bu dünyanın korunması", duration: 10000 },
+      { text: "için küçük adımlar atmış oluruz", duration: 10000 },
+      { text: "ve  hayvanları sevdiğimizde", duration: 10000 }, 
+      { text: "onların yaşamlarını", duration: 10000 },
+      { text: "daha anlamlı kılmaya", duration: 10000 }, 
+      { text: "yardımcı oluruz", duration: 10000 },
     ];
 
     let partIndex = 0;
@@ -357,12 +334,11 @@ p<!DOCTYPE html>
     <input type="text" name="name" required>
 </label>
 </label>
-
     
 
      
     <textarea name="message" id="message" rows="4" required></textarea>
-      Mesaj Yaz
+      Mesaj Yaz Lütfen
     <div class="button-group">
       <button type="submit">Gönder</button>
       <button type="button" id="cancel-btn">İptal</button>
@@ -386,8 +362,8 @@ p<!DOCTYPE html>
   transition: background 0.3s;
   background-image: url('kus-ikon.png');  /* Kuş ikonu ekleniyor */
   background-size: cover;  /* Resmin boyutlandırılması */
-  width:400px;  /* İkonun genişliği */
-  height:400px; /* İkonun yüksekliği */
+  width: 150px;  /* İkonun genişliği */
+  height: 150px; /* İkonun yüksekliği */
 }
 
 #contact-icon:hover {
@@ -399,7 +375,7 @@ p<!DOCTYPE html>
     position: fixed;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: #111;
     color: white;
     padding: 20px 30px;
     border-radius: 15px;
@@ -416,18 +392,15 @@ p<!DOCTYPE html>
 
   #contact-form label {
     margin: 10px 0 5px;
- color: black; /* Etiketlerin rengini siyah yap */  ekle 
   }
 
-  #contact-form input[type="text"],
+  #contact-form input,
   #contact-form textarea {
     padding: 10px;
     border-radius: 8px;
     border: none;
     font-size: 1rem;
     margin-bottom: 10px;
-     background-color: white;   /* ← Arka planı beyaz yap */
-  color: black !important; /* Zorla siyah yap */
   }
 
   .button-group {
@@ -466,43 +439,28 @@ p<!DOCTYPE html>
 <script>
 
 
-  
 
   const icon = document.getElementById("contact-icon");
   const modal = document.getElementById("contact-modal");
   const cancelBtn = document.getElementById("cancel-btn");
 
-  // İkon tıklama olayını dinleyin, modali gösterin
   icon.addEventListener("click", () => {
-    modal.style.display = "block"; // Modal'ı açmak için
+    modal.style.display = "block";
   });
 
-  // İptal butonuna tıklanırsa modalı kapatın
-  cancelBtn.addEventListener("click", () => {
-    modal.style.display = "none"; // Modal'ı kapatmak için
-  });
+function toggleIcon() {
+  icon.style.display = "block";  // İkonu görünür yap
+  setTimeout(() => {
+    icon.style.display = "none";  // 10 saniye sonra ikonu gizle
+    setTimeout(toggleIcon, 10000);  // 30 saniye sonra tekrar görünür yap
+  }, 10000);  // 10 saniye sonra ikonu gizle
+}
 
-  // Toggle icon görünür yapma işlemi
-  function toggleIcon() {
-    icon.style.display = "block";  // İkonu görünür yap
-    setTimeout(() => {
-      icon.style.display = "none";  // 12 saniye sonra ikonu gizle
-      setTimeout(toggleIcon, 12000);  // 12 saniye sonra tekrar görünür yap
-    }, 3000);  // 3 saniye sonra ikonu gizle
-  }
-
-  // İlk toggle işlemini başlat
-  toggleIcon();
+toggleIcon();  // Fonksiyonu başlat
 
   cancelBtn.addEventListener("click", () => {
     modal.style.display = "none";
   });
-torAll('#contact-form input[type="text"], #contact-form textarea').forEach(element => {
-      element.style.color = "black";  // Metin rengini siyah yap
-   
-  
 </script>
- 
- 
 </body>
 </html>
