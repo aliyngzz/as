@@ -140,29 +140,29 @@
       }, 120000); // 2 dakika sonra müzik değişir
 
       // Video değişimi (videoların sırayla oynatılması)
-      // Video değişimi (videoların sırayla oynatılması)
-  const video = document.getElementById("background-video");
-  const videoList = [
-    "44798-440001069_small.mp4",
-    "28746-371345147_tiny.mp4",
-    "186405-877993676_tiny.mp4",
-    "57647-486227472_tiny.mp4"
-  ];
-  let videoIndex = 0;
+      const video = document.getElementById("background-video");
+      const videoList = [
+        "44798-440001069_small.mp4",
+        "28746-371345147_tiny.mp4",
+        "186405-877993676_tiny.mp4",
+        "57647-486227472_tiny.mp4"
+      ];
+      let videoIndex = 0;
 
-  function changeVideo() {
-    video.src = videoList[videoIndex];
-    video.play().catch(() => {
-      console.error("Video yüklenemedi veya oynatılmadı.");
+      function changeVideo() {
+        video.src = videoList[videoIndex];
+        video.play().catch(() => {
+          console.error("Video yüklenemedi veya oynatılmadı.");
+        });
+        videoIndex = (videoIndex + 1) % videoList.length;
+      }
+
+      video.addEventListener('ended', changeVideo); // Video bittiğinde bir sonraki videoyu başlat
+
+      setInterval(changeVideo, 8000); // Videolar 8 saniyede bir değişir
+      changeVideo(); // İlk videoyu başlat
     });
-    videoIndex = (videoIndex + 1) % videoList.length;
-  }
 
-  video.addEventListener('ended', changeVideo); // Video bittiğinde bir sonraki videoyu başlat
-
-  setInterval(changeVideo, 8000); // Videolar 8 saniyede bir değişir
-  changeVideo(); // İlk videoyu başlat
-</script>
     // Rastgele konum ve animasyon
     function getRandomPosition() {
       return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
@@ -232,25 +232,13 @@
       background-size: cover;
       width: 150px;
       height: 150px;
-      display: none;  /* Başlangıçta gizli *
-    }
-
- #contact-icon.show {
-  display: block;  /* Buton görünür hale gelir */
-}
-    }
-
-    #contact-modal {
       display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #111;
-      color: white;
-      padding: 20px 30px;
-      border-radius: 15px;
-      z-index: 1002;
-      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+
+    #contact-icon.show {
+      display: block;
+    }
+
     #contact-modal {
       display: none;
       position: fixed;
@@ -330,27 +318,21 @@
       document.getElementById("clickMessage").style.display = "none";
     });
 
-    
-  <script>
+    // Butonun ekranda 4 saniye görünmesini sağla
     document.addEventListener("DOMContentLoaded", () => {
       const contactButton = document.getElementById("contact-icon");
 
-      // Butonun ekranda 4 saniye görünmesini sağla
       function toggleButtonVisibility() {
-        contactButton.classList.add("show"); // Butonu göster
+        contactButton.classList.add("show");
         setTimeout(() => {
-          contactButton.classList.remove("show"); // 4 saniye sonra butonu gizle
-        }, 4000); // 4 saniye ekranda kalacak
+          contactButton.classList.remove("show");
+        }, 4000);
 
-        // 10 saniye sonra butonu tekrar göster
         setTimeout(toggleButtonVisibility, 14000); // 4 saniye görünme + 10 saniye gizlenme
       }
 
       toggleButtonVisibility(); // İlk gösterim
     });
   </script>
-
-  </script>
-
 </body>
 </html>
