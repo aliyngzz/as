@@ -93,7 +93,7 @@
 
   <!-- Videolar -->
   <div class="video-container">
-    <video id="background-video" autoplay muted loop></video>
+   <video id="background-video" autoplay muted loop preload="auto" src="44798-440001069_small.mp4"></video>
   </div>
 
   <!-- Resimler -->
@@ -166,7 +166,7 @@
       
       
       ];
-      let videoIndex = 0;
+     let videoIndex = 1;
 
       function changeVideo() {
         video.src = videoList[videoIndex];
@@ -178,8 +178,9 @@
 
       video.addEventListener('ended', changeVideo); // Video bittiğinde bir sonraki videoyu başlat
 
-      setInterval(changeVideo, 8000); // Videolar 8 saniyede bir değişir
-      changeVideo(); // İlk videoyu başlat
+      setTimeout(() => {
+  setInterval(changeVideo, 8000);
+}, 8000); // 8 s
     });
 
     // Rastgele konum ve animasyon
