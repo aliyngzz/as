@@ -33,7 +33,7 @@
   position: fixed;
   top: 10px; 
   left: 50%; 
-  transform: translateX(-50%); 
+transform: translateX(-50%) scale(1); /* Başlangıçta normal boyut */
   width: 50px; 
   height: 50px; 
   z-index: 1000; 
@@ -458,7 +458,7 @@ function animateImage() {
     animateImage(); // Animasyonu yeniden başlat
   }, 15000); // 15 saniye sonra tekrar başla (10 saniye küçük, 5 saniye büyük)
 }
-
+animateImage(); // Animasyonu başlat
   </script>
 </body>
 </html>
