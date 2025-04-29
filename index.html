@@ -84,7 +84,21 @@
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
-  </style>
+ <style>
+  #top-center-image {
+    width: 100px;
+    transition: transform 1s ease;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+  }
+
+  .enlarge {
+    transform: translateX(-50%) scale(1.5);
+  }
+</style>
 </head>
 <body>
 
@@ -428,5 +442,22 @@
       toggleButtonVisibility(); // İlk gösterim
     });
   </script>
+  <script>
+  function toggleImageSize() {
+    const image = document.getElementById("top-center-image");
+    image.classList.add("enlarge");
+
+    // 5 saniye sonra eski boyuta döndür
+    setTimeout(() => {
+      image.classList.remove("enlarge");
+    }, 5000);
+  }
+
+  // İlk açılışta çalıştır
+  toggleImageSize();
+
+  // Her 40 saniyede bir tekrar et
+  setInterval(toggleImageSize, 40000);
+</script>
 </body>
 </html>
