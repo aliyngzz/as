@@ -87,7 +87,7 @@
   </style>
 </head>
 <body>
-
+<img id="myImage" src="resim.jpg" alt="Görsel" style="width: 100px; opacity: 0; transition: all 1s ease;">
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 
@@ -427,6 +427,22 @@
 
       toggleButtonVisibility(); // İlk gösterim
     });
-  </script>
+ 
+  <script>
+  const image = document.getElementById("myImage");
+
+  function toggleImage() {
+    image.style.transform = "scale(1.5)";
+    image.style.opacity = "1";
+
+    setTimeout(() => {
+      image.style.transform = "scale(1)";
+      image.style.opacity = "0";
+    }, 5000);
+  }
+
+  setInterval(toggleImage, 15000);
+  setTimeout(toggleImage, 10000);
+    </script>
 </body>
 </html>
