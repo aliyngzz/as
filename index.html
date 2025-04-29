@@ -192,7 +192,7 @@
       ];
      let videoIndex = 1;
 
-     function changeVideo() {
+  function changeVideo() {
   const nextVideo = document.createElement('video');
   nextVideo.src = videoList[videoIndex];
   nextVideo.autoplay = true;
@@ -207,15 +207,14 @@
   nextVideo.style.objectFit = 'cover';
   nextVideo.style.zIndex = '-1';
   nextVideo.style.opacity = 0;
-  nextVideo.id = 'background-video';
 
   const container = document.querySelector('.video-container');
   container.appendChild(nextVideo);
 
   nextVideo.addEventListener('canplay', () => {
-    const oldVideo = document.getElementById('background-video');
-    if (oldVideo && oldVideo !== nextVideo) {
-      oldVideo.remove();
+    const oldVideo = container.querySelector('video'); // sadece eski video seç
+    if (oldVideo !== nextVideo && oldVideo) {
+      oldVideo.remove(); // doğru şekilde kaldır
     }
     nextVideo.style.opacity = 1;
   });
