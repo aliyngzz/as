@@ -168,12 +168,40 @@
       ];
      let videoIndex = 1;
 
-      function changeVideo() {
-        video.src = videoList[videoIndex];
-        video.play().catch(() => {
-          console.error("Video yüklenemedi veya oynatılmadı.");
-        });
-        videoIndex = (videoIndex + 1) % videoList.length;
+     function changeVideo() {
+  const nextVideo = document.createElement('video');
+  nextVideo.src = videoList[videoIndex];
+  nextVideo.autoplay = true;
+  nextVideo.muted = true;
+  nextVideo.loop = false;
+  nextVideo.playsInline = true;
+  nextVideo.style.position = 'absolute';
+  nextVideo.style.top = 0;
+  nextVideo.style.left = 0;
+  nextVideo.style.width = '100%';
+  nextVideo.style.height = '100%';
+  nextVideo.style.objectFit = 'cover';
+  nextVideo.style.zIndex = '-1';
+  nextVideo.style.opacity = 0;
+  nextVideo.id = 'background-video';
+
+  const container = document.querySelector('.video-container');
+  container.appendChild(nextVideo);
+
+  nextVideo.addEventListener('canplay', () => {
+    const oldVideo = document.getElementById('background-video');
+    if (oldVideo && oldVideo !== nextVideo) {
+      oldVideo.remove();
+    }
+    nextVideo.style.opacity = 1;
+  });
+
+  videoIndex = (videoIndex + 1) % videoList.length;
+}
+
+
+
+        
       }
 
       video.addEventListener('ended', changeVideo); // Video bittiğinde bir sonraki videoyu başlat
