@@ -459,5 +459,27 @@
   // Her 40 saniyede bir tekrar et
   setInterval(toggleImageSize, 40000);
 </script>
+  script>
+  const contactIcon = document.getElementById("contact-icon");
+  const contactModal = document.getElementById("contact-modal");
+  const cancelBtn = document.getElementById("cancel-btn");
+
+  // Sayfa tıklandığında mesaj kaybolsun ve kuş simgesi görünsün
+  document.addEventListener("click", () => {
+    const msg = document.getElementById("clickMessage");
+    if (msg) msg.style.display = "none";
+    contactIcon.classList.add("show");
+  }, { once: true });
+
+  // Kuş simgesine tıklanınca iletişim kutusu açılsın
+  contactIcon.addEventListener("click", () => {
+    contactModal.style.display = "block";
+  });
+
+  // "İptal" butonuna tıklanınca kutu kapansın
+  cancelBtn.addEventListener("click", () => {
+    contactModal.style.display = "none";
+  });
+</script>
 </body>
 </html>
