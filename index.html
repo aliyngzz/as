@@ -28,7 +28,39 @@
       width: 100%; height: 100%;
       object-fit: cover;
     }
+.moving-image {
+  position: absolute;
+  width: 200px;
+  height: auto;
+  animation: moveImage 60s infinite linear;
+}
 
+@keyframes moveImage {
+  0% {
+    top: 0;
+    left: 0;
+  }
+  25% {
+    top: 0;
+    left: calc(100vw - 200px);
+  }
+  50% {
+    top: calc(100vh - 200px);
+    left: calc(100vw - 200px);
+  }
+  75% {
+    top: calc(100vh - 200px);
+    left: 0;
+  }
+  100% {
+    top: 0;
+    left: 0;
+  }
+}
+
+
+
+    
     .banner {
       white-space: pre;
       position: fixed;
@@ -111,7 +143,7 @@
     <img src="cat-323262_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
     <img src="cat-111793_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
     <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
+    <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" class="moving-image" alt="Dolaşan Resim">
   </div>
 
   <!-- Tıklama Mesajı -->
