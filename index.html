@@ -88,21 +88,21 @@
 <style>
   /* Ana animasyon: sağa ve sola salınma */
   @keyframes swing {
-    0% { transform: translateX(-50%) translateX(-10px); }
-    50% { transform: translateX(-50%) translateX(10px); }
-    100% { transform: translateX(-50%) translateX(-10px); }
+    0% { transform: translateX(-50%) translateX(-20px); }
+    50% { transform: translateX(-50%) translateX(20px); }
+    100% { transform: translateX(-50%) translateX(-20px); }
   }
 
   /* Resmin konumu ve animasyonu */
   #top-center-image {
     position: fixed;           /* Sayfada sabit kalsın */
-    top: 10px;                 /* Sayfanın üstünden 10px aşağıda */
+    top: 20px;                 /* Sayfanın üstünden 10px aşağıda */
     left: 50%;                /* Ortalanmış gibi yapar */
    transform: translateX(-50%); /* Resmi tam ortada tut */
     width: 100px;              /* Genişliği 100px */
     height: 100px;             /* Yüksekliği 100px */
     z-index: 1000;             /* En üstte dursun */
-    animation: swing 6s infinite ease-in-out; /* Animasyon çalışsın */
+    animation: swing 12s infinite ease-in-out; /* Animasyon çalışsın */
   }
 </style>
 
