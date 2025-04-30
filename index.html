@@ -372,32 +372,22 @@
     }
 #top-center-image {
   position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 100px;
-  z-index: 1000;
-  animation: rotateAndPause 33s linear infinite;
+  top: 10px; /* Sayfanın üst kısmına 10px mesafe bırakır */
+  left: 50%; /* Sayfada ortalar */
+  transform: translateX(-50%); /* Yatayda tam ortalanması */
+  width: 100px; /* Küçük boyut */
+  height: 100px; /* Küçük boyut */
+  z-index: 1000; /* Üstte kalmasını sağlar */
+  animation: rotateAnimation 30s linear infinite; /* Animasyonu ekledik */
 }
-
      @keyframes rotateAnimation {
-   from {
- 0% {
-    transform: translateX(-50%) rotate(0deg);
-  }
-  9% {
-    transform: translateX(-50%) rotate(720deg);
-  }
-  100% {
-    transform: translateX(-50%) rotate(720deg);
-  }
-}
-
-.rotateAndPause {
-  animation: rotate 4s linear;
-
+      0% {
+        transform: translateX(-50%) rotate(0deg); /* Başlangıç durumu */
       }
+      100% {
+        transform: translateX(-50%) rotate(360deg); /* 360 derece döner */
+         }
+    }
     #contact-modal button:hover {
       background-color: #45a049;
     }
@@ -446,14 +436,7 @@
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   const rotatingImage = document.getElementById('rotatingImage');
-
-setInterval(() => {
-  rotatingImage.classList.add('rotateAndPause');
-  setTimeout(() => {
-    rotatingImage.classList.remove('rotateAndPause');
-  }, 4000); // 4 saniyelik animasyon süresi
-}, 30000); // 30 saniyede bir çalışır
+   
   </script>
 </body>
 </html>
