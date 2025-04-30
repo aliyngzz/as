@@ -428,5 +428,30 @@
       toggleButtonVisibility(); // İlk gösterim
     });
   </script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const topCenterImage = document.getElementById("top-center-image");
+
+  function animateTopImage() {
+    // 10 saniye bekle
+    setTimeout(() => {
+      // 5 saniye boyunca büyüt
+      topCenterImage.style.transition = "transform 0.5s, opacity 0.5s";
+      topCenterImage.style.transform = "translate(-50%, -50%) scale(2)"; // Örneğin 2 kat büyütüyoruz
+      topCenterImage.style.opacity = "1";
+
+      // 5 saniye sonra küçült ve kaybol
+      setTimeout(() => {
+        topCenterImage.style.transform = "translate(-50%, -50%) scale(1)";
+        topCenterImage.style.opacity = "0";
+
+        // Döngüyü tekrar başlat
+        setTimeout(animateTopImage, 1000); // Kaybolduktan 1 saniye sonra tekrar başlar (isteğe bağlı gecikme)
+      }, 5000);
+    }, 10000);
+  }
+
+  animateTopImage(); // Animasyonu başlat
+});
+</script>
 </body>
 </html>
