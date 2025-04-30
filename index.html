@@ -428,5 +428,20 @@
       toggleButtonVisibility(); // İlk gösterim
     });
   </script>
+
+  const resim = document.getElementById('top-center-image');
+
+  function dongu() {
+    resim.style.display = 'block'; // Resmi göster
+    setTimeout(() => {
+      resim.style.display = 'none'; // 4 saniye sonra gizle
+    }, 4000);
+
+    // 44 saniyede bir tekrar et (4 saniye göster + 40 saniye gizli)
+    setTimeout(dongu, 44000);
+  }
+
+  dongu(); // Döngüyü başlat
+</script>
 </body>
 </html>
