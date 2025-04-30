@@ -372,24 +372,25 @@
     }
 #top-center-image {
   position: fixed;
-  top: 10px; /* Sayfanın üst kısmına 10px mesafe bırakır */
-  left: 50%; /* Sayfada ortalar */
-  transform: translateX(-50%); /* Yatayda tam ortalanması */
-  width: 100px; /* Küçük boyut */
-  height: 100px; /* Küçük boyut */
-  z-index: 1000; /* Üstte kalmasını sağlar */
-  animation: rotateAndPause 33s linear infinite;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  z-index: 1000;
+  animation: rotateAndPause 33s linear infinite; /* 3 sn dön + 30 sn bekle */
 }
+
      @keyframes rotateAnimation {
    from {
   0% {
     transform: translateX(-50%) rotate(0deg);
   }
   9% {
-    transform: translateX(-50%) rotate(720deg); /* 2 tur */
+    transform: translateX(-50%) rotate(720deg); /* 2 tur dönüş */
   }
   100% {
-    transform: translateX(-50%) rotate(720deg); /* sabit kalır */
+    transform: translateX(-50%) rotate(720deg); /* sabit kalsın */
   }
 }
 
