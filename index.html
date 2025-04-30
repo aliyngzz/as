@@ -112,7 +112,6 @@
     <img src="cat-111793_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
     <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
     <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
-    <img id="myImage" src="0434b7b1-c8b1-4166-a909-a63254113120.png" alt="Resim">
   </div>
 
   <!-- Tıklama Mesajı -->
@@ -322,22 +321,6 @@
       display: none;
     }
 
-#myImage {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.5);
-  transition: all 1s ease;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 9999;
-}
-
-#myImage.show {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-    
     #contact-icon.show {
       display: block;
     }
@@ -444,17 +427,6 @@
 
       toggleButtonVisibility(); // İlk gösterim
     });
- 
-  <script>
- const img = document.getElementById("myImage");
-
-setTimeout(() => {
-  img.classList.add("show"); // 10. saniyede görünür
-}, 10000);
-
-setTimeout(() => {
-  img.classList.remove("show"); // 15. saniyede kaybolur
-}, 15000);
-</script>
+  </script>
 </body>
 </html>
