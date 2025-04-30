@@ -84,30 +84,7 @@
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
-
-<style>
-  /* Ana animasyon: sağa ve sola salınma */
-  @keyframes swing {
-    0% { transform: translateX(-50%) translateX(-20px); }
-    50% { transform: translateX(-50%) translateX(20px); }
-    100% { transform: translateX(-50%) translateX(-20px); }
-  }
-
-  /* Resmin konumu ve animasyonu */
-  #top-center-image {
-    position: fixed;           /* Sayfada sabit kalsın */
-    top: 20px;                 /* Sayfanın üstünden 10px aşağıda */
-    left: 50%;                /* Ortalanmış gibi yapar */
-   transform: translateX(-50%); /* Resmi tam ortada tut */
-    width: 100px;              /* Genişliği 100px */
-    height: 100px;             /* Yüksekliği 100px */
-    z-index: 1000;             /* En üstte dursun */
-    animation: swing 12s infinite ease-in-out; /* Animasyon çalışsın */
-  }
-</style>
-
-    
- 
+  </style>
 </head>
 <body>
 
@@ -134,7 +111,9 @@
     <img src="cat-323262_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
     <img src="cat-111793_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
     <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img id="top-center-image" src="0434b7b1-c8b1-4166-a909-a63254113120.png" alt="salınan resim">
+    <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
+  </div>
+
   <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE DOĞA GÖRÜNTÜLERİNİ İZLE VE ALTTA KUŞ RESMİNE BASIN VE YORUM YAZIN LÜTFEN</div>
 
@@ -448,26 +427,6 @@
 
       toggleButtonVisibility(); // İlk gösterim
     });
-
-    document.addEventListener("DOMContentLoaded", function() {
-  const image = document.getElementById("top-center-image");
-
-  function animateImage() {
-    let left = 50; // Başlangıç noktası
-    let direction = 1; // Sağ (1) ya da sol (-1)
-
-    setInterval(() => {
-      if (left >= 60) direction = -1; // Sağdan sola dön
-      if (left <= 40) direction = 1; // Soldan sağa dön
-
-      left += direction * 0.5; // 0.5px hızla hareket ettir
-
-      image.style.left = `calc(50% + ${left}vw)`; // Resmi sol sağ kaydır
-    }, 10); // Her 10ms'de bir hareket ettir
-  }
-
-  animateImage(); // Animasyonu başlat
-});
   </script>
 </body>
 </html>
