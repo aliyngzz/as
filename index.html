@@ -29,18 +29,6 @@
       object-fit: cover;
     }
 
-#top-center-image {
-  position: fixed;
-  top: 10px; 
-  left: 50%; 
-transform: translateX(-50%) scale(1); /* Başlangıçta normal boyut */
-  width: 50px; 
-  height: 50px; 
-  z-index: 1000; 
-  transition: transform 5s ease-in-out, width 5s, height 5s;
-}
-
-    
     .banner {
       white-space: pre;
       position: fixed;
@@ -439,26 +427,6 @@ transform: translateX(-50%) scale(1); /* Başlangıçta normal boyut */
 
       toggleButtonVisibility(); // İlk gösterim
     });
-</script>
-
-let image = document.getElementById('top-center-image');
-
-function animateImage() {
-  image.style.transform = 'translateX(-50%)';  // Konumu sabitle
-  image.style.transition = 'transform 5s ease-in-out, width 5s, height 5s'; // Geçiş efekti ekle
-  image.style.width = '50px'; // Küçük boyutta başla
-  image.style.height = '50px'; // Küçük boyutta başla
-
-  setTimeout(() => {
-    image.style.width = '100px'; // Büyüt
-    image.style.height = '100px'; // Büyüt
-  }, 10000); // 10 saniye sonra büyük boyuta geçiş başlasın
-
-  setTimeout(() => {
-    animateImage(); // Animasyonu yeniden başlat
-  }, 15000); // 15 saniye sonra tekrar başla (10 saniye küçük, 5 saniye büyük)
-}
-animateImage(); // Animasyonu başlat
-</script>
+  </script>
 </body>
 </html>
