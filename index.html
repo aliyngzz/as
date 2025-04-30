@@ -381,17 +381,17 @@
 animation: rotateAndPause 33s infinite; /* 30 saniye sabit, 3 saniyede 2 tur dönecek */
 }
      @keyframes rotateAnimation {
-    0% {
-        transform: translateX(-50%) rotate(0deg); /* Başlangıç durumu */
-      }
-      33.33% {
-        transform: translateX(-50%) rotate(0deg); /* 30 saniye sabit durma */
-      }
-      33.34% {
-        transform: translateX(-50%) rotate(720deg); /* 2 tur dönüş (3 saniye) */
-      }
-      100% {
-        transform: translateX(-50%) rotate(720deg); /* 2 tur döndükten sonra sabit kalma */
+   from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(720deg);
+  }
+}
+
+.rotateAndPause {
+  animation: rotate 4s linear;
+
       }
     #contact-modal button:hover {
       background-color: #45a049;
@@ -441,7 +441,14 @@ animation: rotateAndPause 33s infinite; /* 30 saniye sabit, 3 saniyede 2 tur dö
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   
+   const rotatingImage = document.getElementById('rotatingImage');
+
+setInterval(() => {
+  rotatingImage.classList.add('rotateAndPause');
+  setTimeout(() => {
+    rotatingImage.classList.remove('rotateAndPause');
+  }, 4000); // 4 saniyelik animasyon süresi
+}, 30000); // 30 saniyede bir çalışır
   </script>
 </body>
 </html>
