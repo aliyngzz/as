@@ -323,14 +323,19 @@
     }
 
 #myImage {
-  width: 0;
-  height: auto;
   opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
   transition: all 1s ease;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
 }
+
 #myImage.show {
-  width: 300px; /* İstediğiniz büyüklük */
   opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
 
     
     #contact-icon.show {
@@ -441,15 +446,15 @@
     });
  
   <script>
-  const img = document.getElementById("myImage");
+ const img = document.getElementById("myImage");
 
-  setTimeout(() => {
-    img.classList.add("show"); // 10. saniyede büyür ve görünür
-  }, 10000); // 10 saniye
+setTimeout(() => {
+  img.classList.add("show"); // 10. saniyede görünür
+}, 10000);
 
-  setTimeout(() => {
-    img.classList.remove("show"); // 15. saniyede küçülüp kaybolur
-  }, 15000); // 15 saniye (10 + 5)
+setTimeout(() => {
+  img.classList.remove("show"); // 15. saniyede kaybolur
+}, 15000);
 </script>
 </body>
 </html>
