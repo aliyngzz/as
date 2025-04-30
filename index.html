@@ -378,7 +378,16 @@
   width: 75px; /* Küçük boyut */
   height: 75px; /* Küçük boyut */
   z-index: 1000; /* Üstte kalmasını sağlar */
+  animation: rotateAnimation 30s linear infinite; /* Animasyonu ekledik */
 }
+     @keyframes rotateAnimation {
+      0% {
+        transform: translateX(-50%) rotate(0deg); /* Başlangıç durumu */
+      }
+      100% {
+        transform: translateX(-50%) rotate(360deg); /* 360 derece döner */
+         }
+    }
     #contact-modal button:hover {
       background-color: #45a049;
     }
@@ -427,6 +436,7 @@
 
       toggleButtonVisibility(); // İlk gösterim
     });
+   
   </script>
 </body>
 </html>
