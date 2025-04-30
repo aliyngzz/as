@@ -378,21 +378,20 @@
   width: 75px; /* Küçük boyut */
   height: 75px; /* Küçük boyut */
   z-index: 1000; /* Üstte kalmasını sağlar */
-animation: rotateAndPause 90s infinite; /* 90 saniyelik bir döngü (30s sabit + 2 tur dönüş) */
+animation: rotateAndPause 33s infinite; /* 30 saniye sabit, 3 saniyede 2 tur dönecek */
 }
      @keyframes rotateAnimation {
       0% {
-       transform: translateX(-50%) rotate(0deg); /* Başlangıç durumu (30s sabit) */
+    transform: translateX(-50%) rotate(0deg); /* Başlangıç durumu */
   }
   33.33% {
     transform: translateX(-50%) rotate(0deg); /* 30 saniye sabit durma */
   }
-  66.66% {
-    transform: translateX(-50%) rotate(720deg); /* 2 tur döndürme (720 derece) */
+  33.34% {
+    transform: translateX(-50%) rotate(720deg); /* 2 tur dönüş (3 saniye) */
   }
   100% {
-    transform: translateX(-50%) rotate(720deg); /* Dönme tamamlandıktan sonra sabit kalma */
-    }
+    transform: translateX(-50%) rotate(720deg); /* 2 tur döndükten sonra sabit kalma */
     #contact-modal button:hover {
       background-color: #45a049;
     }
