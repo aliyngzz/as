@@ -431,7 +431,7 @@
   const resim = document.getElementById('top-center-image');
 
   function dongu() {
-    resim.style.display = 'block'; // Resmi göster
+    resim.classList.add("rotate");
     setTimeout(() => {
       resim.style.display = 'none'; // 4 saniye sonra gizle
     }, 4000);
@@ -440,7 +440,15 @@
     setTimeout(dongu, 44000);
   }
 
-  dongu(); // Döngüyü başlat
+  dongu(); // Sayfa yüklendiğinde çalıştır
+    @keyframes don {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+#top-center-image.rotate {
+  animation: don 4s linear infinite;
+}
 </script>
 </body>
 </html>
