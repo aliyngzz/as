@@ -448,6 +448,26 @@
 
       toggleButtonVisibility(); // İlk gösterim
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+  const image = document.getElementById("top-center-image");
+
+  function animateImage() {
+    let left = 50; // Başlangıç noktası
+    let direction = 1; // Sağ (1) ya da sol (-1)
+
+    setInterval(() => {
+      if (left >= 60) direction = -1; // Sağdan sola dön
+      if (left <= 40) direction = 1; // Soldan sağa dön
+
+      left += direction * 0.5; // 0.5px hızla hareket ettir
+
+      image.style.left = `calc(50% + ${left}vw)`; // Resmi sol sağ kaydır
+    }, 10); // Her 10ms'de bir hareket ettir
+  }
+
+  animateImage(); // Animasyonu başlat
+});
   </script>
 </body>
 </html>
