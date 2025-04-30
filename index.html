@@ -378,14 +378,18 @@
   width: 100px; /* Küçük boyut */
   height: 100px; /* Küçük boyut */
   z-index: 1000; /* Üstte kalmasını sağlar */
-animation: rotateAndPause 33s infinite; /* 30 saniye sabit, 3 saniyede 2 tur dönecek */
+ animation: rotateAndPause 33s linear infinite; /* 3 sn dönüş + 30 sn bekleme */
 }
      @keyframes rotateAnimation {
    from {
+   0% {
     transform: translateX(-50%) rotate(0deg);
   }
-  to {
-    transform: translateX(-50%) rotate(720deg);
+  9% {
+    transform: translateX(-50%) rotate(720deg); /* 2 tur (360 x 2) */
+  }
+  100% {
+    transform: translateX(-50%) rotate(720deg); /* sabit kalsın */
   }
 }
 
