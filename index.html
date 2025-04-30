@@ -32,7 +32,7 @@
   position: absolute;
   width: 85px;
   height: auto;
-  animation: moveImage 60s infinite linear;
+  animation: moveImage 60s linear forwards, fadeOut 60s linear forwards;
 }
 
 @keyframes moveImage {
@@ -56,6 +56,13 @@
     top: 0;
     left: 0;
   }
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  99% { opacity: 1; }
+  100% { opacity: 0; }
+
+
+  
 }
 
 
