@@ -190,8 +190,28 @@ const turkeySongs = [
 let currentAudio = document.getElementById("bg-music");
 
 // Doğa sesi butonuna tıklama
+/ Doğa seslerinin 1 dakikada bir değişmesi
+let natureSoundIndex = 0;
+setInterval(() => {
+  changeAudioSource(natureSounds);  // Her dakikada bir ses değişir
+}, 60000);  // 60000 ms = 1 dakika
+
+// Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
   changeAudioSource(natureSounds);
+});
+
+// Ses kaynağını değiştiren fonksiyon
+function changeAudioSource(songList) {
+  const currentSong = songList[natureSoundIndex];
+  currentAudio.src = currentSong;
+  currentAudio.play().catch((error) => {
+    console.error('Ses oynatılırken hata:', error);
+  });
+
+  // Doğa seslerinin indexini artır
+  natureSoundIndex = (natureSoundIndex + 1) % songList.length;
+}
 });
 
 // Türkü butonuna tıklama
