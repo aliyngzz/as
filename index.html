@@ -149,50 +149,71 @@
   <audio id="bg-music" autoplay loop></audio>
 
   <script>
-    // Müzik dosyaları
-    const musicList = [
-      "birds-in-forest-on-sunny-day-14444.mp3",
-      "forest-birds-summer-sweden-18333.mp3",
-      "woodpecker-and-other-birds-23488.mp3",
-      "bees-29400.mp3",
-      "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
-       "fire-sound-310285.mp3",
-      "forest-atmosphere-002localization-poland-329733.mp3",
-      "forest-atmosphere-007localization-poland-330007.mp3",
-      "nature-sound-near-river-or-waterfall-247409.mp3",
-      "relaxing-rain-and-birds-6-minutes-52191.mp3",
-      "soft-wind-314945.mp3",
-      "soft-wind-318856.mp3",
-      "waterfall-176958 (1).mp3",
-      "waterfall-176958.mp3",
-      "water-splashing-108887.mp3",
-      "tui-birdsong-new-zealand-31660.mp3",
-      "smallwaterfall-218855.mp3",
-      "small-mountain-waterfall_nature-sound-203003.mp3",
-      "singing-barn-swallows-3-306979.mp3",
-      "mar-agitado-272999.mp3",
-      "french-coutryside-sunrise-17100.mp3",
-      "forest-woodpecker-322636.mp3",
-      "deep-drizzle-green-noise-mix-11-241597.mp3",
-      "croaking-sound-of-frogs-in-the-forest-water-309353.mp3",
-      "cooing-doves-73616.mp3",
-      "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
-      "bird-sounds-of-knysna-20130.mp3",
-      "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
-      
-    ];
+  // Doğa sesleri ve türkülerin dosya listeleri
+const natureSounds = [
+  "birds-in-forest-on-sunny-day-14444.mp3",
+  "forest-birds-summer-sweden-18333.mp3",
+  "woodpecker-and-other-birds-23488.mp3",
+  "bees-29400.mp3",
+  "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+  "fire-sound-310285.mp3",
+  "forest-atmosphere-002localization-poland-329733.mp3",
+  "forest-atmosphere-007localization-poland-330007.mp3",
+  "nature-sound-near-river-or-waterfall-247409.mp3",
+  "relaxing-rain-and-birds-6-minutes-52191.mp3",
+  "soft-wind-314945.mp3",
+  "soft-wind-318856.mp3",
+  "waterfall-176958 (1).mp3",
+  "waterfall-176958.mp3",
+  "water-splashing-108887.mp3",
+  "tui-birdsong-new-zealand-31660.mp3",
+  "smallwaterfall-218855.mp3",
+  "small-mountain-waterfall_nature-sound-203003.mp3",
+  "singing-barn-swallows-3-306979.mp3",
+  "mar-agitado-272999.mp3",
+  "french-coutryside-sunrise-17100.mp3",
+  "forest-woodpecker-322636.mp3",
+  "deep-drizzle-green-noise-mix-11-241597.mp3",
+  "croaking-sound-of-frogs-in-the-forest-water-309353.mp3",
+  "cooing-doves-73616.mp3",
+  "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+  "bird-sounds-of-knysna-20130.mp3",
+  "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+];
 
-    let musicIndex = 0;
-    const music = document.getElementById("bg-music");
-    music.src = musicList[musicIndex];
-    music.volume = 0.5;
+const turkeySongs = [
+  "turkey-song-1.mp3",  // Örnek türkü
+  "turkey-song-2.mp3",  // Örnek türkü
+  // ... diğer türkü dosyaları
+];
 
-    window.addEventListener("load", () => {
-      music.play().catch(() => {
-        document.addEventListener("click", () => {
-          music.play();
-        }, { once: true });
-      });
+let currentAudio = document.getElementById("bg-music");
+
+// Doğa sesi butonuna tıklama
+document.getElementById("nature-sound-btn").addEventListener("click", () => {
+  changeAudioSource(natureSounds);
+});
+
+// Türkü butonuna tıklama
+document.getElementById("turkey-song-btn").addEventListener("click", () => {
+  changeAudioSource(turkeySongs);
+});
+
+// Ses kaynağını değiştiren fonksiyon
+function changeAudioSource(songList) {
+  const currentSong = songList[Math.floor(Math.random() * songList.length)];
+  currentAudio.src = currentSong;
+  currentAudio.play();
+}
+
+// Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
+window.addEventListener("load", () => {
+  currentAudio.play().catch(() => {
+    document.addEventListener("click", () => {
+      currentAudio.play();
+    }, { once: true });
+  });
+});
 
       setInterval(() => {
         musicIndex = (musicIndex + 1) % musicList.length;
