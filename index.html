@@ -184,7 +184,7 @@ const natureSounds = [
 const turkeySongs = [
   "Turku-Ervahi-Ezelden-14 (1).mp3",
   
-  // ... diğer türkü dosyaları
+  
 ];
 
 let currentAudio = document.getElementById("bg-music");
@@ -203,8 +203,11 @@ document.getElementById("turkey-song-btn").addEventListener("click", () => {
 function changeAudioSource(songList) {
   const currentSong = songList[Math.floor(Math.random() * songList.length)];
   currentAudio.src = currentSong;
-  currentAudio.play();
+  currentAudio.play().catch((error) => {
+    console.error('Ses oynatılırken hata:', error);
+  });
 }
+
 
 // Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
 window.addEventListener("load", () => {
