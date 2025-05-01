@@ -211,10 +211,7 @@ function changeAudioSource(songList) {
 
 // Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
 window.addEventListener("load", () => {
-  currentAudio.play().catch(() => {
-    document.addEventListener("click", () => {
-      currentAudio.play();
-    }, { once: true });
+  changeAudioSource(natureSounds);  // Bu satır doğa sesini başlatacak şekilde değiştirildi
   });
 });
 
