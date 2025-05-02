@@ -191,9 +191,7 @@ let currentAudio = document.getElementById("bg-music");
 // Doğa sesi butonuna tıklama
 
 let natureSoundIndex = 0;
-setInterval(() => {
-  changeAudioSource(natureSounds);  // Her dakikada bir ses değişir
-}, 60000);  // 60000 ms = 1 dakika
+
 
 // Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
@@ -229,12 +227,7 @@ function playNextAudio() {
   };
 }
 
-  // Doğa seslerinin indexini artır
-  natureSoundIndex = (natureSoundIndex + 1) % songList.length;
-    playNextNatureSound(); // sıradakini çal
- };
-}
-
+  
 document.getElementById("turkey-song-btn").addEventListener("click", () => {
   playingList = turkeySongs;
   playNextAudio();
