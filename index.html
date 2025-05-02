@@ -182,7 +182,7 @@ const natureSounds = [
 
 const turkeySongs = [
   "Turku-Ervahi-Ezelden-14 (1).mp3",
-   "sibel-pamuk-guzel-sahim.mp3"
+  
   
 ];
 
@@ -190,6 +190,10 @@ let currentAudio = document.getElementById("bg-music");
 
 // Doğa sesi butonuna tıklama
 
+let natureSoundIndex = 0;
+setInterval(() => {
+  changeAudioSource(natureSounds);  // Her dakikada bir ses değişir
+}, 60000);  // 60000 ms = 1 dakika
 
 // Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
@@ -229,7 +233,11 @@ window.addEventListener("load", () => {
   });
 
 
-     
+      setInterval(() => {
+        musicIndex = (musicIndex + 1) % musicList.length;
+        music.src = musicList[musicIndex];
+        music.play();
+     }, 60000); // 1 dakika sonra müzik değişir
 
       // Video değişimi (videoların sırayla oynatılması)
       const video = document.getElementById("background-video");
@@ -489,14 +497,7 @@ window.addEventListener("load", () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   <script>
-  // ... var olan JavaScript kodların ...
-
-  audio.addEventListener('ended', () => {
-    currentIndex = (currentIndex + 1) % currentList.length;
-    playCurrent();
-  });
-</script>
+   
   </script>
 </body>
 </html>
