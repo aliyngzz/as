@@ -145,21 +145,7 @@
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
  
   <!-- Arka Plan Müzikleri -->
-  <!-- Müzik için preload -->
-<audio id="bg-music" autoplay preload="auto" loop></audio>
-
-<script>
-  // Sayfa yüklendikten sonra müzik başlatma
-  window.addEventListener("load", () => {
-    // Doğa sesini başlatmak için kullanıcı etkileşimi
-    document.getElementById("nature-sound-btn").addEventListener("click", () => {
-      changeAudioSource(natureSounds);
-    });
-  });
-</script>
-
-<!-- Video Lazy Loading -->
-<video id="background-video" autoplay muted loop preload="none" loading="lazy" src="44798-4400010
+  <audio id="bg-music" autoplay loop></audio>
 
   <script>
   // Doğa sesleri ve   Müziklerin dosya listeleri
@@ -199,35 +185,15 @@ const turkeySongs = [
   
   
 ];
+
 let currentAudio = document.getElementById("bg-music");
-let currentList = natureSounds;
-let currentIndex = 0;
 
-function changeAudioSource(list) {
-  currentList = list;
-
-  currentAudio.pause();               // Önce sesi durdur
-  currentAudio.currentTime = 0;       // Zamanı sıfırla
-  currentAudio.src = currentList[currentIndex];  // Yeni kaynağı ata
-
-  // Yeni kaynağı oynat
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-}
-currentAudio.addEventListener("ended", () => {
-  currentIndex = (currentIndex + 1) % currentList.length;
-  changeAudioSource(currentList);
-});
-    window.addEventListener("load", () => {
-  currentIndex = 0;
-  changeAudioSource(natureSounds);
-});
-
-    
 // Doğa sesi butonuna tıklama
 
 let natureSoundIndex = 0;
+setInterval(() => {
+  changeAudioSource(natureSounds);  // Her dakikada bir ses değişir
+}, 60000);  // 60000 ms = 1 dakika
 
 // Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
