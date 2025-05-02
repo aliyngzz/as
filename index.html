@@ -197,24 +197,45 @@ setInterval(() => {
 
 // Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
-  changeAudioSource(natureSounds);
+  playingList = natureSounds;
+  playNextAudio();
+
 });
 
 // Ses kaynağını değiştiren fonksiyon
-function changeAudioSource(songList) {
-  const currentSong = songList[natureSoundIndex];
-  currentAudio.src = currentSong;
+let currentNatureIndex = 0;
+let currentTurkeyIndex = 0;
+let playingList = natureSounds; // Başlangıç doğa sesi
+
+function playNextAudio() {
+  if (playingList.length === 0) return;
+
+  const nextIndex = 
+    (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
+
+  const nextSong = playingList[nextIndex];
+  currentAudio.src = nextSong;
   currentAudio.play().catch((error) => {
     console.error('Ses oynatılırken hata:', error);
   });
+
+  currentAudio.onended = () => {
+    if (playingList === natureSounds) {
+      currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
+    } else {
+      currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
+    }
+    playNextAudio(); // sıradaki otomatik başlar
+  };
+}
 
   // Doğa seslerinin indexini artır
   natureSoundIndex = (natureSoundIndex + 1) % songList.length;
 }
 
-// Türkü butonuna tıklama
 document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  changeAudioSource(turkeySongs);
+  playingList = turkeySongs;
+  playNextAudio();
 });
 
 // Ses kaynağını değiştiren fonksiyon
@@ -233,11 +254,7 @@ window.addEventListener("load", () => {
   });
 
 
-      setInterval(() => {
-        musicIndex = (musicIndex + 1) % musicList.length;
-        music.src = musicList[musicIndex];
-        music.play();
-     }, 60000); // 1 dakika sonra müzik değişir
+     
 
       // Video değişimi (videoların sırayla oynatılması)
       const video = document.getElementById("background-video");
