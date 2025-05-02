@@ -281,9 +281,10 @@ window.addEventListener("load", () => {
         
       
       ];
-     let videoIndex = 1;
+   let videoIndex = 0; // Başlangıçta ilk video
 
   function changeVideo() {
+     const container = document.querySelector('.video-container'); // ❗ Eksik olan bu satır
   const nextVideo = document.createElement('video');
   nextVideo.src = videoList[videoIndex];
   nextVideo.autoplay = true;
@@ -297,29 +298,31 @@ window.addEventListener("load", () => {
   nextVideo.style.height = '100%';
   nextVideo.style.objectFit = 'cover';
   nextVideo.style.zIndex = '-1';
-  nextVideo.style.opacity = 0;
 
-  const container = document.querySelector('.video-container');
-  container.appendChild(nextVideo);
+  // Video yüklendiğinde önceki videoyu sil
+    nextVideo.addEventListener('canplay', () => {
+      const oldVideos = container.querySelectorAll('video');
+      oldVideos.forEach((vid) => {
+        if (vid !== nextVideo) {
+          vid.remove();
+        }
+      });
+    });
 
-  nextVideo.addEventListener('canplay', () => {
-    const oldVideo = container.querySelector('video'); // sadece eski video seç
-    if (oldVideo !== nextVideo && oldVideo) {
-      oldVideo.remove(); // doğru şekilde kaldır
-    }
-    nextVideo.style.opacity = 1;
-  });
+    // Video bitince sıradakini oynat
+    nextVideo.addEventListener('ended', () => {
+      videoIndex = (video
+                    
+                    ndex + 1) % videoList.length;
+      changeVideo();
+    });
 
-  videoIndex = (videoIndex + 1) % videoList.length;
-}
+    container.appendChild(nextVideo);
+  }
 
-
-   
-
-      setTimeout(() => {
-  setInterval(changeVideo, 8000);
-}, 8000); // 8 s
-    
+  // İlk videoyu başlat
+  changeVideo();
+</script>
 
     // Rastgele konum ve animasyon
     function getRandomPosition() {
