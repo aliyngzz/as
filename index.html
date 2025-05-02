@@ -1,445 +1,189 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Animasyonlu Resimler ve Doğa Sesleri</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background-color: #000;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-
-    .video-container {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    #background-video {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-
-    .banner {
-      white-space: pre;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 15px;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      z-index: 1000;
-      background: none;
-      color: white;
-    }
-
-    .nature-image {
-      position: absolute;
-      width: 10vw;
-      height: auto;
-      opacity: 0;
-      z-index: 1;
-      background: transparent;
-      transition: opacity 1s, transform 1s;
-    }
-
-    .fade-in {
-      opacity: 1 !important;
-      transform: scale(1);
-    }
-
-    .scale-up {
-      transform: scale(0.5);
-      opacity: 1;
-    }
-
-    .slide-in {
-      transform: translateX(-100vw);
-      opacity: 1;
-    }
-/* Ses kontrol butonları */
-.audio-controls {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-  z-index: 1001;
-}
-
-.audio-controls button {
-  padding: 10px 20px;
-  font-size: 1.2rem;
-  color: white;
-  background-color: rgba(255, 215, 0, 0.2); /* Yarı saydam altın rengi */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.audio-controls button:hover {
-  background-color: #45a049;
-}
-    .click-message {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      z-index: 2000;
-      background-color:rgba(255, 215, 0, 0.6); /* Hoverda daha belirgin altın rengi */
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hayvan Sevgisi</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .header {
+            text-align: center;
+            background-color: #008080;
+            padding: 20px;
+            color: white;
+        }
+        .content {
+            padding: 20px;
+        }
+        .audio-controls, .video-controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .audio-controls button, .video-controls button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            background-color: #008080;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .audio-controls button:hover, .video-controls button:hover {
+            background-color: #005757;
+        }
+        .gallery img {
+            width: 100%;
+            max-width: 300px;
+            margin: 10px;
+            transition: transform 0.5s ease;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+        .video-background {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Banner Yazısı -->
-  <div class="banner" id="banner"></div>
-<!-- Ses kontrol butonları -->
-<div class="audio-controls">
-  <button id="nature-sound-btn">Doğa Sesi</button>
-  <button id="turkey-song-btn">Müzik</button>
-</div>
-  <!-- Videolar -->
-  <div class="video-container">
-   <video id="background-video" autoplay muted loop preload="auto" src="44798-440001069_small.mp4"></video>
-  </div>
+    <div class="header">
+        <h1>Hayvan Sevgisi Web Sayfası</h1>
+    </div>
 
-  <!-- Resimler -->
-  <div class="image-container">
-    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
-    <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
-    <img src="hummingbird-5111260_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="fox-715588_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="pexels-roshan-kamath-793618-1661179-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="pexels-pixabay-460775-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="pexels-pixabay-236599-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="fox-715588_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="cat-5098930_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="cat-323262_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="cat-111793_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
-    <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
-  </div>
- <!-- Tıklama Mesajı -->
-  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
- 
-  <!-- Arka Plan Müzikleri -->
-  <audio id="bg-music" autoplay loop></audio>
+    <div class="content">
+        <h2>Hayvanlar Hakkında</h2>
+        <p>Hayvan sevgisi, insanlık tarihinin en önemli değerlerinden biridir. Onlar, bizim dostlarımız ve hayatımızın bir parçasıdır. Onlarla vakit geçirmek, doğal dünyaya olan bağlılığımızı artırır. Birçok farklı türde hayvanlar, gezegenimizin doğal dengesini koruma görevini üstleniyor. Onlara olan sevgimiz, dünyayı daha iyi bir yer haline getirebilir.</p>
 
-  <script>
-  // Doğa sesleri ve   Müziklerin dosya listeleri
-const natureSounds = [
-  "birds-in-forest-on-sunny-day-14444.mp3",
-  "forest-birds-summer-sweden-18333.mp3",
-  "woodpecker-and-other-birds-23488.mp3",
-  "bees-29400.mp3",
-  "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
-  "fire-sound-310285.mp3",
-  "forest-atmosphere-002localization-poland-329733.mp3",
-  "forest-atmosphere-007localization-poland-330007.mp3",
-  "nature-sound-near-river-or-waterfall-247409.mp3",
-  "relaxing-rain-and-birds-6-minutes-52191.mp3",
-  "soft-wind-314945.mp3",
-  "soft-wind-318856.mp3",
-  "waterfall-176958 (1).mp3",
-  "waterfall-176958.mp3",
-  "water-splashing-108887.mp3",
-  "tui-birdsong-new-zealand-31660.mp3",
-  "smallwaterfall-218855.mp3",
-  "small-mountain-waterfall_nature-sound-203003.mp3",
-  "singing-barn-swallows-3-306979.mp3",
-  "mar-agitado-272999.mp3",
-  "french-coutryside-sunrise-17100.mp3",
-  "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
-  "bird-sounds-of-knysna-20130.mp3",
-  "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
-];
+        <!-- Galeri -->
+        <div class="gallery">
+            <h3>Galerimiz</h3>
+            <img src="kedi1.jpg" alt="Kediler">
+            <img src="kopek1.jpg" alt="Köpekler">
+            <img src="kus1.jpg" alt="Kuşlar">
+        </div>
 
+        <!-- Video Arka Planı -->
+        <div class="video-background">
+            <video autoplay loop muted>
+                <source src="nature-video.mp4" type="video/mp4">
+                Tarayıcınız video desteği sunmuyor.
+            </video>
+        </div>
 
+        <!-- Ses ve Müzik Kontrolleri -->
+        <div class="audio-controls">
+            <button id="nature-sound-btn">Doğa Sesi</button>
+            <button id="turkey-song-btn">Müzik</button>
+        </div>
 
+        <!-- Sesler -->
+        <audio id="nature-sound" preload="auto">
+            <source src="birds-in-forest-on-sunny-day-14444.mp3" type="audio/mp3">
+            Tarayıcınız ses dosyasını desteklemiyor.
+        </audio>
+        <audio id="turkey-song" preload="auto">
+            <source src="your-music-file.mp3" type="audio/mp3">
+            Tarayıcınız ses dosyasını desteklemiyor.
+        </audio>
 
+        <!-- Animasyonlu Yazılar -->
+        <div id="animated-text" style="font-size: 24px; font-weight: bold; text-align: center; margin-top: 40px;"></div>
 
-      
+        <!-- Doğa Sesi Döngüsü -->
+        <div class="audio-controls">
+            <button id="nature-sound-toggle">Doğa Sesi Döngüsü Başlat</button>
+        </div>
 
-      // Video değişimi (videoların sırayla oynatılması)
-      const video = document.getElementById("background-video");
-      const videoList = [
-        "44798-440001069_small.mp4",
-        "28746-371345147_tiny.mp4",
-        "186405-877993676_tiny.mp4",
-             "214732_tiny.mp4",
-      "35427-407130886_small.mp4",
-      "3904-175596530_medium.mp4",
-      "184972-874460313_medium.mp4",
-      "111179-689949805_tiny.mp4",
-      "158349-816637197_tiny.mp4",
-      "246856_tiny.mp4",
-      "120739-724673230_tiny.mp4",
-      "28746-371345147_tiny.mp4",
-      "57647-486227472_tiny.mp4",
-      "214732_tiny.mp4",
-      "35427-407130886_small.mp4",
-"263208_small.mp4",
-"242228_small.mp4",
- 
-    "180057-863401699_small.mp4",
-      "159309-818469332.mp4",
-      
-          "144959-785568576_medium.mp4",
-            "6847-196978755_medium.mp4",
-              "16012-268207204_small.mp4"
+        <!-- Ziyaretçi Sayacı -->
+        <div id="visitor-counter" style="font-size: 24px; text-align: center; margin-top: 40px;">
+            <p>Ziyaretçi Sayacı</p>
+            <p id="counter">0</p>
+        </div>
 
-        
-      
-      ];
-     let videoIndex = 1;
+    </div>
 
-  function changeVideo() {
-  const nextVideo = document.createElement('video');
-  nextVideo.src = videoList[videoIndex];
-  nextVideo.autoplay = true;
-  nextVideo.muted = true;
-  nextVideo.loop = false;
-  nextVideo.playsInline = true;
-  nextVideo.style.position = 'absolute';
-  nextVideo.style.top = 0;
-  nextVideo.style.left = 0;
-  nextVideo.style.width = '100%';
-  nextVideo.style.height = '100%';
-  nextVideo.style.objectFit = 'cover';
-  nextVideo.style.zIndex = '-1';
-  nextVideo.style.opacity = 0;
+    <script>
+        // Seslerin ve videoların kontrolü
+        const natureSoundButton = document.getElementById("nature-sound-btn");
+        const turkeySongButton = document.getElementById("turkey-song-btn");
 
-  const container = document.querySelector('.video-container');
-  container.appendChild(nextVideo);
+        const natureSound = document.getElementById("nature-sound");
+        const turkeySong = document.getElementById("turkey-song");
 
-  nextVideo.addEventListener('canplay', () => {
-    const oldVideo = container.querySelector('video'); // sadece eski video seç
-    if (oldVideo !== nextVideo && oldVideo) {
-      oldVideo.remove(); // doğru şekilde kaldır
-    }
-    nextVideo.style.opacity = 1;
-  });
+        natureSoundButton.addEventListener("click", () => {
+            if (natureSound.paused) {
+                natureSound.play();
+                natureSoundButton.textContent = "Doğa Sesi Duraklat";
+            } else {
+                natureSound.pause();
+                natureSoundButton.textContent = "Doğa Sesi";
+            }
+        });
 
-  videoIndex = (videoIndex + 1) % videoList.length;
-}
+        turkeySongButton.addEventListener("click", () => {
+            if (turkeySong.paused) {
+                turkeySong.play();
+                turkeySongButton.textContent = "Müzik Duraklat";
+            } else {
+                turkeySong.pause();
+                turkeySongButton.textContent = "Müzik";
+            }
+        });
 
+        // Animasyonlu yazılar
+        const text = "Hayvan sevgisi dünyayı daha güzel kılar!";
+        let index = 0;
 
-   
+        function animateText() {
+            if (index < text.length) {
+                document.getElementById("animated-text").textContent += text[index];
+                index++;
+                setTimeout(animateText, 100); // 100ms aralıkla harf ekle
+            }
+        }
 
-    setInterval(changeVideo, 8000); // 8 saniye
-}, // 8 s
-    
+        animateText(); // Animasyonu başlat
 
-    // Rastgele konum ve animasyon
-    function getRandomPosition() {
-      return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
-    }
+        // Ziyaretçi sayacı
+        let visitorCount = 0;
 
-    function getRandomAnimation() {
-      const animations = ['fade-in', 'scale-up', 'slide-in'];
-      return animations[Math.floor(Math.random() * animations.length)];
-    }
+        function updateVisitorCount() {
+            visitorCount++;
+            document.getElementById("counter").textContent = visitorCount;
+        }
 
-    // Resimlerin sıralı görünmesi
-    const images = document.querySelectorAll('.nature-image');
-    let imageIndex = 0;
+        setInterval(updateVisitorCount, 5000); // 5 saniyede bir ziyaretçi sayısını artır
 
-    function showNextImage() {
-      const image = images[imageIndex];
-      const { x, y } = getRandomPosition();
-      const anim = getRandomAnimation();
+        // Doğa Sesi Döngüsü
+        const natureSoundToggleButton = document.getElementById("nature-sound-toggle");
+        let soundInterval;
 
-      image.style.left = `${x}vw`;
-      image.style.top = `${y}vh`;
+        natureSoundToggleButton.addEventListener("click", function () {
+            if (natureSound.paused) {
+                natureSound.play();
+                natureSoundToggleButton.textContent = "Doğa Sesi Döngüsünü Durdur";
+                soundInterval = setInterval(function () {
+                    if (natureSound.paused) {
+                        natureSound.play();
+                    }
+                }, 8000); // Her 8 saniyede bir tekrar başlat
+            } else {
+                natureSound.pause();
+                clearInterval(soundInterval);
+                natureSoundToggleButton.textContent = "Doğa Sesi Döngüsü Başlat";
+            }
+        });
 
-      image.classList.add(anim);
-      image.style.opacity = 1;
+    </script>
 
-      setTimeout(() => {
-        image.classList.remove(anim);
-        image.style.opacity = 0;
-        imageIndex = (imageIndex + 1) % images.length;
-        setTimeout(showNextImage, 1000); // Next image without delay
-      }, 2500); // Show each image for 2.5 seconds
-    }
-
-    setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
-  </script>
-
-  <div id="contact-icon" title="İletişim"></div>
-  
-  <div id="contact-modal">
-    <form action="https://formspree.io/f/xvgaonbz" method="POST">
-      <label>
-        Adınız:
-        <input type="text" name="name" required>
-      </label>
-      <textarea name="message" id="message" rows="4" required></textarea>
-      <div class="button-group">
-        <button type="submit">Gönder</button>
-        <button type="button" id="cancel-btn">İptal</button>
-      </div>
-    </form>
-  </div>
-
-  <style>
-    #contact-icon {
-      position: fixed;
-      bottom: 85px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2rem;
-      background-color: gold;
-      color: white;
-      padding: 10px 12px;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 1001;
-      background-image: url('kus-ikon.png');
-      background-size: cover;
-      width: 150px;
-      height: 150px;
-      display: none;
-    }
-
-    #contact-icon.show {
-      display: block;
-    }
-
-    #contact-modal {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #111;
-      color: white;
-      padding: 20px 30px;
-      border-radius: 15px;
-      z-index: 1002;
-      box-shadow: 0 0 15px rgba(255,255,255,0.2);
-    }
-
-    #contact-modal form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    #contact-modal input,
-    #contact-modal textarea {
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #222;
-      color: white;
-    }
-
-    #contact-modal .button-group {
-      display: flex;
-      gap: 10px;
-      justify-content: space-between;
-    }
-
-    #contact-modal button {
-      padding: 10px 15px;
-      font-size: 1rem;
-      cursor: pointer;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-#top-center-image {
-  position: fixed;
-  top: 10px; /* Sayfanın üst kısmına 10px mesafe bırakır */
-  left: 50%; /* Sayfada ortalar */
-  transform: translateX(-50%); /* Yatayda tam ortalanması */
-  width: 100px; /* Küçük boyut */
-  height: 100px; /* Küçük boyut */
-  z-index: 1000; /* Üstte kalmasını sağlar */
-  animation: rotateAnimation 30s linear infinite; /* Animasyonu ekledik */
-}
-     @keyframes rotateAnimation {
-      0% {
-        transform: translateX(-50%) rotate(0deg); /* Başlangıç durumu */
-      }
-      100% {
-        transform: translateX(-50%) rotate(360deg); /* 360 derece döner */
-         }
-    }
-    #contact-modal button:hover {
-      background-color: #45a049;
-    }
-
-    #cancel-btn {
-      background-color: #f44336;
-    }
-
-    #cancel-btn:hover {
-      background-color: #e53935;
-    }
-
-  </style>
-
-  <script>
-    // Modal iletişim formunu açma ve kapama
-    const contactIcon = document.getElementById('contact-icon');
-    const contactModal = document.getElementById('contact-modal');
-    const cancelBtn = document.getElementById('cancel-btn');
-
-    contactIcon.addEventListener('click', () => {
-      contactModal.style.display = 'block';
-    });
-
-    cancelBtn.addEventListener('click', () => {
-      contactModal.style.display = 'none';
-    });
-
-    // Tıklama mesajı gizleme
-    document.getElementById("clickMessage").addEventListener("click", () => {
-      document.getElementById("clickMessage").style.display = "none";
-    });
-
-    // Butonun ekranda 4 saniye görünmesini sağla
-    document.addEventListener("DOMContentLoaded", () => {
-      const contactButton = document.getElementById("contact-icon");
-
-      function toggleButtonVisibility() {
-        contactButton.classList.add("show");
-        setTimeout(() => {
-          contactButton.classList.remove("show");
-        }, 4000);
-
-        setTimeout(toggleButtonVisibility, 14000); // 4 saniye görünme + 10 saniye gizlenme
-      }
-
-      toggleButtonVisibility(); // İlk gösterim
-    });
-   
-  </script>
 </body>
 </html>
