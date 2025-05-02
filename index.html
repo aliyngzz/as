@@ -171,65 +171,12 @@ const natureSounds = [
   "singing-barn-swallows-3-306979.mp3",
   "mar-agitado-272999.mp3",
   "french-coutryside-sunrise-17100.mp3",
- 
-
- 
-
   "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
   "bird-sounds-of-knysna-20130.mp3",
   "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
 ];
 
-const turkeySongs = [
-  "Turku-Ervahi-Ezelden-14 (1).mp3",
-  
-  
-];
 
-let currentAudio = document.getElementById("bg-music");
-
-// Doğa sesi butonuna tıklama
-
-let natureSoundIndex = 0;
-setInterval(() => {
-  changeAudioSource(natureSounds);  // Her dakikada bir ses değişir
-}, 60000);  // 60000 ms = 1 dakika
-
-// Doğa sesi butonuna tıklama
-document.getElementById("nature-sound-btn").addEventListener("click", () => {
-  changeAudioSource(natureSounds);
-});
-
-// Ses kaynağını değiştiren fonksiyon
-function changeAudioSource(songList) {
-  const currentSong = songList[natureSoundIndex];
-  currentAudio.src = currentSong;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-
-  // Doğa seslerinin indexini artır
-  natureSoundIndex = (natureSoundIndex + 1) % songList.length;
-}
-
-// Türkü butonuna tıklama
-document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  changeAudioSource(turkeySongs);
-});
-
-// Ses kaynağını değiştiren fonksiyon
-function changeAudioSource(songList) {
-  const currentSong = songList[Math.floor(Math.random() * songList.length)];
-  currentAudio.src = currentSong;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-}
-
-
-// Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
-window.addEventListener("load", () => {
-  changeAudioSource(natureSounds);  // Bu satır doğa sesini başlatacak şekilde değiştirildi
   });
 
 
