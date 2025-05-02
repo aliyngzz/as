@@ -198,20 +198,24 @@ document.getElementById("nature-sound-btn").addEventListener("click", () => {
 });
 
 // Ses kaynağını değiştiren fonksiyon
-function changeAudioSource(songList) {
-  const currentSong = songList[Math.floor(Math.random() * songList.length)];
+let natureSoundIndex = 0;
+let turkeySongIndex = 0;
+
+function changeAudioSource(songList, isNature = true) {
+  let currentIndex = isNature ? natureSoundIndex : turkeySongIndex;
+  const currentSong = songList[currentIndex];
+
   currentAudio.src = currentSong;
   currentAudio.play().catch((error) => {
     console.error('Ses oynatılırken hata:', error);
   });
 
-
-
+  if (isNature) {
+    natureSoundIndex = (natureSoundIndex + 1) % songList.length;
+  } else {
+    turkeySongIndex = (turkeySongIndex + 1) % songList.length;
+  
 }
-
-// Türkü butonuna tıklama
-document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  changeAudioSource(turkeySongs);
 });
 
 // Ses kaynağını değiştiren fonksiyon
