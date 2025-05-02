@@ -489,7 +489,14 @@ window.addEventListener("load", () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   
+   <script>
+  // ... var olan JavaScript kodların ...
+
+  audio.addEventListener('ended', () => {
+    currentIndex = (currentIndex + 1) % currentList.length;
+    playCurrent();
+  });
+</script>
   </script>
 </body>
 </html>
