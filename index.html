@@ -283,12 +283,12 @@ window.addEventListener("load", () => {
       ];
      let videoIndex = 1;
 
-  function changeVideo() {
+ function changeVideo() {
   const nextVideo = document.createElement('video');
   nextVideo.src = videoList[videoIndex];
   nextVideo.autoplay = true;
   nextVideo.muted = true;
-  nextVideo.loop = false;
+  nextVideo.loop = false;  // Video döngüsü kapalı
   nextVideo.playsInline = true;
   nextVideo.style.position = 'absolute';
   nextVideo.style.top = 0;
@@ -302,17 +302,21 @@ window.addEventListener("load", () => {
   const container = document.querySelector('.video-container');
   container.appendChild(nextVideo);
 
+  // Video oynatılmaya başlandığında eski videoyu kaldırma
   nextVideo.addEventListener('canplay', () => {
-    const oldVideo = container.querySelector('video'); // sadece eski video seç
+    const oldVideo = container.querySelector('video');
     if (oldVideo !== nextVideo && oldVideo) {
-      oldVideo.remove(); // doğru şekilde kaldır
+      oldVideo.remove();
     }
     nextVideo.style.opacity = 1;
   });
 
-  videoIndex = (videoIndex + 1) % videoList.length;
+  // Burada video bitince bir sonrakine geçiş yapacak
+  nextVideo.onended = () => {
+    videoIndex = (videoIndex + 1) % videoList.length;
+    changeVideo();  // Sonraki videoyu başlatır
+  };
 }
-
 
    
 
