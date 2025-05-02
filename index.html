@@ -145,7 +145,21 @@
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
  
   <!-- Arka Plan Müzikleri -->
-  <audio id="bg-music" autoplay loop></audio>
+  <!-- Müzik için preload -->
+<audio id="bg-music" autoplay preload="auto" loop></audio>
+
+<script>
+  // Sayfa yüklendikten sonra müzik başlatma
+  window.addEventListener("load", () => {
+    // Doğa sesini başlatmak için kullanıcı etkileşimi
+    document.getElementById("nature-sound-btn").addEventListener("click", () => {
+      changeAudioSource(natureSounds);
+    });
+  });
+</script>
+
+<!-- Video Lazy Loading -->
+<video id="background-video" autoplay muted loop preload="none" loading="lazy" src="44798-4400010
 
   <script>
   // Doğa sesleri ve   Müziklerin dosya listeleri
