@@ -222,12 +222,11 @@ function changeAudioSource(songList, isNature = true) {
 
 
 // Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
-window.addEventListener("load", () => {
-  changeAudioSource(natureSounds);  // Bu satır doğa sesini başlatacak şekilde değiştirildi
-  });
-
-
-     
+// Kullanıcı tıklaması ile sesi başlat
+document.body.addEventListener("click", () => {
+  document.getElementById("clickMessage").style.display = "none";
+  changeAudioSource(natureSounds);
+});
 
       // Video değişimi (videoların sırayla oynatılması)
       const video = document.getElementById("background-video");
