@@ -283,12 +283,12 @@ window.addEventListener("load", () => {
       ];
      let videoIndex = 1;
 
- function changeVideo() {
+  function changeVideo() {
   const nextVideo = document.createElement('video');
   nextVideo.src = videoList[videoIndex];
   nextVideo.autoplay = true;
   nextVideo.muted = true;
-  nextVideo.loop = false;  // Video döngüsü kapalı
+  nextVideo.loop = false;
   nextVideo.playsInline = true;
   nextVideo.style.position = 'absolute';
   nextVideo.style.top = 0;
@@ -302,25 +302,23 @@ window.addEventListener("load", () => {
   const container = document.querySelector('.video-container');
   container.appendChild(nextVideo);
 
-  // Video oynatılmaya başlandığında eski videoyu kaldırma
   nextVideo.addEventListener('canplay', () => {
-    const oldVideo = container.querySelector('video');
+    const oldVideo = container.querySelector('video'); // sadece eski video seç
     if (oldVideo !== nextVideo && oldVideo) {
-      oldVideo.remove();
+      oldVideo.remove(); // doğru şekilde kaldır
     }
     nextVideo.style.opacity = 1;
   });
 
-  // Burada video bitince bir sonrakine geçiş yapacak
-  nextVideo.onended = () => {
-    videoIndex = (videoIndex + 1) % videoList.length;
-    changeVideo();  // Sonraki videoyu başlatır
-  };
+  videoIndex = (videoIndex + 1) % videoList.length;
+}
 
 
    
 
-    
+      setTimeout(() => {
+  setInterval(changeVideo, 8000);
+}, 8000); // 8 s
     
 
     // Rastgele konum ve animasyon
@@ -347,7 +345,7 @@ window.addEventListener("load", () => {
 
       image.classList.add(anim);
       image.style.opacity = 1;
-<script>
+
       setTimeout(() => {
         image.classList.remove(anim);
         image.style.opacity = 0;
