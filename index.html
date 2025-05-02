@@ -233,11 +233,7 @@ window.addEventListener("load", () => {
   });
 
 
-      setInterval(() => {
-        musicIndex = (musicIndex + 1) % musicList.length;
-        music.src = musicList[musicIndex];
-        music.play();
-     }, 60000); // 1 dakika sonra müzik değişir
+      
 
       // Video değişimi (videoların sırayla oynatılması)
       const video = document.getElementById("background-video");
