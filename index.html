@@ -231,6 +231,8 @@ function playNextAudio() {
 
   // Doğa seslerinin indexini artır
   natureSoundIndex = (natureSoundIndex + 1) % songList.length;
+    playNextNatureSound(); // sıradakini çal
+ };
 }
 
 document.getElementById("turkey-song-btn").addEventListener("click", () => {
