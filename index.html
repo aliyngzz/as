@@ -216,13 +216,7 @@ document.getElementById("turkey-song-btn").addEventListener("click", () => {
 });
 
 // Ses kaynağını değiştiren fonksiyon
-function changeAudioSource(songList) {
-  const currentSong = songList[Math.floor(Math.random() * songList.length)];
-  currentAudio.src = currentSong;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-}
+
 
 
 // Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
@@ -231,11 +225,7 @@ window.addEventListener("load", () => {
   });
 
 
-      setInterval(() => {
-        musicIndex = (musicIndex + 1) % musicList.length;
-        music.src = musicList[musicIndex];
-        music.play();
-     }, 60000); // 1 dakika sonra müzik değişir
+     
 
       // Video değişimi (videoların sırayla oynatılması)
       const video = document.getElementById("background-video");
