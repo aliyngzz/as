@@ -191,7 +191,12 @@ let currentIndex = 0;
 
 function changeAudioSource(list) {
   currentList = list;
-  currentAudio.src = currentList[currentIndex];
+
+  currentAudio.pause();               // Önce sesi durdur
+  currentAudio.currentTime = 0;       // Zamanı sıfırla
+  currentAudio.src = currentList[currentIndex];  // Yeni kaynağı ata
+
+  // Yeni kaynağı oynat
   currentAudio.play().catch((error) => {
     console.error('Ses oynatılırken hata:', error);
   });
