@@ -211,11 +211,10 @@ function changeAudioSource(songList, isNature = true) {
   });
 
   if (isNature) {
-    natureSoundIndex = (natureSoundIndex + 1) % songList.length;
-  } else {
-    turkeySongIndex = (turkeySongIndex + 1) % songList.length;
+  natureSoundIndex = (natureSoundIndex + 1) % natureSongList.length;
+} else {
+  turkeySongIndex = (turkeySongIndex + 1) % turkeySongList.length;
 }
-});
 
 // Ses kaynağını değiştiren fonksiyon
 
