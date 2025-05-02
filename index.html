@@ -145,7 +145,7 @@
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
  
   <!-- Arka Plan Müzikleri -->
-<audio id="soundPlayer" autoplay></audio>
+  <audio id="bg-music" autoplay loop></audio>
 
   <script>
   // Doğa sesleri ve   Müziklerin dosya listeleri
@@ -170,7 +170,7 @@ const natureSounds = [
   "small-mountain-waterfall_nature-sound-203003.mp3",
   "singing-barn-swallows-3-306979.mp3",
   "mar-agitado-272999.mp3",
-  
+  "french-coutryside-sunrise-17100.mp3",
  
 
  
@@ -191,6 +191,9 @@ let currentAudio = document.getElementById("bg-music");
 // Doğa sesi butonuna tıklama
 
 let natureSoundIndex = 0;
+setInterval(() => {
+  changeAudioSource(natureSounds);  // Her dakikada bir ses değişir
+}, 60000);  // 60000 ms = 1 dakika
 
 // Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
@@ -494,21 +497,7 @@ window.addEventListener("load", () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-    ];
-
-  let currentSoundIndex = 0;
-  const soundPlayer = document.getElementById("soundPlayer");
-
-  function playNextSound() {
-    soundPlayer.src = sounds[currentSoundIndex];
-    soundPlayer.play();
-    currentSoundIndex = (currentSoundIndex + 1) % sounds.length;
-  }
-
-  soundPlayer.addEventListener("ended", playNextSound);
-
-  window.addEventListener("load", playNextSound);
-</script>
-  
+   
+  </script>
 </body>
 </html>
