@@ -302,15 +302,21 @@ window.addEventListener("load", () => {
   const container = document.querySelector('.video-container');
   container.appendChild(nextVideo);
 
-  nextVideo.addEventListener('canplay', () => {
-    const oldVideo = container.querySelector('video'); // sadece eski video seç
-    if (oldVideo !== nextVideo && oldVideo) {
-      oldVideo.remove(); // doğru şekilde kaldır
-    }
-    nextVideo.style.opacity = 1;
-  });
+nextVideo.addEventListener('canplay', () => {
+  const oldVideo = container.querySelector('video');
+  if (oldVideo !== nextVideo && oldVideo) {
+    oldVideo.remove();
+  }
+  nextVideo.style.opacity = 1;
+});
 
-  videoIndex = (videoIndex + 1) % videoList.length;
+// 🟢 Video bitince sıradakine geç
+nextVideo.addEventListener('ended', () => {
+  videoIndex = (videoIndex + 1) % videoList.length; // buraya taşındı
+  changeVideo();
+
+});
+
 }
 
 
