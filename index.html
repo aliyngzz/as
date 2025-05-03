@@ -244,12 +244,16 @@ document.getElementById("turkey-song-btn").addEventListener("click", () => {
 function changeAudioSource(songList) {
   const currentSong = songList[Math.floor(Math.random() * songList.length)];
   currentAudio.src = currentSong;
-  currentAudio.currentTime = Math.random() * currentAudio.duration;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-}
 
+  // Ses dosyası yüklendikten sonra rastgele bir süreden başlat
+  currentAudio.onloadedmetadata = () => {
+    const randomStart = Math.random() * currentAudio.duration;
+    currentAudio.currentTime = randomStart;
+    currentAudio.play().catch((error) => {
+      console.error('Ses oynatılırken hata:', error);
+    });
+  };
+}
 
 // Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
 window.addEventListener("load", () => {
