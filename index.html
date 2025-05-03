@@ -219,6 +219,7 @@ function playNextAudio() {
 
   const nextSong = playingList[nextIndex];
   currentAudio.src = nextSong;
+  currentAudio.currentTime = Math.random() * currentAudio.duration;
   currentAudio.play().catch((error) => {
     console.error('Ses oynatılırken hata:', error);
   });
@@ -243,6 +244,7 @@ document.getElementById("turkey-song-btn").addEventListener("click", () => {
 function changeAudioSource(songList) {
   const currentSong = songList[Math.floor(Math.random() * songList.length)];
   currentAudio.src = currentSong;
+  currentAudio.currentTime = Math.random() * currentAudio.duration;
   currentAudio.play().catch((error) => {
     console.error('Ses oynatılırken hata:', error);
   });
