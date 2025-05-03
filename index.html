@@ -182,14 +182,8 @@ const natureSounds = [
 
 const turkeySongs = [
   "Turku-Ervahi-Ezelden-14 (1).mp3",
-  "Erdal-Erzincan-Deyis.mp3",  
-  "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-"sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
-"sebahat-akkiraz-medet-ya-ali-duaz-12-imam-deyis_(mp3tur.com).mp3"
-
-
-    
+  "Erdal-Erzincan-Deyis.mp3"
+  
 ];
 
 let currentAudio = document.getElementById("bg-music");
@@ -214,27 +208,23 @@ let playingList = natureSounds; // Başlangıç doğa sesi
 function playNextAudio() {
   if (playingList.length === 0) return;
 
-  let nextIndex;
-
-  if (playingList === natureSounds) {
-    nextIndex = currentNatureIndex;
-    currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
-  } else {
-    nextIndex = currentTurkeyIndex;
-    currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
-  }
+  const nextIndex = 
+    (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
 
   const nextSong = playingList[nextIndex];
   currentAudio.src = nextSong;
-
-  currentAudio.addEventListener("loadedmetadata", () => {
-    currentAudio.currentTime = Math.random() * currentAudio.duration;
-    currentAudio.play().catch((error) => {
-      console.error('Ses oynatılırken hata:', error);
-    });
+  currentAudio.play().catch((error) => {
+    console.error('Ses oynatılırken hata:', error);
   });
 
-  currentAudio.onended = playNextAudio;
+  currentAudio.onended = () => {
+    if (playingList === natureSounds) {
+      currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
+    } else {
+      currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
+    }
+    playNextAudio(); // sıradaki otomatik başlar
+  };
 }
 
   
@@ -247,19 +237,14 @@ document.getElementById("turkey-song-btn").addEventListener("click", () => {
 function changeAudioSource(songList) {
   const currentSong = songList[Math.floor(Math.random() * songList.length)];
   currentAudio.src = currentSong;
-
-  // Ses dosyası yüklendikten sonra rastgele bir süreden başlat
-  currentAudio.onloadedmetadata = () => {
-    const randomStart = Math.random() * currentAudio.duration;
-    currentAudio.currentTime = randomStart;
-    currentAudio.play().catch((error) => {
-      console.error('Ses oynatılırken hata:', error);
-    });
-  };
+  currentAudio.play().catch((error) => {
+    console.error('Ses oynatılırken hata:', error);
+  });
 }
 
-// Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
 
+// Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
+window.addEventListener("load", () => {
   changeAudioSource(natureSounds);  // Bu satır doğa sesini başlatacak şekilde değiştirildi
   });
 
@@ -269,7 +254,6 @@ function changeAudioSource(songList) {
       // Video değişimi (videoların sırayla oynatılması)
       const video = document.getElementById("background-video");
       const videoList = [
-          "854982-hd_1280_720_25fps.mp4",
         "44798-440001069_small.mp4",
         "28746-371345147_tiny.mp4",
         "186405-877993676_tiny.mp4",
@@ -293,10 +277,8 @@ function changeAudioSource(songList) {
       
           "144959-785568576_medium.mp4",
             "6847-196978755_medium.mp4",
-              "16012-268207204_small.mp4",
- "71350-538489808.mp4",
-   "71571-538974136.mp4",
-     "228847_tiny.mp4"
+              "16012-268207204_small.mp4"
+
         
       
       ];
@@ -411,23 +393,23 @@ nextVideo.addEventListener('ended', () => {
   </div>
 
   <style>
-#contact-icon {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  background-color: gold;
-  color: white;
-  padding: 10px 12px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1001;
-  background-image: url('kus-ikon.png');
-  background-size: cover;
-  width: 150px;
-  height: 150px;
-  display: none;
+    #contact-icon {
+      position: fixed;
+      bottom: 85px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      background-color: gold;
+      color: white;
+      padding: 10px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1001;
+      background-image: url('kus-ikon.png');
+      background-size: cover;
+      width: 150px;
+      height: 150px;
+      display: none;
     }
 
     #contact-icon.show {
