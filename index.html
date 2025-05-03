@@ -121,7 +121,7 @@
 </div>
   <!-- Videolar -->
   <div class="video-container">
-   <video id="background-video" autoplay muted loop preload="auto" src="44798-440001069_small.mp4"></video>
+  <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
   </div>
 
   <!-- Resimler -->
@@ -316,8 +316,21 @@ nextVideo.addEventListener('ended', () => {
   changeVideo();
 
 });
+ document.body.appendChild(newVideo);
+  }
 
-}
+  // 🔻 BU KISMI BURAYA EKLE
+  const firstVideo = document.getElementById('background-video');
+  if (firstVideo) {
+    firstVideo.addEventListener('ended', () => {
+      videoIndex = 1; // İkinci videodan başla
+ 
+      
+
+    changeVideo();
+ });
+    }
+                                
 
 
    
