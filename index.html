@@ -115,13 +115,11 @@
 
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
-
-
-
-
-
-
-  
+<!-- Ses kontrol butonları -->
+<div class="audio-controls">
+  <button id="nature-sound-btn">Doğa Sesi</button>
+  <button id="turkey-song-btn">Müzik</button>
+</div>
   <!-- Videolar -->
   <div class="video-container">
   <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
@@ -153,11 +151,37 @@
   // Doğa sesleri ve   Müziklerin dosya listeleri
 const natureSounds = [
   "birds-in-forest-on-sunny-day-14444.mp3",
+  "forest-birds-summer-sweden-18333.mp3",
+  "woodpecker-and-other-birds-23488.mp3",
+  "bees-29400.mp3",
+  "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+  "fire-sound-310285.mp3",
+  "forest-atmosphere-002localization-poland-329733.mp3",
+  "forest-atmosphere-007localization-poland-330007.mp3",
+  "nature-sound-near-river-or-waterfall-247409.mp3",
+  "relaxing-rain-and-birds-6-minutes-52191.mp3",
+  "soft-wind-314945.mp3",
+  "soft-wind-318856.mp3",
+  "waterfall-176958 (1).mp3",
+  "waterfall-176958.mp3",
+  "water-splashing-108887.mp3",
+  "tui-birdsong-new-zealand-31660.mp3",
+  "smallwaterfall-218855.mp3",
+  "small-mountain-waterfall_nature-sound-203003.mp3",
+  "singing-barn-swallows-3-306979.mp3",
+  "mar-agitado-272999.mp3",
+  "french-coutryside-sunrise-17100.mp3",
  
 
  
 
-  
+  "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+  "bird-sounds-of-knysna-20130.mp3",
+  "bird-singing-and-water-splashing-nature-sounds-7802.mp3",
+"haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
+"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
 
     
 ];
@@ -262,7 +286,7 @@ window.addEventListener("load", () => {
               "16012-268207204_small.mp4",
  "228847_tiny.mp4",
  "71350-538489808.mp4",
-   
+ "71571-538974136.mp4",   
  "854982-hd_1280_720_25fps.mp4"
         
       
@@ -302,7 +326,7 @@ nextVideo.addEventListener('ended', () => {
   changeVideo();
 
 });
-
+ document.body.appendChild(newVideo);
   }
 
   // 🔻 BU KISMI BURAYA EKLE
