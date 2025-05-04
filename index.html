@@ -231,11 +231,10 @@ let currentAudio = document.getElementById("bg-music");
 
 let natureSoundIndex = 0;
 
-
-// Doğa sesi butonuna tıklama
-document.getElementById("nature-sound-img").addEventListener("click", () => {
-  playingList = natureSounds;
+document.getElementById("turkey-song-img").addEventListener("click", () => {
+  playingList = turkeySongs;
   playNextAudio();
+
 
 
     
@@ -269,8 +268,9 @@ function playNextAudio() {
     playNextAudio(); // sıradaki otomatik başlar
   };
 }
-document.getElementById("turkey-song-img").addEventListener("click", () => {
-  playingList = turkeySongs;
+// Doğa sesi butonuna tıklama
+document.getElementById("nature-sound-img").addEventListener("click", () => {
+  playingList = natureSounds;
   playNextAudio();
   
 
