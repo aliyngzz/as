@@ -117,7 +117,9 @@
   <div class="banner" id="banner"></div>
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
-  <button id="nature-sound-btn">Doğa Sesi</button>
+<button id="image-button">
+  <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Resmi Buton" id="image-button-img"/>
+</button>
   <button id="turkey-song-btn">Müzik</button>
 </div>
   <!-- Videolar -->
@@ -536,7 +538,23 @@ nextVideo.addEventListener('ended', () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   
+   #image-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+#image-button-img {
+  width: 100px; /* Resmin boyutunu ayarlayabilirsiniz */
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+#image-button:hover #image-button-img {
+  transform: scale(1.1); /* Hover efekti */
+}
   </script>
 </body>
 </html>
