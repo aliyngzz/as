@@ -259,9 +259,10 @@ function playNextAudio() {
 
   currentAudio.onended = () => {
     if (playingList === natureSounds) {
+     currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
       currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
     } else {
-      currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
+      
     }
     playNextAudio(); // sıradaki otomatik başlar
   };
