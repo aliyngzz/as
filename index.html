@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -135,6 +135,10 @@
 
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
+  <div id="audioControls">
+  <button onclick="toggleNatureSounds()">Doğa Sesi</button>
+  <button onclick="toggleMusic()">Müzik</button>
+</div>
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
    <button id="nature-sound-btn">
@@ -444,7 +448,17 @@ nextVideo.addEventListener('ended', () => {
   height: 150px;
   display: none;
 }
+#audioControls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  transition: opacity 0.5s ease;
+}
 
+#audioControls.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
     #contact-icon.show {
       display: block;
     }
@@ -560,7 +574,23 @@ nextVideo.addEventListener('ended', () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   
+   function startVisibilityCycle() {
+  const controls = document.getElementById("audioControls");
+
+  function showControls() {
+    controls.classList.remove("hidden");
+    setTimeout(hideControls, 5000); // 5 saniye sonra gizle
+  }
+
+  function hideControls() {
+    controls.classList.add("hidden");
+    setTimeout(showControls, 40000); // 40 saniye sonra tekrar göster
+  }
+
+  showControls(); // döngüyü başlat
+}
+
+document.addEventListener("DOMContentLoaded", startVisibilityCycle);
   </script>
 </body>
 </html>
