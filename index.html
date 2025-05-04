@@ -247,15 +247,24 @@ let currentTurkeyIndex = 0;
 let playingList = natureSounds; // Başlangıç doğa sesi
 
 function playNextAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+
   if (playingList.length === 0) return;
 
-  const nextIndex = 
-    (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
+  if (playingList === natureSounds) {
+    currentAudio = new Audio(natureSounds[currentNatureIndex]);
+    currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
+  } else {
+    currentAudio = new Audio(turkeySongs[currentTurkeyIndex]);
+    currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
+  }
 
-  const nextSong = playingList[nextIndex];
-  currentAudio.src = nextSong;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
+  currentAudio.play();
+  currentAudio.onended = playNextAudio;
+}
   });
 
   currentAudio.onended = () => {
