@@ -205,8 +205,9 @@ let natureSoundIndex = 0;
 
 // Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
-  playingList = natureSounds;
+  playingList = natureSounds; // Doğa sesini seç
   playNextAudio();
+});
 
 });
 
@@ -238,9 +239,12 @@ function playNextAudio() {
 }
 
   
+
+// Müzik butonuna tıklama
 document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  playingList = turkeySongs;
+  playingList = turkeySongs; // Müzik listesini seç
   playNextAudio();
+});
 });
 
 // Ses kaynağını değiştiren fonksiyon
