@@ -128,6 +128,26 @@
    max-width: 150px; /* Maksimum genişlik */
    display: block;
    margin: 0 auto;
+  /* Resimli Müzik Sesi Butonu */
+.audio-controls button {
+   padding: 0;  /* İç boşlukları sıfırladık */
+   border: none; /* Çerçevesiz */
+   background-color: transparent; /* Şeffaf arka plan */
+   cursor: pointer;
+   transition: background-color 0.3s;
+}
+
+.audio-controls button:hover {
+   background-color: rgba(0, 0, 0, 0.2); /* Hover efekti */
+}
+
+.audio-button-img {
+   width: 100%; /* Butonun tamamını resim kapsayacak şekilde */
+   height: auto; /* Resmin orijinal oranını korur */
+   max-width: 150px; /* Maksimum genişlik */
+   display: block;
+   margin: 0 auto;
+}
 }
   </style>
 </head>
