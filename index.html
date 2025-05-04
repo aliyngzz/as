@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="tr">
-  
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -117,9 +116,9 @@
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 <!-- Ses kontrol butonları -->
-<div class="audio-image-buttons">
-  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" id="nature-sound-img" class="audio-btn" alt="Doğa sesi butonu">
-  <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" id="turkey-song-img" class="audio-btn" alt="Müzik butonu">
+<div class="audio-controls">
+  <button id="nature-sound-btn">Doğa Sesi</button>
+  <button id="turkey-song-btn">Müzik</button>
 </div>
   <!-- Videolar -->
   <div class="video-container">
@@ -201,7 +200,7 @@ let natureSoundIndex = 0;
 
 
 // Doğa sesi butonuna tıklama
-
+document.getElementById("nature-sound-btn").addEventListener("click", () => {
   playingList = natureSounds;
   playNextAudio();
 
@@ -235,8 +234,7 @@ function playNextAudio() {
 }
 
   
-ocument.getElementById("nature-sound-img").addEventListener("click", () => {
-  playingList = natureSounds;
+document.getElementById("turkey-song-btn").addEventListener("click", () => {
   playingList = turkeySongs;
   playNextAudio();
 });
