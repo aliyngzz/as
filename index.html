@@ -201,7 +201,7 @@ let natureSoundIndex = 0;
 
 
 // Doğa sesi butonuna tıklama
-document.getElementById("nature-sound-btn").addEventListener("click", () => {
+
   playingList = natureSounds;
   playNextAudio();
 
@@ -235,7 +235,8 @@ function playNextAudio() {
 }
 
   
-document.getElementById("turkey-song-btn").addEventListener("click", () => {
+ocument.getElementById("nature-sound-img").addEventListener("click", () => {
+  playingList = natureSounds;
   playingList = turkeySongs;
   playNextAudio();
 });
