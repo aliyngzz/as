@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Animasyonlu Resimler ve Doğa Sesleri</title>
   <style>
@@ -120,7 +121,10 @@
 <button id="natureSoundBtn">
    <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" style="width: 100px; height: auto;" />
 </button>
-  <button id="turkey-song-btn">Müzik</button>
+  <div class="controls">
+  <button id="natureSoundBtn">DOĞA</button>
+  <!-- Müzik butonu yerine resim -->
+  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" id="musicImageBtn" alt="Müzik Başlat" style="width: 100px; cursor: pointer; border-radius: 10px;">
 </div>
   <!-- Videolar -->
   <div class="video-container">
@@ -236,9 +240,10 @@ function playNextAudio() {
 }
 
   
-document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  playingList = turkeySongs;
+document.getElementById("musicImageBtn").addEventListener("click", () => {
+  playingList = musicSounds;
   playNextAudio();
+
 });
 
 // Ses kaynağını değiştiren fonksiyon
