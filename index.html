@@ -202,7 +202,7 @@ document.getElementById("nature-sound-btn").addEventListener("click", () => {
     currentAudio.play();
     natureSoundIndex = (natureSoundIndex + 1) % natureSounds.length; // Doğa sesini sırayla çal
   
-});
+ };
   currentAudio.onended = () => {
     currentAudio.src = natureSounds[natureSoundIndex];
     currentAudio.play();
@@ -218,7 +218,7 @@ document.getElementById("turkey-song-btn").addEventListener("click", () => {
     currentAudio.play();
     musicIndex = (musicIndex + 1) % turkeySongs.length;  // Müzik sırasını değiştir
   
-});
+ };
   currentAudio.onended = () => {
     currentAudio.src = turkeySongs[musicIndex];
     currentAudio.play();
