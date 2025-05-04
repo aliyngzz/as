@@ -410,12 +410,6 @@ nextVideo.addEventListener('ended', () => {
   </script>
 
   <div id="contact-icon" title="İletişim"></div>
-
-<div id="imageButtons" style="position: fixed; bottom: 10px; width: 100%; text-align: center;">
-  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Buton 1" style="width: 80px; margin: 10px;" onclick="toggleNatureSounds()" />
-  <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Buton 2" style="width: 80px; margin: 10px;" onclick="toggleMusic()" />
-</div>
-
   
   <div id="contact-modal">
     <form action="https://formspree.io/f/xvgaonbz" method="POST">
@@ -566,23 +560,7 @@ nextVideo.addEventListener('ended', () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   <script>
-function cycleImageButtons() {
-  const buttons = document.getElementById('imageButtons');
-  buttons.style.display = 'block'; // göster
-
-  setTimeout(() => {
-    buttons.style.display = 'none'; // gizle
-
-    setTimeout(() => {
-      cycleImageButtons(); // tekrar başla
-    }, 30000); // 30 saniye gizli kalsın
-  }, 5000); // 5 saniye görünsün
-}
-
-// Sayfa yüklendiğinde döngüyü başlat
-window.onload = cycleImageButtons;
-
+   
   </script>
 </body>
 </html>
