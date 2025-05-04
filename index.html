@@ -13,7 +13,14 @@
       overflow: hidden;
       font-family: Arial, sans-serif; font-size: 60px;
     }
+<style>
+  #nature-sound-btn,
+  #turkey-song {
+    display: none; /* başlangıçta gizli */
+  }
+</style>
 
+    
     .video-container {
       position: fixed;
       top: 0; left: 0;
@@ -141,10 +148,10 @@
 </div>
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
-   <button id="nature-sound-btn">
+  <button id="nature-sound-btn" onclick="toggleNatureSounds()">Doğa Sesi</button>
       <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" class="audio-button-img">
    </button>
-  <button id="turkey-song-btn">
+<button id="turkey-song" onclick="toggleMusic()">Müzik</button>
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
@@ -591,6 +598,37 @@ nextVideo.addEventListener('ended', () => {
 }
 
 document.addEventListener("DOMContentLoaded", startVisibilityCycle);
+    <script>
+  function toggleNatureSounds() {
+    // Doğa sesini aç/kapatacak kod buraya gelecek
+    console.log("Doğa sesi aç/kapat");
+  }
+
+  function toggleMusic() {
+    // Müzik aç/kapat kodu buraya gelecek
+    console.log("Müzik aç/kapat");
+  }
+
+  function showButtons() {
+    document.getElementById('nature-sound-btn').style.display = 'inline-block';
+    document.getElementById('turkey-song').style.display = 'inline-block';
+    
+    setTimeout(hideButtons, 5000); // 5 saniye sonra gizle
+  }
+
+  function hideButtons() {
+    document.getElementById('nature-sound-btn').style.display = 'none';
+    document.getElementById('turkey-song').style.display = 'none';
+
+    setTimeout(showButtons, 40000); // 40 saniye sonra tekrar göster
+  }
+
+  // Sayfa yüklendiğinde döngüyü başlat
+  window.onload = function() {
+    showButtons();
+  };
+
+
   </script>
 </body>
 </html>
