@@ -560,7 +560,25 @@ nextVideo.addEventListener('ended', () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   
-  </script>
+   <script>
+function startImageButtonCycle() {
+  const buttons = document.querySelectorAll('.audio-button-img');
+
+  function showButtons() {
+    buttons.forEach(btn => btn.style.display = 'inline');
+    setTimeout(hideButtons, 5000); // 5 saniye sonra gizle
+  }
+
+  function hideButtons() {
+    buttons.forEach(btn => btn.style.display = 'none');
+    setTimeout(showButtons, 30000); // 30 saniye sonra tekrar göster
+  }
+
+  showButtons(); // Başlat
+}
+
+window.onload = startImageButtonCycle;
+</script>
+  
 </body>
 </html>
