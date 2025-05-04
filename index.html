@@ -129,26 +129,6 @@
    display: block;
    margin: 0 auto;
 }
-  /* Resimli Müzik Sesi Butonu */
-.audio-controls button {
-   padding: 0;  /* İç boşlukları sıfırladık */
-   border: none; /* Çerçevesiz */
-   background-color: transparent; /* Şeffaf arka plan */
-   cursor: pointer;
-   transition: background-color 0.3s;
-}
-
-.audio-controls button:hover {
-   background-color: rgba(0, 0, 0, 0.2); /* Hover efekti */
-}
-
-.audio-button-img {
-   width: 100%; /* Butonun tamamını resim kapsayacak şekilde */
-   height: auto; /* Resmin orijinal oranını korur */
-   max-width: 150px; /* Maksimum genişlik */
-   display: block;
-   margin: 0 auto;
-}  
   </style>
 </head>
 <body>
@@ -159,10 +139,8 @@
 <div class="audio-controls">
    <button id="nature-sound-btn">
       <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" class="audio-button-img">
-   
-   <button onclick="toggleAudio()">
-        <img class="audio-button-img" src="path_to_your_image/WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik Sesi">
-    </button>
+   </button>
+   <button id="turkey-song-btn">Müzik</button>
 </div>
   <!-- Videolar -->
   <div class="video-container">
