@@ -560,7 +560,27 @@ nextVideo.addEventListener('ended', () => {
 
       toggleButtonVisibility(); // İlk gösterim
     });
-   
-  </script>
+   <script>
+function cycleAudioButtons() {
+  const buttons = document.querySelectorAll('.audio-button-img');
+
+  // Göster
+  buttons.forEach(btn => btn.style.display = 'inline');
+
+  setTimeout(() => {
+    // Gizle
+    buttons.forEach(btn => btn.style.display = 'none');
+
+    setTimeout(() => {
+      // Döngüyü başa al
+      cycleAudioButtons();
+    }, 30000); // 30 saniye gizli kalsın
+  }, 5000); // 5 saniye görünsün
+}
+
+// Sayfa yüklendiğinde başlat
+window.onload = cycleAudioButtons;
+</script>
+  
 </body>
 </html>
