@@ -154,6 +154,7 @@
   <script>
   // Doğa sesleri ve   Müziklerin dosya listeleri
 // Doğa sesleri ve Müziklerin dosya listeleri
+// Doğa sesleri ve Müziklerin dosya listeleri
 const natureSounds = [
   "birds-in-forest-on-sunny-day-14444.mp3",
   "forest-birds-summer-sweden-18333.mp3",
@@ -195,45 +196,25 @@ let currentAudio = document.getElementById("bg-music");
 // Doğa sesi butonuna tıklama
 let natureSoundIndex = 0;
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
-  playingList = natureSounds; // Doğa sesini seç
-  playNextAudio('nature');
+  currentAudio.src = natureSounds[natureSoundIndex];
+  currentAudio.play();
+  natureSoundIndex = (natureSoundIndex + 1) % natureSounds.length;  // Sıradaki doğa sesine geç
+  currentAudio.onended = () => {
+    currentAudio.src = natureSounds[natureSoundIndex];
+    currentAudio.play();
+  };
 });
 
 // Müzik butonuna tıklama
+let musicIndex = 0;
 document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  playingList = turkeySongs; // Müzik listesini seç
-  playNextAudio('music');
-});
-
-// Ses kaynağını değiştiren fonksiyon
-let currentNatureIndex = 0;
-let currentTurkeyIndex = 0;
-
-function playNextAudio(type) {
-  let nextSong;
-  
-  if (type === 'nature') {
-    nextSong = natureSounds[currentNatureIndex];
-    currentAudio.src = nextSong;
-    currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
-  } else if (type === 'music') {
-    nextSong = turkeySongs[currentTurkeyIndex];
-    currentAudio.src = nextSong;
-    currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
-  }
-  
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-
+  currentAudio.src = turkeySongs[musicIndex];
+  currentAudio.play();
+  musicIndex = (musicIndex + 1) % turkeySongs.length;  // Sıradaki müziğe geç
   currentAudio.onended = () => {
-    playNextAudio(type); // sırasıyla çalmaya devam etsin
+    currentAudio.src = turkeySongs[musicIndex];
+    currentAudio.play();
   };
-}
-
-// Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
-window.addEventListener("load", () => {
-  playNextAudio('nature');  // Başlangıçta doğa sesini başlat
 });
 
 
