@@ -153,6 +153,7 @@
 <audio id="bg-music" autoplay></audio>
   <script>
   // Doğa sesleri ve   Müziklerin dosya listeleri
+// Doğa sesleri ve Müziklerin dosya listeleri
 const natureSounds = [
   "birds-in-forest-on-sunny-day-14444.mp3",
   "forest-birds-summer-sweden-18333.mp3",
@@ -175,90 +176,65 @@ const natureSounds = [
   "singing-barn-swallows-3-306979.mp3",
   "mar-agitado-272999.mp3",
   "french-coutryside-sunrise-17100.mp3",
- 
-
- 
-
   "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
   "bird-sounds-of-knysna-20130.mp3",
   "bird-singing-and-water-splashing-nature-sounds-7802.mp3",
-"haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+  "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
+  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
   "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
-
-    
 ];
 
 const turkeySongs = [
   "Turku-Ervahi-Ezelden-14 (1).mp3",
   "Erdal-Erzincan-Deyis.mp3"
-  
 ];
 
 let currentAudio = document.getElementById("bg-music");
 
 // Doğa sesi butonuna tıklama
-
 let natureSoundIndex = 0;
-
-
-// Doğa sesi butonuna tıklama
 document.getElementById("nature-sound-btn").addEventListener("click", () => {
   playingList = natureSounds; // Doğa sesini seç
-  playNextAudio();
+  playNextAudio('nature');
+});
+
+// Müzik butonuna tıklama
+document.getElementById("turkey-song-btn").addEventListener("click", () => {
+  playingList = turkeySongs; // Müzik listesini seç
+  playNextAudio('music');
 });
 
 // Ses kaynağını değiştiren fonksiyon
 let currentNatureIndex = 0;
 let currentTurkeyIndex = 0;
-let playingList = natureSounds; // Başlangıç doğa sesi
 
-function playNextAudio() {
-  if (playingList.length === 0) return;
-
-  const nextIndex = 
-    (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
-
-  const nextSong = playingList[nextIndex];
-  currentAudio.src = nextSong;
+function playNextAudio(type) {
+  let nextSong;
+  
+  if (type === 'nature') {
+    nextSong = natureSounds[currentNatureIndex];
+    currentAudio.src = nextSong;
+    currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
+  } else if (type === 'music') {
+    nextSong = turkeySongs[currentTurkeyIndex];
+    currentAudio.src = nextSong;
+    currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
+  }
+  
   currentAudio.play().catch((error) => {
     console.error('Ses oynatılırken hata:', error);
   });
 
   currentAudio.onended = () => {
-    if (playingList === natureSounds) {
-      currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
-    } else {
-      currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
-    }
-    playNextAudio(); // sıradaki otomatik başlar
+    playNextAudio(type); // sırasıyla çalmaya devam etsin
   };
 }
 
-  
-
-// Müzik butonuna tıklama
-document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  playingList = turkeySongs; // Müzik listesini seç
-  playNextAudio();
-});
-
-
-// Ses kaynağını değiştiren fonksiyon
-function changeAudioSource(songList) {
-  const currentSong = songList[Math.floor(Math.random() * songList.length)];
-  currentAudio.src = currentSong;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-}
-
-
 // Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
 window.addEventListener("load", () => {
-  changeAudioSource(natureSounds);  // Bu satır doğa sesini başlatacak şekilde değiştirildi
-  });
+  playNextAudio('nature');  // Başlangıçta doğa sesini başlat
+});
 
 
      
