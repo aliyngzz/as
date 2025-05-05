@@ -148,18 +148,7 @@
   <div class="video-container">
   <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
   </div>
-<div class="music-controls">
-    <!-- Sol İkon: Geri Al -->
-    <button class="control-btn" id="prev-music"><i class="fas fa-backward"></i></button>
 
-    <!-- Müzik Butonu (Oynat/Duraklat) -->
-    <button class="control-btn" id="music-toggle">
-        WhatsApp Image 2025-05-04 at 01.46.55.jpeg
-    </button>
-
-    <!-- Sağ İkon: İleri Al -->
-    <button class="control-btn" id="next-music"><i class="fas fa-forward"></i></button>
-</div>
   <!-- Resimler -->
   <div class="image-container">
     <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
@@ -179,7 +168,7 @@
   </div>
  <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
- <audio id="bg-music" src="path-to-your-music-file.mp3" preload="auto"></audio>
+ 
   <!-- Arka Plan Müzikleri -->
 <audio id="bg-music" autoplay></audio>
   <script>
@@ -620,35 +609,6 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
-</script>
-
-
-  <script>
-    const audio = document.getElementById('bg-music');
-    const prevButton = document.getElementById('prev-music');
-    const nextButton = document.getElementById('next-music');
-    const playButton = document.getElementById('music-toggle'); // Butonun id'si değiştirildi
-
-    // Müzik başlatma/durdurma
-    playButton.addEventListener('click', function () {
-        if (audio.paused) {
-            audio.play();
-            playButton.innerHTML = 'Duraklat'; // Buton üzerinde "Duraklat" yazacak
-        } else {
-            audio.pause();
-            playButton.innerHTML = 'Oynat'; // Buton üzerinde "Oynat" yazacak
-        }
-    });
-
-    // Müzik ileri alma
-    nextButton.addEventListener('click', function () {
-        audio.currentTime += 10; // 10 saniye ileri al
-    });
-
-    // Müzik geri alma
-    prevButton.addEventListener('click', function () {
-        audio.currentTime -= 10; // 10 saniye geri al
-    });
 </script>
 </body>
 </html>
