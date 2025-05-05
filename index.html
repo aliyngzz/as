@@ -217,35 +217,6 @@ const turkeySongs = [
 ];
 
 let currentAudio = document.getElementById("bg-music");
-  </script>
-   <script>
- const turkeySong = [
-     "Turku-Ervahi-Ezelden-14 (1).mp3",
-     "Erdal-Erzincan-Deyis.mp3"
-   
-  ];
-
-  // Rastgele müzik seç
-  const randomIndex = Math.floor(Math.random() * musicList.length);
-  const selectedMusic = musicList[randomIndex];
-
-  // Audio elementini al
-  const audioElement = document.getElementById("background-music");
-  audioElement.src = selectedMusic;
-
-  // Müzik yüklenince rastgele bir yerden başlat
-  audioElement.onloadedmetadata = () => {
-    const duration = audioElement.duration;
-    const randomTime = Math.random() * duration;
-    audioElement.currentTime = randomTime;
-
-    // Oynatmayı dene (tarayıcı engeline karşı güvenli)
-    audioElement.play().catch(err => {
-      console.log("Oynatma engellendi (tarayıcı kısıtlaması olabilir):", err);
-    });
-  };
-</script>
-</script>
 
 // Doğa sesi butonuna tıklama
 
@@ -590,8 +561,6 @@ nextVideo.addEventListener('ended', () => {
       toggleButtonVisibility(); // İlk gösterim
     });
     </script>
-
-
    <script>
 function startImageButtonCycle() {
   const buttons = document.querySelectorAll('.audio-button-img');
@@ -610,7 +579,36 @@ function startImageButtonCycle() {
 }
 
 window.onload = startImageButtonCycle;
+     </script>
+<script>
+  const resim = document.getElementById("resim");
+
+  function gosterGizle() {
+    resim.style.visibility = "visible"; // 5 saniye görünür
+    setTimeout(() => {
+      resim.style.visibility = "hidden"; // 40 saniye gizli
+    }, 5000);
+  }
+
+  gosterGizle(); // İlk başlatma
+  setInterval(gosterGizle, 45000); // Her 45 saniyede bir tekrarla
+
+     
 </script>
-  
+  <script>
+  const image = document.getElementById('top-center-image');
+
+  function toggleImage() {
+    image.style.display = 'block'; // Göster
+    setTimeout(() => {
+      image.style.display = 'none'; // 5 saniye sonra gizle
+    }, 5000);
+  }
+
+  toggleImage(); // Başlangıçta çalıştır
+
+  // Her 45 saniyede bir (5 göster + 40 gizli) döngü
+  setInterval(toggleImage, 45000);
+</script>
 </body>
 </html>
