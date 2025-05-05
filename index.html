@@ -217,22 +217,34 @@ const turkeySongs = [
 ];
 
 let currentAudio = document.getElementById("bg-music");
-    <script>
-    // Rastgele müzik seç
-  const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
-  audioElement.src = randomMusic;
+  </script>
+   <script>
+ const turkeySong = [
+     "Turku-Ervahi-Ezelden-14 (1).mp3",
+     "Erdal-Erzincan-Deyis.mp3"
+   
+  ];
 
-  // Yüklendikten sonra rastgele bir saniyeden başlat
-  audioElement.addEventListener("loadedmetadata", () => {
+  // Rastgele müzik seç
+  const randomIndex = Math.floor(Math.random() * musicList.length);
+  const selectedMusic = musicList[randomIndex];
+
+  // Audio elementini al
+  const audioElement = document.getElementById("background-music");
+  audioElement.src = selectedMusic;
+
+  // Müzik yüklenince rastgele bir yerden başlat
+  audioElement.onloadedmetadata = () => {
     const duration = audioElement.duration;
     const randomTime = Math.random() * duration;
     audioElement.currentTime = randomTime;
-  });
 
-  // Oynat
-  audioElement.play().catch(err => {
-    console.log("Oynatma engellendi (tarayıcı kısıtlaması olabilir):", err);
-  });
+    // Oynatmayı dene (tarayıcı engeline karşı güvenli)
+    audioElement.play().catch(err => {
+      console.log("Oynatma engellendi (tarayıcı kısıtlaması olabilir):", err);
+    });
+  };
+</script>
 </script>
 
 // Doğa sesi butonuna tıklama
