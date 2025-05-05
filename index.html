@@ -137,19 +137,23 @@
   <div class="banner" id="banner"></div>
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
-   <button id="nature-sound-btn">
-     <br>
-<!-- Zaman Çubuğu (Doğa Sesi) -->
-<input type="range" id="nature-slider" min="0" value="0" step="1">
-<audio id="nature-sound" src="nature.mp3"></audio>
-      <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" class="audio-button-img">
-   </button>
-  <button id="turkey-song-btn"><br>
-<!-- Zaman Çubuğu (Müzik) -->
-<input type="range" id="music-slider" min="0" value="0" step="1">
-<audio id="turkey-song" src="music.mp3"></audio>  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
-</button>
-</div>
+    <!-- Doğa Sesi Kontrolü -->
+    <div class="audio-control">
+        <button id="nature-sound-btn">Doğa Sesi</button>
+        <button id="prev-nature">←</button>
+        <button id="next-nature">→</button>
+        <audio id="nature-sound" src="nature.mp3"></audio>
+        <input type="range" id="nature-slider" min="0" value="0" step="1">
+        <button id="nature-toggle">Doğa Sesi Başlat</button>
+    </div>
+ <div class="audio-control">
+        <button id="turkey-song-btn">Müzik</button>
+        <button id="prev-music">←</button>
+        <button id="next-music">→</button>
+        <audio id="turkey-song" src="turkey-song.mp3"></audio>
+        <input type="range" id="music-slider" min="0" value="0" step="1">
+        <button id="music-toggle">Müziği Başlat</button>
+    </div>
   <!-- Videolar -->
   <div class="video-container">
   <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
@@ -529,7 +533,79 @@ nextVideo.addEventListener('ended', () => {
     #cancel-btn:hover {
       background-color: #e53935;
     }
+/* Genel stilde tüm sayfa için temel stil */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
 
+.audio-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.audio-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.audio-control button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.audio-control button:hover {
+    background-color: #0056b3;
+}
+
+.audio-control input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* İleri ve geri butonları */
+button[id^="prev-"], button[id^="next-"] {
+    width: 48%;
+    font-size: 18px;
+    padding: 10px;
+}
+
+button[id^="prev-"]:hover, button[id^="next-"]:hover {
+    background-color: #333;
+}
+
+/* Zaman çubuğu düzeni */
+input[type="range"] {
+    background-color: #ddd;
+    height: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type="range"]:focus {
+    background-color: #007bff;
+}
   </style>
 
   <script>
