@@ -138,10 +138,16 @@
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
    <button id="nature-sound-btn">
+     <br>
+<!-- Zaman Çubuğu (Doğa Sesi) -->
+<input type="range" id="nature-slider" min="0" value="0" step="1">
+<audio id="nature-sound" src="nature.mp3"></audio>
       <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" class="audio-button-img">
    </button>
-  <button id="turkey-song-btn">
-  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
+  <button id="turkey-song-btn"><br>
+<!-- Zaman Çubuğu (Müzik) -->
+<input type="range" id="music-slider" min="0" value="0" step="1">
+<audio id="turkey-song" src="music.mp3"></audio>  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
   <!-- Videolar -->
@@ -595,6 +601,8 @@ window.onload = startImageButtonCycle;
 
      
 </script>
+
+  
   <script>
   const image = document.getElementById('top-center-image');
 
@@ -609,6 +617,40 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
+
+<script>
+const natureAudio = document.getElementById('nature-sound');
+const natureSlider = document.getElementById('nature-slider');
+
+const musicAudio = document.getElementById('turkey-song');
+const musicSlider = document.getElementById('music-slider');
+
+// Zaman çubuğunu güncelleme (doğa sesi)
+natureAudio.addEventListener('timeupdate', () => {
+    natureSlider.value = natureAudio.currentTime;
+});
+natureAudio.addEventListener('loadedmetadata', () => {
+    natureSlider.max = natureAudio.duration;
+});
+natureSlider.addEventListener('input', () => {
+    natureAudio.currentTime = natureSlider.value;
+});
+
+// Zaman çubuğunu güncelleme (müzik)
+musicAudio.addEventListener('timeupdate', () => {
+    musicSlider.value = musicAudio.currentTime;
+});
+musicAudio.addEventListener('loadedmetadata', () => {
+    musicSlider.max = musicAudio.duration;
+});
+musicSlider.addEventListener('input', () => {
+    musicAudio.currentTime = musicSlider.value;
+});
+
 </script>
+
+
+
+  
 </body>
 </html>
