@@ -595,6 +595,20 @@ window.onload = startImageButtonCycle;
 
      
 </script>
-  
+  <script>
+  const image = document.getElementById('top-center-image');
+
+  function toggleImage() {
+    image.style.display = 'block'; // Göster
+    setTimeout(() => {
+      image.style.display = 'none'; // 5 saniye sonra gizle
+    }, 5000);
+  }
+
+  toggleImage(); // Başlangıçta çalıştır
+
+  // Her 45 saniyede bir (5 göster + 40 gizli) döngü
+  setInterval(toggleImage, 45000);
+</script>
 </body>
 </html>
