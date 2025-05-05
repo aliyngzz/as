@@ -195,21 +195,14 @@ const natureSounds = [
   "singing-barn-swallows-3-306979.mp3",
   "mar-agitado-272999.mp3",
   "french-coutryside-sunrise-17100.mp3",
- 
-
- 
-
   "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
   "bird-sounds-of-knysna-20130.mp3",
   "bird-singing-and-water-splashing-nature-sounds-7802.mp3",
-"haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
 
+<audio id="audioPlayer" autoplay controls hidden></audio>
     
 ];
-
+script>
 const turkeySongs = [
   "Turku-Ervahi-Ezelden-14 (1).mp3",
   "Erdal-Erzincan-Deyis.mp3",
@@ -217,9 +210,44 @@ const turkeySongs = [
      "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
      "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
      "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
-     "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3"
+     "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
+  "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
+"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
 ];
+// MP3 klasör yolu
+const folder = "mp3/";
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+shuffleArray(turkeySongs);
+
+let currentIndex = 0;
+const audio = document.getElementById("audioPlayer");
+
+audio.src = folder + turkeySongs[currentIndex];
+audio.play();
+
+audio.addEventListener("ended", function () {
+  currentIndex++;
+  if (currentIndex >= turkeySongs.length) {
+    shuffleArray(turkeySongs);
+    currentIndex = 0;
+  }
+  audio.src = folder + turkeySongs[currentIndex];
+  audio.play();
+});
+</script>
+
+
+
+    
 let currentAudio = document.getElementById("bg-music");
 
 // Doğa sesi butonuna tıklama
