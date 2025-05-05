@@ -217,6 +217,22 @@ const turkeySongs = [
 ];
 
 let currentAudio = document.getElementById("bg-music");
+    // Rastgele müzik seç
+  const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
+  audioElement.src = randomMusic;
+
+  // Yüklendikten sonra rastgele bir saniyeden başlat
+  audioElement.addEventListener("loadedmetadata", () => {
+    const duration = audioElement.duration;
+    const randomTime = Math.random() * duration;
+    audioElement.currentTime = randomTime;
+  });
+
+  // Oynat
+  audioElement.play().catch(err => {
+    console.log("Oynatma engellendi (tarayıcı kısıtlaması olabilir):", err);
+  });
+</script>
 
 // Doğa sesi butonuna tıklama
 
