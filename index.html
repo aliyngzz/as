@@ -634,6 +634,7 @@ natureAudio.addEventListener('loadedmetadata', () => {
 });
 natureSlider.addEventListener('input', () => {
     natureAudio.currentTime = natureSlider.value;
+    natureAudio.play(); // Yeni konumdan devam etmesi için
 });
 
 // Zaman çubuğunu güncelleme (müzik)
@@ -645,6 +646,31 @@ musicAudio.addEventListener('loadedmetadata', () => {
 });
 musicSlider.addEventListener('input', () => {
     musicAudio.currentTime = musicSlider.value;
+    musicAudio.play(); // Yeni konumdan devam etmesi için
+});
+
+// Müzik ileri alma
+nextButton.addEventListener('click', function () {
+    musicAudio.currentTime += 10; // 10 saniye ileri al
+    musicAudio.play(); // İleri alındıktan sonra müziğin çalmasını sağlar
+});
+
+// Müzik geri alma
+prevButton.addEventListener('click', function () {
+    musicAudio.currentTime -= 10; // 10 saniye geri al
+    musicAudio.play(); // Geri alındıktan sonra müziğin çalmasını sağlar
+});
+
+// Doğa sesi ileri alma
+nextButton.addEventListener('click', function () {
+    natureAudio.currentTime += 10; // 10 saniye ileri al
+    natureAudio.play(); // İleri alındıktan sonra doğa sesinin çalmasını sağlar
+});
+
+// Doğa sesi geri alma
+prevButton.addEventListener('click', function () {
+    natureAudio.currentTime -= 10; // 10 saniye geri al
+    natureAudio.play(); // Geri alındıktan sonra doğa sesinin çalmasını sağlar
 });
 
 </script>
