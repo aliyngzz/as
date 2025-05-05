@@ -567,7 +567,7 @@ function startImageButtonCycle() {
 
   function showButtons() {
     buttons.forEach(btn => btn.style.display = 'inline');
-    setTimeout(hideButtons, 9000); // 5 saniye sonra gizle
+    setTimeout(hideButtons, 12000); // 5 saniye sonra gizle
   }
 
   function hideButtons() {
@@ -587,7 +587,7 @@ window.onload = startImageButtonCycle;
     resim.style.visibility = "visible"; // 5 saniye görünür
     setTimeout(() => {
       resim.style.visibility = "hidden"; // 40 saniye gizli
-    }, 9000);
+    }, 12000);
   }
 
   gosterGizle(); // İlk başlatma
@@ -602,7 +602,7 @@ window.onload = startImageButtonCycle;
     image.style.display = 'block'; // Göster
     setTimeout(() => {
       image.style.display = 'none'; // 8 saniye sonra gizle
-    }, 8000);
+    }, 12000);
   }
 
   toggleImage(); // Başlangıçta çalıştır
