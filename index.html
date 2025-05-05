@@ -579,6 +579,20 @@ function startImageButtonCycle() {
 }
 
 window.onload = startImageButtonCycle;
+<script>
+  const resim = document.getElementById("resim");
+
+  function gosterGizle() {
+    resim.style.visibility = "visible"; // 5 saniye görünür
+    setTimeout(() => {
+      resim.style.visibility = "hidden"; // 40 saniye gizli
+    }, 5000);
+  }
+
+  gosterGizle(); // İlk başlatma
+  setInterval(gosterGizle, 45000); // Her 45 saniyede bir tekrarla
+
+     
 </script>
   
 </body>
