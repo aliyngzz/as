@@ -137,23 +137,13 @@
   <div class="banner" id="banner"></div>
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
-    <!-- Doğa Sesi Kontrolü -->
-    <div class="audio-control">
-        <button id="nature-sound-btn">Doğa Sesi</button>
-        <button id="prev-nature">←</button>
-        <button id="next-nature">→</button>
-        <audio id="nature-sound" src="nature.mp3"></audio>
-        <input type="range" id="nature-slider" min="0" value="0" step="1">
-        <button id="nature-toggle">Doğa Sesi Başlat</button>
-    </div>
- <div class="audio-control">
-        <button id="turkey-song-btn">Müzik</button>
-        <button id="prev-music">←</button>
-        <button id="next-music">→</button>
-        <audio id="turkey-song" src="turkey-song.mp3"></audio>
-        <input type="range" id="music-slider" min="0" value="0" step="1">
-        <button id="music-toggle">Müziği Başlat</button>
-    </div>
+   <button id="nature-sound-btn">
+      <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" class="audio-button-img">
+   </button>
+  <button id="turkey-song-btn">
+  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
+</button>
+</div>
   <!-- Videolar -->
   <div class="video-container">
   <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
@@ -533,79 +523,7 @@ nextVideo.addEventListener('ended', () => {
     #cancel-btn:hover {
       background-color: #e53935;
     }
-/* Genel stilde tüm sayfa için temel stil */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-}
 
-.audio-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.audio-control {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-.audio-control button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-}
-
-.audio-control button:hover {
-    background-color: #0056b3;
-}
-
-.audio-control input[type="range"] {
-    width: 100%;
-    margin: 10px 0;
-}
-
-/* İleri ve geri butonları */
-button[id^="prev-"], button[id^="next-"] {
-    width: 48%;
-    font-size: 18px;
-    padding: 10px;
-}
-
-button[id^="prev-"]:hover, button[id^="next-"]:hover {
-    background-color: #333;
-}
-
-/* Zaman çubuğu düzeni */
-input[type="range"] {
-    background-color: #ddd;
-    height: 5px;
-    border-radius: 5px;
-    outline: none;
-}
-
-input[type="range"]:focus {
-    background-color: #007bff;
-}
   </style>
 
   <script>
@@ -643,6 +561,8 @@ input[type="range"]:focus {
       toggleButtonVisibility(); // İlk gösterim
     });
     </script>
+
+
    <script>
 function startImageButtonCycle() {
   const buttons = document.querySelectorAll('.audio-button-img');
@@ -661,98 +581,7 @@ function startImageButtonCycle() {
 }
 
 window.onload = startImageButtonCycle;
-     </script>
-<script>
-  const resim = document.getElementById("resim");
-
-  function gosterGizle() {
-    resim.style.visibility = "visible"; // 5 saniye görünür
-    setTimeout(() => {
-      resim.style.visibility = "hidden"; // 40 saniye gizli
-    }, 5000);
-  }
-
-  gosterGizle(); // İlk başlatma
-  setInterval(gosterGizle, 45000); // Her 45 saniyede bir tekrarla
-
-     
 </script>
-
-  
-  <script>
-  const image = document.getElementById('top-center-image');
-
-  function toggleImage() {
-    image.style.display = 'block'; // Göster
-    setTimeout(() => {
-      image.style.display = 'none'; // 5 saniye sonra gizle
-    }, 5000);
-  }
-
-  toggleImage(); // Başlangıçta çalıştır
-
-  // Her 45 saniyede bir (5 göster + 40 gizli) döngü
-  setInterval(toggleImage, 45000);
-</script>
-<script>
-const natureAudio = document.getElementById('nature-sound');
-const natureSlider = document.getElementById('nature-slider');
-
-const musicAudio = document.getElementById('turkey-song');
-const musicSlider = document.getElementById('music-slider');
-
-// Zaman çubuğunu güncelleme (doğa sesi)
-natureAudio.addEventListener('timeupdate', () => {
-    natureSlider.value = natureAudio.currentTime;
-});
-natureAudio.addEventListener('loadedmetadata', () => {
-    natureSlider.max = natureAudio.duration;
-});
-natureSlider.addEventListener('input', () => {
-    natureAudio.currentTime = natureSlider.value;
-    natureAudio.play(); // Yeni konumdan devam etmesi için
-});
-
-// Zaman çubuğunu güncelleme (müzik)
-musicAudio.addEventListener('timeupdate', () => {
-    musicSlider.value = musicAudio.currentTime;
-});
-musicAudio.addEventListener('loadedmetadata', () => {
-    musicSlider.max = musicAudio.duration;
-});
-musicSlider.addEventListener('input', () => {
-    musicAudio.currentTime = musicSlider.value;
-    musicAudio.play(); // Yeni konumdan devam etmesi için
-});
-
-// Müzik ileri alma
-nextButton.addEventListener('click', function () {
-    musicAudio.currentTime += 10; // 10 saniye ileri al
-    musicAudio.play(); // İleri alındıktan sonra müziğin çalmasını sağlar
-});
-
-// Müzik geri alma
-prevButton.addEventListener('click', function () {
-    musicAudio.currentTime -= 10; // 10 saniye geri al
-    musicAudio.play(); // Geri alındıktan sonra müziğin çalmasını sağlar
-});
-
-// Doğa sesi ileri alma
-nextButton.addEventListener('click', function () {
-    natureAudio.currentTime += 10; // 10 saniye ileri al
-    natureAudio.play(); // İleri alındıktan sonra doğa sesinin çalmasını sağlar
-});
-
-// Doğa sesi geri alma
-prevButton.addEventListener('click', function () {
-    natureAudio.currentTime -= 10; // 10 saniye geri al
-    natureAudio.play(); // Geri alındıktan sonra doğa sesinin çalmasını sağlar
-});
-
-</script>
-
-
-
   
 </body>
 </html>
