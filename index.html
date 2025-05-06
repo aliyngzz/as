@@ -681,8 +681,67 @@ window.onload = startImageButtonCycle;
     video.addEventListener('canplay', setRandomVideoStartTime);
   </script>
 
-    
-  </script>
+    <script>
+        // Video listesini oluştur
+        const videoList = [
+            "44798-440001069_small.mp4",
+            "28746-371345147_tiny.mp4",
+            "186405-877993676_tiny.mp4",
+            "214732_tiny.mp4",
+            "35427-407130886_small.mp4",
+            "3904-175596530_medium.mp4",
+            "184972-874460313_medium.mp4",
+            "111179-689949805_tiny.mp4",
+            "158349-816637197_tiny.mp4",
+            "246856_tiny.mp4",
+            "120739-724673230_tiny.mp4",
+            "28746-371345147_tiny.mp4",
+            "57647-486227472_tiny.mp4",
+            "214732_tiny.mp4",
+            "35427-407130886_small.mp4",
+            "263208_small.mp4",
+            "242228_small.mp4",
+            "180057-863401699_small.mp4",
+            "159309-818469332.mp4",
+            "144959-785568576_medium.mp4",
+            "6847-196978755_medium.mp4",
+            "16012-268207204_small.mp4",
+            "228847_tiny.mp4",
+            "71350-538489808.mp4",
+            "71571-538974136.mp4",   
+            "854982-hd_1280_720_25fps.mp4"
+        ];
+
+        // Rastgele video seç
+        function getRandomVideo() {
+            const randomIndex = Math.floor(Math.random() * videoList.length);
+            return videoList[randomIndex];
+        }
+
+        // Video değiştirme fonksiyonu
+        function changeVideo() {
+            const video = document.getElementById("background-video");
+
+            // Rastgele seçilen videoyu yerleştir
+            const newVideoSrc = getRandomVideo();
+            video.src = newVideoSrc;
+
+            // Video yeniden başlasın
+            video.load();
+            video.play();
+        }
+
+        // Sayfa yüklendiğinde bir video başlasın
+        window.addEventListener('load', () => {
+            changeVideo(); // Sayfa yüklendiğinde rastgele bir video oynatmaya başla
+        });
+
+        // Video bitince, sıradaki videoya geçiş
+        document.getElementById("background-video").addEventListener('ended', () => {
+            changeVideo(); // Video bittiğinde bir sonraki videoya geç
+        });
+    </script>
+
 
 
 
