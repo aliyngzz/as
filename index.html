@@ -144,6 +144,22 @@
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
+<div id="visitor-counter" style="
+  position: fixed;
+  bottom: 10px;
+  left: 10px; /* SAĞDA DEĞİL, SOLDA */
+  background: rgba(255, 255, 255, 0.7);
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #000;
+  border-radius: 10px;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+">
+  Ziyaretçi Sayısı: <span id="visitor-count">0</span>
+</div>
+
+  
   <!-- Videolar -->
   <div class="video-container">
   <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
@@ -622,6 +638,22 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
+  </script>
+<script>
+// Sayacı saklamak için benzersiz bir anahtar belirliyoruz
+const COUNTER_KEY = "ziyaretci_sayisi";
+
+// Sayacı yerel depodan alıyoruz (yoksa 0 başlatılır)
+let count = localStorage.getItem(COUNTER_KEY);
+if (!count) {
+  count = 1; // İlk ziyaret
+} else {
+  count = parseInt(count) + 1;
+}
+localStorage.setItem(COUNTER_KEY, count); // Güncellenmiş değeri kaydet
+
+// Sayacı HTML'de gösteriyoruz
+document.getElementById("visitor-count").innerText = count;
 </script>
 </body>
 </html>
