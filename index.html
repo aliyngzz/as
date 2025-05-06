@@ -132,6 +132,19 @@
   </style>
 </head>
 <body>
+    <video id="background-video" autoplay loop>
+        <source src="nature-video.mp4" type="video/mp4">
+    </video>
+
+    <!-- Müzik -->
+    <audio id="turkeySong" autoplay loop>
+        <source src="turkey-song.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Doğa Sesleri -->
+    <audio id="nature-sound" autoplay loop>
+        <source src="nature-sound.mp3" type="audio/mp3">
+    </audio>
 
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
@@ -621,27 +634,26 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
-<script>
-  window.addEventListener("DOMContentLoaded", function () {
-    const video = document.getElementById("background-video");
-    const nature = document.getElementById("natureSounds");
-    const music = document.getElementById("turkeySong");
+ <script>
+        window.onload = function() {
+            // Video başlangıç süresini rastgele seçme
+            const video = document.getElementById('background-video');
+            const randomVideoStart = Math.random() * video.duration; // video süresinin içinde rastgele bir yer
+            video.currentTime = randomVideoStart;
 
-    function setRandomStart(media) {
-      media.onloadedmetadata = function () {
-        const duration = media.duration;
-        const randomTime = Math.random() * duration;
-        media.currentTime = randomTime;
-      };
-    }
+            // Müzik başlangıç süresini rastgele seçme
+            const turkeySong = document.getElementById('turkeySong');
+            const randomAudioStart = Math.random() * turkeySong.duration; // müzik süresinin içinde rastgele bir yer
+            turkeySong.currentTime = randomAudioStart;
 
-    setRandomStart(video);
-    setRandomStart(nature);
-    setRandomStart(music);
-  });
-</script>
-
-
+            // Doğa sesleri başlangıç süresini rastgele seçme
+            const natureSound = document.getElementById('nature-sound'); 
+            if (natureSound) {
+                const randomSoundStart = Math.random() * natureSound.duration; // ses süresinin içinde rastgele bir yer
+                natureSound.currentTime = randomSoundStart;
+            }
+        }
+    </script>
     
 
 </body>
