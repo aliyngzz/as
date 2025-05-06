@@ -13,6 +13,10 @@
       width: 100vw;
       overflow: hidden;
       font-family: Arial, sans-serif; font-size: 60px;
+
+      <body>
+  <h3 id="visitorCount">Ziyaretçi Sayısı: yükleniyor...</h3>
+
     }
 
     .video-container {
@@ -685,7 +689,35 @@ window.onload = startImageButtonCycle;
   <p id="visitorCountDisplay">Ziyaretçi sayısı: 0</p>
 </body>
 
+script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZ5OUMaQJSB6wl3QvBLXLCF0UVeav-J2o",
+      authDomain: "hayvan-sevgisi-47d27.firebaseapp.com",
+      databaseURL: "https://hayvan-sevgisi-47d27-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "hayvan-sevgisi-47d27",
+      storageBucket: "hayvan-sevgisi-47d27.appspot.com",
+      messagingSenderId: "66802942519",
+      appId: "1:66802942519:web:64c3b6f11c0658ca0575b2",
+      measurementId: "G-93NTC77V34"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Sayaç işlemi
+    const counterRef = ref(db, 'visits');
+    get(counterRef).then((snapshot) => {
+      let count = snapshot.exists() ? snapshot.val() : 0;
+      count++;
+      set(counterRef, count);
+      document.getElementById("visitorCount").innerText = `Ziyaretçi Sayısı: ${count}`;
+    }).catch((error) => {
+      console.error("Veritabanı hatası:", error);
+    });
+  </script>
 
 
 
