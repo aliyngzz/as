@@ -333,7 +333,10 @@ let videoIndex = Math.floor(Math.random() * videoList.length);
     
      
 
-  function changeVideo() {
+function changeVideo() {
+  // Video indexini sıradaki videoya geçir (bir sonrakine)
+  videoIndex = (videoIndex + 1) % videoList.length;
+
   const nextVideo = document.createElement('video');
   nextVideo.src = videoList[videoIndex];
   nextVideo.autoplay = true;
@@ -349,16 +352,35 @@ let videoIndex = Math.floor(Math.random() * videoList.length);
   nextVideo.style.zIndex = '-1';
   nextVideo.style.opacity = 0;
 
-  const container = document.querySelector('.video-container');
-  container.appendChild(nextVideo);
+  const currentVideo = document.querySelector('video');
+  document.body.appendChild(nextVideo);
 
-nextVideo.addEventListener('canplay', () => {
-  const oldVideo = container.querySelector('video');
-  if (oldVideo !== nextVideo && oldVideo) {
-    oldVideo.remove();
-  }
-  nextVideo.style.opacity = 1;
-});
+  nextVideo.addEventListener('canplay', () => {
+    nextVideo.style.opacity = 1;
+    if (currentVideo) {
+      currentVideo.remove();
+    }
+  });
+}
+
+// İlk videoyu sayfa yüklendiğinde başlat
+window.onload = () => {
+  const firstVideo = document.createElement('video');
+  firstVideo.src = videoList[videoIndex];
+  firstVideo.autoplay = true;
+  firstVideo.muted = true;
+  firstVideo.loop = false;
+  firstVideo.playsInline = true;
+  firstVideo.style.position = 'absolute';
+  firstVideo.style.top = 0;
+  firstVideo.style.left = 0;
+  firstVideo.style.width = '100%';
+  firstVideo.style.height = '100%';
+  firstVideo.style.objectFit = 'cover';
+  firstVideo.style.zIndex = '-1';
+  document.body.appendChild(firstVideo);
+};
+
 
 // 🟢 Video bitince sıradakine geç
 nextVideo.addEventListener('ended', () => {
