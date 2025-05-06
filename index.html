@@ -635,29 +635,25 @@ window.onload = startImageButtonCycle;
   // Sayfa yüklendiğinde ziyaretçi sayısını güncelle
   window.addEventListener('load', updateVisitorCount);
 <script>
-<script>
-    let visitorCount = localStorage.getItem('visitorCount') ? parseInt(localStorage.getItem('visitorCount')) : 0;
-    const visitorCountElement = document.getElementById('visitor-count');
+let visitorCount = 0;
+const visitorCounterElement = document.getElementById("visitor-count");
 
-    function updateVisitorCount() {
-      visitorCount++;
-      localStorage.setItem('visitorCount', visitorCount); // Sayacı localStorage'a kaydediyoruz
-      visitorCountElement.textContent = `Ziyaretçi Sayısı: ${visitorCount}`;
-    }
+function updateVisitorCount() {
+  visitorCount++;
+  visitorCounterElement.textContent = `Ziyaretçi Sayısı: ${visitorCount}`;
+}
 
-    window.addEventListener('load', () => {
-      updateVisitorCount();
-      visitorCountElement.style.display = 'block'; // İlk başta sayacı göster
-      // 10 saniye sonra sayacı gizle
-      setTimeout(() => {
-        visitorCountElement.style.display = 'none';
-        // 2 dakika sonra tekrar göster
-        setTimeout(() => {
-          visitorCountElement.style.display = 'block'; // Sayacı tekrar göster
-          updateVisitorCount(); // Ziyaretçi sayısını güncelle
-        }, 120000); // 2 dakika (120000ms)
-      }, 10000); // 10 saniye (10000ms)
-    });
+function hideVisitorCount() {
+  setTimeout(() => {
+    visitorCounterElement.style.opacity = 0;  // Sayacı kaybetmek için opacity'yi sıfırlıyoruz.
+  }, 10000);  // 10 saniye sonra kaybolacak
+}
+
+// Başlangıçta sayacın görünmesini sağlamak
+window.addEventListener("load", () => {
+  updateVisitorCount();
+  hideVisitorCount();  // Sayacın kaybolma süresi
+});
 </script>
 </body>
 </html>
