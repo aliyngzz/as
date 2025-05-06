@@ -639,38 +639,7 @@ window.onload = startImageButtonCycle;
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
 </script>
-    <script>
-  let visitorCount = localStorage.getItem('visitorCount') ? parseInt(localStorage.getItem('visitorCount')) : 0;
-
-  function updateVisitorCount() {
-    visitorCount++;
-    localStorage.setItem('visitorCount', visitorCount); // Sayacı localStorage'a kaydediyoruz
-    document.getElementById('visitor-count').textContent = `Ziyaretçi Sayısı: ${visitorCount}`;
-  }
-
-  // Sayfa yüklendiğinde ziyaretçi sayısını güncelle
-  window.addEventListener('load', updateVisitorCount);
-      </script>
-<script>
-let visitorCount = 0;
-const visitorCounterElement = document.getElementById("visitor-count");
-
-function updateVisitorCount() {
-  visitorCount++;
-  visitorCounterElement.textContent = `Ziyaretçi Sayısı: ${visitorCount}`;
-}
-
-function hideVisitorCount() {
-  setTimeout(() => {
-    visitorCounterElement.style.opacity = 0;  // Sayacı kaybetmek için opacity'yi sıfırlıyoruz.
-  }, 10000);  // 10 saniye sonra kaybolacak
-}
-
-// Başlangıçta sayacın görünmesini sağlamak
-window.addEventListener("load", () => {
-  updateVisitorCount();
-  hideVisitorCount();  // Sayacın kaybolma süresi
-});
-</script>
+   
+  
 </body>
 </html>
