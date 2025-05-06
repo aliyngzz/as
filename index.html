@@ -622,6 +622,28 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const video = document.getElementById("bgVideo");
+    const nature = document.getElementById("natureSound");
+    const music = document.getElementById("music");
+
+    function setRandomStart(media) {
+      media.onloadedmetadata = function () {
+        const duration = media.duration;
+        const randomTime = Math.random() * duration;
+        media.currentTime = randomTime;
+      };
+    }
+
+    setRandomStart(video);
+    setRandomStart(nature);
+    setRandomStart(music);
+  });
 </script>
+
+
+    
+
 </body>
 </html>
