@@ -135,6 +135,11 @@
 
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
+
+<div>
+<h2 id="visitorCount">Ziyaretçi Sayısı: 0</h2>
+</div>
+  
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
    <button id="nature-sound-btn">
@@ -625,7 +630,89 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
+
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+
+import { getDatabase, ref, set, get, child } from "firebase/database";
+
+// Firebase config zaten tanımlandı
+const db = getDatabase(app);
+
+// Ziyaretçi sayısını al
+const visitorCountRef = ref(db, 'visitorCount');
+
+// Sayacın değerini al ve 1 artır
+get(visitorCountRef).then((snapshot) => {
+  if (snapshot.exists()) {
+    const count = snapshot.val();
+    set(visitorCountRef, count + 1); // Ziyaretçi sayısını bir artır
+  } else {
+    set(visitorCountRef, 1); // Eğer veri yoksa, ilk kez ziyaret edilmiş demek
+  }
+});
+
+
+
+
+
+
+
+
+
+
+    
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <script>
+
+
+// Sayaç değerini ekranda gösterme
+get(visitorCountRef).then((snapshot) => {
+  if (snapshot.exists()) {
+    const count = snapshot.val();
+    document.getElementById("visitorCount").textContent = `Ziyaretçi Sayısı: ${count}`;
+  } else {
+    document.getElementById("visitorCount").textContent = "Ziyaretçi Sayısı: 0";
+  }
+});
+
+ </script>
+
+
+
+  
 
 </body>
 </html>
