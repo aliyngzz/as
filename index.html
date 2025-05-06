@@ -639,21 +639,6 @@ window.onload = startImageButtonCycle;
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
   </script>
-<script>
-// Sayacı saklamak için benzersiz bir anahtar belirliyoruz
-const COUNTER_KEY = "ziyaretci_sayisi";
 
-// Sayacı yerel depodan alıyoruz (yoksa 0 başlatılır)
-let count = localStorage.getItem(COUNTER_KEY);
-if (!count) {
-  count = 1; // İlk ziyaret
-} else {
-  count = parseInt(count) + 1;
-}
-localStorage.setItem(COUNTER_KEY, count); // Güncellenmiş değeri kaydet
-
-// Sayacı HTML'de gösteriyoruz
-document.getElementById("visitor-count").innerText = count;
-</script>
 </body>
 </html>
