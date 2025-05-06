@@ -625,7 +625,38 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
+
+
+<script>
+    // Sayfa yüklendikten sonra çalışacak JavaScript kodları
+    document.addEventListener("DOMContentLoaded", function () {
+      const video = document.getElementById('background-video');
+      
+      // Rastgele başlama fonksiyonu
+      function setRandomVideoStartTime() {
+        const videoDuration = video.duration; 
+        const randomTime = Math.random() * videoDuration; 
+        video.currentTime = randomTime; 
+      }
+
+      // Videonun oynatma süresi yüklendikten sonra rastgele başlatma
+      video.addEventListener('canplay', setRandomVideoStartTime);
+
+      // Video bittiğinde tekrar rastgele başlat
+      video.addEventListener('ended', function() {
+        setRandomVideoStartTime();
+      });
+    });
   </script>
+
+
+
+
+
+
+
+    
+  
 
 </body>
 </html>
