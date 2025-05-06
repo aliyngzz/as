@@ -132,19 +132,6 @@
   </style>
 </head>
 <body>
-    <video id="background-video" autoplay loop>
-        <source src="nature-video.mp4" type="video/mp4">
-    </video>
-
-    <!-- Müzik -->
-    <audio id="turkeySong" autoplay loop>
-        <source src="turkey-song.mp3" type="audio/mp3">
-    </audio>
-
-    <!-- Doğa Sesleri -->
-    <audio id="nature-sound" autoplay loop>
-        <source src="nature-sound.mp3" type="audio/mp3">
-    </audio>
 
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
@@ -225,7 +212,8 @@ const turkeySongs = [
   "Erdal-Erzincan-Deyis.mp3",
   "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
 "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-
+"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
  "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
      "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
      "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
@@ -292,16 +280,11 @@ document.getElementById("turkey-song-btn").addEventListener("click", () => {
 function changeAudioSource(songList) {
   const currentSong = songList[Math.floor(Math.random() * songList.length)];
   currentAudio.src = currentSong;
-
-  // Ses yüklendiğinde çalışacak:
-  currentAudio.onloadedmetadata = () => {
-    const duration = currentAudio.duration;
-    currentAudio.currentTime = Math.random() * duration;
-    currentAudio.play().catch((error) => {
-      console.error('Ses oynatılırken hata:', error);
-    });
-  };
+  currentAudio.play().catch((error) => {
+    console.error('Ses oynatılırken hata:', error);
+  });
 }
+
 
 // Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
 window.addEventListener("load", () => {
@@ -639,27 +622,6 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
- <script>
-        window.onload = function() {
-            // Video başlangıç süresini rastgele seçme
-            const video = document.getElementById('background-video');
-            const randomVideoStart = Math.random() * video.duration; // video süresinin içinde rastgele bir yer
-            video.currentTime = randomVideoStart;
-
-            // Müzik başlangıç süresini rastgele seçme
-            const turkeySong = document.getElementById('turkeySong');
-            const randomAudioStart = Math.random() * turkeySong.duration; // müzik süresinin içinde rastgele bir yer
-            turkeySong.currentTime = randomAudioStart;
-
-            // Doğa sesleri başlangıç süresini rastgele seçme
-            const natureSound = document.getElementById('nature-sound'); 
-            if (natureSound) {
-                const randomSoundStart = Math.random() * natureSound.duration; // ses süresinin içinde rastgele bir yer
-                natureSound.currentTime = randomSoundStart;
-            }
-        }
-    </script>
-    
-
+</script>
 </body>
 </html>
