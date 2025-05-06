@@ -145,7 +145,10 @@
 </button>
 </div>
 
-
+  <video id="background-video" autoplay muted loop>
+    <source id="video-source" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
   
   <!-- Videolar -->
   <div class="video-container">
@@ -647,6 +650,38 @@ window.onload = startImageButtonCycle;
         setRandomVideoStartTime();
       });
     });
+
+<script>
+    // Video öğesini seçiyoruz
+    const video = document.getElementById('background-video');
+    const videoSource = document.getElementById('video-source');
+
+    // Videoların URL'lerini içeren bir dizi oluşturuyoruz
+    const videos = [
+      'video1.mp4', // Buraya video dosyalarınızın URL'lerini ekleyin
+      'video2.mp4',
+      'video3.mp4'
+    ];
+
+    // Videolar arasından rastgele bir seçim yapıyoruz
+    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+
+    // Rastgele seçilen video URL'sini video elementine atıyoruz
+    videoSource.src = randomVideo;
+    video.load(); // Video kaynağını yüklemek için 'load' fonksiyonunu çağırıyoruz
+
+    // Videonun rastgele bir başlangıç zamanında başlamasını sağlamak için
+    function setRandomVideoStartTime() {
+      const videoDuration = video.duration; // Video süresi
+      const randomTime = Math.random() * videoDuration; // 0 ile video süresi arasında rastgele bir zaman
+      video.currentTime = randomTime; // Videoyu rastgele bir yerden başlat
+    }
+
+    // Video yüklenmeden önce rastgele başlatma fonksiyonunu çağırıyoruz
+    video.addEventListener('canplay', setRandomVideoStartTime);
+  </script>
+
+    
   </script>
 
 
