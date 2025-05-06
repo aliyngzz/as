@@ -11,7 +11,7 @@
       height: 100vh;
       width: 100vw;
       overflow: hidden;
-      font-family: Arial, sans-serif; font-size: 60px;
+      font-family: Arial, sans-serif;
     }
 
     .video-container {
@@ -37,12 +37,11 @@
       width: 100%;
       padding: 15px;
       text-align: center;
-      font-size: 60px;
+      font-size: 2rem;
       font-weight: bold;
       z-index: 1000;
       background: none;
       color: white;
-      text-shadow: 2px 2px 8px #000; /* Gölge ekliyoruz */
     }
 
     .nature-image {
@@ -69,84 +68,32 @@
       transform: translateX(-100vw);
       opacity: 1;
     }
-/* Ses kontrol butonları */
-.audio-controls {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-  z-index: 1001;
-}
 
-.audio-controls button {
-  padding: 10px 20px;
-  font-size: 2rem;
-  color: white;
-  background-color: transparent;
-  border: 2px solid white; /* İstersen bir çerçeve ekleyebilirsin */
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.audio-controls button:hover {
-  background-color: #45a049;
-}
     .click-message {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: white;
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: bold;
       text-align: center;
       z-index: 2000;
-    background-color: transparent; /* Arka plan tamamen şeffaf */
+      background-color: rgba(0, 0, 0, 0.7);
       padding: 20px 30px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
-    /* Resimli Doğa Sesi Butonu */
-.audio-controls button {
-   padding: 0;  /* İç boşlukları sıfırladık */
-   border: none; /* Çerçevesiz */
-   background-color: transparent; /* Şeffaf arka plan */
-   cursor: pointer;
-   transition: background-color 0.3s;
-}
-
-.audio-controls button:hover {
-   background-color: rgba(0, 0, 0, 0.2); /* Hover efekti */
-}
-
-.audio-button-img {
-   width: 100%; /* Butonun tamamını resim kapsayacak şekilde */
-   height: auto; /* Resmin orijinal oranını korur */
-   max-width: 150px; /* Maksimum genişlik */
-   display: block;
-   margin: 0 auto;
-}
   </style>
 </head>
 <body>
 
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
-<!-- Ses kontrol butonları -->
-<div class="audio-controls">
-   <button id="nature-sound-btn">
-      <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" class="audio-button-img">
-   </button>
-  <button id="turkey-song-btn">
-  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
-</button>
-</div>
+
   <!-- Videolar -->
   <div class="video-container">
-  <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
+   <video id="background-video" autoplay muted loop preload="auto" src="44798-440001069_small.mp4"></video>
   </div>
 
   <!-- Resimler -->
@@ -166,133 +113,64 @@
     <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
     <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
   </div>
- <!-- Tıklama Mesajı -->
-  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
- 
+
+  <!-- Tıklama Mesajı -->
+  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİNİ HUZUR İLE DİNLE DOĞA GÖRÜNTÜLERİNİ İZLE VE ALTTA KUŞ RESMİNE BASIN VE YORUM YAZIN LÜTFEN</div>
+
   <!-- Arka Plan Müzikleri -->
-<audio id="bg-music" autoplay></audio>
+  <audio id="bg-music" autoplay loop></audio>
+
   <script>
-  // Doğa sesleri ve   Müziklerin dosya listeleri
-const natureSounds = [
-  "birds-in-forest-on-sunny-day-14444.mp3",
-  "forest-birds-summer-sweden-18333.mp3",
-  "woodpecker-and-other-birds-23488.mp3",
-  "bees-29400.mp3",
-  "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
-  "fire-sound-310285.mp3",
-  "forest-atmosphere-002localization-poland-329733.mp3",
-  "forest-atmosphere-007localization-poland-330007.mp3",
-  "nature-sound-near-river-or-waterfall-247409.mp3",
-  "relaxing-rain-and-birds-6-minutes-52191.mp3",
-  "soft-wind-314945.mp3",
-  "soft-wind-318856.mp3",
-  "waterfall-176958 (1).mp3",
-  "waterfall-176958.mp3",
-  "water-splashing-108887.mp3",
-  "tui-birdsong-new-zealand-31660.mp3",
-  "smallwaterfall-218855.mp3",
-  "small-mountain-waterfall_nature-sound-203003.mp3",
-  "singing-barn-swallows-3-306979.mp3",
-  "mar-agitado-272999.mp3",
-  "french-coutryside-sunrise-17100.mp3",
- 
+    // Müzik dosyaları
+    const musicList = [
+      "birds-in-forest-on-sunny-day-14444.mp3",
+      "forest-birds-summer-sweden-18333.mp3",
+      "woodpecker-and-other-birds-23488.mp3",
+      "bees-29400.mp3",
+      "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+       "fire-sound-310285.mp3",
+      "forest-atmosphere-002localization-poland-329733.mp3",
+      "forest-atmosphere-007localization-poland-330007.mp3",
+      "nature-sound-near-river-or-waterfall-247409.mp3",
+      "relaxing-rain-and-birds-6-minutes-52191.mp3",
+      "soft-wind-314945.mp3",
+      "soft-wind-318856.mp3",
+      "waterfall-176958 (1).mp3",
+      "waterfall-176958.mp3",
+      "water-splashing-108887.mp3",
+      "tui-birdsong-new-zealand-31660.mp3",
+      "smallwaterfall-218855.mp3",
+      "small-mountain-waterfall_nature-sound-203003.mp3",
+      "singing-barn-swallows-3-306979.mp3",
+      "mar-agitado-272999.mp3",
+      "french-coutryside-sunrise-17100.mp3",
+      "forest-woodpecker-322636.mp3",
+      "deep-drizzle-green-noise-mix-11-241597.mp3",
+      "croaking-sound-of-frogs-in-the-forest-water-309353.mp3",
+      "cooing-doves-73616.mp3",
+      "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+      "bird-sounds-of-knysna-20130.mp3",
+      "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+      
+    ];
 
- 
+    let musicIndex = 0;
+    const music = document.getElementById("bg-music");
+    music.src = musicList[musicIndex];
+    music.volume = 0.5;
 
-  "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
-  "bird-sounds-of-knysna-20130.mp3",
-  "bird-singing-and-water-splashing-nature-sounds-7802.mp3",
+    window.addEventListener("load", () => {
+      music.play().catch(() => {
+        document.addEventListener("click", () => {
+          music.play();
+        }, { once: true });
+      });
 
-
-    
-];
-
-const turkeySongs = [
-  "Turku-Ervahi-Ezelden-14 (1).mp3",
-  "Erdal-Erzincan-Deyis.mp3",
-  "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
- "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
-     "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
-     "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-     "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
-     "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3"
-
-
-
-
-
-
-
-  
-];
-
-let currentAudio = document.getElementById("bg-music");
-
-// Doğa sesi butonuna tıklama
-
-let natureSoundIndex = 0;
-
-
-// Doğa sesi butonuna tıklama
-document.getElementById("nature-sound-btn").addEventListener("click", () => {
-  playingList = natureSounds;
-  playNextAudio();
-
-});
-
-// Ses kaynağını değiştiren fonksiyon
-let currentNatureIndex = 0;
-let currentTurkeyIndex = 0;
-let playingList = natureSounds; // Başlangıç doğa sesi
-
-function playNextAudio() {
-  if (playingList.length === 0) return;
-
-  const nextIndex = 
-    (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
-
-  const nextSong = playingList[nextIndex];
-  currentAudio.src = nextSong;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-
-  currentAudio.onended = () => {
-    if (playingList === natureSounds) {
-      currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
-    } else {
-      currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
-    }
-    playNextAudio(); // sıradaki otomatik başlar
-  };
-}
-
-  
-document.getElementById("turkey-song-btn").addEventListener("click", () => {
-  playingList = turkeySongs;
-  playNextAudio();
-});
-
-// Ses kaynağını değiştiren fonksiyon
-function changeAudioSource(songList) {
-  const currentSong = songList[Math.floor(Math.random() * songList.length)];
-  currentAudio.src = currentSong;
-  currentAudio.play().catch((error) => {
-    console.error('Ses oynatılırken hata:', error);
-  });
-}
-
-
-// Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
-window.addEventListener("load", () => {
-  changeAudioSource(natureSounds);  // Bu satır doğa sesini başlatacak şekilde değiştirildi
-  });
-
-
-     
+      setInterval(() => {
+        musicIndex = (musicIndex + 1) % musicList.length;
+        music.src = musicList[musicIndex];
+        music.play();
+     }, 60000); // 1 dakika sonra müzik değişir
 
       // Video değişimi (videoların sırayla oynatılması)
       const video = document.getElementById("background-video");
@@ -300,7 +178,12 @@ window.addEventListener("load", () => {
         "44798-440001069_small.mp4",
         "28746-371345147_tiny.mp4",
         "186405-877993676_tiny.mp4",
-             "214732_tiny.mp4",
+        "57647-486227472_tiny.mp4",
+        "44798-440001069_small.mp4",
+        "28746-371345147_tiny.mp4",
+       "186405-877993676_tiny.mp4",
+      "57647-486227472_tiny.mp4",
+      "214732_tiny.mp4",
       "35427-407130886_small.mp4",
       "3904-175596530_medium.mp4",
       "184972-874460313_medium.mp4",
@@ -309,22 +192,20 @@ window.addEventListener("load", () => {
       "246856_tiny.mp4",
       "120739-724673230_tiny.mp4",
       "28746-371345147_tiny.mp4",
+      "186405-877993676_tiny.mp4",
       "57647-486227472_tiny.mp4",
       "214732_tiny.mp4",
       "35427-407130886_small.mp4",
 "263208_small.mp4",
 "242228_small.mp4",
- 
+  "203511-921637015_small.mp4",
     "180057-863401699_small.mp4",
       "159309-818469332.mp4",
-      
+        "53167-817186036_small.mp4",
           "144959-785568576_medium.mp4",
             "6847-196978755_medium.mp4",
-              "16012-268207204_small.mp4",
- "228847_tiny.mp4",
- "71350-538489808.mp4",
- "71571-538974136.mp4",   
- "854982-hd_1280_720_25fps.mp4"
+              "16012-268207204_small.mp4"
+
         
       
       ];
@@ -349,42 +230,24 @@ window.addEventListener("load", () => {
   const container = document.querySelector('.video-container');
   container.appendChild(nextVideo);
 
-nextVideo.addEventListener('canplay', () => {
-  const oldVideo = container.querySelector('video');
-  if (oldVideo !== nextVideo && oldVideo) {
-    oldVideo.remove();
-  }
-  nextVideo.style.opacity = 1;
-});
-
-// 🟢 Video bitince sıradakine geç
-nextVideo.addEventListener('ended', () => {
-  videoIndex = (videoIndex + 1) % videoList.length; // buraya taşındı
-  changeVideo();
-
-});
- document.body.appendChild(newVideo);
-  }
-
-  // 🔻 BU KISMI BURAYA EKLE
-  const firstVideo = document.getElementById('background-video');
-  if (firstVideo) {
-    firstVideo.addEventListener('ended', () => {
-      videoIndex = 1; // İkinci videodan başla
- 
-      
-
-    changeVideo();
- });
+  nextVideo.addEventListener('canplay', () => {
+    const oldVideo = container.querySelector('video'); // sadece eski video seç
+    if (oldVideo !== nextVideo && oldVideo) {
+      oldVideo.remove(); // doğru şekilde kaldır
     }
-                                
+    nextVideo.style.opacity = 1;
+  });
+
+  videoIndex = (videoIndex + 1) % videoList.length;
+}
 
 
    
 
-    video.addEventListener('ended', () => {
-  changeVideo();
-});
+      setTimeout(() => {
+  setInterval(changeVideo, 8000);
+}, 8000); // 8 s
+    });
 
     // Rastgele konum ve animasyon
     function getRandomPosition() {
@@ -405,8 +268,8 @@ nextVideo.addEventListener('ended', () => {
       const { x, y } = getRandomPosition();
       const anim = getRandomAnimation();
 
-      image.style.left = `${x}vw`;
-      image.style.top = `${y}vh`;
+      image.style.left = ${x}vw;
+      image.style.top = ${y}vh;
 
       image.classList.add(anim);
       image.style.opacity = 1;
@@ -439,24 +302,24 @@ nextVideo.addEventListener('ended', () => {
   </div>
 
   <style>
-   #contact-icon {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  background-color: gold;
-  color: white;
-  padding: 10px 12px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1001;
-  background-image: url('kus-ikon.png');
-  background-size: cover;
-  width: 150px;
-  height: 150px;
-  display: none;
-}
+    #contact-icon {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      background-color: #ffffff33;
+      color: white;
+      padding: 10px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1001;
+      background-image: url('kus-ikon.png');
+      background-size: cover;
+      width: 150px;
+      height: 150px;
+      display: none;
+    }
 
     #contact-icon.show {
       display: block;
@@ -512,8 +375,8 @@ nextVideo.addEventListener('ended', () => {
   top: 10px; /* Sayfanın üst kısmına 10px mesafe bırakır */
   left: 50%; /* Sayfada ortalar */
   transform: translateX(-50%); /* Yatayda tam ortalanması */
-  width: 100px; /* Küçük boyut */
-  height: 100px; /* Küçük boyut */
+  width: 75px; /* Küçük boyut */
+  height: 75px; /* Küçük boyut */
   z-index: 1000; /* Üstte kalmasını sağlar */
   animation: rotateAnimation 30s linear infinite; /* Animasyonu ekledik */
 }
@@ -568,60 +431,12 @@ nextVideo.addEventListener('ended', () => {
           contactButton.classList.remove("show");
         }, 4000);
 
-        setTimeout(toggleButtonVisibility,25000); // 4 saniye görünme + 1dk
+        setTimeout(toggleButtonVisibility, 14000); // 4 saniye görünme + 10 saniye gizlenme
       }
 
       toggleButtonVisibility(); // İlk gösterim
     });
-    </script>
-   <script>
-function startImageButtonCycle() {
-  const buttons = document.querySelectorAll('.audio-button-img');
-
-  function showButtons() {
-    buttons.forEach(btn => btn.style.display = 'inline');
-    setTimeout(hideButtons, 5000); // 5 saniye sonra gizle
-  }
-
-  function hideButtons() {
-    buttons.forEach(btn => btn.style.display = 'none');
-    setTimeout(showButtons, 30000); // 30 saniye sonra tekrar göster
-  }
-
-  showButtons(); // Başlat
-}
-
-window.onload = startImageButtonCycle;
-     </script>
-<script>
-  const resim = document.getElementById("resim");
-
-  function gosterGizle() {
-    resim.style.visibility = "visible"; // 5 saniye görünür
-    setTimeout(() => {
-      resim.style.visibility = "hidden"; // 40 saniye gizli
-    }, 5000);
-  }
-
-  gosterGizle(); // İlk başlatma
-  setInterval(gosterGizle, 45000); // Her 45 saniyede bir tekrarla
-
-     
-</script>
-  <script>
-  const image = document.getElementById('top-center-image');
-
-  function toggleImage() {
-    image.style.display = 'block'; // Göster
-    setTimeout(() => {
-      image.style.display = 'none'; // 5 saniye sonra gizle
-    }, 5000);
-  }
-
-  toggleImage(); // Başlangıçta çalıştır
-
-  // Her 45 saniyede bir (5 göster + 40 gizli) döngü
-  setInterval(toggleImage, 45000);
-</script>
+   
+  </script>
 </body>
 </html>
