@@ -326,63 +326,45 @@ window.addEventListener("load", () => {
  "71571-538974136.mp4",   
  "854982-hd_1280_720_25fps.mp4"
         
-  ];
-
-  let videoIndex = Math.floor(Math.random() * videoList.length); // ✅ RASTGELE BAŞLANGIÇ
+      
+      ];
+     let videoIndex = 1;
 
   function changeVideo() {
-    videoIndex = (videoIndex + 1) % videoList.length;
+  const nextVideo = document.createElement('video');
+  nextVideo.src = videoList[videoIndex];
+  nextVideo.autoplay = true;
+  nextVideo.muted = true;
+  nextVideo.loop = false;
+  nextVideo.playsInline = true;
+  nextVideo.style.position = 'absolute';
+  nextVideo.style.top = 0;
+  nextVideo.style.left = 0;
+  nextVideo.style.width = '100%';
+  nextVideo.style.height = '100%';
+  nextVideo.style.objectFit = 'cover';
+  nextVideo.style.zIndex = '-1';
+  nextVideo.style.opacity = 0;
 
-    const nextVideo = document.createElement('video');
-    nextVideo.src = videoList[videoIndex] + '?v=' + Math.random(); // önbellek sorunu çözümü
-    nextVideo.autoplay = true;
-    nextVideo.muted = true;
-    nextVideo.loop = false;
-    nextVideo.playsInline = true;
-    nextVideo.style.position = 'absolute';
-    nextVideo.style.top = 0;
-    nextVideo.style.left = 0;
-    nextVideo.style.width = '100%';
-    nextVideo.style.height = '100%';
-    nextVideo.style.objectFit = 'cover';
-    nextVideo.style.zIndex = '-1';
-    nextVideo.style.opacity = 0;
+  const container = document.querySelector('.video-container');
+  container.appendChild(nextVideo);
 
-    const currentVideo = document.querySelector('video');
-    document.body.appendChild(nextVideo);
-
-    nextVideo.addEventListener('canplay', () => {
-      nextVideo.style.opacity = 1;
-      if (currentVideo) currentVideo.remove();
-    });
-
-    nextVideo.addEventListener('ended', () => {
-      changeVideo();
-    });
+nextVideo.addEventListener('canplay', () => {
+  const oldVideo = container.querySelector('video');
+  if (oldVideo !== nextVideo && oldVideo) {
+    oldVideo.remove();
   }
+  nextVideo.style.opacity = 1;
+});
 
-  window.onload = () => {
-    const firstVideo = document.createElement('video');
-    firstVideo.src = videoList[videoIndex] + '?v=' + Math.random(); // önbellek kırıcı
-    firstVideo.autoplay = true;
-    firstVideo.muted = true;
-    firstVideo.loop = false;
-    firstVideo.playsInline = true;
-    firstVideo.style.position = 'absolute';
-    firstVideo.style.top = 0;
-    firstVideo.style.left = 0;
-    firstVideo.style.width = '100%';
-    firstVideo.style.height = '100%';
-    firstVideo.style.objectFit = 'cover';
-    firstVideo.style.zIndex = '-1';
+// 🟢 Video bitince sıradakine geç
+nextVideo.addEventListener('ended', () => {
+  videoIndex = (videoIndex + 1) % videoList.length; // buraya taşındı
+  changeVideo();
 
-    firstVideo.addEventListener('ended', () => {
-      changeVideo();
-    });
-
-    document.body.appendChild(firstVideo);
-  };
-</script>
+});
+ document.body.appendChild(newVideo);
+  }
 
   // 🔻 BU KISMI BURAYA EKLE
   const firstVideo = document.getElementById('background-video');
