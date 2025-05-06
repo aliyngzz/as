@@ -334,7 +334,6 @@ let videoIndex = Math.floor(Math.random() * videoList.length);
      
 
 function changeVideo() {
-  // Video indexini sıradaki videoya geçir (bir sonrakine)
   videoIndex = (videoIndex + 1) % videoList.length;
 
   const nextVideo = document.createElement('video');
@@ -361,26 +360,12 @@ function changeVideo() {
       currentVideo.remove();
     }
   });
+
+  // ✅ Video bitince bir sonrakine geç
+  nextVideo.addEventListener('ended', () => {
+    changeVideo();
+  });
 }
-
-// İlk videoyu sayfa yüklendiğinde başlat
-window.onload = () => {
-  const firstVideo = document.createElement('video');
-  firstVideo.src = videoList[videoIndex];
-  firstVideo.autoplay = true;
-  firstVideo.muted = true;
-  firstVideo.loop = false;
-  firstVideo.playsInline = true;
-  firstVideo.style.position = 'absolute';
-  firstVideo.style.top = 0;
-  firstVideo.style.left = 0;
-  firstVideo.style.width = '100%';
-  firstVideo.style.height = '100%';
-  firstVideo.style.objectFit = 'cover';
-  firstVideo.style.zIndex = '-1';
-  document.body.appendChild(firstVideo);
-};
-
 
 // 🟢 Video bitince sıradakine geç
 nextVideo.addEventListener('ended', () => {
