@@ -709,7 +709,22 @@ get(visitorCountRef).then((snapshot) => {
 });
 
  </script>
+<script>
+  // Ziyaretçi sayısını localStorage'dan al
+  let visitCount = localStorage.getItem('visitCount');
 
+  if (!visitCount) {
+    visitCount = 1;
+  } else {
+    visitCount = parseInt(visitCount) + 1;
+  }
+
+  // Güncellenen değeri localStorage'a yaz
+  localStorage.setItem('visitCount', visitCount);
+
+  // Sayfaya yaz
+  document.getElementById("visitorCount").innerText = "Ziyaretçi Sayısı: " + visitCount;
+</script>
 
 
   
