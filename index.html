@@ -258,21 +258,10 @@ function playNextAudio() {
     (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
 
   const nextSong = playingList[nextIndex];
-currentAudio.pause(); // Önceki sesi durdur
-currentAudio.src = nextSong;
-currentAudio.volume = 1;
-
-currentAudio.addEventListener("loadedmetadata", () => {
-  const duration = currentAudio.duration;
-  if (!isNaN(duration) && duration > 0) {
-    const randomTime = Math.random() * duration;
-    currentAudio.currentTime = randomTime;
-  }
+  currentAudio.src = nextSong;
   currentAudio.play().catch((error) => {
-    console.error("Ses oynatılırken hata:", error);
+    console.error('Ses oynatılırken hata:', error);
   });
-}, { once: true });
-  
 
   currentAudio.onended = () => {
     if (playingList === natureSounds) {
@@ -599,7 +588,7 @@ function startImageButtonCycle() {
 
   function hideButtons() {
     buttons.forEach(btn => btn.style.display = 'none');
-    setTimeout(showButtons, 80000); // 30 saniye sonra tekrar göster
+    setTimeout(showButtons, 30000); // 30 saniye sonra tekrar göster
   }
 
   showButtons(); // Başlat
@@ -618,7 +607,7 @@ window.onload = startImageButtonCycle;
   }
 
   gosterGizle(); // İlk başlatma
-  setInterval(gosterGizle, 8000); // Her 45 saniyede bir tekrarla
+  setInterval(gosterGizle, 45000); // Her 45 saniyede bir tekrarla
 
      
 </script>
@@ -635,7 +624,7 @@ window.onload = startImageButtonCycle;
   toggleImage(); // Başlangıçta çalıştır
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
-  setInterval(toggleImage, 8000);
+  setInterval(toggleImage, 45000);
   </script>
 
 </body>
