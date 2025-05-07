@@ -268,7 +268,7 @@ currentAudio.addEventListener("loadedmetadata", () => {
     console.error('Ses oynatılırken hata:', error);
   });
 }, { once: true });
-  });
+  
 
   currentAudio.onended = () => {
     if (playingList === natureSounds) {
