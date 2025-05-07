@@ -276,6 +276,7 @@ function playNextAudio() {
   
 document.getElementById("turkey-song-btn").addEventListener("click", () => {
   playingList = turkeySongs;
+  currentTurkeyIndex = Math.floor(Math.random() * turkeySongs.length); // Rastgele başlangıç
   playNextAudio();
 });
 
