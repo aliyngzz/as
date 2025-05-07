@@ -135,10 +135,9 @@
 
 <button id="tvToggleBtn" style="
   position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 1003;
-  display: none;
+  bottom: 6px;
+  right: 6px;
+  z-index: 99999;
   padding: 8px 12px;
   background-color: #333;
   color: white;
@@ -690,6 +689,35 @@ window.onload = startImageButtonCycle;
 
 	  
   </script>
+
+
+
+
+<script>
+
+
+const video = document.getElementById("tvVideo");
+const toggleBtn = document.getElementById("tvToggleBtn");
+
+video.onpause = () => {
+  toggleBtn.style.display = "block"; // durunca buton görünür
+};
+
+toggleBtn.onclick = () => {
+  video.style.display = "block";  // video geri gelsin
+  video.play();
+  toggleBtn.style.display = "none"; // buton tekrar gizlenir
+};
+
+
+</script>
+
+
+
+
+
+
+	
 
 </body>
 </html>
