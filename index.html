@@ -589,7 +589,7 @@ function startImageButtonCycle() {
 
   function hideButtons() {
     buttons.forEach(btn => btn.style.display = 'none');
-    setTimeout(showButtons, 30000); // 30 saniye sonra tekrar göster
+    setTimeout(showButtons, 10000); // 30 saniye sonra tekrar göster
   }
 
   showButtons(); // Başlat
@@ -608,7 +608,7 @@ window.onload = startImageButtonCycle;
   }
 
   gosterGizle(); // İlk başlatma
-  setInterval(gosterGizle, 45000); // Her 45 saniyede bir tekrarla
+  setInterval(gosterGizle, 10000); // Her 45 saniyede bir tekrarla
 
      
 </script>
@@ -625,7 +625,7 @@ window.onload = startImageButtonCycle;
   toggleImage(); // Başlangıçta çalıştır
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
-  setInterval(toggleImage, 45000);
+  setInterval(toggleImage, 10000);
   </script>
 
 </body>
