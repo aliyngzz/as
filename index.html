@@ -625,7 +625,43 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
-  </script>
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  // Yukarıda tanımladığımız turkeySongs listesinden rastgele bir tanesini seç
+  const randomIndex = Math.floor(Math.random() * turkeySongs.length);
+  const selectedSong = turkeySongs[randomIndex];
+
+  // Bir ses öğesi oluştur ve sayfaya ekle
+  const audio = new Audio(selectedSong);
+  audio.autoplay = true;
+  audio.loop = false; // İstersen true yapabilirsin
+  document.body.appendChild(audio);
+</script>
+
+
+
+
+
+
+	  
+
+
+	
 
 </body>
 </html>
