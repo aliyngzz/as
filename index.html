@@ -642,16 +642,22 @@ window.onload = startImageButtonCycle;
 
 
 <script>
-  // Yukarıda tanımladığımız turkeySongs listesinden rastgele bir tanesini seç
-  const randomIndex = Math.floor(Math.random() * turkeySongs.length);
-  const selectedSong = turkeySongs[randomIndex];
+  let audio = null;
 
-  // Bir ses öğesi oluştur ve sayfaya ekle
-  const audio = new Audio(selectedSong);
-  audio.autoplay = true;
-  audio.loop = false; // İstersen true yapabilirsin
-  document.body.appendChild(audio);
+  document.getElementById('turkey-song-btn').addEventListener('click', function () {
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    const randomIndex = Math.floor(Math.random() * turkeySongs.length);
+    const selectedSong = turkeySongs[randomIndex];
+
+    audio = new Audio(selectedSong);
+    audio.play();
+  });
 </script>
+
 
 
 
