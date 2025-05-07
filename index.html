@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -135,11 +135,6 @@
 
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
-
-<div>
-<h2 id="visitorCount">Ziyaretçi Sayısı: 0</h2>
-</div>
-  
 <!-- Ses kontrol butonları -->
 <div class="audio-controls">
    <button id="nature-sound-btn">
@@ -630,147 +625,7 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 45000);
-
   </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <script>
-
-import { getDatabase, ref, set, get, child } from "firebase/database";
-
-// Firebase config zaten tanımlandı
-const db = getDatabase(app);
-
-// Ziyaretçi sayısını al
-const visitorCountRef = ref(db, 'visitorCount');
-
-// Sayacın değerini al ve 1 artır
-get(visitorCountRef).then((snapshot) => {
-  if (snapshot.exists()) {
-    const count = snapshot.val();
-    set(visitorCountRef, count + 1); // Ziyaretçi sayısını bir artır
-  } else {
-    set(visitorCountRef, 1); // Eğer veri yoksa, ilk kez ziyaret edilmiş demek
-  }
-});
-
-
-
-
-
-
-
-
-
-    
-  </script>
-
-
-
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <script>
-
-
-// Sayaç değerini ekranda gösterme
-get(visitorCountRef).then((snapshot) => {
-  if (snapshot.exists()) {
-    const count = snapshot.val();
-    document.getElementById("visitorCount").textContent = `Ziyaretçi Sayısı: ${count}`;
-  } else {
-    document.getElementById("visitorCount").textContent = "Ziyaretçi Sayısı: 0";
-  }
-});
-
- </script>
-<script>
-  // Ziyaretçi sayısını localStorage'dan al
-  let visitCount = localStorage.getItem('visitCount');
-
-  if (!visitCount) {
-    visitCount = 1;
-  } else {
-    visitCount = parseInt(visitCount) + 1;
-  }
-
-  // Güncellenen değeri localStorage'a yaz
-  localStorage.setItem('visitCount', visitCount);
-
-  // Sayfaya yaz
-  document.getElementById("visitorCount").innerText = "Ziyaretçi Sayısı: " + visitCount;
-</script>
-
-
-
-<script>
- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDZ5OUMaQJSB6wl3QvBLXLCF0UVeav-J2o",
-  authDomain: "hayvan-sevgisi-47d27.firebaseapp.com",
-  databaseURL: "https://hayvan-sevgisi-47d27-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "hayvan-sevgisi-47d27",
-  storageBucket: "hayvan-sevgisi-47d27.firebasestorage.app",
-  messagingSenderId: "66802942519",
-  appId: "1:66802942519:web:64c3b6f11c0658ca0575b2",
-  measurementId: "G-93NTC77V34"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-</script>
-
-
-
-<style>
-  #visitorCount {
-    font-size: 10px; /* Sayacı küçük yapmak için */
-    color: white; /* Beyaz yapmak için */
-    font-weight: bold; /* Daha belirgin yapmak için */
-    padding: 5px; /* İç boşluk, sayacın etrafındaki alanı artırır */
-    border-radius: 5px; /* Köşeleri yuvarlatmak için */
-    background-color: transparent; /* Arka planı şeffaf yapmak için */
-  }
-</style>
-
-
-
-
-
-
-  
-  
 
 </body>
 </html>
