@@ -258,9 +258,16 @@ function playNextAudio() {
     (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
 
   const nextSong = playingList[nextIndex];
-  currentAudio.src = nextSong;
+ currentAudio.src = nextSong;
+
+currentAudio.addEventListener("loadedmetadata", () => {
+  const duration = currentAudio.duration;
+  const randomTime = Math.random() * duration;
+  currentAudio.currentTime = randomTime;
   currentAudio.play().catch((error) => {
     console.error('Ses oynatılırken hata:', error);
+  });
+}, { once: true });
   });
 
   currentAudio.onended = () => {
