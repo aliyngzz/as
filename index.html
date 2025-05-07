@@ -133,6 +133,33 @@
 </head>
 <body>
 
+<button id="tvToggleBtn" style="
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1003;
+  display: none;
+  padding: 8px 12px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+">📺 TV</button>
+
+<!-- iframe kutusu -->
+<div id="tvBox" style="
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1002;
+">
+  <iframe src="https://tr.radioking.com/widgets/player/player.html?id=120417&autoplay=1" width="300" height="150" frameborder="0"></iframe>
+</div>
+
+	
+
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 <!-- Ses kontrol butonları -->
@@ -645,6 +672,23 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 10000);
+</script>
+
+
+<style>
+@media (max-width: 768px) {
+  #tvBox {
+    display: none;
+  }
+  #tvToggleBtn {
+    display: block;
+  }
+}
+
+
+
+
+	  
   </script>
 
 </body>
