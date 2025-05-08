@@ -91,6 +91,9 @@
   transition: background-color 0.3s;
 }
 
+<audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
+
+	  
 .audio-controls button:hover {
   background-color: #45a049;
 }
@@ -727,10 +730,9 @@ window.onload = startImageButtonCycle;
 
 
 
-// TV kanal listesi (güncellenmiş)
 const tvChannels = [
-  "https://www.youtube.com/embed/ztmY_cCtUl0", // Kanal 1
-  "https://www.youtube.com/embed/ZSWPj9szKb8"  // Kanal 2
+  "https://www.youtube.com/embed/ztmY_cCtUl0",
+  "https://www.youtube.com/embed/ZSWPj9szKb8"
 ];
 
 let currentChannel = 0;
@@ -738,8 +740,8 @@ let currentChannel = 0;
 const tvScreen = document.getElementById("tv-screen");
 const tvToggle = document.getElementById("tv-toggle");
 const tvFrame = document.getElementById("tv-frame");
+const natureSound = document.getElementById("nature-sound"); // doğa sesi audio elemanı
 
-// Butonlar
 document.getElementById("prev-channel").addEventListener("click", () => {
   currentChannel = (currentChannel - 1 + tvChannels.length) % tvChannels.length;
   tvFrame.src = tvChannels[currentChannel];
@@ -753,13 +755,14 @@ document.getElementById("next-channel").addEventListener("click", () => {
 tvToggle.addEventListener("click", () => {
   if (tvScreen.style.display === "none") {
     tvScreen.style.display = "block";
-    tvFrame.src = tvChannels[currentChannel]; // Açıldığında kanal yüklensin
+    tvFrame.src = tvChannels[currentChannel];
+    natureSound.pause(); // TV açıldığında doğa sesini durdur
   } else {
     tvScreen.style.display = "none";
-    tvFrame.src = ""; // Kapatınca durdur
+    tvFrame.src = "";
+    natureSound.play(); // TV kapanınca doğa sesine devam et
   }
 });
-
 
 
 </script>
