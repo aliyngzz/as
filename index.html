@@ -133,35 +133,6 @@
 </head>
 <body>
 
-<button id="tvToggleBtn" style="
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 9999;
-  padding: 8px 14px;
-  background-color: #333;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-">
-  📺 TV
-</button>
-
-<!-- iframe kutusu -->
-<div id="tvBox" style="
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 1002;
-">
-  <iframe src="https://tr.radioking.com/widgets/player/player.html?id=120417&autoplay=1" width="300" height="150" frameborder="0"></iframe>
-</div>
-
-	
-
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 <!-- Ses kontrol butonları -->
@@ -173,16 +144,7 @@
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
-<!-- Sözcü TV YouTube Gömülü Video -->
-<div style="position: fixed; bottom: 0; right: 0; width: 320px; height: 180px; z-index: 1002; border: 2px solid white;">
-  <iframe width="320" height="180"
-    src="https://www.youtube.com/embed/ztmY_cCtUl0?mute=1&autoplay=1&controls=1"
-    title="Sözcü TV Canlı Yayın"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
-</div>
+
 
   
   <!-- Videolar -->
@@ -253,6 +215,8 @@ const turkeySongs = [
   "Erdal-Erzincan-Deyis.mp3",
   "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
 "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
  "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
      "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
      "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
@@ -267,17 +231,7 @@ const turkeySongs = [
 "Muhabbet Bağında - Deyiş",
 "sabahat-akkiraz-tevhid",	  
 "Zülfükâr Arslan - Deyiş",
-  "bugun-bize-pir-geldi",
-"Erdal-Erzincan-Emlek-Bozlagi-30",
-"Erdal-Erzincan-Felek-Senin-Elinden",
-"Erdal-Erzincan-Mustezat-Cesitlemesi-45",
-"Erdal-Erzincan-Nem-kaldi",
-"Erdal-Erzincan-Urfa-Havasi-55",
-"Erdal-Erzincan-Yara-Bende-yeni-2",
-	  "Erdal-Erzincan-Goc-54",
-	  "Erdal-Erzincan-Yol-Havasi-87",
-	  "Erdal-Erzincan-Sarma-Havasi-67"
-	
+  "bugun-bize-pir-geldi"
 ];
 
 let currentAudio = document.getElementById("bg-music");
@@ -674,53 +628,7 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 10000);
-</script>
-
-
-<style>
-@media (max-width: 768px) {
-  #tvBox {
-    display: none;
-  }
-  #tvToggleBtn {
-    display: block;
-  }
-}
-
-
-
-
-	  
   </script>
-
-
-
-
-<script>
-
-
-const video = document.getElementById("tvVideo");
-const toggleBtn = document.getElementById("tvToggleBtn");
-
-video.onpause = () => {
-  toggleBtn.style.display = "block"; // durunca buton görünür
-};
-
-toggleBtn.onclick = () => {
-  video.style.display = "block";  // video geri gelsin
-  video.play();
-  toggleBtn.style.display = "none"; // buton tekrar gizlenir
-};
-
-
-</script>
-
-
-
-
-
-
-	
 
 </body>
 </html>
