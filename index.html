@@ -727,13 +727,10 @@ window.onload = startImageButtonCycle;
 
 
 
-
-// TV kanal listesi (YouTube embed linkleri)
+// TV kanal listesi (güncellenmiş)
 const tvChannels = [
-  "https://www.youtube.com/embed/ScMzIvxBSi4", // Örnek video
-  "https://www.youtube.com/embed/5qap5aO4i9A", // Lofi Girl
-  "https://www.youtube.com/embed/tgbNymZ7vqY", // YouTube örnek
-  // buraya daha fazla kanal ekleyebilirsin
+  "https://www.youtube.com/embed/ztmY_cCtUl0", // Kanal 1
+  "https://www.youtube.com/embed/ZSWPj9szKb8"  // Kanal 2
 ];
 
 let currentChannel = 0;
@@ -742,6 +739,7 @@ const tvScreen = document.getElementById("tv-screen");
 const tvToggle = document.getElementById("tv-toggle");
 const tvFrame = document.getElementById("tv-frame");
 
+// Butonlar
 document.getElementById("prev-channel").addEventListener("click", () => {
   currentChannel = (currentChannel - 1 + tvChannels.length) % tvChannels.length;
   tvFrame.src = tvChannels[currentChannel];
@@ -755,15 +753,16 @@ document.getElementById("next-channel").addEventListener("click", () => {
 tvToggle.addEventListener("click", () => {
   if (tvScreen.style.display === "none") {
     tvScreen.style.display = "block";
+    tvFrame.src = tvChannels[currentChannel]; // Açıldığında kanal yüklensin
   } else {
     tvScreen.style.display = "none";
+    tvFrame.src = ""; // Kapatınca durdur
   }
 });
 
- </script>
 
 
-
+</script>
 
 
 
