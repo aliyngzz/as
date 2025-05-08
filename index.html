@@ -443,12 +443,16 @@ nextVideo.addEventListener('ended', () => {
 
   <div id="contact-icon" title="İletişim"></div>
 
-<div id="tv-container">
-  <button id="toggle-tv">📺</button>
+<!-- 📺 TV Ekranı ve Butonlar -->
+<div id="tv-wrapper">
   <div id="tv-screen">
-    <!-- Buraya daha sonra YouTube iframe eklenecek -->
-    <div id="tv-placeholder">TV Ekranı</div>
+    <iframe id="tv-frame" src="https://www.youtube.com/embed/ScMzIvxBSi4" frameborder="0" allowfullscreen></iframe>
+    <div id="tv-controls">
+      <button id="prev-channel">⬅</button>
+      <button id="next-channel">➡</button>
+    </div>
   </div>
+  <button id="tv-toggle">📺</button>
 </div>
 
 	
@@ -537,44 +541,57 @@ nextVideo.addEventListener('ended', () => {
     }
 
 
-#tv-container {
+#tv-wrapper {
   position: fixed;
   bottom: 10px;
   right: 10px;
-  z-index: 1001;
-}
-
-#toggle-tv {
-  font-size: 2rem;
-  padding: 10px;
-  border: none;
-  background-color: #222;
-  color: white;
-  cursor: pointer;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  z-index: 1002;
+  z-index: 2000;
 }
 
 #tv-screen {
   width: 300px;
   height: 170px;
-  background-color: black;
-  border: 4px solid #ccc;
-  border-radius: 8px;
-  margin-top: 10px;
+  background: black;
+  border: 4px solid white;
+  border-radius: 10px;
+  overflow: hidden;
   display: none;
   position: relative;
-  overflow: hidden;
 }
 
-#tv-placeholder {
-  color: white;
+#tv-frame {
+  width: 100%;
+  height: 100%;
+}
+
+#tv-controls {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
   text-align: center;
-  line-height: 170px;
-  font-size: 1.5rem;
 }
 
+#tv-controls button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  font-size: 20px;
+  background: rgba(255,255,255,0.7);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#tv-toggle {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
 
 
 
@@ -711,11 +728,32 @@ window.onload = startImageButtonCycle;
 
 
 
-const toggleBtn = document.getElementById("toggle-tv");
-const tvScreen = document.getElementById("tv-screen");
+// TV kanal listesi (YouTube embed linkleri)
+const tvChannels = [
+  "https://www.youtube.com/embed/ScMzIvxBSi4", // Örnek video
+  "https://www.youtube.com/embed/5qap5aO4i9A", // Lofi Girl
+  "https://www.youtube.com/embed/tgbNymZ7vqY", // YouTube örnek
+  // buraya daha fazla kanal ekleyebilirsin
+];
 
-toggleBtn.addEventListener("click", () => {
-  if (tvScreen.style.display === "none" || tvScreen.style.display === "") {
+let currentChannel = 0;
+
+const tvScreen = document.getElementById("tv-screen");
+const tvToggle = document.getElementById("tv-toggle");
+const tvFrame = document.getElementById("tv-frame");
+
+document.getElementById("prev-channel").addEventListener("click", () => {
+  currentChannel = (currentChannel - 1 + tvChannels.length) % tvChannels.length;
+  tvFrame.src = tvChannels[currentChannel];
+});
+
+document.getElementById("next-channel").addEventListener("click", () => {
+  currentChannel = (currentChannel + 1) % tvChannels.length;
+  tvFrame.src = tvChannels[currentChannel];
+});
+
+tvToggle.addEventListener("click", () => {
+  if (tvScreen.style.display === "none") {
     tvScreen.style.display = "block";
   } else {
     tvScreen.style.display = "none";
