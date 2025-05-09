@@ -445,10 +445,13 @@ nextVideo.addEventListener('ended', () => {
 <!-- 📺 TV Ekranı ve Butonlar -->
 <div class="tv-wrapper">
   <div class="tv-frame">
-    <video id="tv-video" autoplay muted loop playsinline>
-      <source src="44798-440001069_small.mp4" type="video/mp4" />
-      Tarayıcınız video etiketini desteklemiyor.
-    </video>
+    <iframe
+      id="tv-iframe"
+      src="https://www.youtube.com/embed/ztmY_cCtUl0?autoplay=1&mute=1&controls=0&showinfo=0&rel=0"
+      allow="autoplay"
+      frameborder="0"
+      allowfullscreen
+    ></iframe>
   </div>
   <div class="tv-buttons">
     <button id="prev-channel">◀</button>
@@ -566,10 +569,10 @@ nextVideo.addEventListener('ended', () => {
   overflow: hidden;
 }
 
-.tv-frame video {
+.tv-frame iframe {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border: none;
   border-radius: 20px;
 }
 
@@ -739,38 +742,19 @@ const tvChannels = [
 	
 ];
 
-let currentChannel = 0;
+ let currentChannel = 0;
+  const tvIframe = document.getElementById("tv-iframe");
 
-const tvScreen = document.getElementById("tv-screen");
-const tvToggle = document.getElementById("tv-toggle");
-const tvFrame = document.getElementById("tv-frame");
-const natureSound = document.getElementById("nature-sound"); // doğa sesi audio elemanı
+  document.getElementById("next-channel").addEventListener("click", () => {
+    currentChannel = (currentChannel + 1) % tvChannels.length;
+    tvIframe.src = tvChannels[currentChannel];
+  });
 
-document.getElementById("prev-channel").addEventListener("click", () => {
-  currentChannel = (currentChannel - 1 + tvChannels.length) % tvChannels.length;
-  tvFrame.src = tvChannels[currentChannel];
-});
-
-document.getElementById("next-channel").addEventListener("click", () => {
-  currentChannel = (currentChannel + 1) % tvChannels.length;
-  tvFrame.src = tvChannels[currentChannel];
-});
-
-tvToggle.addEventListener("click", () => {
-  if (tvScreen.style.display === "none") {
-    tvScreen.style.display = "block";
-    tvFrame.src = tvChannels[currentChannel];
-    natureSound.pause(); // TV açıldığında doğa sesini durdur
-  } else {
-    tvScreen.style.display = "none";
-    tvFrame.src = "";
-    natureSound.play(); // TV kapanınca doğa sesine devam et
-  }
-});
-
-
+  document.getElementById("prev-channel").addEventListener("click", () => {
+    currentChannel = (currentChannel - 1 + tvChannels.length) % tvChannels.length;
+    tvIframe.src = tvChannels[currentChannel];
+  });
 </script>
-
 
 
 
