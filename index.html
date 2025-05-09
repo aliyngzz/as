@@ -773,7 +773,63 @@ tvToggle.addEventListener("click", () => {
   }
 });
 
+</script>
 
+
+
+
+<script>
+
+let videoIndex = Math.floor(Math.random() * videoList.length); // Rastgele bir video seç
+
+function changeVideo() {
+  const nextVideo = document.createElement('video');
+  nextVideo.src = videoList[videoIndex];
+  nextVideo.autoplay = true;
+  nextVideo.muted = true;
+  nextVideo.loop = true;  // Videonun döngüde olmasını sağla
+  nextVideo.playsInline = true;
+  nextVideo.style.position = 'absolute';
+
+  // Rastgele konumlandırma: ekranın karışık bir yerine yerleştir
+  const randomTop = Math.random() * 100; // 0-100 arası rastgele bir top pozisyonu
+  const randomLeft = Math.random() * 100; // 0-100 arası rastgele bir sol pozisyonu
+
+  nextVideo.style.top = `${randomTop}%`;
+  nextVideo.style.left = `${randomLeft}%`;
+
+  nextVideo.style.width = '100%';
+  nextVideo.style.height = '100%';
+  nextVideo.style.objectFit = 'cover';
+  nextVideo.style.zIndex = '-1';
+  nextVideo.style.opacity = 1;
+
+  const container = document.querySelector('.video-container');
+  container.appendChild(nextVideo);
+
+  // Video bittiğinde sıradaki videoya geç
+  nextVideo.addEventListener('ended', () => {
+    videoIndex = Math.floor(Math.random() * videoList.length); // Yeni bir rastgele video seç
+    changeVideo(); // Yeni video başlat
+  });
+}
+
+window.onload = function() {
+  changeVideo(); // Sayfa yüklendiğinde ilk videoyu başlat
+};
+
+
+
+
+
+
+
+
+
+
+
+
+	  
 </script>
 
 
