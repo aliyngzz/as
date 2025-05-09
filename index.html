@@ -151,7 +151,9 @@
 
   
   <!-- Videolar -->
-  <div class="video-container" id="video-container"></div>
+  <div class="video-container">
+  <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
+  </div>
 
   <!-- Resimler -->
   <div class="image-container">
@@ -172,18 +174,6 @@
   </div>
  <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
-
-
-
-<video id="background-video" autoplay muted loop playsinline>
-  <source src="44798-440001069_small.mp4" type="video/mp4">
-</video>
-
-
-
-
-
-	
  
   <!-- Arka Plan Müzikleri -->
 <audio id="bg-music" autoplay></audio>
@@ -323,7 +313,7 @@ window.addEventListener("load", () => {
      
 
       // Video değişimi (videoların sırayla oynatılması)
-     
+      const video = document.getElementById("background-video");
       const videoList = [
         "44798-440001069_small.mp4",
         "28746-371345147_tiny.mp4",
@@ -387,11 +377,11 @@ nextVideo.addEventListener('canplay', () => {
 
 // 🟢 Video bitince sıradakine geç
 nextVideo.addEventListener('ended', () => {
-  videoIndex = Math.floor(Math.random() * videoList.length); // Rastgele video seç
+  videoIndex = (videoIndex + 1) % videoList.length; // buraya taşındı
   changeVideo();
 
 });
-
+ document.body.appendChild(newVideo);
   }
 
   // 🔻 BU KISMI BURAYA EKLE
@@ -773,63 +763,7 @@ tvToggle.addEventListener("click", () => {
   }
 });
 
-</script>
 
-
-
-
-<script>
-
-let videoIndex = Math.floor(Math.random() * videoList.length); // Rastgele bir video seç
-
-function changeVideo() {
-  const nextVideo = document.createElement('video');
-  nextVideo.src = videoList[videoIndex];
-  nextVideo.autoplay = true;
-  nextVideo.muted = true;
-  nextVideo.loop = true;  // Videonun döngüde olmasını sağla
-  nextVideo.playsInline = true;
-  nextVideo.style.position = 'absolute';
-
-  // Rastgele konumlandırma: ekranın karışık bir yerine yerleştir
-  const randomTop = Math.random() * 100; // 0-100 arası rastgele bir top pozisyonu
-  const randomLeft = Math.random() * 100; // 0-100 arası rastgele bir sol pozisyonu
-
-  nextVideo.style.top = `${randomTop}%`;
-  nextVideo.style.left = `${randomLeft}%`;
-
-  nextVideo.style.width = '100%';
-  nextVideo.style.height = '100%';
-  nextVideo.style.objectFit = 'cover';
-  nextVideo.style.zIndex = '-1';
-  nextVideo.style.opacity = 1;
-
-  const container = document.querySelector('.video-container');
-  container.appendChild(nextVideo);
-
-  // Video bittiğinde sıradaki videoya geç
-  nextVideo.addEventListener('ended', () => {
-    videoIndex = Math.floor(Math.random() * videoList.length); // Yeni bir rastgele video seç
-    changeVideo(); // Yeni video başlat
-  });
-}
-
-window.onload = function() {
-  changeVideo(); // Sayfa yüklendiğinde ilk videoyu başlat
-};
-
-
-
-
-
-
-
-
-
-
-
-
-	  
 </script>
 
 
