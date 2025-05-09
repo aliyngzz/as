@@ -377,7 +377,7 @@ nextVideo.addEventListener('canplay', () => {
 
 // 🟢 Video bitince sıradakine geç
 nextVideo.addEventListener('ended', () => {
-  videoIndex = (videoIndex + 1) % videoList.length; // buraya taşındı
+  videoIndex = Math.floor(Math.random() * videoList.length); // Rastgele video seç
   changeVideo();
 
 });
