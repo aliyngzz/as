@@ -172,6 +172,18 @@
   </div>
  <!-- Tıklama Mesajı -->
   <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN</div>
+
+
+
+<video id="background-video" autoplay muted loop playsinline>
+  <source src="44798-440001069_small.mp4" type="video/mp4">
+</video>
+
+
+
+
+
+	
  
   <!-- Arka Plan Müzikleri -->
 <audio id="bg-music" autoplay></audio>
@@ -311,7 +323,7 @@ window.addEventListener("load", () => {
      
 
       // Video değişimi (videoların sırayla oynatılması)
-      const video = document.getElementById("background-video");
+     
       const videoList = [
         "44798-440001069_small.mp4",
         "28746-371345147_tiny.mp4",
@@ -379,7 +391,7 @@ nextVideo.addEventListener('ended', () => {
   changeVideo();
 
 });
- document.body.appendChild(newVideo);
+
   }
 
   // 🔻 BU KISMI BURAYA EKLE
