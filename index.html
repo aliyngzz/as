@@ -567,23 +567,29 @@ nextVideo.addEventListener('ended', () => {
   height: 100%;
 }
 
-#tv-controls {
+#tv-button-left,
+#tv-button-right {
   position: absolute;
-  bottom: 5px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-}
-
-#tv-controls button {
-  margin: 0 10px;
-  padding: 5px 10px;
-  font-size: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
   background: rgba(255,255,255,0.7);
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
+  z-index: 10;
 }
+
+#tv-button-left {
+  left: 5px;
+}
+
+#tv-button-right {
+  right: 5px;
+}
+
 
 #tv-toggle {
   width: 60px;
