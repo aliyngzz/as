@@ -91,9 +91,6 @@
   transition: background-color 0.3s;
 }
 
-<audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
-
-	  
 .audio-controls button:hover {
   background-color: #45a049;
 }
@@ -136,6 +133,35 @@
 </head>
 <body>
 
+<button id="tvToggleBtn" style="
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  padding: 8px 14px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+">
+  📺 TV
+</button>
+
+<!-- iframe kutusu -->
+<div id="tvBox" style="
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1002;
+">
+  <iframe src="https://tr.radioking.com/widgets/player/player.html?id=120417&autoplay=1" width="300" height="150" frameborder="0"></iframe>
+</div>
+
+	
+
   <!-- Banner Yazısı -->
   <div class="banner" id="banner"></div>
 <!-- Ses kontrol butonları -->
@@ -147,7 +173,16 @@
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
-
+<!-- Sözcü TV YouTube Gömülü Video -->
+<div style="position: fixed; bottom: 0; right: 0; width: 320px; height: 180px; z-index: 1002; border: 2px solid white;">
+  <iframe width="320" height="180"
+    src="https://www.youtube.com/embed/ztmY_cCtUl0?mute=1&autoplay=1&controls=1"
+    title="Sözcü TV Canlı Yayın"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+</div>
 
   
   <!-- Videolar -->
@@ -218,10 +253,9 @@ const turkeySongs = [
   "Erdal-Erzincan-Deyis.mp3",
   "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
 "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
- "Erdal-Erzincan-Yol-Havasi-87",
  "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
      "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
-      "Erdal-Erzincan-Sarma-Havasi-67"
+     "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
      "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
      "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
 "ates-i-askina-semah",
@@ -241,12 +275,8 @@ const turkeySongs = [
 "Erdal-Erzincan-Urfa-Havasi-55",
 "Erdal-Erzincan-Yara-Bende-yeni-2",
 	  "Erdal-Erzincan-Goc-54",
-	 
-	 
-
-
-
-
+	  "Erdal-Erzincan-Yol-Havasi-87",
+	  "Erdal-Erzincan-Sarma-Havasi-67"
 	
 ];
 
@@ -445,20 +475,7 @@ nextVideo.addEventListener('ended', () => {
   </script>
 
   <div id="contact-icon" title="İletişim"></div>
-
-<!-- 📺 TV Ekranı ve Butonlar -->
-<div id="tv-wrapper">
-  <div id="tv-screen">
-    <iframe id="tv-frame" src="https://www.youtube.com/embed/ScMzIvxBSi4" frameborder="0" allowfullscreen></iframe>
-    <div id="tv-controls">
-      <button id="prev-channel">⬅</button>
-      <button id="next-channel">➡</button>
-    </div>
-  </div>
-  <button id="tv-toggle">📺</button>
-</div>
-
-	
+  
   <div id="contact-modal">
     <form action="https://formspree.io/f/xvgaonbz" method="POST">
       <label>
@@ -542,71 +559,6 @@ nextVideo.addEventListener('ended', () => {
       border-radius: 5px;
       transition: background-color 0.3s;
     }
-
-
-#tv-wrapper {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 2000;
-}
-
-#tv-screen {
-  width: 300px;
-  height: 170px;
-  background: black;
-  border: 4px solid white;
-  border-radius: 10px;
-  overflow: hidden;
-  display: none;
-  position: relative;
-}
-
-#tv-frame {
-  width: 100%;
-  height: 100%;
-}
-
-#tv-controls {
-  position: absolute;
-  bottom: 5px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-}
-
-#tv-controls button {
-  margin: 0 10px;
-  padding: 5px 10px;
-  font-size: 20px;
-  background: rgba(255,255,255,0.7);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#tv-toggle {
-  width: 60px;
-  height: 60px;
-  font-size: 24px;
-  background: rgba(255,255,255,0.8);
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-
-
-
-
-
-
-
-
-
-
-	  
 #top-center-image {
   position: fixed;
   top: 10px; /* Sayfanın üst kısmına 10px mesafe bırakır */
@@ -722,52 +674,43 @@ window.onload = startImageButtonCycle;
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
   setInterval(toggleImage, 10000);
- </script>
-	  
-  <script>
+</script>
 
 
-
-
-
-const tvChannels = [
-  "https://www.youtube.com/embed/ztmY_cCtUl0",
-  "https://www.youtube.com/embed/ZSWPj9szKb8",
-  "https://www.youtube.com/embed/9KEThxQtWYA", 
-    "https://www.youtube.com/embed/Bto75pRPQNA",
-      "https://www.youtube.com/embed/EmdtE7sRMSY",
-"https://www.youtube.com/embed/SavXWO8gKIE&t=3082s"
-	
-];
-
-let currentChannel = 0;
-
-const tvScreen = document.getElementById("tv-screen");
-const tvToggle = document.getElementById("tv-toggle");
-const tvFrame = document.getElementById("tv-frame");
-const natureSound = document.getElementById("nature-sound"); // doğa sesi audio elemanı
-
-document.getElementById("prev-channel").addEventListener("click", () => {
-  currentChannel = (currentChannel - 1 + tvChannels.length) % tvChannels.length;
-  tvFrame.src = tvChannels[currentChannel];
-});
-
-document.getElementById("next-channel").addEventListener("click", () => {
-  currentChannel = (currentChannel + 1) % tvChannels.length;
-  tvFrame.src = tvChannels[currentChannel];
-});
-
-tvToggle.addEventListener("click", () => {
-  if (tvScreen.style.display === "none") {
-    tvScreen.style.display = "block";
-    tvFrame.src = tvChannels[currentChannel];
-    natureSound.pause(); // TV açıldığında doğa sesini durdur
-  } else {
-    tvScreen.style.display = "none";
-    tvFrame.src = "";
-    natureSound.play(); // TV kapanınca doğa sesine devam et
+<style>
+@media (max-width: 768px) {
+  #tvBox {
+    display: none;
   }
-});
+  #tvToggleBtn {
+    display: block;
+  }
+}
+
+
+
+
+	  
+  </script>
+
+
+
+
+<script>
+
+
+const video = document.getElementById("tvVideo");
+const toggleBtn = document.getElementById("tvToggleBtn");
+
+video.onpause = () => {
+  toggleBtn.style.display = "block"; // durunca buton görünür
+};
+
+toggleBtn.onclick = () => {
+  video.style.display = "block";  // video geri gelsin
+  video.play();
+  toggleBtn.style.display = "none"; // buton tekrar gizlenir
+};
 
 
 </script>
@@ -776,6 +719,8 @@ tvToggle.addEventListener("click", () => {
 
 
 
+
 	
+
 </body>
 </html>
