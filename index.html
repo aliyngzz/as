@@ -12,6 +12,8 @@
             height: 100vh;
             background-color: #000;
             margin: 0;
+            color: white;
+            font-family: Arial, sans-serif;
         }
         .video-frame {
             position: relative;
@@ -21,40 +23,80 @@
             border: 5px solid #fff;
             border-radius: 10px;
         }
-        iframe {
+        video {
             width: 100%;
             height: 100%;
+            object-fit: cover;
+        }
+        #status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #00FF00;
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="video-frame" id="video-container">
-        <iframe id="video-iframe" src="https://www.youtube.com/embed/F0GOOP82094" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- Başlangıçta bir video gösteriliyor -->
+        <video id="video-player" autoplay muted preload="auto">
+            <source src="videos/video1.mp4" type="video/mp4">
+            Tarayıcınız video formatını desteklemiyor.
+        </video>
+        <div id="status">Video Oynuyor</div> <!-- Video oynatıldığında gösterilecek mesaj -->
     </div>
 
     <script>
-        // Video URL'leri
+        // Video dosyaları
         const videoSources = [
-            "https://www.youtube.com/embed/F0GOOP82094",
-            "https://www.youtube.com/embed/56WBs0A4Kng",
-            "https://www.youtube.com/embed/fi1_rZwBxKE",
-            "https://www.youtube.com/embed/ya8mveIw1pQ"
+            "videos/video1.mp4",
+            "videos/video2.mp4",
+            "videos/video3.mp4",
+            "videos/video4.mp4"
         ];
 
         let currentVideoIndex = 0;
 
+        // Video player
+        const videoPlayer = document.getElementById('video-player');
+        const statusElement = document.getElementById('status');
+
+        // Videonun hazır olup olmadığını kontrol etme ve oynatma
+        function startVideo() {
+            // Videoyu yükle
+            const currentSource = videoSources[currentVideoIndex];
+            videoPlayer.src = currentSource;
+
+            // Video başlatılmadan önce 5 saniye bekleyelim
+            setTimeout(() => {
+                videoPlayer.play();  // 5 saniye sonra videoyu oynatmaya başla
+
+                // Video tamamen oynatılmaya başlandığında, mesajı göster
+                videoPlayer.addEventListener('play', function() {
+                    statusElement.style.display = 'block';  // Mesajı göster
+                    setTimeout(() => {
+                        statusElement.style.display = 'none';  // 3 saniye sonra mesajı gizle
+                    }, 3000);
+                });
+            }, 5000); // 5 saniye bekle
+        }
+
         // Video değiştirme fonksiyonu
         function changeVideo() {
-            const iframe = document.getElementById('video-iframe');
-            iframe.src = videoSources[currentVideoIndex] + "?autoplay=1"; // Videoyu otomatik başlat
+            // Video kaynağını değiştirme
             currentVideoIndex = (currentVideoIndex + 1) % videoSources.length; // Bir sonraki videoya geçiş
+            startVideo();
         }
 
         // İlk video gösterildikten sonra her 40 saniyede bir video değiştirme
         setInterval(changeVideo, 40000); // 40 saniye
 
         // Başlangıçta bir kez video değiştirelim
-        changeVideo();
+        startVideo();
     </script>
 </body>
 </html>
