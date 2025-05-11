@@ -1,21 +1,18 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Arka Plan Video Geçişi</title>
+  <title>Video Geçişli Sayfa</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       height: 100%;
       overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: black;
     }
 
-    .video-container {
+    .video-container, .intro-video {
       position: fixed;
       top: 0;
       left: 0;
@@ -24,13 +21,14 @@
       z-index: -1;
     }
 
-    iframe {
+    video, iframe {
       width: 100vw;
       height: 100vh;
+      object-fit: cover;
+      border: none;
       position: absolute;
       top: 0;
       left: 0;
-      border: none;
       opacity: 0;
       transition: opacity 1s ease-in-out;
       pointer-events: none;
@@ -39,38 +37,92 @@
     .active {
       opacity: 1;
     }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .content.show {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
 
-<!-- Video Arka Planları -->
-<div class="video-container">
+<!-- Senin videon -->
+<div class="intro-video">
+  <video id="introVideo" autoplay muted playsinline>
+    <source src="854982-hd_1280_720_25fps.mp4" type="video/mp4">
+    Tarayıcınız video etiketini desteklemiyor.
+  </video>
+</div>
+
+<!-- YouTube videoları -->
+<div class="video-container" style="display: none;">
   <iframe id="video1" class="active"
     src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&loop=1&controls=0&playlist=F0GOOP82094&modestbranding=1&rel=0&playsinline=1">
   </iframe>
-
   <iframe id="video2"
     src="https://www.youtube.com/embed/56WBs0A4Kng?autoplay=1&mute=1&loop=1&controls=0&playlist=56WBs0A4Kng&modestbranding=1&rel=0&playsinline=1">
   </iframe>
 </div>
 
-<!-- Geçiş Scripti -->
-<script>
-  let current = 1;
-  setInterval(() => {
-    const v1 = document.getElementById('video1');
-    const v2 = document.getElementById('video2');
+<!-- Yazı -->
+<div class="content" id="site-content">
+  <h1>Doğanın Güzelliği</h1>
+</div>
 
-    if (current === 1) {
-      v1.classList.remove('active');
-      v2.classList.add('active');
-      current = 2;
-    } else {
-      v2.classList.remove('active');
-      v1.classList.add('active');
-      current = 1;
-    }
-  }, 30000); // 30 saniye
+<!-- Script -->
+<script>
+  const introVideo = document.getElementById('introVideo');
+  const videoContainer = document.querySelector('.video-container');
+  const content = document.getElementById('site-content');
+
+  // İlk 5 saniye: sadece senin videon oynar
+  setTimeout(() => {
+    videoContainer.style.display = 'block';
+    content.classList.add('show');
+    document.getElementById('video1').classList.add('active');
+    introVideo.style.opacity = 0;
+
+    // 30 saniyede bir video geçişi + intro göster
+    let current = 1;
+    setInterval(() => {
+      // Önce intro videosunu tekrar göster
+      introVideo.currentTime = 0;
+      introVideo.play();
+      introVideo.style.opacity = 1;
+
+      // 5 saniye sonra geçiş yap
+      setTimeout(() => {
+        introVideo.style.opacity = 0;
+
+        const v1 = document.getElementById('video1');
+        const v2 = document.getElementById('video2');
+
+        if (current === 1) {
+          v1.classList.remove('active');
+          v2.classList.add('active');
+          current = 2;
+        } else {
+          v2.classList.remove('active');
+          v1.classList.add('active');
+          current = 1;
+        }
+
+      }, 5000);
+    }, 30000); // toplam süre: 30 saniye
+  }, 5000); // ilk bekleme: 5 saniye
 </script>
 
 </body>
