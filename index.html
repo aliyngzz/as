@@ -83,6 +83,7 @@
 
     let currentIndex = 0;
     let player;
+    let youtubeReady = false;
 
     // Geçici video oynatma
     function playTemporaryVideo() {
@@ -101,7 +102,20 @@
       };
     }
 
-    // YouTube iframe API yüklemek
+    // YouTube video iframe'e dinamik olarak URL ekle
+    function loadYouTubeVideo() {
+      const iframe = document.getElementById("tvScreen");
+      iframe.src = "https://www.youtube.com/embed/F0GOOP82094?autoplay=1"; // YouTube video URL'si
+      iframe.style.opacity = 0; // Başlangıçta YouTube video görünmez
+    }
+
+    // YouTube API scripti yükle
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // YouTube API hazır olduğunda
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('tvScreen', {
         height: '100%',
@@ -116,10 +130,10 @@
 
     // YouTube player hazır olduğunda
     function onPlayerReady(event) {
+      youtubeReady = true;
       console.log("YouTube player hazır.");
-      // YouTube video hazır olduğunda geçici videoları geç
       setTimeout(() => {
-        playTemporaryVideo(); // İlk geçici videoyu oynat
+        playTemporaryVideo(); // İlk geçici videoyu başlat
       }, 1000); // 1 saniye sonra başlat
     }
 
@@ -132,14 +146,15 @@
       }
     }
 
-    // YouTube API scripti yükle
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // Geçici videoları her 40 saniyede bir değiştirecek
+    setInterval(() => {
+      if (!youtubeReady) {
+        playTemporaryVideo(); // YouTube video yüklenmeden geçici videoları göster
+      }
+    }, 40000);
 
-    // Geçici videoları 40 saniyede bir değiştir
-    setInterval(playTemporaryVideo, 40000);
+    // YouTube video iframe'in yüklenmesi
+    loadYouTubeVideo();
 
   </script>
 
