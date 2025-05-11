@@ -5,82 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Geçişi</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
+        body, html {
             margin: 0;
-        }
-        .video-frame {
-            position: relative;
-            width: 80%;
-            height: 80%;
+            padding: 0;
+            height: 100%;
             overflow: hidden;
-            border: 5px solid #fff;
-            border-radius: 10px;
         }
-        video {
+
+        #video-container {
+            position: absolute;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+        }
+
+        .video {
+            width: 25%;
+            height: 100%;
+            background: black;
             object-fit: cover;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <div class="video-frame" id="video-container">
-        <!-- Başlangıçta bir video gösteriliyor -->
-        <video id="video-player" autoplay muted>
-            <source src="videos/video1.mp4" type="video/mp4">
-            Tarayıcınız video formatını desteklemiyor.
-        </video>
+    <div id="video-container">
+        <div class="video" id="video1">
+            <iframe id="video1-frame" src="https://www.youtube.com/embed/F0GOOP82094" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video" id="video2">
+            <iframe id="video2-frame" src="https://www.youtube.com/embed/56WBs0A4Kng" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video" id="video3">
+            <iframe id="video3-frame" src="https://www.youtube.com/embed/fi1_rZwBxKE" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video" id="video4">
+            <iframe id="video4-frame" src="https://www.youtube.com/embed/F0GOOP82094" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
     </div>
 
     <script>
-        const videoSources = [
-            "videos/video1.mp4",
-            "videos/video2.mp4",
-            "videos/video3.mp4",
-            "videos/video4.mp4"
+        let videos = [
+            "https://www.youtube.com/embed/F0GOOP82094",
+            "https://www.youtube.com/embed/56WBs0A4Kng",
+            "https://www.youtube.com/embed/fi1_rZwBxKE"
         ];
-
-        let currentVideoIndex = 0;
-        const videoPlayer = document.getElementById('video-player');
         
-        let nextVideoPlayer = document.createElement('video'); 
-        nextVideoPlayer.muted = true;
+        let videoElements = [
+            document.getElementById("video1-frame"),
+            document.getElementById("video2-frame"),
+            document.getElementById("video3-frame"),
+            document.getElementById("video4-frame")
+        ];
+        
+        let currentIndex = 0;
 
-        // Bir sonraki videoyu önceden yükle
-        function preloadNextVideo() {
-            const nextVideoIndex = (currentVideoIndex + 1) % videoSources.length;
-            nextVideoPlayer.src = videoSources[nextVideoIndex];
-            nextVideoPlayer.load(); // Videoyu arka planda yükle
-            nextVideoPlayer.play(); // Arka planda oynatmaya başla, ama görünmez
+        function changeVideos() {
+            let nextIndex = (currentIndex + 1) % videos.length;
+
+            // Başka videoyu arka planda başlat
+            videoElements[nextIndex].src = videos[nextIndex] + "?autoplay=1";
+
+            // Şu anki videoyu durdur
+            videoElements[currentIndex].src = videos[currentIndex];
+
+            currentIndex = nextIndex;
         }
 
-        // Video değiştirme işlemi
-        function changeVideo() {
-            // Video bitmeden önce bir sonraki video arka planda yüklenmeye başlanacak
-            currentVideoIndex = (currentVideoIndex + 1) % videoSources.length;
-            const currentSource = videoSources[currentVideoIndex];
-            
-            // Video geçişi: yeni video kaynağını atayıp, oynatmaya başla
-            videoPlayer.src = currentSource;
-            videoPlayer.load();
-            videoPlayer.play();
-            
-            // Yeni video arka planda yüklenmeye başlasın
-            preloadNextVideo();
-        }
-
-        // Video bitince, video değiştirme
-        videoPlayer.addEventListener('ended', function() {
-            changeVideo();
-        });
-
-        // İlk video başlatma ve bir sonraki videoyu yükleme
-        preloadNextVideo();
+        setInterval(changeVideos, 60000);  // 1 dakikada bir değiştir
     </script>
 </body>
 </html>
