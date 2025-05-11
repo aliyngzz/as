@@ -28,16 +28,6 @@
             height: 100%;
             object-fit: cover;
         }
-        #status {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            font-weight: bold;
-            color: #00FF00;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -47,11 +37,9 @@
             <source src="videos/video1.mp4" type="video/mp4">
             Tarayıcınız video formatını desteklemiyor.
         </video>
-        <div id="status">Video Oynuyor</div> <!-- Video oynatıldığında gösterilecek mesaj -->
     </div>
 
     <script>
-        // Video dosyaları
         const videoSources = [
             "videos/video1.mp4",
             "videos/video2.mp4",
@@ -61,52 +49,38 @@
 
         let currentVideoIndex = 0;
         const videoPlayer = document.getElementById('video-player');
-        const statusElement = document.getElementById('status');
         let nextVideoPlayer = document.createElement('video');
         nextVideoPlayer.muted = true;
 
-        // Video yükleme fonksiyonu
+        // Bir sonraki videoyu arka planda yükle
         function preloadNextVideo() {
             const nextVideoIndex = (currentVideoIndex + 1) % videoSources.length;
             nextVideoPlayer.src = videoSources[nextVideoIndex];
-            nextVideoPlayer.load(); // Videoyu arka planda yükle
+            nextVideoPlayer.load();  // Videoyu arka planda yükle
         }
 
-        // Video oynatıldığında
-        videoPlayer.addEventListener('play', function() {
-            // Video başladığında mesajı göster
-            statusElement.style.display = 'block';
-            setTimeout(() => {
-                statusElement.style.display = 'none';
-            }, 3000);
-        });
-
-        // Video değiştirme fonksiyonu
+        // Video değiştirme işlemi
         function changeVideo() {
-            // Mevcut video oynarken, 5 saniye önce yeni video yüklenmeye başlanacak
+            // Mevcut video oynarken, bir sonraki video arka planda yüklenmeye başlanacak
+            currentVideoIndex = (currentVideoIndex + 1) % videoSources.length;
             const currentSource = videoSources[currentVideoIndex];
+            
+            // Video geçişi: yeni video kaynağını atayıp, oynatmaya başla
             videoPlayer.src = currentSource;
-            videoPlayer.load();  // Videoyu yükle
-            videoPlayer.play();  // Videoyu oynat
-            currentVideoIndex = (currentVideoIndex + 1) % videoSources.length; // Bir sonraki videoya geçiş
-
-            preloadNextVideo(); // Yeni video arka planda yüklenmeye başlasın
+            videoPlayer.load();
+            videoPlayer.play();
+            
+            // Yeni video arka planda yüklenmeye başlasın
+            preloadNextVideo();
         }
 
-        // Video değişimi başlatmak için zamanlayıcı (5 saniye önce başlasın)
-        videoPlayer.addEventListener('timeupdate', function() {
-            if (videoPlayer.currentTime >= videoPlayer.duration - 5) {
-                preloadNextVideo(); // Son 5 saniyede, bir sonraki video arka planda yüklenmeye başlasın
-            }
-        });
-
-        // Her video bitince değişim
+        // Video bitince, video değiştirme
         videoPlayer.addEventListener('ended', function() {
             changeVideo();
         });
 
-        // İlk video başlatma
-        changeVideo();
+        // İlk video başlatma ve arka planda bir sonraki videoyu yükleme
+        preloadNextVideo();
     </script>
 </body>
 </html>
