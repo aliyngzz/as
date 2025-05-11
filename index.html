@@ -2,20 +2,19 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Döngülü TV Ekranları</title>
+  <title>Dönüşümlü Video Ekranı</title>
   <style>
     body {
-      background-color: #000;
+      background-color: #111;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      gap: 40px;
     }
 
     .tv {
-      width: 360px;
-      height: 220px;
+      width: 600px;
+      height: 350px;
       border: 10px solid #444;
       border-radius: 20px;
       background: linear-gradient(to bottom, #222, #000);
@@ -35,11 +34,7 @@
 <body>
 
   <div class="tv">
-    <iframe id="tv1" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  </div>
-
-  <div class="tv">
-    <iframe id="tv2" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <iframe id="tvScreen" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 
   <script>
@@ -50,22 +45,18 @@
       "https://www.youtube.com/embed/ya8mveIw1pQ?autoplay=1&mute=1"
     ];
 
-    let index1 = 0;
-    let index2 = 2; // Diğer TV farklı başlasın
+    let currentIndex = 0;
 
-    function updateVideos() {
-      document.getElementById("tv1").src = videos[index1];
-      document.getElementById("tv2").src = videos[index2];
-
-      index1 = (index1 + 1) % videos.length;
-      index2 = (index2 + 1) % videos.length;
+    function changeVideo() {
+      document.getElementById("tvScreen").src = videos[currentIndex];
+      currentIndex = (currentIndex + 1) % videos.length;
     }
 
-    // İlk yükleme
-    updateVideos();
+    // İlk video ile başla
+    changeVideo();
 
-    // Her 20 saniyede bir değiştir
-    setInterval(updateVideos, 20000);
+    // Her 40 saniyede bir video değiştir
+    setInterval(changeVideo, 40000);
   </script>
 
 </body>
