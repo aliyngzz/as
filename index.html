@@ -70,7 +70,6 @@
             const nextVideoIndex = (currentVideoIndex + 1) % videoSources.length;
             nextVideoPlayer.src = videoSources[nextVideoIndex];
             nextVideoPlayer.load(); // Videoyu arka planda yükle
-            nextVideoPlayer.play(); // Ancak oynatma
         }
 
         // Video oynatıldığında
@@ -101,13 +100,13 @@
             }
         });
 
-        // İlk video başlatma
-        changeVideo();
-
         // Her video bitince değişim
         videoPlayer.addEventListener('ended', function() {
             changeVideo();
         });
+
+        // İlk video başlatma
+        changeVideo();
     </script>
 </body>
 </html>
