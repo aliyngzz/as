@@ -2,50 +2,87 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Video Arka Planlı Web Sitesi</title>
+  <title>Video Geçişli Arka Plan</title>
   <style>
-    /* Video kapsayıcı stil */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
     .video-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
       z-index: -1;
     }
 
-    /* Iframe stil */
-    .video-container iframe {
+    iframe {
       width: 100vw;
       height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: none;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
       pointer-events: none;
     }
 
-    /* İçerik stil */
+    .active {
+      opacity: 1;
+    }
+
     .content {
       position: relative;
       z-index: 1;
       color: white;
       text-align: center;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: Arial, sans-serif;
+      padding-top: 40vh;
+      font-size: 2rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Video Arka Plan -->
-  <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&loop=1&controls=0&playlist=F0GOOP82094&modestbranding=1&showinfo=0&rel=0&playsinline=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-  </div>
+<div class="video-container">
+  <!-- Video 1 -->
+  <iframe id="video1" class="active"
+    src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&loop=1&controls=0&playlist=F0GOOP82094&modestbranding=1&rel=0&playsinline=1">
+  </iframe>
 
-  <!-- Sayfa İçeriği -->
-  <div class="content">
-    <h1>Hoş Geldiniz</h1>
-    
-  </div>
+  <!-- Video 2 -->
+  <iframe id="video2"
+    src="https://www.youtube.com/embed/56WBs0A4Kng?autoplay=1&mute=1&loop=1&controls=0&playlist=56WBs0A4Kng&modestbranding=1&rel=0&playsinline=1">
+  </iframe>
+</div>
+
+<div class="content">
+  <h1>Hoş Geldiniz</h1>
+  <p>Arka plan videoları 30 saniyede bir değişmektedir.</p>
+</div>
+
+<script>
+  let current = 1;
+  setInterval(() => {
+    const v1 = document.getElementById('video1');
+    const v2 = document.getElementById('video2');
+
+    if (current === 1) {
+      v1.classList.remove('active');
+      v2.classList.add('active');
+      current = 2;
+    } else {
+      v2.classList.remove('active');
+      v1.classList.add('active');
+      current = 1;
+    }
+  }, 30000); // 30 saniye = 30000 ms
+</script>
 
 </body>
 </html>
