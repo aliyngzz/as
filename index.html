@@ -3,31 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Geçişi</title>
+    <title>Doğa Temalı Web Sayfası</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
         }
-
-        #video-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+        .video-container {
+            position: fixed;
             top: 0;
             left: 0;
-            display: flex;
-        }
-
-        .video {
-            width: 25%;
+            width: 100%;
             height: 100%;
-            background: black;
-            object-fit: cover;
+            z-index: -1;
         }
-
         iframe {
             width: 100%;
             height: 100%;
@@ -36,50 +26,29 @@
     </style>
 </head>
 <body>
-    <div id="video-container">
-        <div class="video" id="video1">
-            <iframe id="video1-frame" src="https://www.youtube.com/embed/F0GOOP82094" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-        <div class="video" id="video2">
-            <iframe id="video2-frame" src="https://www.youtube.com/embed/56WBs0A4Kng" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-        <div class="video" id="video3">
-            <iframe id="video3-frame" src="https://www.youtube.com/embed/fi1_rZwBxKE" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-        <div class="video" id="video4">
-            <iframe id="video4-frame" src="https://www.youtube.com/embed/F0GOOP82094" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
+
+    <div class="video-container" id="videoContainer">
+        <iframe id="video1" src="https://www.youtube.com/embed/F0GOOP82094" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <script>
-        let videos = [
+        let videoUrls = [
             "https://www.youtube.com/embed/F0GOOP82094",
             "https://www.youtube.com/embed/56WBs0A4Kng",
             "https://www.youtube.com/embed/fi1_rZwBxKE"
         ];
-        
-        let videoElements = [
-            document.getElementById("video1-frame"),
-            document.getElementById("video2-frame"),
-            document.getElementById("video3-frame"),
-            document.getElementById("video4-frame")
-        ];
-        
-        let currentIndex = 0;
 
-        function changeVideos() {
-            let nextIndex = (currentIndex + 1) % videos.length;
+        let currentVideo = 0;
+        const videoContainer = document.getElementById('videoContainer');
+        const iframe = document.getElementById('video1');
 
-            // Başka videoyu arka planda başlat
-            videoElements[nextIndex].src = videos[nextIndex] + "?autoplay=1";
-
-            // Şu anki videoyu durdur
-            videoElements[currentIndex].src = videos[currentIndex];
-
-            currentIndex = nextIndex;
+        function changeVideo() {
+            currentVideo = (currentVideo + 1) % videoUrls.length;
+            iframe.src = videoUrls[currentVideo];
         }
 
-        setInterval(changeVideos, 60000);  // 1 dakikada bir değiştir
+        setInterval(changeVideo, 60000); // Her 60 saniyede bir video değiştir
     </script>
+
 </body>
 </html>
