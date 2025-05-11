@@ -84,6 +84,23 @@
     let currentIndex = 0;
     let player;
 
+    // Geçici video oynatma
+    function playTemporaryVideo() {
+      const placeholderVideo = document.getElementById("placeholderVideo");
+      const loading = document.getElementById("loading");
+
+      placeholderVideo.src = videos[currentIndex]; // Geçici video kaynağını ayarla
+      placeholderVideo.style.opacity = 1; // Görünür hale getir
+      loading.style.display = "flex"; // Yükleniyor mesajını göster
+
+      // Videonun yüklendiğini kontrol et
+      placeholderVideo.onloadeddata = () => {
+        loading.style.display = "none"; // Yükleniyor mesajını kaldır
+        placeholderVideo.style.opacity = 1; // Videoyu göster
+        currentIndex = (currentIndex + 1) % videos.length; // Sonraki videoya geçiş
+      };
+    }
+
     // YouTube iframe API yüklemek
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('tvScreen', {
@@ -100,10 +117,13 @@
     // YouTube player hazır olduğunda
     function onPlayerReady(event) {
       console.log("YouTube player hazır.");
-      changeVideo(); // Geçici videoları başlat
+      // YouTube video hazır olduğunda geçici videoları geç
+      setTimeout(() => {
+        playTemporaryVideo(); // İlk geçici videoyu oynat
+      }, 1000); // 1 saniye sonra başlat
     }
 
-    // YouTube video durum değişikliği (video bitti veya yüklendi)
+    // YouTube video durum değişikliği
     function onPlayerStateChange(event) {
       if (event.data == YT.PlayerState.PLAYING) {
         // YouTube video oynarken, geçici videolar durdurulacak
@@ -112,43 +132,14 @@
       }
     }
 
-    function changeVideo() {
-      const iframe = document.getElementById("tvScreen");
-      const placeholderVideo = document.getElementById("placeholderVideo");
-      const loading = document.getElementById("loading");
-
-      // Yükleniyor mesajını göster
-      loading.style.display = "flex";
-
-      // Önce placeholder video oynasın
-      placeholderVideo.style.opacity = 1;
-      iframe.style.opacity = 0; // YouTube video görünmesin
-
-      // Videoyu iframe'e yükle
-      placeholderVideo.src = videos[currentIndex];
-
-      // Geçici video tamamen yüklendiğinde
-      placeholderVideo.onloadeddata = () => {
-        // Placeholder video kapanır
-        placeholderVideo.style.opacity = 0;
-        iframe.style.opacity = 1; // YouTube video görünür
-        loading.style.display = "none"; // Yükleniyor mesajını kaldır
-      };
-
-      currentIndex = (currentIndex + 1) % videos.length;
-    }
-
-    // YouTube API scripti ekle
+    // YouTube API scripti yükle
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // İlk video ile başla
-    changeVideo();
-
-    // Her 40 saniyede bir video değiştir
-    setInterval(changeVideo, 40000);
+    // Geçici videoları 40 saniyede bir değiştir
+    setInterval(playTemporaryVideo, 40000);
 
   </script>
 
