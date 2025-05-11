@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Ekranı</title>
+    <title>Video Geçişi</title>
     <style>
         body {
             display: flex;
@@ -43,7 +43,7 @@
 <body>
     <div class="video-frame" id="video-container">
         <!-- Başlangıçta bir video gösteriliyor -->
-        <video id="video-player" autoplay muted preload="auto">
+        <video id="video-player" autoplay muted>
             <source src="videos/video1.mp4" type="video/mp4">
             Tarayıcınız video formatını desteklemiyor.
         </video>
@@ -60,43 +60,54 @@
         ];
 
         let currentVideoIndex = 0;
-
-        // Video player
         const videoPlayer = document.getElementById('video-player');
         const statusElement = document.getElementById('status');
+        let nextVideoPlayer = document.createElement('video');
+        nextVideoPlayer.muted = true;
 
-        // Videonun hazır olup olmadığını kontrol etme ve oynatma
-        function startVideo() {
-            // Videoyu yükle
-            const currentSource = videoSources[currentVideoIndex];
-            videoPlayer.src = currentSource;
-
-            // Video başlatılmadan önce 5 saniye bekleyelim
-            setTimeout(() => {
-                videoPlayer.play();  // 5 saniye sonra videoyu oynatmaya başla
-
-                // Video tamamen oynatılmaya başlandığında, mesajı göster
-                videoPlayer.addEventListener('play', function() {
-                    statusElement.style.display = 'block';  // Mesajı göster
-                    setTimeout(() => {
-                        statusElement.style.display = 'none';  // 3 saniye sonra mesajı gizle
-                    }, 3000);
-                });
-            }, 5000); // 5 saniye bekle
+        // Video yükleme fonksiyonu
+        function preloadNextVideo() {
+            const nextVideoIndex = (currentVideoIndex + 1) % videoSources.length;
+            nextVideoPlayer.src = videoSources[nextVideoIndex];
+            nextVideoPlayer.load(); // Videoyu arka planda yükle
+            nextVideoPlayer.play(); // Ancak oynatma
         }
+
+        // Video oynatıldığında
+        videoPlayer.addEventListener('play', function() {
+            // Video başladığında mesajı göster
+            statusElement.style.display = 'block';
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 3000);
+        });
 
         // Video değiştirme fonksiyonu
         function changeVideo() {
-            // Video kaynağını değiştirme
+            // Mevcut video oynarken, 5 saniye önce yeni video yüklenmeye başlanacak
+            const currentSource = videoSources[currentVideoIndex];
+            videoPlayer.src = currentSource;
+            videoPlayer.load();  // Videoyu yükle
+            videoPlayer.play();  // Videoyu oynat
             currentVideoIndex = (currentVideoIndex + 1) % videoSources.length; // Bir sonraki videoya geçiş
-            startVideo();
+
+            preloadNextVideo(); // Yeni video arka planda yüklenmeye başlasın
         }
 
-        // İlk video gösterildikten sonra her 40 saniyede bir video değiştirme
-        setInterval(changeVideo, 40000); // 40 saniye
+        // Video değişimi başlatmak için zamanlayıcı (5 saniye önce başlasın)
+        videoPlayer.addEventListener('timeupdate', function() {
+            if (videoPlayer.currentTime >= videoPlayer.duration - 5) {
+                preloadNextVideo(); // Son 5 saniyede, bir sonraki video arka planda yüklenmeye başlasın
+            }
+        });
 
-        // Başlangıçta bir kez video değiştirelim
-        startVideo();
+        // İlk video başlatma
+        changeVideo();
+
+        // Her video bitince değişim
+        videoPlayer.addEventListener('ended', function() {
+            changeVideo();
+        });
     </script>
 </body>
 </html>
