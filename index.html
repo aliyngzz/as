@@ -24,7 +24,7 @@
       overflow: hidden;
     }
 
-    .tv iframe {
+    .tv iframe, .tv video {
       width: 100%;
       height: 100%;
       border: none;
@@ -53,43 +53,103 @@
 
   <div class="tv">
     <div id="loading" class="loading-screen">Yükleniyor...</div>
+    <!-- Placeholder video -->
+    <video id="placeholderVideo" autoplay muted loop>
+      <source src="28746-371345147_tiny.mp4" type="video/mp4"> <!-- Yüklediğin video yolu -->
+      Tarayıcınız video etiketini desteklemiyor.
+    </video>
+    <!-- YouTube video iframe -->
     <iframe id="tvScreen" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 
   <script>
     const videos = [
-      "https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1",
-      "https://www.youtube.com/embed/56WBs0A4Kng?autoplay=1&mute=1",
-      "https://www.youtube.com/embed/fi1_rZwBxKE?autoplay=1&mute=1",
-      "https://www.youtube.com/embed/ya8mveIw1pQ?autoplay=1&mute=1"
+      "28746-371345147_tiny.mp4", 
+      "57647-486227472_tiny.mp4",
+      "214732_tiny.mp4",
+      "35427-407130886_small.mp4",
+      "263208_small.mp4",
+      "242228_small.mp4",
+      "180057-863401699_small.mp4",
+      "159309-818469332.mp4",
+      "144959-785568576_medium.mp4",
+      "6847-196978755_medium.mp4",
+      "16012-268207204_small.mp4",
+      "228847_tiny.mp4",
+      "71350-538489808.mp4",
+      "71571-538974136.mp4",
+      "854982-hd_1280_720_25fps.mp4"
     ];
 
     let currentIndex = 0;
+    let player;
+
+    // YouTube iframe API yüklemek
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('tvScreen', {
+        height: '100%',
+        width: '100%',
+        videoId: 'F0GOOP82094', // İlk videoyu yerleştiriyoruz
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    // YouTube player hazır olduğunda
+    function onPlayerReady(event) {
+      console.log("YouTube player hazır.");
+      changeVideo(); // Geçici videoları başlat
+    }
+
+    // YouTube video durum değişikliği (video bitti veya yüklendi)
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.PLAYING) {
+        // YouTube video oynarken, geçici videolar durdurulacak
+        document.getElementById("placeholderVideo").style.opacity = 0;
+        document.getElementById("tvScreen").style.opacity = 1;
+      }
+    }
 
     function changeVideo() {
       const iframe = document.getElementById("tvScreen");
+      const placeholderVideo = document.getElementById("placeholderVideo");
       const loading = document.getElementById("loading");
 
       // Yükleniyor mesajını göster
       loading.style.display = "flex";
 
-      // Videoyu iframe'e yükle
-      iframe.src = videos[currentIndex];
+      // Önce placeholder video oynasın
+      placeholderVideo.style.opacity = 1;
+      iframe.style.opacity = 0; // YouTube video görünmesin
 
-      // Videoyu yavaşça görünür yap
-      iframe.onload = () => {
-        iframe.style.opacity = 1;
+      // Videoyu iframe'e yükle
+      placeholderVideo.src = videos[currentIndex];
+
+      // Geçici video tamamen yüklendiğinde
+      placeholderVideo.onloadeddata = () => {
+        // Placeholder video kapanır
+        placeholderVideo.style.opacity = 0;
+        iframe.style.opacity = 1; // YouTube video görünür
         loading.style.display = "none"; // Yükleniyor mesajını kaldır
       };
 
       currentIndex = (currentIndex + 1) % videos.length;
     }
 
+    // YouTube API scripti ekle
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
     // İlk video ile başla
     changeVideo();
 
     // Her 40 saniyede bir video değiştir
     setInterval(changeVideo, 40000);
+
   </script>
 
 </body>
