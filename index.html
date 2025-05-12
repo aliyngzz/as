@@ -149,37 +149,6 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-<!-- Sol TV Ekranı -->
-<div id="left-tv-container">
-  <iframe id="left-tv" width="480" height="270"
-    src="https://www.youtube.com/embed/ztmY_cCtUl0?autoplay=1&mute=1&enablejsapi=1"
-    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-	
-
   
   <!-- Videolar -->
   <div class="video-container">
@@ -626,23 +595,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-#left-tv-container {
-  position: fixed;
-  top: 100px;
-  left: 20px;
-  width: 480px;
-  height: 270px;
-  z-index: 100;
-  border: 8px solid #fff;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.6);
-  background: black;
-}
-#left-tv {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-}	
+
 
 
 
@@ -813,37 +766,6 @@ tvToggle.addEventListener("click", () => {
 
 </script>
 
-
-
-
-
-<script>
-  const leftTv = document.getElementById("left-tv");
-  const youtubeVideos = [
-    "ztmY_cCtUl0", // Video 1 ID
-    "ZSWPj9szKb8"  // Video 2 ID
-  ];
-
-  let currentIndex = 0;
-
-  function switchLeftTvVideo() {
-    currentIndex = (currentIndex + 1) % youtubeVideos.length;
-    const newSrc = `https://www.youtube.com/embed/${youtubeVideos[currentIndex]}?autoplay=1&mute=1&enablejsapi=1`;
-    leftTv.src = newSrc;
-  }
-
-  // Her 60 saniyede bir değiştir
-  setInterval(switchLeftTvVideo, 60000);
-</script>
-
-
-
-
-
-
-
-
-	
 
 
 
