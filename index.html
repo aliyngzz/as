@@ -815,14 +815,17 @@ let currentTVIndex = 0;
 const tvFrame = document.getElementById("tv-frame");
 
 function changeTVChannel() {
-  tvFrame.src = tvVideos[currentTVIndex];
+  const videoURL = tvVideos[currentTVIndex];
+  tvFrame.srcdoc = `
+    <style>
+      * { margin:0; padding:0; overflow:hidden }
+      html,body { height:100%; }
+      iframe { width:100%; height:100%; border:none; }
+    </style>
+    <iframe src="${videoURL}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  `;
   currentTVIndex = (currentTVIndex + 1) % tvVideos.length;
 }
-changeTVChannel(); // İlk videoyu başlat
-
-setInterval(changeTVChannel, 60000); // Her 1 dakikada bir değiştir
-
-
 
 
 
