@@ -148,7 +148,13 @@
 </button>
 </div>
 
+<div id="mini-tv-container-2" class="mini-tv">
+  <button class="close-mini-tv">×</button>
+  <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+</div>
 
+<!-- TV 2 Butonu -->
+<button class="tv-toggle-2">📺 TV 2</button>
   
   <!-- Videolar -->
   <div class="video-container">
@@ -559,6 +565,23 @@ nextVideo.addEventListener('ended', () => {
       transition: background-color 0.3s;
     }
 
+.tv-toggle-2 {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  z-index: 998;
+  background-color: #222;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 10px white;
+}
+
+
+	  
 
 #tv-wrapper {
   position: fixed;
@@ -829,11 +852,25 @@ tvToggle.addEventListener("click", () => {
   }
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
+</script>
 
 
 
+<script>
 
 
+const tvToggle2 = document.querySelector(".tv-toggle-2");
+const miniTV2 = document.getElementById("mini-tv-container-2");
+
+// TV 2 için açma/kapama buton fonksiyonu
+tvToggle2.addEventListener("click", () => {
+  if (miniTV2.style.display === "block") {
+    miniTV2.style.display = "none";
+  } else {
+    miniTV2.style.display = "block";
+  }
+});
+	
 
 
 
