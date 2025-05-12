@@ -92,7 +92,7 @@
 }
 
 <audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
-
+<button id="toggle-video-btn" style="position: fixed; top: 20px; right: 20px; z-index: 1002; font-size: 1.5rem; padding: 10px;">Videoyu Kapat</button>
 	  
 .audio-controls button:hover {
   background-color: #45a049;
@@ -763,6 +763,41 @@ tvToggle.addEventListener("click", () => {
   }
 });
 
+</script>
+
+
+
+<script>
+  const toggleBtn = document.getElementById("toggle-video-btn");
+  const videoContainer = document.querySelector(".video-container");
+  const videoElement = document.getElementById("background-video");
+  let videoVisible = true;
+
+  toggleBtn.addEventListener("click", () => {
+    videoVisible = !videoVisible;
+    if (videoVisible) {
+      videoContainer.style.display = "block";
+      videoElement.play();
+      toggleBtn.textContent = "Videoyu Kapat";
+    } else {
+      videoElement.pause();
+      videoContainer.style.display = "none";
+      toggleBtn.textContent = "Videoyu Aç";
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+	  
 
 </script>
 
