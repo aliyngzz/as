@@ -460,7 +460,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-<div id="mini-tv-container">
+<div id="mini-tv-container" style="display: none;">
   <iframe id="mini-tv" width="320" height="180" src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&enablejsapi=1" 
     frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
@@ -851,7 +851,18 @@ tvToggle.addEventListener("click", () => {
 
 
 
+<script>
+  const miniTV = document.getElementById("mini-tv-container");
+  const miniTVToggle = document.getElementById("mini-tv-toggle");
 
+  miniTVToggle.addEventListener("click", () => {
+    if (miniTV.style.display === "none") {
+      miniTV.style.display = "block";
+    } else {
+      miniTV.style.display = "none";
+    }
+  });
+</script>
 
 
 	  
