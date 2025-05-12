@@ -148,13 +148,17 @@
 </button>
 </div>
 
-
+<button id="yt-toggle-btn">
+  <img src="yt-icon.png" alt="YouTube Aç" class="audio-button-img">
+</button>
   
   <!-- Videolar -->
   <div class="video-container">
   <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
   </div>
-
+<div id="youtube-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;">
+  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/-QJ5iZYiFUU?si=NnihPUhN8yM2kxCz&autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=-QJ5iZYiFUU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
   <!-- Resimler -->
   <div class="image-container">
     <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
@@ -763,6 +767,32 @@ tvToggle.addEventListener("click", () => {
   }
 });
 
+</script>
+<script>
+document.getElementById("yt-toggle-btn").addEventListener("click", () => {
+  const videoContainer = document.querySelector(".video-container");
+  const backgroundVideo = document.getElementById("background-video");
+  const youtubeContainer = document.getElementById("youtube-container");
+
+  // Arka plan videoyu durdur
+  if (videoContainer && backgroundVideo) {
+    backgroundVideo.pause();
+    videoContainer.style.display = "none";
+  }
+
+  // YouTube iframe'ini göster
+  if (youtubeContainer) {
+    youtubeContainer.style.display = "block";
+  }
+});
+
+
+	  
+
+
+
+
+	  
 
 </script>
 
