@@ -455,7 +455,7 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
-
+<button id="mini-tv-toggle" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">📺</button>
 
 
 
@@ -830,10 +830,24 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
+</script>
 
 
 
 
+
+	<script>
+  const miniTV = document.getElementById("mini-tv-container");
+  const miniTVToggle = document.getElementById("mini-tv-toggle");
+
+  miniTVToggle.addEventListener("click", () => {
+    if (miniTV.style.display === "none" || miniTV.style.display === "") {
+      miniTV.style.display = "block";
+    } else {
+      miniTV.style.display = "none";
+    }
+  });
+</script>
 
 
 
@@ -842,7 +856,7 @@ tvToggle.addEventListener("click", () => {
 
 	  
 
-</script>
+
 
 
 
