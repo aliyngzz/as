@@ -612,23 +612,15 @@ nextVideo.addEventListener('ended', () => {
   margin-top: 10px;
 }
 
-#mini-tv-container {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  width: 400px;
-  height: 250px;
-  border: 5px solid #fff;
-  box-shadow: 0 0 15px #00ffcc;
-  border-radius: 15px;
-  z-index: 999;
-  background-color: black;
-}
-#mini-tv {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-}
+ #mini-tv-container {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: none;
+  }
+  #mini-tv-container.show {
+    display: block;
+    opacity: 1;
+  }
 
 
 
@@ -856,11 +848,7 @@ tvToggle.addEventListener("click", () => {
   const miniTVToggle = document.getElementById("mini-tv-toggle");
 
   miniTVToggle.addEventListener("click", () => {
-    if (miniTV.style.display === "none") {
-      miniTV.style.display = "block";
-    } else {
-      miniTV.style.display = "none";
-    }
+    miniTV.classList.toggle("show");
   });
 </script>
 
