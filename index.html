@@ -125,11 +125,6 @@
    background-color: rgba(0, 0, 0, 0.2); /* Hover efekti */
 }
 
-
-<button id="open-mini-tv" style="display: none;">📺 TV'yi Aç</button>
-
-
-	  
 .audio-button-img {
    width: 100%; /* Butonun tamamını resim kapsayacak şekilde */
    height: auto; /* Resmin orijinal oranını korur */
@@ -466,7 +461,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 <div id="mini-tv-container">
-  <iframe id="mini-tv" width="450" height="280" src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&enablejsapi=1" 
+  <iframe id="mini-tv" width="320" height="180" src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&enablejsapi=1" 
     frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
@@ -621,8 +616,8 @@ nextVideo.addEventListener('ended', () => {
   position: fixed;
   bottom: 10px;
   left: 10px;
-  width: 450px;
-  height: 280px;
+  width: 320px;
+  height: 180px;
   border: 5px solid #fff;
   box-shadow: 0 0 15px #00ffcc;
   border-radius: 15px;
@@ -637,20 +632,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-#open-mini-tv {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999;
-  background-color: #222;
-  color: #fff;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 0 10px white;
-}
+
 
 
 
@@ -850,31 +832,17 @@ tvToggle.addEventListener("click", () => {
 
 
 
-  </script>
 
 
-<script>
-  const closeBtn = document.getElementById("close-mini-tv");
-  const openBtn = document.getElementById("open-mini-tv");
-  const miniTV = document.getElementById("mini-tv-container");
 
-  closeBtn.addEventListener("click", function () {
-    miniTV.style.display = "none";
-    openBtn.style.display = "block";
-  });
 
-  openBtn.addEventListener("click", function () {
-    miniTV.style.display = "block";
-    openBtn.style.display = "none";
-  });
-</script>
 
 
 
 
 	  
 
-
+</script>
 
 
 
