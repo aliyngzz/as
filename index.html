@@ -769,31 +769,35 @@ tvToggle.addEventListener("click", () => {
 
 </script>
 <script>
-document.getElementById("yt-toggle-btn").addEventListener("click", () => {
-  const videoContainer = document.querySelector(".video-container");
-  const backgroundVideo = document.getElementById("background-video");
-  const youtubeContainer = document.getElementById("youtube-container");
+  let youtubeOn = false;
 
-  // Arka plan videoyu durdur
-  if (videoContainer && backgroundVideo) {
-    backgroundVideo.pause();
-    videoContainer.style.display = "none";
-  }
+  document.getElementById("yt-toggle-btn").addEventListener("click", () => {
+    const videoContainer = document.querySelector(".video-container");
+    const backgroundVideo = document.getElementById("background-video");
+    const youtubeContainer = document.getElementById("youtube-container");
 
-  // YouTube iframe'ini göster
-  if (youtubeContainer) {
-    youtubeContainer.style.display = "block";
-  }
-});
+    if (!youtubeOn) {
+      // YouTube'u aç, arka plan videoyu kapat
+      if (videoContainer && backgroundVideo) {
+        backgroundVideo.pause();
+        videoContainer.style.display = "none";
+      }
+      if (youtubeContainer) {
+        youtubeContainer.style.display = "block";
+      }
+    } else {
+      // YouTube'u kapat, arka plan videoyu aç
+      if (youtubeContainer) {
+        youtubeContainer.style.display = "none";
+      }
+      if (videoContainer && backgroundVideo) {
+        backgroundVideo.play();
+        videoContainer.style.display = "block";
+      }
+    }
 
-
-	  
-
-
-
-
-	  
-
+    youtubeOn = !youtubeOn;
+  });
 </script>
 
 
