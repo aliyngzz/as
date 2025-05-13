@@ -151,35 +151,27 @@
 
 
 
-
-
-
-
-
-<!-- Radyo Butonu -->
-<div id="radio-container" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
-  <button id="radio-btn" onclick="toggleRadio()" style="
-    background: linear-gradient(45deg, #e91e63, #9c27b0);
-    color: white;
+<!-- Radyo Butonu (Sol Üstte) -->
+<div style="position: fixed; top: 20px; left: 20px; z-index: 9999;">
+  <button onclick="toggleRadio()" id="radio-btn" style="
+    background: linear-gradient(45deg, #ff4081, #7c4dff);
     border: none;
     border-radius: 50px;
-    padding: 15px 25px;
-    font-size: 18px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: white;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   ">
     <span id="radio-icon">📻</span> <span id="radio-text">Radyo Aç</span>
   </button>
 </div>
 
-<!-- Gömülü YouTube Radyo (Başta görünmez) -->
-<div id="radio-player" style="display: none;">
-  <iframe width="0" height="0" src="https://www.youtube.com/embed/wBL7sXbRYsg?autoplay=1&loop=1&playlist=wBL7sXbRYsg"
-    frameborder="0" allow="autoplay" allowfullscreen id="radio-iframe"></iframe>
-</div>
+<!-- YouTube Player (gizli) -->
+<div id="player" style="display: none;"></div>
 
 
 
@@ -866,7 +858,7 @@ tvToggle.addEventListener("click", () => {
     "uXNU0XgGZhs",
      "AKInuThTUPw",
      "mIPHBwY5aS0",
-  "DHUnz4dyb54",
+    "DHUnz4dyb54",
  "uXNU0XgGZhs",
  "jzx_n25g3kA",
  "bKLftRxcy3k",
@@ -890,31 +882,57 @@ tvToggle.addEventListener("click", () => {
 
 
 
+!-- YouTube API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
+  let player;
   let radioOn = false;
 
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '0',
+      width: '0',
+      videoId: 'wBL7sXbRYsg', // Yön Radyo YouTube videosu
+      playerVars: {
+        'autoplay': 0,
+        'controls': 0,
+        'loop': 1,
+        'playlist': 'wBL7sXbRYsg'
+      },
+      events: {
+        'onReady': onPlayerReady
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    console.log("YouTube player hazır.");
+  }
+
   function toggleRadio() {
-    const player = document.getElementById('radio-player');
-    const icon = document.getElementById('radio-icon');
-    const text = document.getElementById('radio-text');
-    const iframe = document.getElementById('radio-iframe');
+    const icon = document.getElementById("radio-icon");
+    const text = document.getElementById("radio-text");
 
     if (!radioOn) {
-      player.style.display = 'block';
+      player.playVideo();
       icon.textContent = "🔊";
       text.textContent = "Radyo Kapat";
-      // Radyo tekrar çalabilsin diye iframe yeniden yükleniyor:
-      iframe.src = "https://www.youtube.com/embed/wBL7sXbRYsg?autoplay=1&loop=1&playlist=wBL7sXbRYsg";
     } else {
+      player.pauseVideo();
       icon.textContent = "📻";
       text.textContent = "Radyo Aç";
-      iframe.src = ""; // durdurmak için src sıfırlanır
-      player.style.display = 'none';
     }
 
     radioOn = !radioOn;
   }
 
+
+
+
+
+
+	
 
 
 
