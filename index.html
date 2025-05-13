@@ -454,16 +454,7 @@ nextVideo.addEventListener('ended', () => {
   <button id="tv-toggle">📺</button>
 </div>
 
-<button id="radio-btn">Radyo Aç/Kapa</button>
 
-<!-- Ses kontrol butonları (Doğa Sesi) -->
-<div class="audio-controls">
-  <button id="nature-sound-btn">Doğa Sesi</button>
-</div>
-
-<!-- Radyo ve Doğa Sesleri -->
-<audio id="radio" src="https://www.youtube.com/watch?v=SavXWO8gKIE&t=3146s" preload="auto"></audio>
-<audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
 
 
 
@@ -640,50 +631,7 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
-#radio-btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  padding: 15px;
-  background-color: #444;
-  color: white;
-  font-size: 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 1000;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transition: background-color 0.3s;
-}
 
-#radio-btn:hover {
-  background-color: #777;
-}
-
-.audio-controls {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-  z-index: 1001;
-}
-
-.audio-controls button {
-  padding: 10px 20px;
-  font-size: 2rem;
-  color: white;
-  background-color: transparent;
-  border: 2px solid white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.audio-controls button:hover {
-  background-color: #45a049;
-}
 
 
 
@@ -890,35 +838,11 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
-</script>
 
-<script>
 
-let radioPlaying = false;
-const radioButton = document.getElementById("radio-btn");
-const radio = document.getElementById("radio");
-const natureSound = document.getElementById("nature-sound");
 
-// Radyo açma/kapama işlevi
-radioButton.addEventListener("click", () => {
-  if (radioPlaying) {
-    radio.pause();
-    natureSound.play(); // Radyo kapandığında doğa sesi tekrar açılır
-    radioButton.textContent = "Radyo Aç";
-  } else {
-    radio.play();
-    natureSound.pause(); // Radyo açıldığında doğa sesi kapatılır
-    radioButton.textContent = "Radyo Kapat";
-  }
-  radioPlaying = !radioPlaying;
-});
 
-// Doğa sesi butonuna tıklama
-document.getElementById("nature-sound-btn").addEventListener("click", () => {
-  if (!radioPlaying) {
-    natureSound.paused ? natureSound.play() : natureSound.pause();
-  }
-});
+
 
 
 
