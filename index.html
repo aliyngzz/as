@@ -148,16 +148,7 @@
 </button>
 </div>
 
-<div id="radyoKutusu" style="display: none; position: absolute; top: 50px; left: 20px;">
-  <iframe width="300" height="170" src="https://www.youtube.com/embed/videoseries?list=RDQMlQJB2Oiv20Q&autoplay=1&mute=0" 
-    title="YouTube Radyo" frameborder="0"
-    allow="autoplay; encrypted-media" allowfullscreen></iframe>
-</div>
 
-<!-- Radyo Düğmeleri -->
-<div style="position: absolute; top: 10px; left: 10px; z-index: 100;">
-  <button onclick="toggleRadyo()">Radyo Aç/Kapa</button>
-</div>
   
   <!-- Videolar -->
   <div class="video-container">
@@ -846,18 +837,12 @@ tvToggle.addEventListener("click", () => {
   }
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
-</script>
 
 
 
 
-<script>
-  let radyoAcik = false;
-  function toggleRadyo() {
-    radyoAcik = !radyoAcik;
-    document.getElementById('radyoKutusu').style.display = radyoAcik ? 'block' : 'none';
-  }
-</script>
+
+
 
 
 
@@ -865,7 +850,7 @@ tvToggle.addEventListener("click", () => {
 
 	  
 
-
+</script>
 
 
 
