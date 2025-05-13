@@ -147,12 +147,7 @@
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
-<div class="radio-controls">
-  <button id="radio-toggle"><img src="radio-icon.png" alt="Radyo Aç/Kapa" class="radio-button-img"></button>
-  <button id="radio-change"><img src="change-icon.png" alt="Radyo Değiştir" class="radio-button-img"></button>
-</div>
 
-<audio id="radio-player" autoplay></audio>
 
   
   <!-- Videolar -->
@@ -636,31 +631,7 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
-.radio-controls {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1002;
-  display: flex;
-  gap: 15px;
-}
 
-.radio-controls button {
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.radio-controls button:hover {
-  transform: scale(1.1);
-}
-
-.radio-button-img {
-  width: 60px;
-  height: auto;
-}
 
 
 
@@ -867,44 +838,10 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
-</script>
 
 
 
-<script>
-const radioPlayer = document.getElementById("radio-player");
-const radioToggleBtn = document.getElementById("radio-toggle");
-const radioChangeBtn = document.getElementById("radio-change");
 
-const radioLinks = [
-  "https://radyo.canliyayinda.com:7006/;stream.mp3", // Radyo FG
-  "https://radyo.canliyayinda.com:7060/;stream.mp3", // Alternatif radyo
-];
-
-let radioIndex = 0;
-let radioPlaying = true;
-
-radioPlayer.src = radioLinks[radioIndex];
-radioPlayer.play().catch(err => console.error("Radyo oynatma hatası:", err));
-
-// Radyo Aç/Kapa
-radioToggleBtn.addEventListener("click", () => {
-  if (radioPlaying) {
-    radioPlayer.pause();
-  } else {
-    radioPlayer.play().catch(err => console.error("Radyo tekrar başlatılamadı:", err));
-  }
-  radioPlaying = !radioPlaying;
-});
-
-// Radyo Değiştir
-radioChangeBtn.addEventListener("click", () => {
-  radioIndex = (radioIndex + 1) % radioLinks.length;
-  radioPlayer.src = radioLinks[radioIndex];
-  if (radioPlaying) {
-    radioPlayer.play().catch(err => console.error("Yeni radyo başlatılamadı:", err));
-  }
-});
 
 
 
