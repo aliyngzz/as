@@ -148,6 +148,9 @@
 </button>
 </div>
 
+<button id="toggle-nature-sound" class="audio-button-img">
+    <img src="toggle-icon.png" alt="Aç/Kapa" class="audio-button-img">
+</button>
 
   
   <!-- Videolar -->
@@ -631,7 +634,26 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
+#toggle-nature-sound {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 15px;
+    background-color: #f0f0f0;
+    border: 2px solid #333;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
+#toggle-nature-sound:hover {
+    background-color: #45a049;
+}
+
+.audio-button-img {
+    width: 100%;
+    height: auto;
+}
 
 
 
@@ -838,11 +860,18 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
+</script>
 
+<script>
 
-
-
-
+document.getElementById("toggle-nature-sound").addEventListener("click", () => {
+    const audio = document.getElementById("nature-sound");
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
+});
 
 
 
