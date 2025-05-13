@@ -148,11 +148,7 @@
 </button>
 </div>
 
-<div id="radio-controls">
-  <button id="radio-toggle">
-    🎵 Radyo Aç
-  </button>
-</div>
+
   
   <!-- Videolar -->
   <div class="video-container">
@@ -471,7 +467,14 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-
+<div id="radio-container">
+  <button id="radio-toggle">
+    🎵 Radyo Aç
+  </button>
+  <div id="radio-player">
+    <iframe id="radio-iframe" width="300" height="150" src="" frameborder="0" allow="autoplay"></iframe>
+  </div>
+</div>
 
 
 
@@ -635,31 +638,34 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
-#radio-controls {
+
+#radio-container {
   position: fixed;
   top: 10px;
   left: 10px;
-  z-index: 2000;
+  z-index: 1002;
 }
 
 #radio-toggle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  background: linear-gradient(to right, #ff5f6d, #ffc371);
+  font-size: 20px;
+  padding: 10px 15px;
   border: none;
-  padding: 10px 20px;
   border-radius: 10px;
+  background: linear-gradient(45deg, #ff0066, #6600ff);
   color: white;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+  transition: 0.3s;
 }
 
 #radio-toggle:hover {
-  transform: scale(1.1);
-  background: linear-gradient(to right, #ff9966, #ff5e62);
+  background: linear-gradient(45deg, #6600ff, #ff0066);
 }
 
+#radio-player {
+  margin-top: 10px;
+  display: none;
+}
 
 
 
@@ -864,38 +870,32 @@ tvToggle.addEventListener("click", () => {
   }
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
+
 </script>
 
-
-
 <script>
+const radioButton = document.getElementById('radio-toggle');
+const radioPlayer = document.getElementById('radio-player');
+const radioIframe = document.getElementById('radio-iframe');
 
-<iframe id="radio-player" width="0" height="0" style="display:none;" 
-src="https://www.youtube.com/embed/Lo0ELoepTCM?autoplay=1&loop=1&playlist=Lo0ELoepTCM" 
-frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+let radioPlaying = false;
 
-<script>
-  const radioBtn = document.getElementById("radio-toggle");
-  const radioPlayer = document.getElementById("radio-player");
-  let radioPlaying = false;
+radioButton.addEventListener('click', () => {
+  if (!radioPlaying) {
+    // Radyo bağlantısı (YouTube Embed Linki)
+    radioIframe.src = "https://www.youtube.com/embed/Lo0ELoepTCM?autoplay=1";
+    radioPlayer.style.display = "block";
+    radioButton.textContent = "⏹ Radyo Kapat";
+    radioPlaying = true;
+  } else {
+    // Kapat
+    radioIframe.src = "";
+    radioPlayer.style.display = "none";
+    radioButton.textContent = "🎵 Radyo Aç";
+    radioPlaying = false;
+  }
+});
 
-  radioBtn.addEventListener("click", () => {
-    if (!radioPlaying) {
-      radioPlayer.style.display = "block";
-      radioBtn.textContent = "🔇 Radyo Kapat";
-      radioPlaying = true;
-    } else {
-      radioPlayer.src = ""; // durdurmak için kaynak silinir
-      radioPlayer.style.display = "none";
-      radioBtn.textContent = "🎵 Radyo Aç";
-      radioPlaying = false;
-
-      // yeniden başlatılabilir hale getirmek için kaynak geri atanır
-      setTimeout(() => {
-        radioPlayer.src = "https://www.youtube.com/embed/Lo0ELoepTCM?autoplay=1&loop=1&playlist=Lo0ELoepTCM";
-      }, 100);
-    }
-  });
 
 
 
