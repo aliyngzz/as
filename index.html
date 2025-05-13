@@ -149,46 +149,6 @@
 </div>
 
 
-
-
-<!-- Radyo Butonu (Sol Üstte) -->
-<div style="position: fixed; top: 20px; left: 20px; z-index: 9999;">
-  <button onclick="toggleRadio()" id="radio-btn" style="
-    background: linear-gradient(45deg, #ff4081, #7c4dff);
-    border: none;
-    border-radius: 50px;
-    padding: 12px 20px;
-    font-size: 16px;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  ">
-    <span id="radio-icon">📻</span> <span id="radio-text">Radyo Aç</span>
-  </button>
-</div>
-
-<!-- YouTube Player (gizli) -->
-<div id="player" style="display: none;"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
   
   <!-- Videolar -->
   <div class="video-container">
@@ -878,142 +838,14 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
-</script>
-
-
-
-
-<script src="https://www.youtube.com/iframe_api"></script>
-
-<script>
-  let player;
-  let radioOn = false;
-
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      height: '0',
-      width: '0',
-      videoId: 'wBL7sXbRYsg', // Yön Radyo YouTube videosu
-      playerVars: {
-        'autoplay': 0,
-        'controls': 0,
-        'loop': 1,
-        'playlist': 'wBL7sXbRYsg'
-      },
-      events: {
-        'onReady': onPlayerReady
-      }
-    });
-  }
-
-  function onPlayerReady(event) {
-    console.log("YouTube player hazır.");
-  }
-
-  function toggleRadio() {
-    const icon = document.getElementById("radio-icon");
-    const text = document.getElementById("radio-text");
-
-    if (!radioOn) {
-      player.playVideo();
-      icon.textContent = "🔊";
-      text.textContent = "Radyo Kapat";
-    } else {
-      player.pauseVideo();
-      icon.textContent = "📻";
-      text.textContent = "Radyo Aç";
-    }
-
-    radioOn = !radioOn;
-  }
-</script>
-
-
-
-
-<script>
-	
-
-let radioOn = false;
-let tvOn = false;
-
-// Doğa Sesini Durdurma
-let dogaSesiPlayer = new Audio("birds-in-forest-on-sunny-day-14444.mp3");
-dogaSesiPlayer.loop = true;
-dogaSesiPlayer.volume = 0.5; // Doğa sesinin sesi
-
-function playNatureSound() {
-  dogaSesiPlayer.play();
-}
-
-function stopNatureSound() {
-  dogaSesiPlayer.pause();
-  dogaSesiPlayer.currentTime = 0;
-}
-
-function toggleRadio() {
-  const icon = document.getElementById("radio-icon");
-  const text = document.getElementById("radio-text");
-
-  if (!radioOn) {
-    stopNatureSound(); // Radyo açıldığında doğa sesini durdur
-    player.playVideo(); // Radyo başlat
-    icon.textContent = "🔊";
-    text.textContent = "Radyo Kapat";
-  } else {
-    player.pauseVideo(); // Radyo durduruluyor
-    icon.textContent = "📻";
-    text.textContent = "Radyo Aç";
-  }
-
-  radioOn = !radioOn;
-}
-
-function tvAc() {
-  stopNatureSound(); // TV açıldığında doğa sesini durdur
-  // TV videosunu başlatma işlemi burada
-  tvOn = true;
-}
-
-function tvKapat() {
-  tvOn = false;
-  resumeNatureSound();
-}
-
-function resumeNatureSound() {
-  if (!radioOn && !tvOn) { // Radyo veya TV açık değilse
-    playNatureSound(); // Doğa sesini başlat
-  }
-}
-
-</script>
 
 
 
 
 
 
-<script>
 
 
-
-
-let radioPlaying = false;
-let radioAudio = new Audio("radyo-linki.mp3"); // Radyo ses kaynağını buraya ekleyin.
-
-function toggleRadio() {
-  if (radioPlaying) {
-    radioAudio.pause(); // Radyo durduruluyor
-    document.getElementById("radio-text").innerText = "Radyo Aç"; // Buton metni değişiyor
-    document.getElementById("radio-icon").innerText = "📻";
-  } else {
-    radioAudio.play(); // Radyo başlatılıyor
-    document.getElementById("radio-text").innerText = "Radyo Kapat"; // Buton metni değişiyor
-    document.getElementById("radio-icon").innerText = "🔊";
-  }
-  radioPlaying = !radioPlaying;
-}
-	
 
 
 	  
