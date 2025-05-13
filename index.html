@@ -986,19 +986,33 @@ function resumeNatureSound() {
   }
 }
 
+</script>
 
 
 
 
 
 
+<script>
 
 
 
 
+let radioPlaying = false;
+let radioAudio = new Audio("radyo-linki.mp3"); // Radyo ses kaynağını buraya ekleyin.
 
-
-
+function toggleRadio() {
+  if (radioPlaying) {
+    radioAudio.pause(); // Radyo durduruluyor
+    document.getElementById("radio-text").innerText = "Radyo Aç"; // Buton metni değişiyor
+    document.getElementById("radio-icon").innerText = "📻";
+  } else {
+    radioAudio.play(); // Radyo başlatılıyor
+    document.getElementById("radio-text").innerText = "Radyo Kapat"; // Buton metni değişiyor
+    document.getElementById("radio-icon").innerText = "🔊";
+  }
+  radioPlaying = !radioPlaying;
+}
 	
 
 
