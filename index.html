@@ -149,6 +149,54 @@
 </div>
 
 
+
+
+
+
+
+
+
+<!-- Radyo Butonu -->
+<div id="radio-container" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
+  <button id="radio-btn" onclick="toggleRadio()" style="
+    background: linear-gradient(45deg, #e91e63, #9c27b0);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  ">
+    <span id="radio-icon">📻</span> <span id="radio-text">Radyo Aç</span>
+  </button>
+</div>
+
+<!-- Gömülü YouTube Radyo (Başta görünmez) -->
+<div id="radio-player" style="display: none;">
+  <iframe width="0" height="0" src="https://www.youtube.com/embed/wBL7sXbRYsg?autoplay=1&loop=1&playlist=wBL7sXbRYsg"
+    frameborder="0" allow="autoplay" allowfullscreen id="radio-iframe"></iframe>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
   
   <!-- Videolar -->
   <div class="video-container">
@@ -838,10 +886,34 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
+</script>
 
 
 
+<script>
+  let radioOn = false;
 
+  function toggleRadio() {
+    const player = document.getElementById('radio-player');
+    const icon = document.getElementById('radio-icon');
+    const text = document.getElementById('radio-text');
+    const iframe = document.getElementById('radio-iframe');
+
+    if (!radioOn) {
+      player.style.display = 'block';
+      icon.textContent = "🔊";
+      text.textContent = "Radyo Kapat";
+      // Radyo tekrar çalabilsin diye iframe yeniden yükleniyor:
+      iframe.src = "https://www.youtube.com/embed/wBL7sXbRYsg?autoplay=1&loop=1&playlist=wBL7sXbRYsg";
+    } else {
+      icon.textContent = "📻";
+      text.textContent = "Radyo Aç";
+      iframe.src = ""; // durdurmak için src sıfırlanır
+      player.style.display = 'none';
+    }
+
+    radioOn = !radioOn;
+  }
 
 
 
