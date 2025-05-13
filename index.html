@@ -455,7 +455,13 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
+<button id="tv-toggle">📺</button>
 
+<!-- Mini TV Ekranı -->
+<div id="mini-tv">
+  <iframe id="tv-iframe" width="300" height="170" src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+    frameborder="0" allowfullscreen></iframe>
+</div>
 
 
 
@@ -632,7 +638,32 @@ nextVideo.addEventListener('ended', () => {
 
 
 
+#tv-toggle {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 1002;
+  font-size: 2rem;
+  padding: 10px;
+  background-color: #222;
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+}
 
+#mini-tv {
+  position: fixed;
+  top: 160px;
+  right: 20px;
+  width: 300px;
+  height: 170px;
+  background-color: black;
+  border: 4px solid white;
+  border-radius: 10px;
+  display: none; /* Başlangıçta gizli */
+  z-index: 1001;
+}
 
 
 
@@ -844,15 +875,19 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
+</script>
 
 
 
+<script>
 
 
 
-
-
-
+// TV butonuna basıldığında mini TV'yi aç/kapat
+document.getElementById("tv-toggle").addEventListener("click", () => {
+  const tv = document.getElementById("mini-tv");
+  tv.style.display = (tv.style.display === "none" || tv.style.display === "") ? "block" : "none";
+});
 
 	  
 
