@@ -886,7 +886,11 @@ function shuffleArray(array) {
   }
 }
 
-shuffleArray(videoList); // Video listesini karıştır
+function playNextMiniTVVideo() {
+  const randomIndex = Math.floor(Math.random() * miniTVVideos.length);
+  const videoId = miniTVVideos[randomIndex];
+  miniTV.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0`;
+}
 
 let currentVideoIndex = 0;
 video.src = videoList[currentVideoIndex]; // İlk rastgele video
