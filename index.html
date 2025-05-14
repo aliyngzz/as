@@ -881,7 +881,7 @@ tvToggle.addEventListener("click", () => {
 
 
   ];
-let currentMiniTVIndex = Math.floor(Math.random() * miniTVVideos.length);
+  let currentMiniIndex = 0;
 
   function rotateMiniTV() {
     currentMiniIndex = (currentMiniIndex + 1) % miniTVVideos.length;
@@ -903,11 +903,7 @@ function shuffleArray(array) {
   }
 }
 
-function playNextMiniTVVideo() {
-  const randomIndex = Math.floor(Math.random() * miniTVVideos.length);
-  const videoId = miniTVVideos[randomIndex];
-  miniTV.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0`;
-}
+shuffleArray(videoList); // Video listesini karıştır
 
 let currentVideoIndex = 0;
 video.src = videoList[currentVideoIndex]; // İlk rastgele video
