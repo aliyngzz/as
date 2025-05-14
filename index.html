@@ -873,13 +873,29 @@ tvToggle.addEventListener("click", () => {
   }
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
+</script>
 
 
 
+<script>
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
 
+shuffleArray(videoList); // Video listesini karıştır
 
+let currentVideoIndex = 0;
+video.src = videoList[currentVideoIndex]; // İlk rastgele video
 
+video.onended = () => {
+  currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+  video.src = videoList[currentVideoIndex];
+  video.play();
+};
 
 
 
