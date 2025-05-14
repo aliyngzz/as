@@ -148,7 +148,11 @@
 </button>
 </div>
 
+<audio id="myRadio" src="https://radyo.aktifdinle.com/stream/35/" type="audio/mpeg"></audio>
 
+<button onclick="toggleRadio()" style="position: fixed; top: 10px; left: 10px; z-index: 9999;">
+  📻
+</button>
   
   <!-- Videolar -->
   <div class="video-container">
@@ -838,9 +842,21 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
+</script>
 
 
+<script>
+  let isPlaying = false;
+  const radio = document.getElementById("myRadio");
 
+  function toggleRadio() {
+    if (isPlaying) {
+      radio.pause();
+    } else {
+      radio.play();
+    }
+    isPlaying = !isPlaying;
+  }
 
 
 
