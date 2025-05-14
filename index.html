@@ -455,13 +455,7 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
-<iframe id="fgRadio" src="" style="display: none;"></iframe>
 
-<!-- Sol üstte küçük buton -->
-<button onclick="playFgRadio()" 
-  style="position: fixed; top: 10px; left: 10px; z-index: 9999; padding: 5px 10px; font-size: 14px;">
-  🎵
-</button>
 
 
 
@@ -637,7 +631,12 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
+<audio id="myRadio" src="https://radyodinle.canliyayin.org/FantaziArabesk.m3u" type="audio/mpeg"></audio>
 
+<button onclick="document.getElementById('myRadio').play()" 
+ style="position: fixed; top: 10px; left: 10px; z-index:9999;">
+  🎵
+</button>
 
 
 
@@ -844,15 +843,11 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
-</script>
 
 
 
 
-<script>
-function playFgRadio() {
-  document.getElementById('fgRadio').src = "https://www.fgplay.com";
-}
+
 
 
 
