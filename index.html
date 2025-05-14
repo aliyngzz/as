@@ -467,7 +467,13 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-
+<div id="radioBox">
+  <h4>📻 Web Radyo</h4>
+  <div id="nowPlaying">Radyo: Fenomen</div>
+  <button onclick="toggleRadio()">▶️ Aç / Kapat</button>
+  <button onclick="nextRadio()">⏭️ Kanal Değiştir</button>
+  <audio id="myRadio" src="https://radyofenomen.listenfenomen.com/fenomen/128/icecast.audio"></audio>
+</div>
 
 
 
@@ -632,6 +638,40 @@ nextVideo.addEventListener('ended', () => {
 
 
 
+<style>
+  #radioBox {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 200px;
+    background: linear-gradient(135deg, #2e8b57, #3cb371);
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    font-family: sans-serif;
+    z-index: 9999;
+  }
+  #radioBox h4 {
+    margin: 0 0 10px 0;
+    text-align: center;
+  }
+  #radioBox button {
+    width: 100%;
+    margin-top: 5px;
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #2e8b57;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  #radioBox button:hover {
+    background-color: #f0f0f0;
+  }
+</style>
 
 
 
@@ -838,19 +878,49 @@ tvToggle.addEventListener("click", () => {
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
+</script>
 
 
 
 
 
+<script>
+  const radio = document.getElementById("myRadio");
+  const nowPlaying = document.getElementById("nowPlaying");
+  const stations = [
+    { name: "Fenomen", url: "https://radyofenomen.listenfenomen.com/fenomen/128/icecast.audio" },
+    { name: "Power Türk", url: "https://listen.powerapp.com.tr/powerturk/mpeg/icecast.audio" },
+    { name: "Radyo Viva", url: "https://radyo.dogannet.tv/viva" }
+  ];
 
+  let currentStation = 0;
+  let isPlaying = false;
+
+  function toggleRadio() {
+    if (isPlaying) {
+      radio.pause();
+    } else {
+      radio.play();
+    }
+    isPlaying = !isPlaying;
+  }
+
+  function nextRadio() {
+    currentStation = (currentStation + 1) % stations.length;
+    radio.src = stations[currentStation].url;
+    nowPlaying.textContent = "Radyo: " + stations[currentStation].name;
+    if (isPlaying) {
+      radio.play();
+    }
+  }
+</script>
 
 
 
 
 	  
 
-</script>
+
 
 
 
