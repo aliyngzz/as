@@ -468,7 +468,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-<div id="videoContainer"></div>
+
 
 
 
@@ -837,55 +837,10 @@ tvToggle.addEventListener("click", () => {
   }
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
-</script>
 
 
 
-<script>
-const videoIDs = [
-  "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
-  "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k", "inDzgZjCxmQ"
-];
 
-const preloadedIframes = [];
-
-// Gizli olarak iframe'leri hazırla
-videoIDs.forEach((id, index) => {
-  const iframe = document.createElement("iframe");
-  iframe.src = `https://www.youtube.com/embed/${id}?autoplay=0&mute=1`;
-  iframe.style.width = "0";
-  iframe.style.height = "0";
-  iframe.style.opacity = "0";
-  iframe.style.position = "absolute";
-  iframe.id = `video${index}`;
-  document.body.appendChild(iframe);
-  preloadedIframes.push(iframe);
-});
-
-let currentIndex = 0;
-
-function showNextVideo() {
-  // Önceki varsa kaldır
-  document.getElementById("videoContainer").innerHTML = "";
-
-  const iframe = preloadedIframes[currentIndex];
-  iframe.style.width = "560px";
-  iframe.style.height = "315px";
-  iframe.style.opacity = "1";
-  iframe.style.position = "static";
-
-  document.getElementById("videoContainer").appendChild(iframe);
-
-  currentIndex = (currentIndex + 1) % preloadedIframes.length;
-}
-
-// İlk videoyu 2 saniye sonra göster, sonra her 1 dakikada bir değiştir
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    showNextVideo();
-    setInterval(showNextVideo, 60000); // 1 dakikada bir değiştir
-  }, 2000); // İlk 2 saniye sonra başla
-});
 
 
 
