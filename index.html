@@ -346,6 +346,11 @@ window.addEventListener("load", () => {
         
       
       ];
+
+const randomIndex = Math.floor(Math.random() * videoList.length);
+video.src = videoList[randomIndex];
+
+	  
      let videoIndex = 1;
 
   function changeVideo() {
