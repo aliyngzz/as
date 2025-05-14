@@ -467,13 +467,12 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-
-<div id="radio-controls">
-  <button id="radio-toggle">
-    <img id="radio-img" src="radio-icon-on.png" alt="Radyo Aç/Kapa" />
-  </button>
-  <audio id="radio-player" src="https://radyo-fg.canliyayinda.com:443/;" preload="none"></audio>
+div id="radio-controls" style="position: fixed; top: 10px; left: 10px; z-index: 1002;">
+  <button id="radio-toggle" style="background: url('radyo.png') no-repeat center center; background-size: contain; width: 100px; height: 100px; border: none; cursor: pointer;" title="Radyo FG Aç/Kapa"></button>
 </div>
+
+<audio id="radio-player" src="https://radyo-fg.radyotvonline.com/stream/1/" preload="none"></audio>
+
 
 
 
@@ -635,28 +634,7 @@ nextVideo.addEventListener('ended', () => {
   border-radius: 10px;
 }
 
-#radio-controls {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 2000;
-}
 
-#radio-toggle {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-#radio-img {
-  width: 80px;
-  height: auto;
-  transition: transform 0.3s ease;
-}
-
-#radio-toggle:hover #radio-img {
-  transform: scale(1.1);
-}
 
 
 
@@ -868,31 +846,29 @@ tvToggle.addEventListener("click", () => {
 
 
 <script>
+  const radioPlayer = document.getElementById('radio-player');
+  const radioToggle = document.getElementById('radio-toggle');
+  let isRadioPlaying = false;
+
+  radioToggle.addEventListener('click', () => {
+    if (isRadioPlaying) {
+      radioPlayer.pause();
+      isRadioPlaying = false;
+    } else {
+      radioPlayer.play().catch(e => console.error("Radyo oynatılamadı:", e));
+      isRadioPlaying = true;
+    }
+  });
+</script>
 
 
-const radioPlayer = document.getElementById("radio-player");
-const radioToggleBtn = document.getElementById("radio-toggle");
-const radioImg = document.getElementById("radio-img");
 
-let radioPlaying = false;
-
-radioToggleBtn.addEventListener("click", () => {
-  if (radioPlaying) {
-    radioPlayer.pause();
-    radioPlaying = false;
-    radioImg.src = "radio-icon-off.png";
-  } else {
-    radioPlayer.play().catch(err => console.error("Radyo başlatılamadı:", err));
-    radioPlaying = true;
-    radioImg.src = "radio-icon-on.png";
-  }
-});
 
 
 
 	  
 
-</script>
+
 
 
 
