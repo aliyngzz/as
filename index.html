@@ -148,9 +148,7 @@
 </button>
 </div>
 
-<div class="mini-fgplay">
-  <iframe src="https://www.fgplay.com/" frameborder="0"></iframe>
-</div>
+
   
   <!-- Videolar -->
   <div class="video-container">
@@ -634,34 +632,6 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-.mini-fgplay {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  width: 120px;
-  height: 70px;
-  z-index: 9999;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.7);
-  animation: sparkle 2s infinite alternate;
-}
-
-.mini-fgplay iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  pointer-events: auto;
-}
-
-@keyframes sparkle {
-  0% {
-    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.4);
-  }
-  100% {
-    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.9);
-  }
 
 
 
