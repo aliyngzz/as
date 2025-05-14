@@ -454,22 +454,7 @@ nextVideo.addEventListener('ended', () => {
   <button id="tv-toggle">📺</button>
 </div>
 
-<div id="video-wrapper" style="position:relative; width: 100%; height: 100vh; overflow: hidden;">
-  <!-- Bekleme ekranı (örneğin siyah bir arka plan) -->
-  <div id="video-loader" style="position:absolute; top:0; left:0; width:100%; height:100%; background:black; z-index:10;"></div>
 
-  <!-- YouTube iframe (başta görünmez) -->
-  <iframe
-    id="youtube-video"
-    width="100%"
-    height="100%"
-    src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&enablejsapi=1"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen
-    style="visibility: hidden;"
-  ></iframe>
-</div>
 
 
 
@@ -481,6 +466,15 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
+<iframe id="preloadVideo" width="0" height="0" style="opacity:0; position:absolute;"
+  src="https://www.youtube.com/embed/F0GOOP82094?autoplay=0&mute=1">
+</iframe>
+
+<!-- Boş kutu, sonra gerçek videoyu buraya ekleyeceğiz -->
+<div id="videoContainer"></div>
+
+<!-- Buton ya da zamanlayıcıyla çağrılır -->
+<button onclick="showVideo()">Videoyu Göster</button>
 
 
 
@@ -852,20 +846,21 @@ tvToggle.addEventListener("click", () => {
   }
 
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
+
 </script>
+
 
 
 
 <script>
-  // iframe içeriği tamamen yüklendiğinde çalışır
-  document.getElementById("youtube-video").addEventListener("load", function () {
-    // Yükleme ekranını kaldır
-    document.getElementById("video-loader").style.display = "none";
-    // Videoyu görünür yap
-    document.getElementById("youtube-video").style.visibility = "visible";
-  });
-</script>
-
+  function showVideo() {
+    const iframe = document.getElementById("preloadVideo");
+    iframe.style.width = "560px";
+    iframe.style.height = "315px";
+    iframe.style.opacity = "1";
+    iframe.style.position = "static"; // pozisyonu düzelt
+    document.getElementById("videoContainer").appendChild(iframe);
+  }
 
 
 
@@ -873,7 +868,7 @@ tvToggle.addEventListener("click", () => {
 
 	  
 
-
+</script>
 
 
 
