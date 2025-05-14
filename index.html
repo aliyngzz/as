@@ -503,7 +503,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-
+<iframe id="mini-tv" width="300" height="200" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 
@@ -913,9 +913,31 @@ video.onended = () => {
   video.src = videoList[currentVideoIndex];
   video.play();
 };
+</script>
 
 
+<script>
+  const miniTV = document.getElementById("mini-tv");
+  const miniTVVideos = [
+    "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
+    "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
+    "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
+    "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8",
+    "oI8R4_UG3Fs", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0",
+    "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8"
+  ];
 
+  function playRandomVideo() {
+    const randomIndex = Math.floor(Math.random() * miniTVVideos.length);
+    const videoId = miniTVVideos[randomIndex];
+    miniTV.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&rel=0`;
+  }
+
+  // İlk rastgele videoyu yükle
+  playRandomVideo();
+
+  // Her 1 dakikada bir rastgele video değiştir (60000 ms)
+  setInterval(playRandomVideo, 60000);
 
 	  
 
