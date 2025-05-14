@@ -148,7 +148,7 @@
 </button>
 </div>
 
-<iframe src="https://www.fgplay.com/" width="300" height="400" style="border:none;"></iframe>
+
   
   <!-- Videolar -->
   <div class="video-container">
@@ -631,47 +631,7 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
-<style>
-  #fgplayContainer {
-    position: fixed;
-    top: 60px;
-    left: 20px;
-    width: 320px;
-    height: 440px;
-    display: none;
-    border: 2px solid #4CAF50;
-    border-radius: 10px;
-    background-color: white;
-    z-index: 9999;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  }
 
-  #fgplayContainer iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 10px;
-  }
-
-  #fgplayButton {
-    position: fixed;
-    top: 10px;
-    left: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    z-index: 10000;
-    transition: background-color 0.3s;
-  }
-
-  #fgplayButton:hover {
-    background-color: #45a049;
-  }
 
 
 
@@ -879,29 +839,12 @@ tvToggle.addEventListener("click", () => {
   setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
 
 
-</script>
 
 
 
 
-</style>
 
-<button id="fgplayButton">🎵 Radyo Aç</button>
 
-<div id="fgplayContainer">
-  <iframe src="https://www.fgplay.com/"></iframe>
-</div>
-
-<script>
-  const fgButton = document.getElementById('fgplayButton');
-  const fgContainer = document.getElementById('fgplayContainer');
-  let radioVisible = false;
-
-  fgButton.addEventListener('click', () => {
-    radioVisible = !radioVisible;
-    fgContainer.style.display = radioVisible ? 'block' : 'none';
-    fgButton.innerText = radioVisible ? '🔇 Radyo Kapat' : '🎵 Radyo Aç';
-  });
 
 
 
