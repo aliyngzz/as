@@ -881,7 +881,7 @@ tvToggle.addEventListener("click", () => {
 
 
   ];
-  let currentMiniIndex = 0;
+let currentMiniTVIndex = Math.floor(Math.random() * miniTVVideos.length);
 
   function rotateMiniTV() {
     currentMiniIndex = (currentMiniIndex + 1) % miniTVVideos.length;
