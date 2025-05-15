@@ -148,10 +148,7 @@
 </button>
 </div>
 
-<div id="weather-widget">
-  <div id="weather-city">Kütahya</div>
-  <div id="weather-info">Yükleniyor...</div>
-</div>
+
   
   <!-- Videolar -->
   <div class="video-container">
@@ -506,7 +503,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-<iframe id="mini-tv" width="300" height="200" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 
 
 
@@ -670,21 +667,8 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
-<style>
-  #weather-widget {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-family: sans-serif;
-    font-size: 14px;
-    z-index: 9999;
-    box-shadow: 0 0 10px black;
-  }
-</style>
+
+
 
 
 
@@ -863,11 +847,15 @@ tvToggle.addEventListener("click", () => {
     "qGfqox0CSrI",
     "4kRzwJXaeIM",
     "uXNU0XgGZhs",
-    
+     "F0GOOP82094",
+    "TEXty6vOrmA",
+    "qGfqox0CSrI",
+    "4kRzwJXaeIM",
+    "uXNU0XgGZhs",
      "AKInuThTUPw",
      "mIPHBwY5aS0",
     "DHUnz4dyb54",
-
+ "uXNU0XgGZhs",
  "jzx_n25g3kA",
  "bKLftRxcy3k",
  "inDzgZjCxmQ",
@@ -925,89 +913,13 @@ video.onended = () => {
   video.src = videoList[currentVideoIndex];
   video.play();
 };
+
+
+
+
+	  
+
 </script>
-
-
-<script>
-  const miniTV = document.getElementById("mini-tv");
-  const miniTVVideos = [
-    "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
-    "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
-    "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
-    "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8",
-    "oI8R4_UG3Fs", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0",
-    "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8"
-  ];
-
-  function playRandomVideo() {
-    const randomIndex = Math.floor(Math.random() * miniTVVideos.length);
-    const videoId = miniTVVideos[randomIndex];
-    miniTV.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&rel=0`;
-  }
-
-  // İlk rastgele videoyu yükle
-  playRandomVideo();
-
-  // Her 1 dakikada bir rastgele video değiştir (60000 ms)
-  setInterval(playRandomVideo, 60000);
-
-</script>  
-
-
-
-
-
-
-
-
-<script>
-let currentVideoIndex = 0;
-
-function playNextVideo() {
-  const video = document.getElementById("background-video");
-  currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-  video.src = videoList[currentVideoIndex];
-  video.load();
-  video.play().catch((e) => console.error("Video hatası:", e));
-}
-
-document.getElementById("background-video").addEventListener("ended", playNextVideo);
-</script>
-
-
-
-
-
-
-
-
-
-<script>
-const API_KEY = "77fe7ca2c5710d0b9e4b56b12b6b679e";
-const city = "Kütahya";
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&lang=tr&units=metric`;
-
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    const temp = data.main.temp.toFixed(1);
-    const desc = data.weather[0].description;
-    const icon = data.weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
-    document.getElementById("weather-info").innerHTML = `
-      <img src="${iconUrl}" alt="icon" style="vertical-align: middle;">
-      ${temp}°C, ${desc}
-    `;
-  })
-  .catch(error => {
-    document.getElementById("weather-info").textContent = "Veri alınamadı.";
-    console.error("Hava durumu hatası:", error);
-  });
-</script>
-
-
-	
-
 
 
 
