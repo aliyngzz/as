@@ -527,7 +527,51 @@ nextVideo.addEventListener('ended', () => {
 
 
 
+<button id="toggle-note-btn" style="
+  position: fixed;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2000;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+">Not / Hatırlat</button>
 
+<div id="note-panel" style="
+  display: none;
+  position: fixed;
+  left: 70px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: auto;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  z-index: 2000;
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+">
+  <h3>Not Al / Hatırlat</h3>
+  <textarea id="note-text" style="width: 100%; height: 100px;" placeholder="Notunuzu yazın..."></textarea>
+  <br><br>
+  <label>Hatırlatma Zamanı:</label><br>
+  <input type="datetime-local" id="reminder-time" style="width: 100%; padding: 5px; border-radius: 5px;">
+  <br><br>
+  <button onclick="setReminder()" style="
+    width: 100%;
+    padding: 10px;
+    background-color: #45a049;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  ">Hatırlat</button>
+</div>
 
 
 
@@ -989,6 +1033,77 @@ updateWeather();
 setInterval(updateWeather, 5000);
 
 
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+document.getElementById("toggle-note-btn").addEventListener("click", function() {
+  const panel = document.getElementById("note-panel");
+  panel.style.display = (panel.style.display === "none") ? "block" : "none";
+});
+
+// Hatırlatıcı kur
+function setReminder() {
+  const note = document.getElementById("note-text").value.trim();
+  const timeInput = document.getElementById("reminder-time").value;
+
+  if (!note) {
+    alert("Lütfen hatırlatma notu yazın!");
+    return;
+  }
+
+  if (!timeInput) {
+    alert("Lütfen hatırlatma zamanı seçin!");
+    return;
+  }
+
+  const reminderTime = new Date(timeInput);
+  const now = new Date();
+  const diff = reminderTime - now;
+
+  if (diff <= 0) {
+    alert("Geçmiş bir zaman seçtiniz. Lütfen ileri bir zaman girin.");
+    return;
+  }
+
+  alert("Hatırlatma ayarlandı!");
+
+  setTimeout(() => {
+    alert("🔔 Hatırlatma: " + note);
+  }, diff);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 </script>
 
 
