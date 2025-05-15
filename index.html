@@ -170,6 +170,7 @@
 
 
 
+
 	
 
   
@@ -555,7 +556,7 @@ nextVideo.addEventListener('ended', () => {
   font-size: 12px;
   box-shadow: 0 0 8px rgba(255,255,255,0.2);
 ">
-  <strong>Hatırlatıcı (Kişiye Özel)</strong>
+  <strong>Hatırlatıcı</strong>
   <textarea id="note-text" style="width: 100%; height: 50px; font-size: 11px; margin-top: 5px;" placeholder="Not yaz..."></textarea>
   <input type="datetime-local" id="reminder-time" style="width: 100%; font-size: 11px; margin: 5px 0; padding: 2px; border-radius: 4px;">
   <button onclick="setReminder()" style="
@@ -571,7 +572,7 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
-<ul id="reminder-list"></ul>
+
 
 	
   <div id="contact-modal">
@@ -1046,65 +1047,56 @@ setInterval(updateWeather, 5000);
 
 
 
-
-	
-
-
 <script>
-  const audio = new Audio("https://www.soundjay.com/buttons/sounds/beep-07.mp3");
 
-  document.getElementById("set-reminder").addEventListener("click", function () {
-    const note = document.getElementById("note").value.trim();
-    const time = document.getElementById("time").value;
 
-    if (!note || !time) return alert("Not ve saat giriniz.");
+document.getElementById("toggle-note-btn").addEventListener("click", function() {
+  const panel = document.getElementById("note-panel");
+  panel.style.display = (panel.style.display === "none") ? "block" : "none";
+});
 
-    // Kullanıcı etkileşimiyle ses hazırlansın
-    audio.play().then(() => audio.pause()).catch(() => {}); // otomatik oynatma engelini aşmak için bir kere tetikle
+function setReminder() {
+  const note = document.getElementById("note-text").value.trim();
+  const timeInput = document.getElementById("reminder-time").value;
 
-    const reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
-    reminders.push({ note, time });
-    localStorage.setItem("reminders", JSON.stringify(reminders));
-    loadReminders();
-    document.getElementById("note").value = "";
-    document.getElementById("time").value = "";
-  });
-
-  function loadReminders() {
-    const reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
-    const reminderList = document.getElementById("reminder-list");
-    reminderList.innerHTML = "";
-
-    reminders.forEach(r => {
-      const li = document.createElement("li");
-      li.textContent = `📌 ${r.note} (⏰ ${r.time})`;
-      reminderList.appendChild(li);
-    });
+  if (!note) {
+    alert("Lütfen hatırlatma notu yazın!");
+    return;
   }
 
-  setInterval(() => {
-    const now = new Date();
-    const currentTime = now.toTimeString().slice(0, 5);
-    const reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
+  if (!timeInput) {
+    alert("Lütfen hatırlatma zamanı seçin!");
+    return;
+  }
 
-    reminders.forEach(r => {
-      if (r.time === currentTime) {
-        alert("⏰ HATIRLATMA: " + r.note);
-        audio.play();
-      }
-    });
-  }, 30000); // her 30 saniyede bir kontrol
+  const reminderTime = new Date(timeInput);
+  const now = new Date();
+  const diff = reminderTime - now;
+
+  if (diff <= 0) {
+    alert("Geçmiş bir zaman seçtiniz. Lütfen ileri bir zaman girin.");
+    return;
+  }
+
+  // Kaydet (sadece bu tarayıcı için)
+  const reminderData = { note, time: timeInput };
+  let reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
+  reminders.push(reminderData);
+  localStorage.setItem("reminders", JSON.stringify(reminders));
+
+  alert("Hatırlatma ayarlandı!");
+
+  setTimeout(() => {
+    document.getElementById("reminder-sound").play();
+    alert("🔔 Hatırlatma: " + note);
+  }, diff);
+}
+
+
+
+	
 </script>
 
-
-
-
-
-
-
-	
-
-	
 
 
 
