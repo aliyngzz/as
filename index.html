@@ -529,51 +529,47 @@ nextVideo.addEventListener('ended', () => {
 
 <button id="toggle-note-btn" style="
   position: fixed;
-  left: 10px;
-  top: 50%;
+  left: 5px;
+  top: 45%;
   transform: translateY(-50%);
   z-index: 2000;
-  font-size: 20px;
-  padding: 10px;
-  border-radius: 10px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
   background-color: #333;
   color: white;
   cursor: pointer;
-">Not / Hatırlat</button>
+">📝 Not</button>
 
 <div id="note-panel" style="
   display: none;
   position: fixed;
-  left: 70px;
-  top: 50%;
+  left: 60px;
+  top: 45%;
   transform: translateY(-50%);
-  width: 300px;
-  height: auto;
-  background: rgba(0,0,0,0.7);
+  width: 200px;
+  background: rgba(0, 0, 0, 0.75);
   color: white;
-  padding: 20px;
-  border-radius: 15px;
+  padding: 10px;
+  border-radius: 10px;
   z-index: 2000;
-  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+  font-size: 12px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.2);
 ">
-  <h3>Not Al / Hatırlat</h3>
-  <textarea id="note-text" style="width: 100%; height: 100px;" placeholder="Notunuzu yazın..."></textarea>
-  <br><br>
-  <label>Hatırlatma Zamanı:</label><br>
-  <input type="datetime-local" id="reminder-time" style="width: 100%; padding: 5px; border-radius: 5px;">
-  <br><br>
+  <strong>Hatırlatıcı</strong>
+  <textarea id="note-text" style="width: 100%; height: 50px; font-size: 11px; margin-top: 5px;" placeholder="Not yaz..."></textarea>
+  <input type="datetime-local" id="reminder-time" style="width: 100%; font-size: 11px; margin: 5px 0; padding: 2px; border-radius: 4px;">
   <button onclick="setReminder()" style="
     width: 100%;
-    padding: 10px;
-    background-color: #45a049;
+    padding: 5px;
+    background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
+    font-size: 11px;
     cursor: pointer;
   ">Hatırlat</button>
 </div>
-
-
 
 
 
@@ -1059,7 +1055,6 @@ document.getElementById("toggle-note-btn").addEventListener("click", function() 
   panel.style.display = (panel.style.display === "none") ? "block" : "none";
 });
 
-// Hatırlatıcı kur
 function setReminder() {
   const note = document.getElementById("note-text").value.trim();
   const timeInput = document.getElementById("reminder-time").value;
@@ -1089,14 +1084,6 @@ function setReminder() {
     alert("🔔 Hatırlatma: " + note);
   }, diff);
 }
-
-
-
-
-
-
-
-
 
 
 
