@@ -150,21 +150,20 @@
 
 <div id="weather-box" style="
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 2px;
+  left: 4px;
   background: transparent;
   color: white;
-  font-size: 10px;
+  font-size: 9px;
+  font-weight: bold;
   padding: 2px 4px;
   z-index: 9999;
   display: flex;
   align-items: center;
   font-family: Arial, sans-serif;
 ">
-  <img id="weather-icon" src="" alt="hava" style="width: 16px; height: 16px; margin-right: 2px;">
-  <div>
-    <div id="weather-temp">--°C</div>
-  </div>
+  <img id="weather-icon" src="" alt="hava" style="width: 14px; height: 14px; margin-right: 2px;">
+  <div id="weather-info">--°C Kütahya</div>
 </div>
   
   <!-- Videolar -->
@@ -950,13 +949,11 @@ fetch(url)
   .then(data => {
     const temp = Math.round(data.main.temp);
     const icon = data.weather[0].icon;
-
-    document.getElementById("weather-temp").textContent = `${temp}°C`;
     document.getElementById("weather-icon").src = `https://openweathermap.org/img/wn/${icon}.png`;
+    document.getElementById("weather-info").textContent = `${temp}°C Kütahya`;
   })
-  .catch(error => {
-    console.error("Hava durumu alınamadı:", error);
-    document.getElementById("weather-temp").textContent = "--";
+  .catch(() => {
+    document.getElementById("weather-info").textContent = "--°C Kütahya";
   });
 </script>
 
