@@ -167,7 +167,7 @@
 
 
 
-
+<button onclick="hazirla()">Hatırlatıcıyı Başlat</button>
 
 
 
@@ -1122,6 +1122,39 @@ function loadReminders() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+let sesHazir;
+
+function hazirla() {
+  sesHazir = new Audio("https://www.soundjay.com/buttons/sounds/beep-07.mp3");
+  alert("Hatırlatıcı aktif!");
+}
+
+function caldir() {
+  if (sesHazir) sesHazir.play();
+}
+</script>
+
+
+
+
+
+
+	
 
 	
 
