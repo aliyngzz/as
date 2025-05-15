@@ -97,27 +97,20 @@
 .audio-controls button:hover {
   background-color: #45a049;
 }
-   .click-message {
-  position: fixed;
-  top: 0;
-  left: 10px;
-  right: 10px;
-  background: linear-gradient(to right, ##e0d9ca, ##e0d9ca);
-  color: #fff;
-  font-size: 10px; /* küçültülmüş yazı boyutu */
-  text-align: center;
-  padding: 6px;
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  cursor: pointer;
-  z-index: 9999;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.click-message div {
-  margin: 2px 0;
-  font-weight: 500;
-}
+    .click-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      z-index: 2000;
+    background-color: transparent; /* Arka plan tamamen şeffaf */
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
     /* Resimli Doğa Sesi Butonu */
 .audio-controls button {
@@ -204,14 +197,7 @@
     <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
   </div>
  <!-- Tıklama Mesajı -->
-  <div class="click-message" id="clickMessage">
-  <div>Doğa sesi dinleyin</div>
-  <div>Müzik dinleyin</div>
-  <div>Not alın</div>
-  <div>TV izleyin</div>
-  <div>Canlı webcam izleyin</div>
-  <div>Masaüstü video izleyin</div>
-</div>
+  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN VEYA TV İZLEYİN</div>
  
   <!-- Arka Plan Müzikleri -->
 <audio id="bg-music" autoplay></audio>
@@ -814,7 +800,7 @@ nextVideo.addEventListener('ended', () => {
           contactButton.classList.remove("show");
         }, 4000);
 
-        setTimeout(toggleButtonVisibility,25000); // 2 saniye görünme + 1dk
+        setTimeout(toggleButtonVisibility,25000); // 4 saniye görünme + 1dk
       }
 
       toggleButtonVisibility(); // İlk gösterim
@@ -826,12 +812,12 @@ function startImageButtonCycle() {
 
   function showButtons() {
     buttons.forEach(btn => btn.style.display = 'inline');
-    setTimeout(hideButtons, 3000); // 3 saniye sonra gizle
+    setTimeout(hideButtons, 5000); // 5 saniye sonra gizle
   }
 
   function hideButtons() {
     buttons.forEach(btn => btn.style.display = 'none');
-    setTimeout(showButtons, 20000); // 30 saniye sonra tekrar göster
+    setTimeout(showButtons, 10000); // 30 saniye sonra tekrar göster
   }
 
   showButtons(); // Başlat
@@ -846,11 +832,11 @@ window.onload = startImageButtonCycle;
     resim.style.visibility = "visible"; // 5 saniye görünür
     setTimeout(() => {
       resim.style.visibility = "hidden"; // 40 saniye gizli
-    }, 20000);
+    }, 5000);
   }
 
   gosterGizle(); // İlk başlatma
-  setInterval(gosterGizle, 20000); // Her 45 saniyede bir tekrarla
+  setInterval(gosterGizle, 10000); // Her 45 saniyede bir tekrarla
 
      
 </script>
@@ -861,13 +847,13 @@ window.onload = startImageButtonCycle;
     image.style.display = 'block'; // Göster
     setTimeout(() => {
       image.style.display = 'none'; // 5 saniye sonra gizle
-    }, 3000);
+    }, 5000);
   }
 
   toggleImage(); // Başlangıçta çalıştır
 
   // Her 45 saniyede bir (5 göster + 40 gizli) döngü
-  setInterval(toggleImage, 20000);
+  setInterval(toggleImage, 10000);
  </script>
 	  
   <script>
