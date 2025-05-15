@@ -819,7 +819,7 @@ function startImageButtonCycle() {
 
   function showButtons() {
     buttons.forEach(btn => btn.style.display = 'inline');
-    setTimeout(hideButtons, 5000); // 3 saniye sonra gizle
+    setTimeout(hideButtons, 3000); // 3 saniye sonra gizle
   }
 
   function hideButtons() {
@@ -839,7 +839,7 @@ window.onload = startImageButtonCycle;
     resim.style.visibility = "visible"; // 5 saniye görünür
     setTimeout(() => {
       resim.style.visibility = "hidden"; // 40 saniye gizli
-    }, 3000);
+    }, 20000);
   }
 
   gosterGizle(); // İlk başlatma
