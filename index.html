@@ -148,7 +148,10 @@
 </button>
 </div>
 
-
+<div id="weather-widget">
+  <div id="weather-city">Kütahya</div>
+  <div id="weather-info">Yükleniyor...</div>
+</div>
   
   <!-- Videolar -->
   <div class="video-container">
@@ -667,8 +670,21 @@ nextVideo.addEventListener('ended', () => {
 }
 
 
-
-
+<style>
+  #weather-widget {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-family: sans-serif;
+    font-size: 14px;
+    z-index: 9999;
+    box-shadow: 0 0 10px black;
+  }
+</style>
 
 
 
@@ -966,7 +982,28 @@ document.getElementById("background-video").addEventListener("ended", playNextVi
 
 
 
+<script>
+const API_KEY = "77fe7ca2c5710d0b9e4b56b12b6b679e";
+const city = "Kütahya";
+const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&lang=tr&units=metric`;
 
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    const temp = data.main.temp.toFixed(1);
+    const desc = data.weather[0].description;
+    const icon = data.weather[0].icon;
+    const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
+    document.getElementById("weather-info").innerHTML = `
+      <img src="${iconUrl}" alt="icon" style="vertical-align: middle;">
+      ${temp}°C, ${desc}
+    `;
+  })
+  .catch(error => {
+    document.getElementById("weather-info").textContent = "Veri alınamadı.";
+    console.error("Hava durumu hatası:", error);
+  });
+</script>
 
 
 	
