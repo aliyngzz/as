@@ -935,9 +935,42 @@ video.onended = () => {
   // Her 1 dakikada bir rastgele video değiştir (60000 ms)
   setInterval(playRandomVideo, 60000);
 
-	  
+</script>  
 
+
+
+
+
+
+
+
+<script>
+let currentVideoIndex = 0;
+
+function playNextVideo() {
+  const video = document.getElementById("background-video");
+  currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+  video.src = videoList[currentVideoIndex];
+  video.load();
+  video.play().catch((e) => console.error("Video hatası:", e));
+}
+
+document.getElementById("background-video").addEventListener("ended", playNextVideo);
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
 
 
 
