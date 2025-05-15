@@ -148,23 +148,7 @@
 </button>
 </div>
 
-<div id="weather-box" style="
-  position: fixed;
-  top: 2px;
-  left: 4px;
-  background: transparent;
-  color: white;
-  font-size: 9px;
-  font-weight: bold;
-  padding: 2px 4px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  font-family: Arial, sans-serif;
-">
-  <img id="weather-icon" src="" alt="hava" style="width: 14px; height: 14px; margin-right: 2px;">
-  <div id="weather-info">--°C Kütahya</div>
-</div>
+
   
   <!-- Videolar -->
   <div class="video-container">
@@ -523,22 +507,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-<div id="weather-box" style="
-  position: fixed;
-  top: 2px;
-  left: 4px;
-  background: transparent;
-  color: white;
-  font-size: 9px;
-  font-weight: bold;
-  padding: 2px 4px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  font-family: Arial, sans-serif;">
-  <span id="weather-info">--°C Kütahya</span>
-  <img id="weather-icon" src="" alt="hava" style="width: 16px; height: 16px; margin-left: 4px;">
-</div>
+
 
 
 	
@@ -945,48 +914,12 @@ video.onended = () => {
   video.play();
 };
 
-</script>
 
 
 
-
-
-
-
-
-<script>
-const API_KEY = "77fe7ca2c5710d0b9e4b56b12b6b679e";
-const city = "Kutahya";
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=tr`;
-
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    const temp = Math.round(data.main.temp);
-    const icon = data.weather[0].icon;
-    document.getElementById("weather-icon").src = `https://openweathermap.org/img/wn/${icon}.png`;
-    document.getElementById("weather-info").textContent = `${temp}°C Kütahya`;
-  })
-  .catch(() => {
-    document.getElementById("weather-info").textContent = "--°C Kütahya";
-  });
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-	
 	  
 
-
+</script>
 
 
 
