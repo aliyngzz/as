@@ -99,11 +99,11 @@
 }
     .click-message {
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 0;
+      left: 10px;
       transform: translate(-50%, -50%);
       color: white;
-      font-size: 3rem;
+      font-size: 10px;
       font-weight: bold;
       text-align: center;
       z-index: 2000;
@@ -168,22 +168,7 @@
 
 
 
-<button onclick="clearNote()" style="position: fixed; top: 110px; left: 10px; z-index: 1000;">
-  Notu Temizle
-</button>
 
-<!-- Not Paneli Açma/Kapatma Butonu -->
-<button id="toggle-note-btn" style="position: fixed; top: 150px; left: 10px; z-index: 1000;">
-  Not
-</button>
-
-<!-- Not Paneli -->
-<div id="note-panel" style="display: none; position: fixed; top: 190px; left: 10px; background: #fff; padding: 10px; border: 2px solid #ccc; border-radius: 10px; z-index: 999;">
-  <textarea id="note-text" placeholder="Notunu buraya yaz..." rows="5" cols="30"></textarea><br>
-  <input type="datetime-local" id="reminder-time"><br>
-  <button onclick="setReminder()">Hatırlat</button>
-  <audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3"></audio>
-</div>
 
 
 	
@@ -212,7 +197,14 @@
     <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
   </div>
  <!-- Tıklama Mesajı -->
-  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN-TV VE WEBCAM İZLEYİN NOT ALIN</div>
+  <div class="click-message" id="clickMessage">
+  <div>Doğa sesi dinleyin</div>
+  <div>Müzik dinleyin</div>
+  <div>Not alın</div>
+  <div>TV izleyin</div>
+  <div>Canlı webcam izleyin</div>
+  <div>Masaüstü video izleyin</div>
+</div>
  
   <!-- Arka Plan Müzikleri -->
 <audio id="bg-music" autoplay></audio>
@@ -530,7 +522,7 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
-<button onclick="clearNote()">Notu Temizle</button>
+
 
 
 
@@ -815,7 +807,7 @@ nextVideo.addEventListener('ended', () => {
           contactButton.classList.remove("show");
         }, 4000);
 
-        setTimeout(toggleButtonVisibility,25000); // 4 saniye görünme + 1dk
+        setTimeout(toggleButtonVisibility,25000); // 2 saniye görünme + 1dk
       }
 
       toggleButtonVisibility(); // İlk gösterim
@@ -827,12 +819,12 @@ function startImageButtonCycle() {
 
   function showButtons() {
     buttons.forEach(btn => btn.style.display = 'inline');
-    setTimeout(hideButtons, 5000); // 5 saniye sonra gizle
+    setTimeout(hideButtons, 3000); // 3 saniye sonra gizle
   }
 
   function hideButtons() {
     buttons.forEach(btn => btn.style.display = 'none');
-    setTimeout(showButtons, 30000); // 30 saniye sonra tekrar göster
+    setTimeout(showButtons, 20000); // 30 saniye sonra tekrar göster
   }
 
   showButtons(); // Başlat
@@ -847,7 +839,7 @@ window.onload = startImageButtonCycle;
     resim.style.visibility = "visible"; // 5 saniye görünür
     setTimeout(() => {
       resim.style.visibility = "hidden"; // 40 saniye gizli
-    }, 5000);
+    }, 20000);
   }
 
   gosterGizle(); // İlk başlatma
@@ -862,7 +854,7 @@ window.onload = startImageButtonCycle;
     image.style.display = 'block'; // Göster
     setTimeout(() => {
       image.style.display = 'none'; // 5 saniye sonra gizle
-    }, 5000);
+    }, 3000);
   }
 
   toggleImage(); // Başlangıçta çalıştır
@@ -1113,66 +1105,6 @@ function setReminder() {
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  // Sayfa yüklendiğinde notu geri yükle
-  window.addEventListener("load", () => {
-    const savedNote = localStorage.getItem("noteText");
-    if (savedNote) {
-      document.getElementById("note-text").value = savedNote;
-    }
-  });
-
-  // Not yazıldıkça kaydet
-  document.getElementById("note-text").addEventListener("input", () => {
-    localStorage.setItem("noteText", document.getElementById("note-text").value);
-  });
-
-function clearNote() {
-    if (confirm("Notu silmek istiyor musun?")) {
-      document.getElementById("note-text").value = "";
-      localStorage.removeItem("noteText");
-    }
-  }
-
-
-
-
-</script>
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-	
 
 
 
