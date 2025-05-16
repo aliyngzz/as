@@ -165,7 +165,7 @@
 </div>
 
 
-
+<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
 
 
@@ -1127,7 +1127,26 @@ setInterval(updateWeather, 5000);
   }
 </script>
 
+<script>
+function playReminderAlarm(times = 3) {
+  const alarm = document.getElementById("reminder-sound");
+  let count = 0;
 
+  function playOnce() {
+    if (count >= times) return;
+    alarm.currentTime = 0;
+    alarm.play().then(() => {
+      count++;
+      // alarm bittiğinde tekrar çalışması için süreyi bekle
+      setTimeout(playOnce, 1000); // 1 saniye arayla tekrar çal
+    }).catch(err => {
+      console.error("Alarm sesi çalınamadı:", err);
+    });
+  }
+
+  playOnce();
+}
+</script>
 
 
 	
