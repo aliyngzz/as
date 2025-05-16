@@ -93,7 +93,7 @@
 
 <audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
 <audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
-	  
+	 
 .audio-controls button:hover {
   background-color: #45a049;
 }
@@ -1132,7 +1132,10 @@ setInterval(updateWeather, 5000);
 
 <script>
 
-
+function playReminderSound() {
+  const sound = document.getElementById("alarm-sound");
+  sound.play();
+}
 
 function checkAlarm() {
   const alarmHour = parseInt(document.getElementById("alarm-hour").value, 10);
