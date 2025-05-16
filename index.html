@@ -132,49 +132,6 @@
    display: block;
    margin: 0 auto;
 }
-
-<style>
-  #toast {
-    visibility: hidden;
-    min-width: 180px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px;
-    position: fixed;
-    z-index: 3000;
-    left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.5s, visibility 0.5s;
-  }
-
-  #toast.show {
-    visibility: visible;
-    opacity: 1;
-  }
-</style>
-
-<div id="toast"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	  
   </style>
 </head>
 <body>
@@ -559,7 +516,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-<audio id="reminder-sound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
 
 
 
@@ -1128,7 +1085,7 @@ setInterval(updateWeather, 5000);
   function saveNote() {
     const note = noteText.value;
     localStorage.setItem('savedNote', note);
-  showToast("Not kaydedildi.");
+    alert("Not kaydedildi.");
   }
 
   function clearNote() {
@@ -1163,46 +1120,14 @@ setInterval(updateWeather, 5000);
     }
 
     setTimeout(() => {
-    showToast("⏰ Hatırlatma: " + noteText.value);
-
-      const sound = document.getElementById("reminder-sound");
-      let count = 0;
-      const playInterval = setInterval(() => {
-        sound.currentTime = 0;
-        sound.play();
-        count++;
-        if (count >= 3) {
-          clearInterval(playInterval);
-        }
-      }, 1000); // 1 saniyede bir çalar
+      alert("⏰ Hatırlatma: " + noteText.value);
     }, delay);
 
     alert("Hatırlatıcı ayarlandı.");
   }
-
-
-
-
-
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.className = "show";
-  setTimeout(() => {
-    toast.className = toast.className.replace("show", "");
-  }, 3000); // 3 saniye sonra kaybolur
-}
-
-
-
-
-
-
-
-
-
-	
 </script>
+
+
 
 
 	
