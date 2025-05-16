@@ -164,7 +164,12 @@
   Hava durumu yükleniyor...
 </div>
 
+<button onclick="saveNote()" style="font-size: 16px;">Kaydet</button>
 
+	<div id="note-controls" style="margin-top: 5px;">
+  <button onclick="toggleNote()" style="font-size: 16px;">Not</button>
+  <button onclick="saveNote()" style="font-size: 16px;">Kaydet</button>
+</div>
 
 
 
@@ -1091,9 +1096,36 @@ function setReminder() {
     alert("🔔 Hatırlatma: " + note);
   }, diff);
 }
+</script>
 
 
 
+
+
+<script>
+
+
+window.addEventListener("load", () => {
+  const savedNote = localStorage.getItem("myNote");
+  if (savedNote) {
+    document.getElementById("note-box").value = savedNote;
+  }
+});
+
+// "Kaydet" butonuna tıklanınca notu sakla
+function saveNote() {
+  const note = document.getElementById("note-box").value;
+  localStorage.setItem("myNote", note);
+  alert("Not kaydedildi!");
+}
+
+
+
+
+
+
+
+	
 	
 </script>
 
