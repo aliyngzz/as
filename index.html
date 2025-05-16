@@ -1189,14 +1189,51 @@ function playReminderAlarm(times = 3) {
 </script>
 
 
+<script>
+
+let reminderAllowed = false;
+let alarmTime = null;
+let alarmInterval = null;
+
+// Kullanıcı sayfaya tıklarsa ses çalma izni verilir
+document.addEventListener("click", () => {
+  reminderAllowed = true;
+});
+
+// Alarm kurulumu
+function setAlarm(minutes) {
+  clearInterval(alarmInterval);
+  alarmTime = new Date(Date.now() + minutes * 60000);
+
+  alarmInterval = setInterval(() => {
+    const now = new Date();
+    if (alarmTime && now >= alarmTime) {
+      triggerReminder();
+      clearInterval(alarmInterval);
+    }
+  }, 1000);
+}
+
+// Hatırlatıcıyı çalıştıran fonksiyon
+function triggerReminder() {
+  if (reminderAllowed) {
+    const reminderSound = document.getElementById("reminder-sound");
+    reminderSound.play().catch(err => {
+      console.log("Ses çalma hatası:", err);
+    });
+    alert("Hatırlatma zamanı geldi!");
+  } else {
+    console.log("Ses çalmak için kullanıcı etkileşimi gerekli.");
+  }
+}
+
+// Örnek kullanım: 1 dakika sonra alarm kur
+setAlarm(1);
 
 
 
 
-
-
-
-
+</script>
 	
 
 
