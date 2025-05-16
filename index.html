@@ -515,7 +515,7 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
-
+<button onclick="clearNote()">Notu Temizle</button>
 
 
 
@@ -1098,6 +1098,66 @@ function setReminder() {
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  // Sayfa yüklendiğinde notu geri yükle
+  window.addEventListener("load", () => {
+    const savedNote = localStorage.getItem("noteText");
+    if (savedNote) {
+      document.getElementById("note-text").value = savedNote;
+    }
+  });
+
+  // Not yazıldıkça kaydet
+  document.getElementById("note-text").addEventListener("input", () => {
+    localStorage.setItem("noteText", document.getElementById("note-text").value);
+  });
+
+function clearNote() {
+    if (confirm("Notu silmek istiyor musun?")) {
+      document.getElementById("note-text").value = "";
+      localStorage.removeItem("noteText");
+    }
+  }
+
+
+
+
+</script>
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
 
 
 
