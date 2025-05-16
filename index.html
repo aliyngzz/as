@@ -1143,7 +1143,8 @@ function checkAlarm() {
 
   const now = new Date();
   if (now.getHours() === alarmHour && now.getMinutes() === alarmMinute) {
-    playReminderSound();
+   
+	  new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3").play();
     // Bir kere çalması için bir kere çalıştırdıktan sonra engellemek istersen ekleyebilirsin
   }
 }
