@@ -516,7 +516,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-
+<audio id="reminder-sound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
 
 
 
@@ -1121,13 +1121,22 @@ setInterval(updateWeather, 5000);
 
     setTimeout(() => {
       alert("⏰ Hatırlatma: " + noteText.value);
+
+      const sound = document.getElementById("reminder-sound");
+      let count = 0;
+      const playInterval = setInterval(() => {
+        sound.currentTime = 0;
+        sound.play();
+        count++;
+        if (count >= 3) {
+          clearInterval(playInterval);
+        }
+      }, 1000); // 1 saniyede bir çalar
     }, delay);
 
     alert("Hatırlatıcı ayarlandı.");
   }
 </script>
-
-
 
 
 	
