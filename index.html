@@ -527,7 +527,7 @@ nextVideo.addEventListener('ended', () => {
 
 
 
-<button id="toggle-note-btn" style="
+<button id="toggle-note-btn" style=" 
   position: fixed;
   left: 5px;
   top: 45%;
@@ -559,6 +559,7 @@ nextVideo.addEventListener('ended', () => {
   <strong>Hatırlatıcı</strong>
   <textarea id="note-text" style="width: 100%; height: 50px; font-size: 11px; margin-top: 5px;" placeholder="Not yaz..."></textarea>
   <input type="datetime-local" id="reminder-time" style="width: 100%; font-size: 11px; margin: 5px 0; padding: 2px; border-radius: 4px;">
+  
   <button onclick="setReminder()" style="
     width: 100%;
     padding: 5px;
@@ -568,9 +569,32 @@ nextVideo.addEventListener('ended', () => {
     border-radius: 5px;
     font-size: 11px;
     cursor: pointer;
+    margin-bottom: 5px;
   ">Hatırlat</button>
-</div>
 
+  <button onclick="saveNote()" style="
+    width: 100%;
+    padding: 5px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  ">Kaydet</button>
+
+  <button onclick="clearNote()" style="
+    width: 100%;
+    padding: 5px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+  ">Sil</button>
+</div>
 
 
 
@@ -1047,56 +1071,61 @@ setInterval(updateWeather, 5000);
 
 
 
+
+
 <script>
+  const toggleBtn = document.getElementById('toggle-note-btn');
+  const notePanel = document.getElementById('note-panel');
+  const noteText = document.getElementById('note-text');
 
+  toggleBtn.addEventListener('click', () => {
+    notePanel.style.display = notePanel.style.display === 'none' ? 'block' : 'none';
+  });
 
-document.getElementById("toggle-note-btn").addEventListener("click", function() {
-  const panel = document.getElementById("note-panel");
-  panel.style.display = (panel.style.display === "none") ? "block" : "none";
-});
-
-function setReminder() {
-  const note = document.getElementById("note-text").value.trim();
-  const timeInput = document.getElementById("reminder-time").value;
-
-  if (!note) {
-    alert("Lütfen hatırlatma notu yazın!");
-    return;
+  function saveNote() {
+    const note = noteText.value;
+    localStorage.setItem('savedNote', note);
+    alert("Not kaydedildi.");
   }
 
-  if (!timeInput) {
-    alert("Lütfen hatırlatma zamanı seçin!");
-    return;
+  function clearNote() {
+    if (confirm("Notu silmek istediğinize emin misiniz?")) {
+      localStorage.removeItem('savedNote');
+      noteText.value = '';
+    }
   }
 
-  const reminderTime = new Date(timeInput);
-  const now = new Date();
-  const diff = reminderTime - now;
+  // Sayfa açıldığında kaydedilmiş not varsa yükle
+  window.addEventListener('load', () => {
+    const savedNote = localStorage.getItem('savedNote');
+    if (savedNote) {
+      noteText.value = savedNote;
+    }
+  });
 
-  if (diff <= 0) {
-    alert("Geçmiş bir zaman seçtiniz. Lütfen ileri bir zaman girin.");
-    return;
+  function setReminder() {
+    const timeInput = document.getElementById('reminder-time').value;
+    if (!timeInput) {
+      alert("Lütfen bir zaman seçin.");
+      return;
+    }
+
+    const reminderTime = new Date(timeInput).getTime();
+    const now = new Date().getTime();
+    const delay = reminderTime - now;
+
+    if (delay <= 0) {
+      alert("Geçmiş bir zaman seçtiniz.");
+      return;
+    }
+
+    setTimeout(() => {
+      alert("⏰ Hatırlatma: " + noteText.value);
+    }, delay);
+
+    alert("Hatırlatıcı ayarlandı.");
   }
-
-  // Kaydet (sadece bu tarayıcı için)
-  const reminderData = { note, time: timeInput };
-  let reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
-  reminders.push(reminderData);
-  localStorage.setItem("reminders", JSON.stringify(reminders));
-
-  alert("Hatırlatma ayarlandı!");
-
-  setTimeout(() => {
-    document.getElementById("reminder-sound").play();
-    alert("🔔 Hatırlatma: " + note);
-  }, diff);
-}
-
-
-
-	
 </script>
-
 
 
 
