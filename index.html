@@ -1164,6 +1164,42 @@ function playReminderAlarm(times = 3) {
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+<script>
+  function playAlarmSound() {
+    const alarm = document.getElementById("reminder-sound");
+    alarm.play().catch((e) => {
+      console.log("Alarm sesi çalarken hata oluştu:", e);
+    });
+  }
+
+  // Örnek: 10 saniye sonra alarm çalsın
+  setTimeout(() => {
+    playAlarmSound();
+  }, 10000); // 10000 ms = 10 saniye
+</script>
+
+
+
+
+
+
+
+
+
+
+	
+
+
 	
 </body>
 </html>
