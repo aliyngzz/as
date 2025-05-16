@@ -92,7 +92,7 @@
 }
 
 <audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
-<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+
 	  
 .audio-controls button:hover {
   background-color: #45a049;
@@ -147,7 +147,7 @@
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
-
+<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
 <div id="weather" style="
   position: fixed;
@@ -1126,18 +1126,10 @@ setInterval(updateWeather, 5000);
     alert("Hatırlatıcı ayarlandı.");
   }
 </script>
-<script>
-document.body.addEventListener("click", () => {
-  playReminderSound();
-});
 
-function playReminderSound() {
-  const reminderAudio = document.getElementById("reminder-sound");
-  reminderAudio.currentTime = 0;
-  reminderAudio.play().catch(e => console.log("Ses çalma hatası:", e));
-}
 
-</script>
+
+
 	
 </body>
 </html>
