@@ -540,7 +540,14 @@ nextVideo.addEventListener('ended', () => {
 </div>
 
 
+<button id="note-toggle">📝</button>
+<div id="note-box">
+  <textarea id="note-text" placeholder="Notunuzu yazın..."></textarea>
+  <input type="datetime-local" id="note-time">
+  <button onclick="saveNote()">Kaydet</button>
+</div>
 
+<audio id="alarm-sound" src="alarm.mp3"></audio>
 
 
 
@@ -704,7 +711,59 @@ nextVideo.addEventListener('ended', () => {
   border-radius: 10px;
 }
 
+<style>
+#note-toggle {
+  position: fixed;
+  left: 10px;
+  top: 45%;
+  z-index: 1001;
+  font-size: 2rem;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 2px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px lime;
+  transition: background 0.3s;
+}
 
+#note-box {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  z-index: 2000;
+  box-shadow: 0 0 20px cyan;
+  width: 400px;
+  max-width: 90vw;
+}
+
+#note-box textarea,
+#note-box input[type="datetime-local"] {
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+#note-box button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: lime;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>
 
 
 
@@ -989,6 +1048,77 @@ fetch(url)
   });
 	  
 
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+// Butonla not penceresi aç/kapa
+const toggleBtn = document.getElementById('note-toggle');
+const noteBox = document.getElementById('note-box');
+const alarmSound = document.getElementById('alarm-sound');
+
+let savedNotes = JSON.parse(localStorage.getItem('myNotes')) || [];
+
+function saveNote() {
+  const text = document.getElementById('note-text').value.trim();
+  const time = document.getElementById('note-time').value;
+  if (!text || !time) return alert("Lütfen not ve tarih/saat girin.");
+
+  savedNotes.push({ text, time });
+  localStorage.setItem('myNotes', JSON.stringify(savedNotes));
+  alert("Not kaydedildi!");
+  document.getElementById('note-text').value = '';
+  document.getElementById('note-time').value = '';
+  noteBox.style.display = 'none';
+}
+
+function checkAlarms() {
+  const now = new Date();
+  savedNotes.forEach(note => {
+    const noteTime = new Date(note.time);
+    if (
+      Math.abs(noteTime - now) < 1000 &&
+      !note.rang
+    ) {
+      alarmSound.play();
+      setTimeout(() => alarmSound.play(), 1000);
+      setTimeout(() => alarmSound.play(), 2000);
+      note.rang = true;
+      localStorage.setItem('myNotes', JSON.stringify(savedNotes));
+      alert(`ALARM: ${note.text}`);
+    }
+  });
+}
+
+setInterval(checkAlarms, 1000);
+
+toggleBtn.addEventListener('click', () => {
+  noteBox.style.display = noteBox.style.display === 'none' ? 'block' : 'none';
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 </script>
 
 
