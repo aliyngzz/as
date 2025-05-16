@@ -132,6 +132,49 @@
    display: block;
    margin: 0 auto;
 }
+
+<style>
+  #toast {
+    visibility: hidden;
+    min-width: 180px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: fixed;
+    z-index: 3000;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+
+  #toast.show {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
+
+<div id="toast"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
   </style>
 </head>
 <body>
@@ -1085,7 +1128,7 @@ setInterval(updateWeather, 5000);
   function saveNote() {
     const note = noteText.value;
     localStorage.setItem('savedNote', note);
-    alert("Not kaydedildi.");
+  showToast("Not kaydedildi.");
   }
 
   function clearNote() {
@@ -1120,7 +1163,7 @@ setInterval(updateWeather, 5000);
     }
 
     setTimeout(() => {
-      alert("⏰ Hatırlatma: " + noteText.value);
+    showToast("⏰ Hatırlatma: " + noteText.value);
 
       const sound = document.getElementById("reminder-sound");
       let count = 0;
@@ -1136,6 +1179,29 @@ setInterval(updateWeather, 5000);
 
     alert("Hatırlatıcı ayarlandı.");
   }
+
+
+
+
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.className = "show";
+  setTimeout(() => {
+    toast.className = toast.className.replace("show", "");
+  }, 3000); // 3 saniye sonra kaybolur
+}
+
+
+
+
+
+
+
+
+
+	
 </script>
 
 
