@@ -132,21 +132,6 @@
    display: block;
    margin: 0 auto;
 }
-
-
-<body>
-  <!-- Sayfanın diğer içeriği burada olur -->
-
-  <!-- Ses dosyası burada yer alır -->
-  <audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
-
-  <script src="script.js"></script>
-</body>
-
-
-
-
-	  
   </style>
 </head>
 <body>
@@ -162,7 +147,7 @@
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
-
+<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
 <div id="weather" style="
   position: fixed;
@@ -1142,99 +1127,7 @@ setInterval(updateWeather, 5000);
   }
 </script>
 
-<script>
-function playReminderAlarm(times = 3) {
-  const alarm = document.getElementById("reminder-sound");
-  let count = 0;
 
-  function playOnce() {
-    if (count >= times) return;
-    alarm.currentTime = 0;
-    alarm.play().then(() => {
-      count++;
-      // alarm bittiğinde tekrar çalışması için süreyi bekle
-      setTimeout(playOnce, 1000); // 1 saniye arayla tekrar çal
-    }).catch(err => {
-      console.error("Alarm sesi çalınamadı:", err);
-    });
-  }
-
-  playOnce();
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  function playAlarmSound() {
-    const alarm = document.getElementById("reminder-sound");
-    alarm.play().catch((e) => {
-      console.log("Alarm sesi çalarken hata oluştu:", e);
-    });
-  }
-
-  // Örnek: 10 saniye sonra alarm çalsın
-  setTimeout(() => {
-    playAlarmSound();
-  }, 10000); // 10000 ms = 10 saniye
-</script>
-
-
-<script>
-
-let reminderAllowed = false;
-let alarmTime = null;
-let alarmInterval = null;
-
-// Kullanıcı sayfaya tıklarsa ses çalma izni verilir
-document.addEventListener("click", () => {
-  reminderAllowed = true;
-});
-
-// Alarm kurulumu
-function setAlarm(minutes) {
-  clearInterval(alarmInterval);
-  alarmTime = new Date(Date.now() + minutes * 60000);
-
-  alarmInterval = setInterval(() => {
-    const now = new Date();
-    if (alarmTime && now >= alarmTime) {
-      triggerReminder();
-      clearInterval(alarmInterval);
-    }
-  }, 1000);
-}
-
-// Hatırlatıcıyı çalıştıran fonksiyon
-function triggerReminder() {
-  if (reminderAllowed) {
-    const reminderSound = document.getElementById("reminder-sound");
-    reminderSound.play().catch(err => {
-      console.log("Ses çalma hatası:", err);
-    });
-    alert("Hatırlatma zamanı geldi!");
-  } else {
-    console.log("Ses çalmak için kullanıcı etkileşimi gerekli.");
-  }
-}
-
-// Örnek kullanım: 1 dakika sonra alarm kur
-setAlarm(1);
-
-
-
-
-</script>
-	
 
 
 	
