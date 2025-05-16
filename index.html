@@ -168,7 +168,7 @@
 
 
 
-<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
+
 
 
 	
@@ -1125,59 +1125,6 @@ setInterval(updateWeather, 5000);
 
     alert("Hatırlatıcı ayarlandı.");
   }
-
-</script>
-
-
-
-<script>
-
-function setReminder() {
-  const timeInput = document.getElementById('reminder-time').value;
-  if (!timeInput) {
-    alert("Lütfen bir zaman seçin.");
-    return;
-  }
-
-  const reminderTime = new Date(timeInput).getTime();
-  const now = new Date().getTime();
-  const delay = reminderTime - now;
-
-  if (delay <= 0) {
-    alert("Geçmiş bir zaman seçtiniz.");
-    return;
-  }
-
-  setTimeout(() => {
-    alert("⏰ Hatırlatma: " + noteText.value);
-
-    const reminderSound = document.getElementById('reminder-sound');
-    reminderSound.play().catch(e => {
-      console.log("Ses çalma hatası:", e);
-    });
-
-  }, delay);
-
-  alert("Hatırlatıcı ayarlandı.");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 </script>
 
 
