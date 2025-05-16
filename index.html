@@ -168,7 +168,22 @@
 
 
 
+<button onclick="clearNote()" style="position: fixed; top: 110px; left: 10px; z-index: 1000;">
+  Notu Temizle
+</button>
 
+<!-- Not Paneli Açma/Kapatma Butonu -->
+<button id="toggle-note-btn" style="position: fixed; top: 150px; left: 10px; z-index: 1000;">
+  Not
+</button>
+
+<!-- Not Paneli -->
+<div id="note-panel" style="display: none; position: fixed; top: 190px; left: 10px; background: #fff; padding: 10px; border: 2px solid #ccc; border-radius: 10px; z-index: 999;">
+  <textarea id="note-text" placeholder="Notunu buraya yaz..." rows="5" cols="30"></textarea><br>
+  <input type="datetime-local" id="reminder-time"><br>
+  <button onclick="setReminder()">Hatırlat</button>
+  <audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3"></audio>
+</div>
 
 
 	
