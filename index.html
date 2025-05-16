@@ -92,7 +92,7 @@
 }
 
 <audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
-
+<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 	  
 .audio-controls button:hover {
   background-color: #45a049;
@@ -1126,10 +1126,18 @@ setInterval(updateWeather, 5000);
     alert("Hatırlatıcı ayarlandı.");
   }
 </script>
+<script>
+document.body.addEventListener("click", () => {
+  playReminderSound();
+});
 
+function playReminderSound() {
+  const reminderAudio = document.getElementById("reminder-sound");
+  reminderAudio.currentTime = 0;
+  reminderAudio.play().catch(e => console.log("Ses çalma hatası:", e));
+}
 
-
-
+</script>
 	
 </body>
 </html>
