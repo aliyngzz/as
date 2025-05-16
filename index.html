@@ -147,7 +147,7 @@
   <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
 </button>
 </div>
-
+<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
 
 <div id="weather" style="
   position: fixed;
@@ -161,7 +161,7 @@
   border-radius: 4px;
   z-index: 1000;
 ">
-  Yükleniyor...
+  Hava durumu yükleniyor...
 </div>
 
 
@@ -385,23 +385,9 @@ window.addEventListener("load", () => {
       "184972-874460313_medium.mp4",
 
 	      
-	  "133101-755975121_medium.mp4",
-	       "07027-674703679_medium",
-	       "113004-696349232_medium",
-		       "114552-701830169_tiny",
-			       "133101-755975121_medium",
-				       "145059-785786266_medium",
-					       "155242-809619008_tiny",
-						      
-"170727-843752865_tiny",
-	"178807-860734626_medium",
-		"178809-860734631_small",
-			"184261-873087820_tiny",
-				
-"189703-886596102_medium",
-	"198416-907598367_tiny",
-		"201446-915698703_medium",
-			"5744426-hd_1280_720_30fps"
+	  "133101-755975121_medium.mp4"
+
+
 
 
 
@@ -541,9 +527,49 @@ nextVideo.addEventListener('ended', () => {
 
 
 
+<button id="toggle-note-btn" style="
+  position: fixed;
+  left: 5px;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 2000;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+">📝 Not</button>
 
-
-
+<div id="note-panel" style="
+  display: none;
+  position: fixed;
+  left: 60px;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 200px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 2000;
+  font-size: 12px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.2);
+">
+  <strong>Hatırlatıcı</strong>
+  <textarea id="note-text" style="width: 100%; height: 50px; font-size: 11px; margin-top: 5px;" placeholder="Not yaz..."></textarea>
+  <input type="datetime-local" id="reminder-time" style="width: 100%; font-size: 11px; margin: 5px 0; padding: 2px; border-radius: 4px;">
+  <button onclick="setReminder()" style="
+    width: 100%;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+  ">Hatırlat</button>
+</div>
 
 
 
@@ -930,7 +956,6 @@ tvToggle.addEventListener("click", () => {
 "AkszDPeVaVg",
 "zC-S84OGXFs"
 
-
   ];
   let currentMiniIndex = 0;
 
@@ -966,29 +991,110 @@ video.onended = () => {
 };
 
 </script>
+
 <script>
 const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
-const city = 'Kutahya';
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+const cities = ['Kütahya','Istanbul', 'Yozgat', 'Karabük', 'Uşak', 'Ankara','Kütahya','Antalya', 'İzmir', 'Adana', 'Mardin', 'Trabzon'];
+let currentIndex = 0;
 
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    const weatherDiv = document.getElementById('weather');
-    if(data && data.main && data.weather){
-      const temp = data.main.temp.toFixed(1);
-      const desc = data.weather[0].description;
-      weatherDiv.textContent = `Kütahya: ${temp}°C, ${desc}`;
-    } else {
-      weatherDiv.textContent = 'Hava durumu verisi bulunamadı';
-    }
-  })
-  .catch(err => {
-    console.error('Hava durumu alınamadı:', err);
-    document.getElementById('weather').textContent = 'Hava durumu alınamadı';
-  });
-	  
+function updateWeather() {
+  const city = cities[currentIndex];
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
 
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const weatherDiv = document.getElementById('weather');
+      if (data && data.main && data.weather) {
+        const temp = data.main.temp.toFixed(1);
+        const desc = data.weather[0].description;
+        weatherDiv.textContent = `${city}: ${temp}°C, ${desc}`;
+      } else {
+        weatherDiv.textContent = `${city}: Hava durumu verisi bulunamadı`;
+      }
+    })
+    .catch(error => {
+      console.error('Hava durumu alınamadı:', error);
+      document.getElementById('weather').textContent = `${city}: Hava durumu alınamadı`;
+    });
+
+  // Şehri değiştir
+  currentIndex = (currentIndex + 1) % cities.length;
+}
+
+// Sayfa yüklenince başlat
+updateWeather();
+
+// Her 5 saniyede bir değiştir
+setInterval(updateWeather, 5000);
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+document.getElementById("toggle-note-btn").addEventListener("click", function() {
+  const panel = document.getElementById("note-panel");
+  panel.style.display = (panel.style.display === "none") ? "block" : "none";
+});
+
+function setReminder() {
+  const note = document.getElementById("note-text").value.trim();
+  const timeInput = document.getElementById("reminder-time").value;
+
+  if (!note) {
+    alert("Lütfen hatırlatma notu yazın!");
+    return;
+  }
+
+  if (!timeInput) {
+    alert("Lütfen hatırlatma zamanı seçin!");
+    return;
+  }
+
+  const reminderTime = new Date(timeInput);
+  const now = new Date();
+  const diff = reminderTime - now;
+
+  if (diff <= 0) {
+    alert("Geçmiş bir zaman seçtiniz. Lütfen ileri bir zaman girin.");
+    return;
+  }
+
+  // Kaydet (sadece bu tarayıcı için)
+  const reminderData = { note, time: timeInput };
+  let reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
+  reminders.push(reminderData);
+  localStorage.setItem("reminders", JSON.stringify(reminders));
+
+  alert("Hatırlatma ayarlandı!");
+
+  setTimeout(() => {
+    document.getElementById("reminder-sound").play();
+    alert("🔔 Hatırlatma: " + note);
+  }, diff);
+}
+
+
+
+	
 </script>
 
 
