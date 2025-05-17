@@ -101,56 +101,11 @@
       z-index: 20;
       display: none;
     }
-
-
-
-
-
-
-#music-button {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.8);
-  color: #333;
-  border: none;
-  border-radius: 30px;
-  padding: 10px 25px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 10;
-  display: none;
-  transition: background 0.3s;
-}
-
-#music-button:hover {
-  background: rgba(200, 200, 200, 0.9);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
   </style>
 </head>
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
-<button id="music-button">Müziği Çal</button>
-<audio id="music-player"></audio>
 
-
-  
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
 
@@ -274,95 +229,6 @@
       tvContainer.style.display = "flex";
       tvOpenBtn.style.display = "none";
     });
-
-
- </script>
-
-
-
-
-
-
-
- <script>
-
-
-
-
-const turkeySongs = [ 
-  "Turku-Ervahi-Ezelden-14 (1).mp3",
-  "Erdal-Erzincan-Deyis.mp3",
-  "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-  "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-  "Erdal-Erzincan-Yol-Havasi-87.mp3",
-  "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
-  "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
-  "Erdal-Erzincan-Sarma-Havasi-67.mp3",
-  "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
-  "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
-  "ates-i-askina-semah.mp3",
-  "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3",
-  "Deyiş Devran - Gerçek Olan.mp3",
-  "Erdal Erzincan - Deyiş.mp3",
-  "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
-  "miraz-uryan-geldim.mp3",
-  "Muhabbet Bağında - Deyiş.mp3",
-  "sabahat-akkiraz-tevhid.mp3",	  
-  "Zülfükâr Arslan - Deyiş.mp3",
-  "bugun-bize-pir-geldi.mp3",
-  "Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
-  "Erdal-Erzincan-Felek-Senin-Elinden.mp3",
-  "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
-  "Erdal-Erzincan-Nem-kaldi.mp3",
-  "Erdal-Erzincan-Urfa-Havasi-55.mp3",
-  "Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
-  "Erdal-Erzincan-Goc-54.mp3"
-];
-
-const musicPlayer = document.getElementById("music-player");
-const musicButton = document.getElementById("music-button");
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("startBtn").style.display = "none";
-  document.getElementById("music-button").style.display = "block"; // <-- bu satır eklendi
-  enterFullscreen(document.documentElement);
-  startVideoPlayer();
-});
-});
-
-musicButton.addEventListener("click", () => {
-  if (!isPlaying) {
-    const randomIndex = Math.floor(Math.random() * turkeySongs.length);
-    musicPlayer.src = `muzikler/${turkeySongs[randomIndex]}`;
-    musicPlayer.play();
-    musicButton.textContent = "Müziği Durdur";
-    isPlaying = true;
-  } else {
-    musicPlayer.pause();
-    musicButton.textContent = "Müziği Çal";
-    isPlaying = false;
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
   </script>
 </body>
 </html>
