@@ -309,11 +309,13 @@ tvToggleBtn.addEventListener("click", () => {
   if (!tvOn) {
     tvScreen.src = tvChannels[currentTvIndex];
     tvContainer.style.display = "block";
+    tvNextBtn.style.display = "inline-block"; // BUTON GÖRÜNSÜN
     tvToggleBtn.innerText = "📺 TV KAPAT";
     tvOn = true;
   } else {
     tvScreen.src = "";
     tvContainer.style.display = "none";
+    tvNextBtn.style.display = "none"; // BUTONU GİZLE
     tvToggleBtn.innerText = "📺 TV AÇ";
     tvOn = false;
   }
