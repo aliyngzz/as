@@ -169,7 +169,14 @@
         }
       });
     }
-
+ if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+    window.onYouTubeIframeAPIReady = function () {
+      initializePlayers();
+    };
+  } else {
+    initializePlayers();
+  }
+  </script>
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
       players.player1.mute();
