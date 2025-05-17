@@ -58,11 +58,8 @@
   }
 
   videoElement.addEventListener("ended", playNextLocalVideo);
-
-  // Başlangıçta ilk yerel videoyu başlat
   playNextLocalVideo();
 
-  // 10 saniye sonra YouTube oynatıcıyı yükle
   setTimeout(() => {
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
@@ -83,6 +80,7 @@
   ];
 
   let currentYtVideo = 0;
+
   function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('player', {
       videoId: ytVideoIds[currentYtVideo],
@@ -99,6 +97,7 @@
       events: {
         onReady: function (event) {
           event.target.playVideo();
+          startYtRotation();
         },
         onStateChange: function (event) {
           if (event.data === YT.PlayerState.PLAYING) {
@@ -108,6 +107,14 @@
         }
       }
     });
+  }
+
+  function startYtRotation() {
+    setInterval(() => {
+      currentYtVideo = (currentYtVideo + 1) % ytVideoIds.length;
+      ytPlayer.cueVideoById(ytVideoIds[currentYtVideo]);
+      ytPlayer.playVideo();
+    }, 60000); // Her 60 saniyede bir video değişsin
   }
 </script>
 
