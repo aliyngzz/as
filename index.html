@@ -79,41 +79,36 @@ F<!DOCTYPE html>
 
 #tvContainer {
   position: fixed;
-  bottom: 60px; /* ekran altından biraz yukarıda */
+  bottom: 20px;
   right: 20px;
   width: 300px;
-  height: 170px;
-  z-index: 15; /* diğer videolardan yüksek ama butonlardan düşük olabilir */
+  height: auto;
+  z-index: 15;
   display: none;
   border: 2px solid white;
   box-shadow: 0 0 10px #fff;
+  background: black;
+  padding: 5px;
+}
+
+#tvScreen {
+  width: 100%;
+  height: 170px;
+  display: block;
 }
 
 #tvControls {
-  position: fixed;
-  bottom: 0;  
-  right: 20px;
-  z-index: 16;
   display: flex;
-  flex-direction: row; /* yan yana butonlar */
-  gap: 8px;
+  justify-content: space-between;
+  margin-top: 5px;
 }
 
 #tvControls button {
-  padding: 6px 10px;
+  flex: 1;
+  margin: 0 2px;
+  padding: 6px;
   font-size: 12px;
-  border: none;
-  border-radius: 6px;
-  background: #0080ff;
-  color: white;
   cursor: pointer;
-  box-shadow: 0 0 6px #0080ff;
-  transition: 0.3s;
-}
-
-#tvControls button:hover {
-  background: #33aaff;
-  box-shadow: 0 0 8px #33aaff;
 }
 
 
