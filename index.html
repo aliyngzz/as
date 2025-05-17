@@ -79,50 +79,43 @@
 
 #tvContainer {
   position: fixed;
-  top: 20px;
+  bottom: 60px; /* alta alındı */
   right: 20px;
-  width: 300px;
-  height: 170px;
+  width: 200px; /* küçük ekran */
+  height: 120px;
   background: black;
-  border: 4px solid #ccc;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  border: 3px solid #ccc;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
   display: none;
   z-index: 15;
 }
 
-#tvScreen {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
 #tvControls {
   position: fixed;
-  top: 200px;
+  bottom: 10px; /* ekran altına yerleştirildi */
   right: 20px;
   z-index: 16;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row; /* yan yana butonlar */
+  gap: 8px;
 }
 
 #tvControls button {
-  padding: 12px 16px;
-  font-size: 16px;
+  padding: 6px 10px;
+  font-size: 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #0080ff;
   color: white;
   cursor: pointer;
-  box-shadow: 0 0 10px #0080ff;
+  box-shadow: 0 0 6px #0080ff;
   transition: 0.3s;
 }
 
 #tvControls button:hover {
   background: #33aaff;
-  box-shadow: 0 0 15px #33aaff;
+  box-shadow: 0 0 8px #33aaff;
 }
-
 
 
 
