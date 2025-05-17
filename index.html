@@ -3,87 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Yumuşak Video Geçişi</title>
+  <title>Video Arka Plan</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
-      background: black;
-      overflow: hidden;
+      box-sizing: border-box;
     }
 
-    .video-frame {
-      position: fixed;
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    #player {
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
     }
 
-    .visible {
-      opacity: 1;
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
       z-index: 1;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- İki iframe: biri gösteriliyor, biri hazırlanıyor -->
-  <iframe id="video1" class="video-frame visible" allow="autoplay" allowfullscreen></iframe>
-  <iframe id="video2" class="video-frame" allow="autoplay" allowfullscreen></iframe>
+<div id="player"></div>
+<div class="loading-overlay" id="loading">Yükleniyor...</div>
 
-  <script>
-    const videoIds = [
-      "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
-      "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
-      "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
-      "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8",
-      "oI8R4_UG3Fs", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0",
-      "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU",
-      "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g",
-      "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo",
-      "AkszDPeVaVg", "zC-S84OGXFs"
-    ];
+<script>
+  let videoIds = [
+    "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
+    "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
+    "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
+    "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8",
+    "oI8R4_UG3Fs", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0",
+    "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU",
+    "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g",
+    "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo",
+    "AkszDPeVaVg", "zC-S84OGXFs"
+  ];
 
-    let index = 0;
-    let active = true;
+  let currentIndex = 0;
+  let player;
+  let loading = document.getElementById("loading");
 
-    const iframe1 = document.getElementById("video1");
-    const iframe2 = document.getElementById("video2");
+  function onYouTubeIframeAPIReady() {
+    loadVideo(videoIds[currentIndex]);
+  }
 
-    function getVideoUrl(id) {
-      return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&showinfo=0&enablejsapi=1`;
+  function loadVideo(videoId) {
+    loading.style.display = "flex";
+
+    if (player) {
+      player.destroy();
     }
 
-    function playNext() {
-      const nextId = videoIds[index % videoIds.length];
-      const nextUrl = getVideoUrl(nextId);
-
-      if (active) {
-        iframe2.src = nextUrl;
-        iframe2.classList.add("visible");
-        iframe1.classList.remove("visible");
-      } else {
-        iframe1.src = nextUrl;
-        iframe1.classList.add("visible");
-        iframe2.classList.remove("visible");
+    player = new YT.Player("player", {
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        controls: 0,
+        showinfo: 0,
+        modestbranding: 1,
+        loop: 0,
+        fs: 0,
+        cc_load_policy: 0,
+        iv_load_policy: 3,
+        autohide: 1,
+        mute: 1,
+        rel: 0,
+        playsinline: 1
+      },
+      events: {
+        onReady: function(event) {
+          event.target.playVideo();
+          loading.style.display = "none";
+        },
+        onStateChange: function(event) {
+          if (event.data === YT.PlayerState.ENDED) {
+            nextVideo();
+          }
+        }
       }
+    });
 
-      active = !active;
-      index++;
-    }
+    // Videoyu 60 saniye sonra değiştir
+    setTimeout(() => {
+      nextVideo();
+    }, 60000);
+  }
 
-    // İlk video
-    iframe1.src = getVideoUrl(videoIds[0]);
+  function nextVideo() {
+    currentIndex = (currentIndex + 1) % videoIds.length;
+    loadVideo(videoIds[currentIndex]);
+  }
 
-    // 1 dakika sonra ilk geçiş
-    setInterval(playNext, 60000);
-  </script>
+  // YouTube Iframe API'yi yükle
+  let tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  let firstScriptTag = document.getElementsByTagName("script")[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+</script>
 
 </body>
 </html>
