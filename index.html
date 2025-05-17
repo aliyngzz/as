@@ -51,7 +51,7 @@
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-      videoId: 'ScMzIvxBSi4', // %100 çalışan örnek video
+      videoId: 'ScMzIvxBSi4', // test videosu
       playerVars: {
         autoplay: 1,
         controls: 0,
@@ -65,7 +65,11 @@
       events: {
         onReady: function (event) {
           event.target.playVideo();
-          document.getElementById('loading').style.display = 'none';
+        },
+        onStateChange: function (event) {
+          if (event.data === YT.PlayerState.PLAYING) {
+            document.getElementById('loading').style.display = 'none';
+          }
         }
       }
     });
