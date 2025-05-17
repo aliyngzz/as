@@ -1,16 +1,16 @@
-F<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Doğa ve Türkü Sayfası</title>
+  <title>Full Screen Video</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
+      width: 100%;
       overflow: hidden;
       background: black;
-      font-family: Arial, sans-serif;
     }
 
     #startBtn {
@@ -53,132 +53,85 @@ F<!DOCTYPE html>
       border: none;
     }
 
-    #musicToggleBtn {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 14px 28px;
-      font-size: 18px;
-      background: #e60073;
-      color: white;
+    /* /// YENİ /// Mini TV ekranı ve butonları */
+    #miniTVContainer {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 300px;
+      height: 170px;
+      background: black;
+      border: 2px solid white;
+      display: flex;
+      flex-direction: column;
+      z-index: 20;
+    }
+
+    #miniTV {
+      width: 100%;
+      height: 100%;
       border: none;
-      border-radius: 30px;
+    }
+
+    #tvControls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .tvBtn {
+      background: #222;
+      color: white;
+      border: 1px solid white;
+      cursor: pointer;
+      padding: 5px;
+      flex: 1;
+      font-size: 12px;
+    }
+
+    #tvOpenBtn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 10px 15px;
+      background: #000;
+      color: white;
+      border: 2px solid white;
       cursor: pointer;
       z-index: 20;
-      box-shadow: 0 0 15px #e60073;
       display: none;
-      transition: all 0.3s ease;
     }
-
-    #musicToggleBtn:hover {
-      background: #ff3399;
-      box-shadow: 0 0 25px #ff3399;
-    }
-
-
-#tvContainer {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 300px;
-  height: auto;
-  z-index: 15;
-  display: none;
-  border: 2px solid white;
-  box-shadow: 0 0 10px #fff;
-  background: black;
-  padding: 5px;
-}
-
-#tvScreen {
-  width: 100%;
-  height: 170px;
-  display: block;
-}
-
-#tvControls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 5px;
-}
-
-#tvControls button {
-  flex: 1;
-  margin: 0 2px;
-  padding: 6px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-    
   </style>
 </head>
 <body>
-  <button id="startBtn">EKRANI TIKLA: DOĞA VİDEOSU VE TÜRKÜ BAŞLASIN</button>
+  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
-<!-- TV EKRANI -->
-<div id="tvContainer">
-  <iframe id="tvScreen" src="" allowfullscreen></iframe>
-  <div id="tvControls">
-    <button id="tvToggleBtn">📺 TV AÇ</button>
-    <button id="tvNextBtn">⏭️ Kanal Değiştir</button>
+
+  <!-- /// YENİ /// Mini TV ekranı -->
+  <div id="miniTVContainer">
+    <iframe id="miniTV" src="https://www.youtube.com/embed/ztmY_cCtUl0" allowfullscreen></iframe>
+    <div id="tvControls">
+      <button class="tvBtn" id="channelBtn">Kanal Değiştir</button>
+      <button class="tvBtn" id="closeTVBtn">TV Kapat</button>
+    </div>
   </div>
-</div>
 
-
-  <!-- Müzik -->
-  <audio id="musicPlayer" loop></audio>
-  <button id="musicToggleBtn">🎵 TÜRKÜ AÇ 🎵</button>
+  <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-    const videoIds = ["F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM"];
-
-    const turkeySongs = [ 
-      "Turku-Ervahi-Ezelden-14 (1).mp3",
-      "Erdal-Erzincan-Deyis.mp3",
-      "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-      "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-      "Erdal-Erzincan-Yol-Havasi-87.mp3",
-      "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
-      "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
-      "Erdal-Erzincan-Sarma-Havasi-67.mp3",
-      "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
-      "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
-      "ates-i-askina-semah.mp3",
-      "Deyiş Devran - Gerçek Olan.mp3",
-      "Erdal Erzincan - Deyiş.mp3",
-      "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
-      "miraz-uryan-geldim.mp3",
-      "Muhabbet Bağında - Deyiş.mp3",
-      "sabahat-akkiraz-tevhid.mp3",
-      "Zülfükâr Arslan - Deyiş.mp3",
-      "bugun-bize-pir-geldi.mp3",
-      "Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
-      "Erdal-Erzincan-Felek-Senin-Elinden.mp3",
-      "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
-      "Erdal-Erzincan-Nem-kaldi.mp3",
-      "Erdal-Erzincan-Urfa-Havasi-55.mp3",
-      "Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
-      "Erdal-Erzincan-Goc-54.mp3"
+    const videoIds = [ 
+      "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
+    ]; 
+    const tvChannels = [
+      "https://www.youtube.com/embed/ztmY_cCtUl0",
+      "https://www.youtube.com/embed/ZSWPj9szKb8",
+      "https://www.youtube.com/embed/9KEThxQtWYA"
     ];
 
-    // YouTube API yükle
     let tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
+    tag.src = "https://www.youtube.com/iframe_api"; 
     document.head.appendChild(tag);
 
     let players = {};
@@ -189,7 +142,6 @@ F<!DOCTYPE html>
       document.getElementById("startBtn").style.display = "none";
       enterFullscreen(document.documentElement);
       startVideoPlayer();
-      document.getElementById("musicToggleBtn").style.display = "block";
     });
 
     function onYouTubeIframeAPIReady() {
@@ -220,6 +172,7 @@ F<!DOCTYPE html>
 
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
+      players.player1.mute();
       players.player1.playVideo();
       document.getElementById('player1').classList.add('active');
       scheduleNext();
@@ -233,6 +186,7 @@ F<!DOCTYPE html>
 
       setTimeout(() => {
         nextPlayer.loadVideoById(videoIds[nextIndex]);
+        nextPlayer.mute();
         nextPlayer.playVideo();
       }, 10000);
 
@@ -246,90 +200,35 @@ F<!DOCTYPE html>
     }
 
     function enterFullscreen(elem) {
-      if (elem.requestFullscreen) elem.requestFullscreen();
-      else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-      else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
-    }
-
-    // Müzik çalar
-    const musicPlayer = document.getElementById("musicPlayer");
-    const musicBtn = document.getElementById("musicToggleBtn");
-    let isMusicPlaying = false;
-
-    function getRandomSong() {
-      const randomIndex = Math.floor(Math.random() * turkeySongs.length);
-      return turkeySongs[randomIndex]; // Artık "songs/" yok!
-    }
-
-    musicBtn.addEventListener("click", async () => {
-      if (!isMusicPlaying) {
-        musicPlayer.src = getRandomSong();
-        try {
-          await musicPlayer.play();
-          isMusicPlaying = true;
-          musicBtn.innerText = "🎵 MÜZİĞİ KAPAT 🎵";
-        } catch (err) {
-          console.error("Müzik çalma hatası:", err);
-        }
-      } else {
-        musicPlayer.pause();
-        isMusicPlaying = false;
-        musicBtn.innerText = "🎵 TÜRKÜ AÇ 🎵";
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
       }
+    }
+
+    // /// YENİ /// TV işlevleri
+    let currentTVChannel = 0;
+    const tvFrame = document.getElementById("miniTV");
+    const tvContainer = document.getElementById("miniTVContainer");
+    const tvOpenBtn = document.getElementById("tvOpenBtn");
+
+    document.getElementById("channelBtn").addEventListener("click", () => {
+      currentTVChannel = (currentTVChannel + 1) % tvChannels.length;
+      tvFrame.src = tvChannels[currentTVChannel];
     });
 
- </script>
+    document.getElementById("closeTVBtn").addEventListener("click", () => {
+      tvContainer.style.display = "none";
+      tvOpenBtn.style.display = "block";
+    });
 
-
-
-
-
- <script>
-const tvChannels = [ 
-  "https://www.youtube.com/embed/ztmY_cCtUl0",
-  "https://www.youtube.com/embed/ZSWPj9szKb8",
-  "https://www.youtube.com/embed/9KEThxQtWYA"
-];
-
-let currentTvIndex = 0;
-let tvOn = false;
-
-const tvContainer = document.getElementById("tvContainer");
-const tvScreen = document.getElementById("tvScreen");
-const tvToggleBtn = document.getElementById("tvToggleBtn");
-const tvNextBtn = document.getElementById("tvNextBtn");
-
-tvToggleBtn.addEventListener("click", () => {
-  if (!tvOn) {
-    tvScreen.src = tvChannels[currentTvIndex];
-    tvContainer.style.display = "block";
-    tvNextBtn.style.display = "inline-block"; // BUTON GÖRÜNSÜN
-    tvToggleBtn.innerText = "📺 TV KAPAT";
-    tvOn = true;
-  } else {
-    tvScreen.src = "";
-    tvContainer.style.display = "none";
-    tvNextBtn.style.display = "none"; // BUTONU GİZLE
-    tvToggleBtn.innerText = "📺 TV AÇ";
-    tvOn = false;
-  }
-});
-
-tvNextBtn.addEventListener("click", () => {
-  if (tvOn) {
-    currentTvIndex = (currentTvIndex + 1) % tvChannels.length;
-    tvScreen.src = tvChannels[currentTvIndex];
-  }
-});
-
-
-
-
-
-
-
-
-    
+    document.getElementById("tvOpenBtn").addEventListener("click", () => {
+      tvContainer.style.display = "flex";
+      tvOpenBtn.style.display = "none";
+    });
   </script>
 </body>
 </html>
