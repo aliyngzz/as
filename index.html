@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Geçişli YouTube Videoları</title>
-  <style>
+  </style>
    <style>
   html, body {
     margin: 0;
@@ -15,15 +15,25 @@
 
   .player {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 177.78vh; /* 16:9 oranı için: 100 * (16 / 9) */
+    top: 0;
+    left: 0;
+    width: 100vw;
     height: 100vh;
-    transform: translate(-50%, -50%);
+    overflow: hidden;
     opacity: 0;
     transition: opacity 2s ease;
     pointer-events: none;
     z-index: 1;
+  }
+
+  .player iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120vw; /* ekranı kırpmak için genişlet */
+    height: 67.5vw; /* 120 * 9 / 16 = 67.5 */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
   }
 
   .player.active {
