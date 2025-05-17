@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Test Video</title>
+  <meta charset="UTF-8">
+  <title>Video Slayt</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background-color: black;
+      background: black;
     }
-
     #player {
       position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      opacity: 0;
+      transition: opacity 1s;
       z-index: 1;
     }
-
     #loading {
       position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: black;
+      background: black;
       color: white;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       font-size: 2rem;
       z-index: 10;
     }
@@ -43,37 +43,72 @@
 <div id="player"></div>
 
 <script>
+  var videoIds = [
+    "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
+    "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
+    "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
+    "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8",
+    "oI8R4_UG3Fs", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0",
+    "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU",
+    "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g",
+    "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo",
+    "AkszDPeVaVg", "zC-S84OGXFs"
+  ];
+
+  var currentVideo = 0;
+  var player;
+
   var tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.body.appendChild(tag);
 
-  var player;
-
   function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      videoId: 'ScMzIvxBSi4', // test videosu
-      playerVars: {
-        autoplay: 1,
-        controls: 0,
-        mute: 1,
-        showinfo: 0,
-        modestbranding: 1,
-        rel: 0,
-        playsinline: 1,
-        fs: 0
-      },
-      events: {
-        onReady: function (event) {
-          event.target.playVideo();
+    loadVideo(videoIds[currentVideo]);
+  }
+
+  function loadVideo(videoId) {
+    document.getElementById('loading').style.display = 'flex';
+    if (player) {
+      player.loadVideoById(videoId);
+    } else {
+      player = new YT.Player('player', {
+        videoId: videoId,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          mute: 1,
+          showinfo: 0,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          fs: 0
         },
-        onStateChange: function (event) {
-          if (event.data === YT.PlayerState.PLAYING) {
-            document.getElementById('loading').style.display = 'none';
+        events: {
+          onReady: function (event) {
+            event.target.playVideo();
+          },
+          onStateChange: function (event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+              setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('player').style.opacity = '1';
+              }, 5000);
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
+
+  function nextVideo() {
+    document.getElementById('player').style.opacity = '0';
+    currentVideo = (currentVideo + 1) % videoIds.length;
+    setTimeout(() => {
+      loadVideo(videoIds[currentVideo]);
+    }, 1000);
+  }
+
+  setInterval(nextVideo, 60000); // 1 dakika
 </script>
 
 </body>
