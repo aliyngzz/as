@@ -99,12 +99,16 @@
           event.target.playVideo();
           startYtRotation();
         },
-        onStateChange: function (event) {
-          if (event.data === YT.PlayerState.PLAYING) {
-            videoElement.style.display = 'none';
-            document.getElementById('player').style.opacity = 1;
-          }
-        }
+      onStateChange: function (event) {
+  if (event.data === YT.PlayerState.PLAYING) {
+    videoElement.style.display = 'none';
+    document.getElementById('player').style.opacity = 1;
+  }
+  if (event.data === YT.PlayerState.ENDED) {
+    currentYtVideo = (currentYtVideo + 1) % ytVideoIds.length;
+    ytPlayer.loadVideoById(ytVideoIds[currentYtVideo]);
+  }
+}
       }
     });
   }
