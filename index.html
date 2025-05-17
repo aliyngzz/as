@@ -2,30 +2,24 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Arka Plan Videolar</title>
+  <title>Video Arka Plan</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background-color: black;
+      background: black;
     }
 
-    #video-container {
-      position: fixed;
+    #player {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       z-index: -1;
       pointer-events: none;
-    }
-
-    iframe {
-      width: 100vw;
-      height: 100vh;
-      border: none;
     }
 
     #loading {
@@ -40,14 +34,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 999;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
 
 <div id="loading">Yükleniyor...</div>
-<div id="video-container"></div>
+<div id="player"></div>
 
 <script>
   const videoIds = [
@@ -62,30 +56,55 @@
     "AkszDPeVaVg", "zC-S84OGXFs"
   ];
 
-  let current = 0;
+  let currentIndex = 0;
+  let player;
 
-  function playNextVideo() {
-    const container = document.getElementById("video-container");
-    container.innerHTML = ""; // Önceki iframe’i temizle
-
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://www.youtube.com/embed/${videoIds[current]}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1`;
-    iframe.allow = "autoplay";
-
-    iframe.onload = () => {
-      document.getElementById("loading").style.display = "none";
-    };
-
-    container.appendChild(iframe);
-
-    current = (current + 1) % videoIds.length;
-
-    setTimeout(playNextVideo, 60000); // 1 dakika sonra geç
+  // YouTube API yüklendiğinde çalışacak
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player("player", {
+      videoId: videoIds[currentIndex],
+      playerVars: {
+        autoplay: 1,
+        controls: 0,
+        showinfo: 0,
+        modestbranding: 1,
+        rel: 0,
+        fs: 0,
+        disablekb: 1,
+        mute: 1, // otomatik oynatma için ses kapalı
+        playsinline: 1
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange
+      }
+    });
   }
 
-  window.onload = () => {
-    playNextVideo();
-  };
+  function onPlayerReady(event) {
+    event.target.playVideo();
+    document.getElementById("loading").style.display = "none";
+    setTimeout(nextVideo, 60000); // 1 dakika sonra geç
+  }
+
+  function onPlayerStateChange(event) {
+    // Gerekirse videonun bittiğini buradan da kontrol edebiliriz
+  }
+
+  function nextVideo() {
+    currentIndex = (currentIndex + 1) % videoIds.length;
+    document.getElementById("loading").style.display = "flex";
+    player.loadVideoById(videoIds[currentIndex]);
+    setTimeout(() => {
+      document.getElementById("loading").style.display = "none";
+    }, 1000);
+    setTimeout(nextVideo, 60000);
+  }
+
+  // YouTube API scriptini sayfaya ekle
+  const tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
 </script>
 
 </body>
