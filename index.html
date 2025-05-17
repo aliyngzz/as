@@ -2,39 +2,46 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Arka Plan Video Döngüsü</title>
+  <title>Video Döngüsü</title>
   <style>
-    body, html {
+    html, body {
       margin: 0; padding: 0;
-      width: 100%; height: 100%;
+      height: 100%; width: 100%;
       overflow: hidden;
       background: black;
     }
-    .video-container {
+
+    .video-frame {
       position: absolute;
+      width: 100%;
+      height: 100%;
       top: 0; left: 0;
-      width: 100%; height: 100%;
       z-index: 0;
-    }
-    .video-container iframe {
-      width: 100%; height: 100%;
-      pointer-events: none;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 1s ease-in-out;
+      pointer-events: none;
     }
-    .video-container iframe.visible {
+
+    .active {
       opacity: 1;
     }
   </style>
 </head>
 <body>
-  <div class="video-container">
-    <div id="player1"></div>
-    <div id="player2"></div>
-  </div>
+
+  <iframe id="player1" class="video-frame active"
+    src=""
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen></iframe>
+
+  <iframe id="player2" class="video-frame"
+    src=""
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen></iframe>
 
   <script>
-    // Oynatılacak YouTube video ID'leri
     const videoIds = [
       "F0GOOP82094","TEXty6vOrmA","qGfqox0CSrI","4kRzwJXaeIM","uXNU0XgGZhs",
       "AKInuThTUPw","mIPHBwY5aS0","DHUnz4dyb54","jzx_n25g3kA","bKLftRxcy3k",
@@ -47,79 +54,38 @@
       "AkszDPeVaVg","zC-S84OGXFs"
     ];
 
-    let currentIndex = 0;
-    let activePlayer = 1;
+    let current = 0;
+    let active = 1;
 
-    // YouTube IFrame API'yı yükleyelim
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
+    const iframe1 = document.getElementById("player1");
+    const iframe2 = document.getElementById("player2");
 
-    let player1, player2;
-
-    function onYouTubeIframeAPIReady() {
-      player1 = createPlayer('player1');
-      player2 = createPlayer('player2');
+    function getEmbedUrl(id) {
+      return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1`;
     }
 
-    function createPlayer(containerId) {
-      return new YT.Player(containerId, {
-        videoId: videoIds[currentIndex],
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          showinfo: 0,
-          modestbranding: 1,
-          loop: 1,
-          fs: 0,
-          rel: 0,
-          mute: 1,
-          start: 0
-        },
-        events: {
-          onReady: onPlayerReady
-        }
-      });
+    function start() {
+      iframe1.src = getEmbedUrl(videoIds[current]);
+      setTimeout(() => switchToNext(), 50000); // 50. saniyede diğer videoyu hazırla
     }
 
-    function onPlayerReady(event) {
-      // İlk player hazır olduğunda göster
-      if (event.target === player1) {
-        document.querySelector('#player1 iframe').classList.add('visible');
-        scheduleNext();
-      }
+    function switchToNext() {
+      const next = (current + 1) % videoIds.length;
+      const nextIframe = active === 1 ? iframe2 : iframe1;
+      nextIframe.src = getEmbedUrl(videoIds[next]);
+      nextIframe.classList.add("active");
+
+      const currentIframe = active === 1 ? iframe1 : iframe2;
+      currentIframe.classList.remove("active");
+
+      current = next;
+      active = active === 1 ? 2 : 1;
+
+      setTimeout(() => switchToNext(), 60000); // Her 1 dakikada bir geçiş yap
     }
 
-    function scheduleNext() {
-      // 50 saniye sonra diğer player'ı başlatıyoruz
-      setTimeout(() => {
-        const nextIndex = (currentIndex + 1) % videoIds.length;
-        const nextPlayer = activePlayer === 1 ? player2 : player1;
-        const nextIframe = document.querySelector(`#player${activePlayer === 1 ? 2 : 1} iframe`);
-
-        // Yeni videoyu yükle
-        nextPlayer.loadVideoById({
-          videoId: videoIds[nextIndex],
-          startSeconds: 0
-        });
-
-        nextPlayer.mute();
-        nextIframe.classList.add('visible');
-
-        // 10 saniyelik geçiş süresi sonunda eski iframe'i gizle
-        setTimeout(() => {
-          const oldIframe = document.querySelector(`#player${activePlayer} iframe`);
-          oldIframe.classList.remove('visible');
-        }, 10000);
-
-        // 1 dakika sonunda indeks güncelle ve döngüyü devam ettir
-        setTimeout(() => {
-          currentIndex = nextIndex;
-          activePlayer = activePlayer === 1 ? 2 : 1;
-          scheduleNext();
-        }, 60000 - 5000); // 55 saniye (50s başlangıç + 5s buffer)
-      }, 50000);
-    }
+    start();
   </script>
+
 </body>
 </html>
