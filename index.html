@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Video Slayt</title>
+  <title>Video Geçiş</title>
   <style>
     html, body {
       margin: 0;
@@ -11,39 +11,66 @@
       overflow: hidden;
       background: black;
     }
-    #player {
+    video, #player {
       position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      object-fit: cover;
+    }
+    #player {
       opacity: 0;
       transition: opacity 1s;
-      z-index: 1;
-    }
-    #loading {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      z-index: 10;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
 
-<div id="loading">Yükleniyor...</div>
+<video id="background-video" autoplay muted playsinline></video>
 <div id="player"></div>
 
 <script>
-  var videoIds = [
+  const videoElement = document.getElementById("background-video");
+  const videoList = [
+    "111179-689949805_tiny.mp4", "158349-816637197_tiny.mp4", "246856_tiny.mp4",
+    "120739-724673230_tiny.mp4", "28746-371345147_tiny.mp4", "57647-486227472_tiny.mp4",
+    "35427-407130886_small.mp4", "263208_small.mp4", "242228_small.mp4",
+    "180057-863401699_small.mp4", "159309-818469332.mp4", "144959-785568576_medium.mp4",
+    "6847-196978755_medium.mp4", "16012-268207204_small.mp4", "228847_tiny.mp4",
+    "71350-538489808.mp4", "71571-538974136.mp4", "854982-hd_1280_720_25fps.mp4",
+    "107027-674703679_medium.mp4", "113004-696349232_medium.mp4", "114552-701830169_tiny.mp4",
+    "145059-785786266_medium.mp4", "155242-809619008_tiny.mp4", "resim.mp4",
+    "170727-843752865_tiny.mp4", "178807-860734626_medium.mp4", "178809-860734631_small.mp4",
+    "184261-873087820_tiny.mp4", "189703-886596102_medium.mp4", "198416-907598367_tiny.mp4",
+    "201446-915698703_medium.mp4", "5744426-hd_1280_720_30fps.mp4",
+    "44798-440001069_small.mp4", "28746-371345147_tiny.mp4", "186405-877993676_tiny.mp4",
+    "214732_tiny.mp4", "35427-407130886_small.mp4", "3904-175596530_medium.mp4",
+    "184972-874460313_medium.mp4", "133101-755975121_medium.mp4"
+  ];
+
+  let currentLocalVideo = 0;
+  function playNextLocalVideo() {
+    videoElement.src = videoList[currentLocalVideo];
+    videoElement.play();
+    currentLocalVideo = (currentLocalVideo + 1) % videoList.length;
+  }
+
+  videoElement.addEventListener("ended", playNextLocalVideo);
+
+  // Başlangıçta ilk yerel videoyu başlat
+  playNextLocalVideo();
+
+  // 10 saniye sonra YouTube oynatıcıyı yükle
+  setTimeout(() => {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+  }, 10000);
+
+  let ytPlayer;
+  const ytVideoIds = [
     "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
     "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
     "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
@@ -55,60 +82,33 @@
     "AkszDPeVaVg", "zC-S84OGXFs"
   ];
 
-  var currentVideo = 0;
-  var player;
-
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(tag);
-
+  let currentYtVideo = 0;
   function onYouTubeIframeAPIReady() {
-    loadVideo(videoIds[currentVideo]);
-  }
-
-  function loadVideo(videoId) {
-    document.getElementById('loading').style.display = 'flex';
-    if (player) {
-      player.loadVideoById(videoId);
-    } else {
-      player = new YT.Player('player', {
-        videoId: videoId,
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          mute: 1,
-          showinfo: 0,
-          modestbranding: 1,
-          rel: 0,
-          playsinline: 1,
-          fs: 0
+    ytPlayer = new YT.Player('player', {
+      videoId: ytVideoIds[currentYtVideo],
+      playerVars: {
+        autoplay: 1,
+        controls: 0,
+        mute: 1,
+        showinfo: 0,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1,
+        fs: 0
+      },
+      events: {
+        onReady: function (event) {
+          event.target.playVideo();
         },
-        events: {
-          onReady: function (event) {
-            event.target.playVideo();
-          },
-          onStateChange: function (event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-              setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('player').style.opacity = '1';
-              }, 5000);
-            }
+        onStateChange: function (event) {
+          if (event.data === YT.PlayerState.PLAYING) {
+            videoElement.style.display = 'none';
+            document.getElementById('player').style.opacity = 1;
           }
         }
-      });
-    }
+      }
+    });
   }
-
-  function nextVideo() {
-    document.getElementById('player').style.opacity = '0';
-    currentVideo = (currentVideo + 1) % videoIds.length;
-    setTimeout(() => {
-      loadVideo(videoIds[currentVideo]);
-    }, 1000);
-  }
-
-  setInterval(nextVideo, 60000); // 1 dakika
 </script>
 
 </body>
