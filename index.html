@@ -2,150 +2,124 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Video Geçiş</title>
+  <title>Arka Plan Video Döngüsü</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+    body, html {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
       overflow: hidden;
       background: black;
     }
-    video, #player {
+    .video-container {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
     }
-    #player {
+    .video-container iframe {
+      width: 100%; height: 100%;
+      pointer-events: none;
       opacity: 0;
-      transition: opacity 1s;
-      z-index: 2;
+      transition: opacity 1s ease;
+    }
+    .video-container iframe.visible {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-<iframe
-  id="youtube-frame"
-  src=""
-  allow="autoplay; fullscreen"
-  allowfullscreen
-  class="hidden"
-></iframe>
-<video id="background-video" autoplay muted playsinline></video>
-<div id="player"></div>
+  <div class="video-container">
+    <div id="player1"></div>
+    <div id="player2"></div>
+  </div>
 
-<script>
-  const videoElement = document.getElementById("background-video");
-  const videoList = [
-    "111179-689949805_tiny.mp4", "158349-816637197_tiny.mp4", "246856_tiny.mp4",
-    "120739-724673230_tiny.mp4", "28746-371345147_tiny.mp4", "57647-486227472_tiny.mp4",
-    "35427-407130886_small.mp4", "263208_small.mp4", "242228_small.mp4",
-    "180057-863401699_small.mp4", "159309-818469332.mp4", "144959-785568576_medium.mp4",
-    "6847-196978755_medium.mp4", "16012-268207204_small.mp4", "228847_tiny.mp4",
-    "71350-538489808.mp4", "71571-538974136.mp4", "854982-hd_1280_720_25fps.mp4",
-    "107027-674703679_medium.mp4", "113004-696349232_medium.mp4", "114552-701830169_tiny.mp4",
-    "145059-785786266_medium.mp4", "155242-809619008_tiny.mp4", "resim.mp4",
-    "170727-843752865_tiny.mp4", "178807-860734626_medium.mp4", "178809-860734631_small.mp4",
-    "184261-873087820_tiny.mp4", "189703-886596102_medium.mp4", "198416-907598367_tiny.mp4",
-    "201446-915698703_medium.mp4", "5744426-hd_1280_720_30fps.mp4",
-    "44798-440001069_small.mp4", "28746-371345147_tiny.mp4", "186405-877993676_tiny.mp4",
-    "214732_tiny.mp4", "35427-407130886_small.mp4", "3904-175596530_medium.mp4",
-    "184972-874460313_medium.mp4", "133101-755975121_medium.mp4"
-  ];
+  <script>
+    // Oynatılacak YouTube video ID'leri
+    const videoIds = [
+      "F0GOOP82094","TEXty6vOrmA","qGfqox0CSrI","4kRzwJXaeIM","uXNU0XgGZhs",
+      "AKInuThTUPw","mIPHBwY5aS0","DHUnz4dyb54","jzx_n25g3kA","bKLftRxcy3k",
+      "inDzgZjCxmQ","dIChLG4_WNs","uAzUAZEKVJI","1zcIUk66HX4","QhxCVRJrVHs",
+      "ULoT2kODKlY","DP9hbJmwbNU","g_L1Ay8P244","LHtzZf4T7xw","og8bbxl0iW8",
+      "oI8R4_UG3Fs","LDv-f0LCrQc","DsNtwGJXTTs","aWglOXp5id0","Ihr_nwydXi0",
+      "BLvr4K2eiRE","bEmFpjwMOvs","YKECtq82zw8","0FBiyFpV__g","OsH_Z88b1UU",
+      "Hkj9L-HKXJU","_9E8DuwXCtU","mnCOp-xmpCo","HskMfIydI-4","kHwmzef842g",
+      "AAlo3eCPVbk","5e4lsEe4Vew","V08ET209nvU","qwjt-gnItvg","osIj_hLH4Oo",
+      "AkszDPeVaVg","zC-S84OGXFs"
+    ];
 
-  let currentLocalVideo = 0;
-  function playNextLocalVideo() {
-    videoElement.src = videoList[currentLocalVideo];
-    videoElement.play();
-    currentLocalVideo = (currentLocalVideo + 1) % videoList.length;
-  }
+    let currentIndex = 0;
+    let activePlayer = 1;
 
-  videoElement.addEventListener("ended", playNextLocalVideo);
-  playNextLocalVideo();
-
-  setTimeout(() => {
+    // YouTube IFrame API'yı yükleyelim
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
-  }, 10000);
+    document.head.appendChild(tag);
 
-  let ytPlayer;
-  const ytVideoIds = [
-    "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
-    "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
-    "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
-    "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8",
-    "oI8R4_UG3Fs", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0",
-    "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU",
-    "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g",
-    "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo",
-    "AkszDPeVaVg", "zC-S84OGXFs"
-  ];
+    let player1, player2;
 
-  let currentYtVideo = 0;
+    function onYouTubeIframeAPIReady() {
+      player1 = createPlayer('player1');
+      player2 = createPlayer('player2');
+    }
 
-  function onYouTubeIframeAPIReady() {
-    ytPlayer = new YT.Player('player', {
-      videoId: ytVideoIds[currentYtVideo],
-      playerVars: {
-        autoplay: 1,
-        controls: 0,
-        mute: 1,
-        showinfo: 0,
-        modestbranding: 1,
-        rel: 0,
-        playsinline: 1,
-        fs: 0
-      },
-      events: {
-        onReady: function (event) {
-          event.target.playVideo();
-          startYtRotation();
+    function createPlayer(containerId) {
+      return new YT.Player(containerId, {
+        videoId: videoIds[currentIndex],
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          showinfo: 0,
+          modestbranding: 1,
+          loop: 1,
+          fs: 0,
+          rel: 0,
+          mute: 1,
+          start: 0
         },
-      onStateChange: function (event) {
-  if (event.data === YT.PlayerState.PLAYING) {
-    videoElement.style.display = 'none';
-    document.getElementById('player').style.opacity = 1;
-  }
-  if (event.data === YT.PlayerState.ENDED) {
-    currentYtVideo = (currentYtVideo + 1) % ytVideoIds.length;
-    ytPlayer.loadVideoById(ytVideoIds[currentYtVideo]);
-  }
-}
+        events: {
+          onReady: onPlayerReady
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      // İlk player hazır olduğunda göster
+      if (event.target === player1) {
+        document.querySelector('#player1 iframe').classList.add('visible');
+        scheduleNext();
       }
-    });
-  }
+    }
 
-  function startYtRotation() {
-    setInterval(() => {
-      currentYtVideo = (currentYtVideo + 1) % ytVideoIds.length;
-      ytPlayer.cueVideoById(ytVideoIds[currentYtVideo]);
-      ytPlayer.playVideo();
-    }, 60000); // Her 60 saniyede bir video değişsin
-  }
-</script>
+    function scheduleNext() {
+      // 50 saniye sonra diğer player'ı başlatıyoruz
+      setTimeout(() => {
+        const nextIndex = (currentIndex + 1) % videoIds.length;
+        const nextPlayer = activePlayer === 1 ? player2 : player1;
+        const nextIframe = document.querySelector(`#player${activePlayer === 1 ? 2 : 1} iframe`);
 
+        // Yeni videoyu yükle
+        nextPlayer.loadVideoById({
+          videoId: videoIds[nextIndex],
+          startSeconds: 0
+        });
 
-<script>
+        nextPlayer.mute();
+        nextIframe.classList.add('visible');
 
-function showYouTubeVideo(id) {
-  const youtubeFrame = document.getElementById("youtube-frame");
-  youtubeFrame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1`;
-  youtubeFrame.classList.remove("hidden");
-  
-  const mp4Video = document.getElementById("mp4-video");
-  mp4Video.classList.add("hidden");
-}
+        // 10 saniyelik geçiş süresi sonunda eski iframe'i gizle
+        setTimeout(() => {
+          const oldIframe = document.querySelector(`#player${activePlayer} iframe`);
+          oldIframe.classList.remove('visible');
+        }, 10000);
 
-
-
-
-
-  
-</script>
-
+        // 1 dakika sonunda indeks güncelle ve döngüyü devam ettir
+        setTimeout(() => {
+          currentIndex = nextIndex;
+          activePlayer = activePlayer === 1 ? 2 : 1;
+          scheduleNext();
+        }, 60000 - 5000); // 55 saniye (50s başlangıç + 5s buffer)
+      }, 50000);
+    }
+  </script>
 </body>
 </html>
