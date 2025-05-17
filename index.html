@@ -79,15 +79,14 @@ F<!DOCTYPE html>
 
 #tvContainer {
   position: fixed;
-  bottom: 60px; /* alta alındı */
-  right: 100px;
-  width: 200px; /* küçük ekran */
-  height: 120px;
-  background: black;
-  border: 3px solid #ccc;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  bottom: 60px; /* ekran altından biraz yukarıda */
+  right: 20px;
+  width: 300px;
+  height: 170px;
+  z-index: 15; /* diğer videolardan yüksek ama butonlardan düşük olabilir */
   display: none;
-  z-index: 15;
+  border: 2px solid white;
+  box-shadow: 0 0 10px #fff;
 }
 
 #tvControls {
