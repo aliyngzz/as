@@ -2,23 +2,18 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video Arka Plan</title>
+  <title>Arka Plan Videolar</title>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
       height: 100%;
       overflow: hidden;
-      background: black;
+      background-color: black;
     }
 
-    #player {
-      position: absolute;
+    #video-container {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
@@ -27,30 +22,35 @@
       pointer-events: none;
     }
 
-    .loading-overlay {
-      position: absolute;
+    iframe {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
+
+    #loading {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       background: black;
+      color: white;
+      font-size: 2rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 2rem;
-      z-index: 1;
-      display: none;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
 
-<div id="player"></div>
-<div class="loading-overlay" id="loading">Yükleniyor...</div>
+<div id="loading">Yükleniyor...</div>
+<div id="video-container"></div>
 
 <script>
-  let videoIds = [
+  const videoIds = [
     "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
     "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
     "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
@@ -62,66 +62,30 @@
     "AkszDPeVaVg", "zC-S84OGXFs"
   ];
 
-  let currentIndex = 0;
-  let player;
-  let loading = document.getElementById("loading");
+  let current = 0;
 
-  function onYouTubeIframeAPIReady() {
-    loadVideo(videoIds[currentIndex]);
+  function playNextVideo() {
+    const container = document.getElementById("video-container");
+    container.innerHTML = ""; // Önceki iframe’i temizle
+
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${videoIds[current]}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1`;
+    iframe.allow = "autoplay";
+
+    iframe.onload = () => {
+      document.getElementById("loading").style.display = "none";
+    };
+
+    container.appendChild(iframe);
+
+    current = (current + 1) % videoIds.length;
+
+    setTimeout(playNextVideo, 60000); // 1 dakika sonra geç
   }
 
-  function loadVideo(videoId) {
-    loading.style.display = "flex";
-
-    if (player) {
-      player.destroy();
-    }
-
-    player = new YT.Player("player", {
-      videoId: videoId,
-      playerVars: {
-        autoplay: 1,
-        controls: 0,
-        showinfo: 0,
-        modestbranding: 1,
-        loop: 0,
-        fs: 0,
-        cc_load_policy: 0,
-        iv_load_policy: 3,
-        autohide: 1,
-        mute: 1,
-        rel: 0,
-        playsinline: 1
-      },
-      events: {
-        onReady: function(event) {
-          event.target.playVideo();
-          loading.style.display = "none";
-        },
-        onStateChange: function(event) {
-          if (event.data === YT.PlayerState.ENDED) {
-            nextVideo();
-          }
-        }
-      }
-    });
-
-    // Videoyu 60 saniye sonra değiştir
-    setTimeout(() => {
-      nextVideo();
-    }, 60000);
-  }
-
-  function nextVideo() {
-    currentIndex = (currentIndex + 1) % videoIds.length;
-    loadVideo(videoIds[currentIndex]);
-  }
-
-  // YouTube Iframe API'yi yükle
-  let tag = document.createElement("script");
-  tag.src = "https://www.youtube.com/iframe_api";
-  let firstScriptTag = document.getElementsByTagName("script")[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  window.onload = () => {
+    playNextVideo();
+  };
 </script>
 
 </body>
