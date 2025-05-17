@@ -165,7 +165,21 @@
 </div>
 
 
+<style>
+  #mini-tv {
+    width: 300px;
+    height: 200px;
+    transition: transform 0.3s ease, width 0.3s, height 0.3s;
+    border: 2px solid #ccc;
+  }
 
+  #mini-tv.hovered {
+    transform: scale(1.5);
+    z-index: 10;
+  }
+</style>
+
+<iframe id="mini-tv" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 
@@ -1125,7 +1139,79 @@ setInterval(updateWeather, 5000);
 
     alert("Hatırlatıcı ayarlandı.");
   }
+
+
+
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  const miniTV = document.getElementById("mini-tv"); 
+  const miniTVVideos = [
+    "F0GOOP82094", "TEXty6vOrmA", "qGfqox0CSrI", "4kRzwJXaeIM", "uXNU0XgGZhs",
+    "AKInuThTUPw", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA", "bKLftRxcy3k",
+    "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs",
+    "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8",
+    "oI8R4_UG3Fs", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0",
+    "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU",
+    "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g",
+    "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo",
+    "AkszDPeVaVg", "zC-S84OGXFs"
+  ];
+
+  let currentMiniIndex = 0;
+  let isHovered = false;
+  let interval;
+
+  function rotateMiniTV() {
+    if (!isHovered) {
+      currentMiniIndex = (currentMiniIndex + 1) % miniTVVideos.length;
+      const nextVideoId = miniTVVideos[currentMiniIndex];
+      miniTV.src = `https://www.youtube.com/embed/${nextVideoId}?autoplay=1&mute=1&enablejsapi=1`;
+    }
+  }
+
+  // İlk video
+  miniTV.src = `https://www.youtube.com/embed/${miniTVVideos[currentMiniIndex]}?autoplay=1&mute=1&enablejsapi=1`;
+
+  // Döngü başlat
+  interval = setInterval(rotateMiniTV, 60000);
+
+  // Hover olayı
+  miniTV.addEventListener("mouseenter", () => {
+    isHovered = true;
+    miniTV.classList.add("hovered");
+  });
+
+  miniTV.addEventListener("mouseleave", () => {
+    isHovered = false;
+    miniTV.classList.remove("hovered");
+  });
+</script>
+
+
+
+
+
+
+
+
+
+	
 
 
 
