@@ -107,7 +107,7 @@
       <button class="tvBtn" onclick="changeChannel(1)">⏭️</button>
     </div>
   </div>
-
+<button class="tvBtn" onclick="toggleTV()">TV Kapat</button>
   <script>
     // Arka plan doğa videoları
     const videoIds = [
@@ -205,18 +205,28 @@
       "https://www.youtube.com/embed/ZSWPj9szKb8",
       "https://www.youtube.com/embed/9KEThxQtWYA"
     ];
-    let tvIndex = 0;
-    let tvOn = true;
+  let tvIndex = 0;
+let tvOn = true;
 
-    function changeChannel(dir) {
-      tvIndex = (tvIndex + dir + tvChannels.length) % tvChannels.length;
-      document.getElementById('tvFrame').src = tvChannels[tvIndex];
-    }
+function changeChannel(dir) {
+  if (!tvOn) return;
+  tvIndex = (tvIndex + dir + tvChannels.length) % tvChannels.length;
+  document.getElementById('tvFrame').src = tvChannels[tvIndex];
+}
 
-    function toggleTV() {
-      const tvContainer = document.getElementById('tvContainer');
-      tvOn = !tvOn;
-      tvContainer.style.display = tvOn ? 'flex' : 'none';
+function toggleTV() {
+  const tvFrame = document.getElementById('tvFrame');
+  const toggleBtn = document.querySelector('.tvBtn[onclick="toggleTV()"]');
+
+  if (tvOn) {
+    tvFrame.src = ""; // TV’yi kapat
+    toggleBtn.textContent = "TV Aç";
+  } else {
+    tvFrame.src = tvChannels[tvIndex]; // TV’yi aç
+    toggleBtn.textContent = "TV Kapat";
+  }
+
+  tvOn = !tvOn;
     }
   </script>
 </body>
