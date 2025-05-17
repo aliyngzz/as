@@ -27,7 +27,13 @@
   </style>
 </head>
 <body>
-
+<iframe
+  id="youtube-frame"
+  src=""
+  allow="autoplay; fullscreen"
+  allowfullscreen
+  class="hidden"
+></iframe>
 <video id="background-video" autoplay muted playsinline></video>
 <div id="player"></div>
 
@@ -120,6 +126,25 @@
       ytPlayer.playVideo();
     }, 60000); // Her 60 saniyede bir video değişsin
   }
+</script>
+
+
+<script>
+
+function showYouTubeVideo(id) {
+  const youtubeFrame = document.getElementById("youtube-frame");
+  youtubeFrame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1`;
+  youtubeFrame.classList.remove("hidden");
+  
+  const mp4Video = document.getElementById("mp4-video");
+  mp4Video.classList.add("hidden");
+}
+
+
+
+
+
+  
 </script>
 
 </body>
