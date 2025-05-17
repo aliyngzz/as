@@ -321,12 +321,12 @@ const turkeySongs = [
 
 const musicPlayer = document.getElementById("music-player");
 const musicButton = document.getElementById("music-button");
-const backgroundVideo = document.querySelector("video"); // video id'n varsa değiştir
-
-let isPlaying = false;
-
-backgroundVideo.addEventListener("playing", () => {
-  musicButton.style.display = "block";
+document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("startBtn").style.display = "none";
+  document.getElementById("music-button").style.display = "block"; // <-- bu satır eklendi
+  enterFullscreen(document.documentElement);
+  startVideoPlayer();
+});
 });
 
 musicButton.addEventListener("click", () => {
