@@ -5,35 +5,42 @@
   <title>Geçişli YouTube Videoları</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: black;
-      overflow: hidden;
-    }
+    margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: black;
+  overflow: hidden;
+}
 
-    .player {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 2s ease;
-      pointer-events: none;
-    }
+.player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 2s ease;
+  pointer-events: none;
+  z-index: 0;
+}
 
-    .player.active {
-      opacity: 1;
-      pointer-events: auto;
+.player.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .player iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 177.78vh;
-    height: 100vh;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 177.78vh; /* Genişlik hesaplaması: yükseklik x (16 / 9) */
+  min-width: 100%;
+  min-height: 100%;
+  transform: translateX(calc((100vw - 177.78vh) / 2));
+  pointer-events: none;
+
 
       
     }
