@@ -109,7 +109,25 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 999;
+  z-index: 1000; /* videodan da yüksek olacak */
+  background: #ff4081;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px #ff4081;
+  animation: glow 1.5s infinite alternate;
+  cursor: pointer;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #ff4081;
+  }
+  to {
+    box-shadow: 0 0 20px #ff4081, 0 0 30px #ff4081;
+  
 }
 
 #musicToggle {
@@ -148,7 +166,7 @@
 </head>
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
-
+<button id="musicControl">MÜZİK AÇ</button>
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
 
