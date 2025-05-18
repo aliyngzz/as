@@ -623,7 +623,7 @@ pauseButton.addEventListener("click", () => {
       const data = await response.json();
 
       if (data.main) {
-        const temp = data.main.te	
+         const temp = data.main.temp;
     } catch (error) {
       weatherDiv.innerHTML = "Hava durumu yüklenirken hata oluştu.";
       console.error(error);
