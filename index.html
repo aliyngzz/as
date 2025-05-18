@@ -106,21 +106,49 @@
 
 
 
-    #musicControl {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #6a1b9a;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 18px;
-      border-radius: 30px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+   #musicControl {
+  display: none; /* BAŞTA GİZLİ */
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6a1b9a;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+✅ JavaScript'e şunu ekle (video başlayınca göster):
+javascript
+Kopyala
+Düzenle
+const video = document.getElementById("myVideo");
+const button = document.getElementById("musicControl");
+
+video.addEventListener("play", () => {
+  button.style.display = "block"; // BUTONU GÖSTER
+});
+Bu kadar.
+Artık:
+
+Sayfa açıldığında buton görünmez.
+
+Video play olunca buton alt ortada görünür ve müziği kontrol eder.
+
+İstersen video durunca tekrar gizlenmesini de ayarlayabilirim. Söyle yeter.
+
+
+
+
+
+
+
+
+
 
     #musicControl:hover {
       background: #9c27b0;
@@ -352,12 +380,17 @@
       }
     });
 
+</script>
+
+<script>
 
 
+const video = document.getElementById("myVideo");
+const button = document.getElementById("musicControl");
 
-
-
-
+video.addEventListener("play", () => {
+  button.style.display = "block"; // BUTONU GÖSTER
+});
 
 
 
