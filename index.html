@@ -161,10 +161,11 @@
     let activePlayer = 1;
 
     document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("startBtn").style.display = "none";
-      enterFullscreen(document.documentElement);
-      startVideoPlayer();
-    });
+     document.getElementById("tvOpenBtn").addEventListener("click", () => {
+  tvContainer.style.display = "flex";
+  tvOpenBtn.style.display = "none";
+  tvFrame.src = tvChannels[currentTVChannel]; // Kaldığın kanal geri yüklenir
+});
 
     function onYouTubeIframeAPIReady() {
       players.player1 = new YT.Player('player1', {
