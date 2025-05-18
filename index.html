@@ -178,7 +178,15 @@
       <button class="tvBtn" id="closeTVBtn">TV Kapat</button>
     </div>
   </div>
+<div id="mainContent" style="display: none;">
+  <!-- mevcut tüm içeriğin buraya taşınacak -->
+</div>
 
+<div id="countdownScreen" style="text-align: center; padding-top: 100px;">
+  <div id="countdown" style="font-size: 60px; color: green;">5</div>
+  <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
+</div>
+  
 
 <audio id="nature-sound" preload="auto"></audio>
 
@@ -428,7 +436,56 @@ pauseButton.addEventListener("click", () => {
   pauseButton.style.display = "none";
   playButton.style.display = "inline-block";
 });
+
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  let count = 5;
+  const countdownEl = document.getElementById("countdown");
+  const messageEl = document.getElementById("message");
+  const countdownScreen = document.getElementById("countdownScreen");
+  const mainContent = document.getElementById("mainContent");
+
+  const timer = setInterval(() => {
+    count--;
+    countdownEl.textContent = count;
+
+    if (count === 0) {
+      clearInterval(timer);
+      messageEl.textContent = "Şimdi tıklayabilirsin!";
+      setTimeout(() => {
+        countdownScreen.style.display = "none";
+        mainContent.style.display = "block";
+      }, 1000); // 1 saniye sonra ekranı kapat, içeriği göster
+    }
+  }, 1000);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
 
 
 
