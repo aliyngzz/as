@@ -151,21 +151,36 @@
       "https://www.youtube.com/embed/ZSWPj9szKb8",
       "https://www.youtube.com/embed/9KEThxQtWYA"
     ];
+ const tvFrame = document.getElementById("miniTV");
+  const tvContainer = document.getElementById("miniTVContainer");
+  const tvOpenBtn = document.getElementById("tvOpenBtn");
+  let currentTVChannel = 0;
 
-    let tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api"; 
-    document.head.appendChild(tag);
+  // TV kanal değiştir
+  document.getElementById("channelBtn").addEventListener("click", () => {
+    currentTVChannel = (currentTVChannel + 1) % tvChannels.length;
+    tvFrame.src = tvChannels[currentTVChannel];
+  });
 
-    let players = {};
-    let index = 0;
-    let activePlayer = 1;
+  // TV kapat
+  document.getElementById("closeTVBtn").addEventListener("click", () => {
+    tvContainer.style.display = "none";
+    tvOpenBtn.style.display = "block";
+  });
 
-    document.getElementById("startBtn").addEventListener("click", () => {
-     document.getElementById("tvOpenBtn").addEventListener("click", () => {
-  tvContainer.style.display = "flex";
-  tvOpenBtn.style.display = "none";
-  tvFrame.src = tvChannels[currentTVChannel]; // Kaldığın kanal geri yüklenir
-});
+  // TV aç
+  document.getElementById("tvOpenBtn").addEventListener("click", () => {
+    tvContainer.style.display = "flex";
+    tvOpenBtn.style.display = "none";
+    tvFrame.src = tvChannels[currentTVChannel];
+  });
+
+  // BAŞLAT butonuna tıklayınca:
+  document.getElementById("startBtn").addEventListener("click", () => {
+    document.getElementById("startBtn").style.display = "none";
+    enterFullscreen(document.documentElement);
+    startVideoPlayer();
+  });
 </script>
     function onYouTubeIframeAPIReady() {
       players.player1 = new YT.Player('player1', {
