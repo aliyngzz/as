@@ -129,7 +129,18 @@
   transition: all 0.3s ease;
   z-index: 9999;
 }
-
+#weather {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 10px;
+  z-index: 999;
+}
 
  #nature-controls {
     position: fixed;
@@ -181,7 +192,7 @@
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
-
+<div id="weather">Hava durumu yükleniyor...</div>
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
@@ -515,7 +526,38 @@ pauseButton.addEventListener("click", () => {
 
 
   
+<script>
+  const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
+  const cities = ['Kütahya','Istanbul', 'Yozgat', 'Karabük', 'Uşak', 'Ankara','Kütahya','Antalya', 'İzmir', 'Adana', 'Mardin', 'Trabzon'];
+  let currentIndex = 0;
 
+  function updateWeather() {
+    const city = cities[currentIndex];
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const weatherDiv = document.getElementById('weather');
+        if (data && data.main && data.weather) {
+          const temp = data.main.temp.toFixed(1);
+          const desc = data.weather[0].description;
+          weatherDiv.textContent = `${city}: ${temp}°C, ${desc}`;
+        } else {
+          weatherDiv.textContent = `${city}: Hava durumu verisi bulunamadı`;
+        }
+      })
+      .catch(error => {
+        console.error('Hava durumu alınamadı:', error);
+        document.getElementById('weather').textContent = `${city}: Hava durumu alınamadı`;
+      });
+
+    currentIndex = (currentIndex + 1) % cities.length;
+  }
+
+  updateWeather();
+  setInterval(updateWeather, 5000);
+</script>
 
 
 
