@@ -208,6 +208,7 @@
 
 <audio id="nature-sound" preload="auto"></audio>
 
+<iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
 
 
 <!-- Doğa Sesi Butonları -->
@@ -514,11 +515,109 @@ pauseButton.addEventListener("click", () => {
   });
 </script>
 
+<script>
+
+  const videoList = [
+       
+      "111179-689949805_tiny.mp4",
+      "158349-816637197_tiny.mp4",
+      "246856_tiny.mp4",
+      "120739-724673230_tiny.mp4",
+      "28746-371345147_tiny.mp4",
+      "57647-486227472_tiny.mp4",
+     
+      "35427-407130886_small.mp4",
+"263208_small.mp4",
+"242228_small.mp4",
+ 
+    "180057-863401699_small.mp4",
+      "159309-818469332.mp4",
+      
+          "144959-785568576_medium.mp4",
+            "6847-196978755_medium.mp4",
+              "16012-268207204_small.mp4",
+ "228847_tiny.mp4",
+ "71350-538489808.mp4",
+ "71571-538974136.mp4",   
+ "854982-hd_1280_720_25fps.mp4",
+"107027-674703679_medium.mp4",
+	"113004-696349232_medium.mp4",
+		"114552-701830169_tiny.mp4",
+	"145059-785786266_medium.mp4",
+		"155242-809619008_tiny.mp4",
+			"resim.mp4",
+	  "170727-843752865_tiny.mp4",
+		  "178807-860734626_medium.mp4",
+			  "178809-860734631_small.mp4",
+				  "184261-873087820_tiny.mp4",
+					  "189703-886596102_medium.mp4",
+		"198416-907598367_tiny.mp4",
+			"201446-915698703_medium.mp4",
+				"5744426-hd_1280_720_30fps.mp4",
+
+ "44798-440001069_small.mp4",
+        "28746-371345147_tiny.mp4",
+        "186405-877993676_tiny.mp4",
+             "214732_tiny.mp4",
+      "35427-407130886_small.mp4",
+      "3904-175596530_medium.mp4",
+      "184972-874460313_medium.mp4",
+
+	      
+	  "133101-755975121_medium.mp4"
 
 
-  
+    </script>
 
 
+
+
+
+
+
+<script>
+const youtubeIframe = document.getElementById("youtubePlayer");
+
+youtubeIframe.onerror = function () {
+  // Rastgele bir MP4 videosu seç
+  const randomMp4 = fallbackVideos[Math.floor(Math.random() * fallbackVideos.length)];
+
+  // Iframe’i kaldır
+  youtubeIframe.remove();
+
+  // Yeni video elementi oluştur
+  const videoElement = document.createElement("video");
+  videoElement.src = randomMp4;
+  videoElement.width = 560;
+  videoElement.height = 315;
+  videoElement.controls = true;
+  videoElement.autoplay = true;
+  videoElement.loop = true;
+
+  // Sayfaya ekle
+  document.body.appendChild(videoElement);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</script>
 
 
 
