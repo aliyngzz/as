@@ -106,8 +106,7 @@
 
 
 
-   #musicControl {
-  display: none; /* BAŞTA GİZLİ */
+  #musicControl {
   position: fixed;
   bottom: 20px;
   left: 50%;
@@ -121,6 +120,8 @@
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 9999; /* BUTONU HER ŞEYİN ÜSTÜNE ALIR */
+
 }
 ✅ JavaScript'e şunu ekle (video başlayınca göster):
 javascript
@@ -353,52 +354,39 @@ Video play olunca buton alt ortada görünür ve müziği kontrol eder.
       "Erdal-Erzincan-Goc-54.mp3"
     ];
 
-    let currentIndex = 0;
-    let isPlaying = false;
-    const player = document.getElementById("audioPlayer");
-    const button = document.getElementById("musicControl");
+ let currentIndex = 0;
+  let isPlaying = false;
 
-    function playSong(index) {
-      player.src = songs[index];
-      player.play();
-    }
+  const player = document.getElementById("audioPlayer");
+  const button = document.getElementById("musicControl");
 
-    player.addEventListener("ended", () => {
-      currentIndex = (currentIndex + 1) % songs.length;
+  function playSong(index) {
+    player.src = songs[index];
+    player.play();
+  }
+
+  player.addEventListener("ended", () => {
+    currentIndex = (currentIndex + 1) % songs.length;
+    playSong(currentIndex);
+  });
+
+  button.addEventListener("click", () => {
+    if (!isPlaying) {
       playSong(currentIndex);
-    });
-
-    button.addEventListener("click", () => {
-      if (!isPlaying) {
-        playSong(currentIndex);
-        button.textContent = "Müziği Kapat";
-        isPlaying = true;
-      } else {
-        player.pause();
-        button.textContent = "Müziği Aç";
-        isPlaying = false;
-      }
-    });
-
+      button.textContent = "Müziği Kapat";
+      isPlaying = true;
+    } else {
+      player.pause();
+      button.textContent = "Müziği Aç";
+      isPlaying = false;
+    }
+  });
 </script>
-
-<script>
-
-
-const video = document.getElementById("myVideo");
-const button = document.getElementById("musicControl");
-
-video.addEventListener("play", () => {
-  button.style.display = "block"; // BUTONU GÖSTER
-});
-
-
 
 
 
 
 
     
-  </script>
 </body>
 </html>
