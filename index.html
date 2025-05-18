@@ -135,7 +135,10 @@
 </head>
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
+<audio id="player" hidden></audio>
 
+<audio id="player" controls></audio>
+  
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
 
@@ -323,21 +326,25 @@
       "muzikler/Erdal-Erzincan-Goc-54.mp3"
     ];
 
-    let index = 0;
-    const player = document.getElementById("player");
+   let musicIndex = 0;
+  const musicPlayer = document.getElementById("player");
+  const musicBtn = document.getElementById("musicToggleBtn");
 
-    function playNext() {
-      player.src = playlist[index];
-      player.play();
-    }
+  function playMusic() {
+    musicPlayer.src = playlist[musicIndex];
+    musicPlayer.play();
+  }
 
-    player.addEventListener("ended", () => {
-      index = (index + 1) % playlist.length;
-      playNext();
-    });
+  musicPlayer.addEventListener("ended", () => {
+    musicIndex = (musicIndex + 1) % playlist.length;
+    playMusic();
+  });
 
-    playNext();
-
+  musicBtn.addEventListener("click", () => {
+    playMusic();
+    musicBtn.innerText = "Müzik Çalıyor...";
+    musicBtn.disabled = true;
+  });
 
 
 
