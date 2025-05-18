@@ -1,4 +1,4 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
@@ -88,18 +88,6 @@ f<!DOCTYPE html>
       flex: 1;
       font-size: 12px;
     }
-
-
-    <div id="weather" style="
-  font-size: 22px;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 15px;
-  border-radius: 10px;
-  width: fit-content;
-  margin: 20px auto;
-  text-align: center;
-"></div>
 
    #tvOpenBtn {
   position: absolute;
@@ -272,9 +260,7 @@ f<!DOCTYPE html>
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
-  Hava durumu yükleniyor...
-</div>
-  
+<div id="weather">Hava durumu yükleniyor...</div>
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
@@ -308,7 +294,7 @@ f<!DOCTYPE html>
 </div>
 
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
-<div id="weather"></div>
+
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
 
@@ -320,16 +306,13 @@ f<!DOCTYPE html>
   <button onclick="saveNote()">💾 Kaydet</button>
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
-<div id="weather-info">Hava durumu yükleniyor...</div>
-  <div id="weather" style="background: rgba(0,0,0,0.5); color: white; padding: 10px; border-radius: 10px; font-size: 18px; width: fit-content;"></div>
+
+  
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
     const videoIds = [ 
-      "32OI-8iznQM", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
-    "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I",
-    "FzdXt1drdp0", "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ",
-    "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
+      "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
@@ -622,44 +605,39 @@ pauseButton.addEventListener("click", () => {
 
 
 
+  
 <script>
-const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
-const cities = ['Kütahya','Istanbul', 'Yozgat', 'Karabük', 'Uşak', 'Ankara','Kütahya','Antalya', 'İzmir', 'Adana', 'Mardin', 'Trabzon'];
-let currentIndex = 0;
+  const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
 
-function updateWeather() {
-  const city = cities[currentIndex];
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+  async function getWeather() {
+    const weatherDiv = document.getElementById('weather');
+    
+    // Kütahya koordinatları (istersen başka şehir yazabiliriz)
+    const lat = 39.4242;
+    const lon = 29.9833;
+    
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=tr`;
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const weatherDiv = document.getElementById('weather');
-      if (data && data.main && data.weather) {
-        const temp = data.main.temp.toFixed(1);
-        const desc = data.weather[0].description;
-        weatherDiv.textContent = `${city}: ${temp}°C, ${desc}`;
-      } else {
-        weatherDiv.textContent = `${city}: Hava durumu verisi bulunamadı`;
-      }
-    })
-    .catch(error => {
-      console.error('Hava durumu alınamadı:', error);
-      document.getElementById('weather').textContent = `${city}: Hava durumu alınamadı`;
-    });
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
 
-  // Şehri değiştir
-  currentIndex = (currentIndex + 1) % cities.length;
-}
+      if (data.main) {
+        const temp = data.main.te	
+    } catch (error) {
+      weatherDiv.innerHTML = "Hava durumu yüklenirken hata oluştu.";
+      console.error(error);
+    }
+  }
 
-// Sayfa yüklenince başlat
-updateWeather();
+  window.addEventListener("load", getWeather);
 
-// Her 5 saniyede bir değiştir
-setInterval(updateWeather, 5000);
 
 
 </script>
+
+
+
 
 
 
@@ -723,6 +701,16 @@ setInterval(updateWeather, 5000);
 </script>
 
 
+
+
+
+
+
+
+
+
+
+  
 
 
 
