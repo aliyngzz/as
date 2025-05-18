@@ -261,6 +261,8 @@
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
 <div id="weather">Hava durumu yükleniyor...</div>
+<div id="weather" style="color: white; font-size: 18px; margin: 10px; font-family: Arial, sans-serif;"></div>
+  
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
@@ -623,21 +625,25 @@ pauseButton.addEventListener("click", () => {
       const data = await response.json();
 
       if (data.main) {
+        const city = data.name;
         const temp = data.main.temp;
         const desc = data.weather[0].description;
         const icon = data.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
 
         weatherDiv.innerHTML = `
-          <img src="${iconUrl}" alt="${desc}" style="vertical-align: middle;">
-          ${temp.toFixed(1)}°C - ${desc}
+          <div style="background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 0 10px rgba(255,255,255,0.3);">
+            <strong style="font-size: 20px;">${city}</strong><br>
+            <img src="${iconUrl}" alt="${desc}" style="vertical-align: middle;">
+            <span style="font-size: 18px;">${temp.toFixed(1)}°C - ${desc}</span>
+          </div>
         `;
       } else {
         weatherDiv.innerHTML = "Hava durumu verisi alınamadı.";
       }
     } catch (error) {
-      weatherDiv.innerHTML = "Hava durumu yüklenirken hata oluştu.";
-      console.error(error);
+      weatherDiv.innerHTML = "Hava durumu yüklenirken çok talihsiz bir hata oluştu.";
+      console.error("Hata Detayı:", error);
     }
   }
 
