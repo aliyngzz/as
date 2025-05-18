@@ -456,7 +456,7 @@ function playNextSound() {
     currentIndex = 0;
   }
   const nextSound = shuffledSounds[currentIndex++];
-  audioElement.src = "sesler/" + nextSound; // klasör adın farklıysa değiştir
+audioElement.src = nextSound;
   audioElement.play();
 }
 
