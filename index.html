@@ -156,23 +156,6 @@
     backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
   }
 
-.overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: black;
-  opacity: 0.9;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 2em;
-  cursor: pointer;
-}
-
-
-    
   #nature-controls button {
     padding: 8px 14px;
     font-size: 14px;
@@ -230,56 +213,6 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-<div class="overlay" id="overlay">
-  Başlamak için tıklayın
-</div>
-
-<div id="reminderForm">
-  <label for="reminderDate">Tarih:</label>
-  <input type="date" id="reminderDate" />
-
-  <label for="reminderTime">Saat:</label>
-  <input type="time" id="reminderTime" />
-
-  <label for="reminderNote">Not:</label>
-  <textarea id="reminderNote" rows="4"></textarea>
-
-  <button onclick="saveReminder()">Kaydet</button>
-</div>
-
-
-
-
-
-
-
-
-
-  
-
-<div class="video-container" id="video1-container">
-  <div id="player1"></div>
-  <div class="click-blocker"></div>
-</div>
-
-<div class="video-container" id="video2-container">
-  <div id="player2"></div>
-  <div class="click-blocker"></div>
-</div>
-
-<div class="video-container" id="video3-container">
-  <div id="player3"></div>
-  <div class="click-blocker"></div>
-</div>
-
-<div class="video-container" id="video4-container">
-  <div id="player4"></div>
-  <div class="click-blocker"></div>
-</div>
-
-
-
-
   
 
 <audio id="nature-sound" preload="auto"></audio>
@@ -329,7 +262,7 @@
         playerVars: {
           autoplay: 1,
           controls: 0,
-          mute: 0,
+          mute: 1,
           rel: 0,
           modestbranding: 1,
           playsinline: 1
@@ -341,7 +274,7 @@
         playerVars: {
           autoplay: 0,
           controls: 0,
-          mute: 0,
+          mute: 1,
           rel: 0,
           modestbranding: 1,
           playsinline: 1
@@ -349,69 +282,6 @@
       });
     }
 
-.video-container {
-  position: relative;
-  width: 50%;
-  height: 50vh;
-  float: left;
-  overflow: hidden;
-}
-
-.video-container iframe {
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* ekstra güvenlik */
-}
-
-.click-blocker {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background: transparent;
-}
-
-#reminderBtn {
-  position: fixed;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  z-index: 999;
-}
-
-#reminderForm {
-  display: none;
-  position: fixed;
-  left: 60px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #ffffff;
-  padding: 20px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-  z-index: 1000;
-}
-
-#reminderForm input, #reminderForm textarea, #reminderForm button {
-  margin: 10px 0;
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-}
-
-
-
-    
-    
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
       players.player1.mute();
@@ -712,93 +582,6 @@ pauseButton.addEventListener("click", () => {
 </script>
 
 
-
-
-<script>
-  const reminderBtn = document.getElementById("reminderBtn");
-  const reminderForm = document.getElementById("reminderForm");
-
-  reminderBtn.addEventListener("click", () => {
-    reminderForm.style.display = reminderForm.style.display === "none" ? "block" : "none";
-  });
-
-  function saveReminder() {
-    const date = document.getElementById("reminderDate").value;
-    const time = document.getElementById("reminderTime").value;
-    const note = document.getElementById("reminderNote").value;
-
-    if (!date || !time || !note) {
-      alert("Lütfen tüm alanları doldurun.");
-      return;
-    }
-
-    const reminderDateTime = new Date(`${date}T${time}`);
-    const id = Date.now();
-
-    const reminder = { id, date, time, note, timestamp: reminderDateTime.getTime() };
-    let reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
-    reminders.push(reminder);
-    localStorage.setItem("reminders", JSON.stringify(reminders));
-
-    alert("Hatırlatma kaydedildi!");
-    reminderForm.style.display = "none";
-  }
-
-  function checkReminders() {
-    let now = Date.now();
-    let reminders = JSON.parse(localStorage.getItem("reminders") || "[]");
-    let updatedReminders = [];
-
-    reminders.forEach(reminder => {
-      if (now >= reminder.timestamp && now < reminder.timestamp + 60000) {
-        alert("⏰ Hatırlatma: " + reminder.note);
-      } else {
-        updatedReminders.push(reminder);
-      }
-    });
-
-    localStorage.setItem("reminders", JSON.stringify(updatedReminders));
-  }
-
-  setInterval(checkReminders, 30000); // Her 30 saniyede bir kontrol et
-</script>
-
-
-
-
-<script>
-const overlay = document.getElementById('overlay');
-const videos = document.querySelectorAll('video');
-let activated = false;
-
-overlay.addEventListener('click', () => {
-  if (!activated) {
-    videos.forEach(video => video.play());
-    overlay.style.display = 'none';
-    activated = true;
-  }
-});
-
-document.body.addEventListener('click', (e) => {
-  if (!activated) return;
-  e.stopPropagation();
-}, true);
-
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-  
 
     
 
