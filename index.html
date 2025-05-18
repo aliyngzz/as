@@ -623,12 +623,12 @@ pauseButton.addEventListener("click", () => {
 
     async function fetchWeather(city) {
       try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&units=metric&lang=tr`);
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,wind_speed_10m`);
         const data = await response.json();
-
+        const weather = data.current_weather;
         if (data.main && data.wind) {
-          document.getElementById("weather").textContent =
-            `📍 ${city.name}: ${data.main.temp}°C | 💨 Rüzgar: ${data.wind.speed} km/h | ⏰ ${new Date().toLocaleTimeString()}`;
+         document.getElementById("weather").textContent =
+  `📍 ${city.name}: 🌡️ Sıcaklık: ${weather.temperature_2m}°C | 💨 Rüzgar: ${weather.wind_speed_10m} km/h | ⏰ ${new Date().toLocaleTimeString()}`;
         } else {
           document.getElementById("weather").textContent = `📍 ${city.name}: Hava durumu alınamadı.`;
         }
