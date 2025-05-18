@@ -605,14 +605,14 @@ pauseButton.addEventListener("click", () => {
 
 
 
-  
-<script>
-  const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
+  <script>
+
+const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
 
   async function getWeather() {
     const weatherDiv = document.getElementById('weather');
     
-    // Kütahya koordinatları (istersen başka şehir yazabiliriz)
+    // Kütahya koordinatları
     const lat = 39.4242;
     const lon = 29.9833;
     
@@ -623,7 +623,19 @@ pauseButton.addEventListener("click", () => {
       const data = await response.json();
 
       if (data.main) {
-         const temp = data.main.temp;
+        const temp = data.main.temp;
+        const desc = data.weather[0].description;
+        const humidity = data.main.humidity;
+
+        weatherDiv.innerHTML = `
+          <h2>Kütahya Hava Durumu</h2>
+          <p>🌡️ Sıcaklık: ${temp} °C</p>
+          <p>🌥️ Durum: ${desc}</p>
+          <p>💧 Nem: ${humidity}%</p>
+        `;
+      } else {
+        weatherDiv.innerHTML = "Veri alınamadı.";
+      }
     } catch (error) {
       weatherDiv.innerHTML = "Hava durumu yüklenirken hata oluştu.";
       console.error(error);
