@@ -120,25 +120,34 @@
 }
 
 <style>
-  /* Doğa ses butonları konumlandırma ve stil */
-  #nature-controls {
+ #nature-controls {
     position: fixed;
-    bottom: 10px;
-    left: 10px;
-    z-index: 9999; /* Videonun üstünde kalması için yüksek z-index */
-    background: rgba(255, 255, 255, 0.8);
+    bottom: 20px;
+    left: 20px;
+    z-index: 999999; /* Çok yüksek z-index, iframe bile geçemez */
+    background: rgba(255, 255, 255, 0.85);
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    display: flex;
+    gap: 10px;
+    backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
   }
 
   #nature-controls button {
-    margin: 5px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     font-size: 14px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease;
   }
 
+  #nature-controls button:hover {
+    background-color: #1b5e20;
     
   </style>
 </head>
@@ -162,12 +171,13 @@
 
 <audio id="nature-sound" preload="auto"></audio>
 
-<!-- Doğa Sesi Kontrol Butonları -->
+<audio id="nature-sound" preload="auto"></audio>
+
+<!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound">Doğa Sesini Kapat</button>
 </div>
-
 
 
 
@@ -362,7 +372,6 @@
 
 
 <script>
-  // Doğa sesi dosyaları
   const natureSounds = [
     "birds-in-forest-on-sunny-day-14444.mp3",
     "forest-birds-summer-sweden-18333.mp3",
@@ -390,30 +399,21 @@
     "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
   ];
 
-  const audioElement = document.getElementById("nature-sound");
+  const audio = document.getElementById("nature-sound");
   const playButton = document.getElementById("play-sound");
   const pauseButton = document.getElementById("pause-sound");
 
-  // Rastgele mp3 seç ve çal
-  function playRandomNatureSound() {
-    const randomIndex = Math.floor(Math.random() * natureSounds.length);
-    const selectedSound = natureSounds[randomIndex];
-    audioElement.src = selectedSound;
-    audioElement.play();
-  }
-
-  // Oynat butonu
   playButton.addEventListener("click", () => {
-    playRandomNatureSound();
+    const randomIndex = Math.floor(Math.random() * natureSounds.length);
+    audio.src = natureSounds[randomIndex];
+    audio.play();
   });
 
-  // Durdur butonu
   pauseButton.addEventListener("click", () => {
-    audioElement.pause();
-    audioElement.currentTime = 0;
+    audio.pause();
+    audio.currentTime = 0;
   });
 </script>
-
 
 
 
