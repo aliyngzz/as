@@ -119,6 +119,19 @@
   z-index: 9999;
 }
 
+<style>
+  #nature-sound-btn {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1000;
+  }
 
     
   </style>
@@ -131,6 +144,13 @@
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
 
+<button id="nature-sound-btn">Doğa Sesi: Aç</button>
+
+<audio id="bg-music" loop></audio>
+
+
+
+  
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
     <iframe id="miniTV" src="https://www.youtube.com/embed/ztmY_cCtUl0" allowfullscreen></iframe>
@@ -324,6 +344,75 @@
       isPlaying = false;
     }
   });
+
+</script>
+
+
+
+<script>
+  const natureSounds = [
+    "birds-in-forest-on-sunny-day-14444.mp3",
+    "forest-birds-summer-sweden-18333.mp3",
+    "woodpecker-and-other-birds-23488.mp3",
+    "bees-29400.mp3",
+    "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+    "fire-sound-310285.mp3",
+    "forest-atmosphere-002localization-poland-329733.mp3",
+    "forest-atmosphere-007localization-poland-330007.mp3",
+    "nature-sound-near-river-or-waterfall-247409.mp3",
+    "relaxing-rain-and-birds-6-minutes-52191.mp3",
+    "soft-wind-314945.mp3",
+    "soft-wind-318856.mp3",
+    "waterfall-176958 (1).mp3",
+    "waterfall-176958.mp3",
+    "water-splashing-108887.mp3",
+    "tui-birdsong-new-zealand-31660.mp3",
+    "smallwaterfall-218855.mp3",
+    "small-mountain-waterfall_nature-sound-203003.mp3",
+    "singing-barn-swallows-3-306979.mp3",
+    "mar-agitado-272999.mp3",
+    "french-coutryside-sunrise-17100.mp3",
+    "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+    "bird-sounds-of-knysna-20130.mp3",
+    "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+  ];
+
+  const button = document.getElementById("nature-sound-btn");
+  const audio = document.getElementById("bg-music");
+  let isPlaying = false;
+
+  function playRandomNatureSound() {
+    const randomIndex = Math.floor(Math.random() * natureSounds.length);
+    const selectedSound = natureSounds[randomIndex];
+    audio.src = selectedSound;
+    audio.play().catch(e => console.error("Ses çalınamadı:", e));
+  }
+
+  button.addEventListener("click", () => {
+    if (!isPlaying) {
+      playRandomNatureSound();
+      button.textContent = "Doğa Sesi: Kapat";
+      isPlaying = true;
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+      button.textContent = "Doğa Sesi: Aç";
+      isPlaying = false;
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+  
 </script>
 
 
