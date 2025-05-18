@@ -616,11 +616,11 @@ pauseButton.addEventListener("click", () => {
 
   async function getWeather() {
     const weatherDiv = document.getElementById('weather');
-
-    // Kütahya koordinatları
-    const lat = 39.4242;
-    const lon = 29.9833;
-
+const cities = [
+  "Kütahya", "İstanbul", "Yozgat", "Uşak", "Karabük",
+  "Samsun", "Tokat", "İzmir", "Antalya", "Adana",
+  "Mersin", "Eskişehir"
+];
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=tr`;
 
     try {
@@ -651,6 +651,8 @@ pauseButton.addEventListener("click", () => {
   }
 
   window.addEventListener("load", getWeather);
+
+  setInterval(updateWeather, 5000);
 </script>
 
 
