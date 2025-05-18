@@ -185,7 +185,75 @@
   transition: opacity 2s ease;
   font-family: 'Arial Black', Gadget, sans-serif;
 }
+ #notTrigger {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #fff;
+    animation: pulse 2s infinite;
+    z-index: 1000;
+  }
 
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px #fff; }
+    50% { box-shadow: 0 0 20px #f0f; }
+    100% { box-shadow: 0 0 10px #fff; }
+  }
+
+  #notPanel {
+    position: fixed;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #222;
+    color: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 0 20px #0ff;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+
+  #noteText {
+    height: 80px;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    resize: none;
+    font-size: 14px;
+  }
+
+  #alarmTime {
+    border-radius: 8px;
+    padding: 5px;
+  }
+
+  #notPanel button {
+    background: linear-gradient(45deg, #74ebd5, #9face6);
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  #notPanel button:hover {
+    background: #fff;
+  }
     
   </style>
 </head>
@@ -225,7 +293,19 @@
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
 
+<audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
+<!-- Not butonu -->
+<div id="notTrigger">📝</div>
+
+<!-- Not paneli -->
+<div id="notPanel">
+  <textarea id="noteText" placeholder="Notunu yaz..."></textarea>
+  <input type="datetime-local" id="alarmTime">
+  <button onclick="setAlarm()">⏰ Hatırlat</button>
+  <button onclick="saveNote()">💾 Kaydet</button>
+  <button onclick="closePanel()">❌ Kapat</button>
+</div>
 
   
   <button id="tvOpenBtn">TV Aç</button>
@@ -551,7 +631,87 @@ pauseButton.addEventListener("click", () => {
   }
 
   window.addEventListener("load", getWeather);
+
+
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  const panel = document.getElementById('notPanel');
+  const trigger = document.getElementById('notTrigger');
+  const noteInput = document.getElementById('noteText');
+  const alarmInput = document.getElementById('alarmTime');
+  const alarmSound = document.getElementById('alarmSound');
+
+  // Aç/kapat butonu
+  trigger.onclick = () => {
+    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    loadNote();
+  }
+
+  function closePanel() {
+    panel.style.display = 'none';
+  }
+
+  // Notu kaydet
+  function saveNote() {
+    localStorage.setItem('myNote', noteInput.value);
+    alert('Not kaydedildi!');
+  }
+
+  // Notu yükle
+  function loadNote() {
+    noteInput.value = localStorage.getItem('myNote') || '';
+  }
+
+  // Alarm kur
+  function setAlarm() {
+    const alarmTime = new Date(alarmInput.value).getTime();
+    if (!alarmTime) {
+      alert('Tarih seç!');
+      return;
+    }
+    const now = Date.now();
+    const delay = alarmTime - now;
+    if (delay < 0) {
+      alert('Geçmiş zaman seçilemez!');
+      return;
+    }
+
+    setTimeout(() => {
+      alarmSound.play();
+      alert('⏰ Hatırlatma zamanı!');
+    }, delay);
+    alert('Alarm kuruldu!');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
 
 
 
