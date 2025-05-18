@@ -156,24 +156,7 @@
     font-weight: bold;
     transition: background 0.3s ease;
   }
-#weatherPanel {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 350px;
-  height: 250px;
-  z-index: 99999;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  overflow: hidden;
-}
 
-#weatherPanel iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
   #nature-controls button:hover {
     background-color: #1b5e20;
     
@@ -196,11 +179,6 @@
     </div>
   </div>
 
-<div id="weatherPanel">
-  <iframe src="https://www.mgm.gov.tr/siteneekle/gunluk-hava-durumu.aspx?kod=26" frameborder="0"></iframe>
-</div>
-
-  
 
 <audio id="nature-sound" preload="auto"></audio>
 
@@ -450,67 +428,6 @@ pauseButton.addEventListener("click", () => {
   pauseButton.style.display = "none";
   playButton.style.display = "inline-block";
 });
-
-
-</script>
-
-
-
-
-
-
-<script>
-const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
-const cities = ['Kütahya','Istanbul', 'Yozgat', 'Karabük', 'Uşak', 'Ankara','Kütahya','Antalya', 'İzmir', 'Adana', 'Mardin', 'Trabzon'];
-let currentIndex = 0;
-
-function updateWeather() {
-  const city = cities[currentIndex];
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
-
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const weatherDiv = document.getElementById('weather');
-      if (data && data.main && data.weather) {
-        const temp = data.main.temp.toFixed(1);
-        const desc = data.weather[0].description;
-        weatherDiv.textContent = `${city}: ${temp}°C, ${desc}`;
-      } else {
-        weatherDiv.textContent = `${city}: Hava durumu verisi bulunamadı`;
-      }
-    })
-    .catch(error => {
-      console.error('Hava durumu alınamadı:', error);
-      document.getElementById('weather').textContent = `${city}: Hava durumu alınamadı`;
-    });
-
-  // Şehri değiştir
-  currentIndex = (currentIndex + 1) % cities.length;
-}
-
-// Sayfa yüklenince başlat
-updateWeather();
-
-// Her 5 saniyede bir değiştir
-setInterval(updateWeather, 5000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 </script>
 
 
