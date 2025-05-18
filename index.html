@@ -340,12 +340,19 @@
     playMusic();
   });
 
-  musicBtn.addEventListener("click", () => {
-    playMusic();
-    musicBtn.innerText = "Müzik Çalıyor...";
-    musicBtn.disabled = true;
-  });
+ et isPlaying = false;
 
+musicBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    playMusic();
+    musicBtn.innerText = "Müziği Kapat";
+    isPlaying = true;
+  } else {
+    musicPlayer.pause();
+    musicBtn.innerText = "Müzik Aç";
+    isPlaying = false;
+  }
+});
 
 
 
