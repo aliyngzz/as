@@ -528,65 +528,47 @@ pauseButton.addEventListener("click", () => {
 
 
   
-<script>
-  const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
+ 
+
+
+ <script>
+   const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
 
   const cities = [
-    { name: "Istanbul", lat: 41.0082, lon: 28.9784 },
-    { name: "Yozgat", lat: 39.8209, lon: 34.804 },
-    { name: "Karabük", lat: 41.2048, lon: 32.6267 },
-    { name: "Uşak", lat: 38.6823, lon: 29.4082 },
-    { name: "Ankara", lat: 39.9208, lon: 32.8541 },
-    { name: "Antalya", lat: 36.8841, lon: 30.7056 },
-    { name: "İzmir", lat: 38.4192, lon: 27.1287 },
-    { name: "Adana", lat: 37.0000, lon: 35.3213 },
-    { name: "Mardin", lat: 37.3212, lon: 40.7245 },
-    { name: "Trabzon", lat: 41.0015, lon: 39.7178 },
-    { name: "Kütahya", lat: 39.4242, lon: 29.9833 }
+    { name: "İstanbul", lat: 41.0082, lon: 28.9784 },
+    { name: "Kütahya",  lat: 39.4242, lon: 29.9833 }
   ];
 
-  let currentIndex = 0;
+  let currentCityIndex = 0;
 
-  async function getWeather(city) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&units=metric&lang=tr`;
+  function fetchWeather() {
+    const city = cities[currentCityIndex];
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&lang=tr&units=metric`;
 
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.main && data.weather) {
-        const temp = data.main.temp;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const temp = data.main.temp.toFixed(1);
         const desc = data.weather[0].description;
-        const humidity = data.main.humidity;
-        const wind = data.wind.speed;
+        document.getElementById("weather").textContent = 
+          `${city.name}: ${temp}°C, ${desc}`;
+      })
+      .catch(error => {
+        console.error("Hata:", error);
+        document.getElementById("weather").textContent = 
+          `${city.name}: Hava durumu alınamadı.`;
+      });
 
-        document.getElementById('weather').innerHTML = `
-          📍 <strong>${city.name}</strong><br>
-          🌡️ Sıcaklık: ${temp}°C<br>
-          🌥️ Durum: ${desc}<br>
-          💧 Nem: ${humidity}%<br>
-          💨 Rüzgar: ${wind} m/s
-        `;
-      } else {
-        document.getElementById('weather').innerHTML = '❌ Veri alınamadı.';
-      }
-    } catch (error) {
-      document.getElementById('weather').innerHTML = '⚠️ Bağlantı hatası.';
-      console.error(error);
-    }
+    // Sıradaki şehir için index değiştir
+    currentCityIndex = (currentCityIndex + 1) % cities.length;
   }
 
-  function rotateWeather() {
-    getWeather(cities[currentIndex]);
-    currentIndex = (currentIndex + 1) % cities.length;
-  }
+  // İlk çağrı hemen yapılsın
+  fetchWeather();
 
-  rotateWeather(); // Sayfa yüklendiğinde başlat
-  setInterval(rotateWeather, 5000); // Her 5 saniyede bir güncelle
+  // Sonra her 5 saniyede bir tekrar etsin
+  setInterval(fetchWeather, 5000);
 </script>
-
-
-
 
 
 
