@@ -100,73 +100,6 @@
       cursor: pointer;
       z-index: 20;
       display: none;
-
-
-
-
-
-
-  #musicControl {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #6a1b9a;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  font-size: 18px;
-  border-radius: 30px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 9999; /* BUTONU HER ŞEYİN ÜSTÜNE ALIR */
-
-}
-✅ JavaScript'e şunu ekle (video başlayınca göster):
-javascript
-Kopyala
-Düzenle
-const video = document.getElementById("myVideo");
-const button = document.getElementById("musicControl");
-
-video.addEventListener("play", () => {
-  button.style.display = "block"; // BUTONU GÖSTER
-});
-Bu kadar.
-Artık:
-
-Sayfa açıldığında buton görünmez.
-
-Video play olunca buton alt ortada görünür ve müziği kontrol eder.
-
-İstersen video durunca tekrar gizlenmesini de ayarlayabilirim. Söyle yeter.
-
-
-
-
-
-
-
-
-
-
-    #musicControl:hover {
-      background: #9c27b0;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-  
-
-
-
-
-
-
-
-
-
-
-
-      
     }
   </style>
 </head>
@@ -175,21 +108,6 @@ Video play olunca buton alt ortada görünür ve müziği kontrol eder.
 
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
-
-<button id="musicControl">Müziği Aç</button>
-
-  <audio id="audioPlayer" src=""></audio>
-
-
-<video id="myVideo" autoplay muted loop>
-  <source src="dogavideo.mp4" type="video/mp4">
-</video>
-
-<button id="musicControl">Müziği Aç</button>
-
-<audio id="audioPlayer"></audio>
-
-  
 
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
@@ -311,88 +229,6 @@ Video play olunca buton alt ortada görünür ve müziği kontrol eder.
       tvContainer.style.display = "flex";
       tvOpenBtn.style.display = "none";
     });
-
-
   </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <script>
-    const songs = [
-      "Turku-Ervahi-Ezelden-14 (1).mp3",
-      "Erdal-Erzincan-Deyis.mp3",
-      "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-      "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-      "Erdal-Erzincan-Yol-Havasi-87.mp3",
-      "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
-      "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
-      "Erdal-Erzincan-Sarma-Havasi-67.mp3",
-      "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
-      "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
-      "ates-i-askina-semah.mp3",
-      "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3",
-      "Deyiş Devran - Gerçek Olan.mp3",
-      "Erdal Erzincan - Deyiş.mp3",
-      "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
-      "miraz-uryan-geldim.mp3",
-      "Muhabbet Bağında - Deyiş.mp3",
-      "sabahat-akkiraz-tevhid.mp3",
-      "Zülfükâr Arslan - Deyiş.mp3",
-      "bugun-bize-pir-geldi.mp3",
-      "Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
-      "Erdal-Erzincan-Felek-Senin-Elinden.mp3",
-      "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
-      "Erdal-Erzincan-Nem-kaldi.mp3",
-      "Erdal-Erzincan-Urfa-Havasi-55.mp3",
-      "Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
-      "Erdal-Erzincan-Goc-54.mp3"
-    ];
-
- let currentIndex = 0;
-  let isPlaying = false;
-
-  const player = document.getElementById("audioPlayer");
-  const button = document.getElementById("musicControl");
-
-  function playSong(index) {
-    player.src = songs[index];
-    player.play();
-  }
-
-  player.addEventListener("ended", () => {
-    currentIndex = (currentIndex + 1) % songs.length;
-    playSong(currentIndex);
-  });
-
-  button.addEventListener("click", () => {
-    if (!isPlaying) {
-      playSong(currentIndex);
-      button.textContent = "Müziği Kapat";
-      isPlaying = true;
-    } else {
-      player.pause();
-      button.textContent = "Müziği Aç";
-      isPlaying = false;
-    }
-  });
-</script>
-
-
-
-
-
-    
 </body>
 </html>
