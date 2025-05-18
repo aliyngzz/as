@@ -120,17 +120,19 @@
 }
 
 <style>
-  #nature-sound-btn {
+ #nature-sound-btn {
     position: fixed;
-    bottom: 10px;
-    left: 10px;
-    padding: 10px 20px;
+    bottom: 20px;
+    left: 20px;
+    padding: 12px 24px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
+    font-size: 16px;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 9999; /* Video veya diğer öğelerin üstünde olsun */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
 
     
@@ -145,7 +147,6 @@
   <div id="player2" class="player"></div>
 
 <button id="nature-sound-btn">Doğa Sesi: Aç</button>
-
 <audio id="bg-music" loop></audio>
 
 
@@ -349,7 +350,8 @@
 
 
 
-<script>
+
+  <script>
   const natureSounds = [
     "birds-in-forest-on-sunny-day-14444.mp3",
     "forest-birds-summer-sweden-18333.mp3",
@@ -385,7 +387,11 @@
     const randomIndex = Math.floor(Math.random() * natureSounds.length);
     const selectedSound = natureSounds[randomIndex];
     audio.src = selectedSound;
-    audio.play().catch(e => console.error("Ses çalınamadı:", e));
+    audio.play().then(() => {
+      console.log("Ses başladı:", selectedSound);
+    }).catch(err => {
+      console.error("Ses oynatılamadı:", err);
+    });
   }
 
   button.addEventListener("click", () => {
@@ -400,19 +406,6 @@
       isPlaying = false;
     }
   });
-
-
-
-
-
-
-
-
-
-
-
-
-  
 </script>
 
 
