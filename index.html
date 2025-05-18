@@ -611,42 +611,42 @@ pauseButton.addEventListener("click", () => {
 
 
 <script>
-  const cities = [
-    { name: "Kütahya", lat: 39.4242, lon: 29.9833 },
-    { name: "İstanbul", lat: 41.0082, lon: 28.9784 },
-    { name: "Yozgat", lat: 39.8209, lon: 34.8086 },
-    { name: "Ankara", lat: 39.9208, lon: 32.8541 }
-  ];
+    const cities = [
+      { name: "Kütahya", lat: 39.4242, lon: 29.9833 },
+      { name: "İstanbul", lat: 41.0082, lon: 28.9784 },
+      { name: "Yozgat", lat: 39.8209, lon: 34.8086 },
+      { name: "Ankara", lat: 39.9208, lon: 32.8541 }
+    ];
 
-  let index = 0;
+    let index = 0;
 
-  async function fetchWeather(city) {
-    try {
-      const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`);
-      const data = await response.json();
-      const weather = data.current_weather;
+    async function fetchWeather(city) {
+      try {
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`);
+        const data = await response.json();
+        const weather = data.current_weather;
 
-      if (weather) {
-        document.getElementById("weather").textContent =
-          `📍 ${city.name}: ${weather.temperature}°C | 💨 Rüzgar: ${weather.windspeed} km/h | ⏰ ${new Date().toLocaleTimeString()}`;
-      } else {
+        if (weather) {
+          document.getElementById("weather").textContent =
+            `📍 ${city.name}: ${weather.temperature}°C | 💨 Rüzgar: ${weather.windspeed} km/h | ⏰ ${new Date().toLocaleTimeString()}`;
+        } else {
+          document.getElementById("weather").textContent = `📍 ${city.name}: Hava durumu alınamadı.`;
+        }
+      } catch (error) {
         document.getElementById("weather").textContent = `📍 ${city.name}: Hava durumu alınamadı.`;
+        console.error("Hava durumu hatası:", error);
       }
-    } catch (error) {
-      document.getElementById("weather").textContent = `📍 ${city.name}: Hava durumu alınamadı.`;
-      console.error("Hava durumu hatası:", error);
     }
-  }
 
-  function rotateWeather() {
-    fetchWeather(cities[index]);
-    index = (index + 1) % cities.length;
-  }
+    function rotateWeather() {
+      fetchWeather(cities[index]);
+      index = (index + 1) % cities.length;
+    }
 
-  // İlk çalıştırma ve 5 saniyede bir tekrarlama
-  rotateWeather();
-  setInterval(rotateWeather, 5000);
-</script>
+    rotateWeather();
+    setInterval(rotateWeather, 5000);
+  </script>
+
 
 
 
