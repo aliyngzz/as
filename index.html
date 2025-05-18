@@ -176,7 +176,7 @@
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
   <button id="play-sound">Doğa Sesini Aç</button>
-  <button id="pause-sound">Doğa Sesini Kapat</button>
+  <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
 
 
@@ -399,20 +399,24 @@
     "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
   ];
 
-  const audio = document.getElementById("nature-sound");
-  const playButton = document.getElementById("play-sound");
-  const pauseButton = document.getElementById("pause-sound");
+ const audio = document.getElementById("nature-sound");
+const playButton = document.getElementById("play-sound");
+const pauseButton = document.getElementById("pause-sound");
 
-  playButton.addEventListener("click", () => {
-    const randomIndex = Math.floor(Math.random() * natureSounds.length);
-    audio.src = natureSounds[randomIndex];
-    audio.play();
-  });
+playButton.addEventListener("click", () => {
+  const randomIndex = Math.floor(Math.random() * natureSounds.length);
+  audio.src = natureSounds[randomIndex];
+  audio.play();
+  playButton.style.display = "none";
+  pauseButton.style.display = "inline-block";
+});
 
-  pauseButton.addEventListener("click", () => {
-    audio.pause();
-    audio.currentTime = 0;
-  });
+pauseButton.addEventListener("click", () => {
+  audio.pause();
+  audio.currentTime = 0;
+  pauseButton.style.display = "none";
+  playButton.style.display = "inline-block";
+});
 </script>
 
 
