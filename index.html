@@ -185,7 +185,38 @@
   transition: opacity 2s ease;
   font-family: 'Arial Black', Gadget, sans-serif;
 }
+.sparkle-button {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #ff6ec4, #7873f5);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff6ec4;
+  animation: sparkle 2s infinite;
+}
 
+@keyframes sparkle {
+  0% { box-shadow: 0 0 10px #ff6ec4; }
+  50% { box-shadow: 0 0 20px #7873f5; }
+  100% { box-shadow: 0 0 10px #ff6ec4; }
+}
+
+/* Not Alanı Stili */
+#notAlani {
+  position: fixed;
+  left: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
     
   </style>
 </head>
@@ -215,6 +246,20 @@
 </div>
   
 
+<button id="notYazBtn" class="sparkle-button">📝 Not Yaz</button>
+
+<!-- Not Giriş Alanı -->
+<div id="notAlani" style="display:none;">
+  <textarea id="notMetni" placeholder="Notunuzu buraya yazın..."></textarea>
+  <input type="datetime-local" id="hatirlatmaZamani">
+  <button id="kaydetBtn">💾 Kaydet</button>
+</div>
+
+<audio id="alarm-sesi" src="alarm.mp3" preload="auto"></audio>
+
+
+
+  
 <audio id="nature-sound" preload="auto"></audio>
 
 
@@ -582,6 +627,69 @@ pauseButton.addEventListener("click", () => {
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+
+// Not Yaz Butonuna Tıklama
+document.getElementById('notYazBtn').addEventListener('click', () => {
+  document.getElementById('notAlani').style.display = 'block';
+});
+
+// Kaydet Butonuna Tıklama
+document.getElementById('kaydetBtn').addEventListener('click', () => {
+  const notMetni = document.getElementById('notMetni').value;
+  const hatirlatmaZamani = new Date(document.getElementById('hatirlatmaZamani').value);
+
+  if (notMetni && hatirlatmaZamani) {
+    // Notu localStorage'a kaydet
+    const notlar = JSON.parse(localStorage.getItem('notlar')) || [];
+    notlar.push({ metin: notMetni, zaman: hatirlatmaZamani });
+    localStorage.setItem('notlar', JSON.stringify(notlar));
+
+    // Alarm Kur
+    const suAn = new Date();
+    const fark = hatirlatmaZamani - suAn;
+    if (fark > 0) {
+      setTimeout(() => {
+        const alarm = new Audio('alarm.mp3');
+        alarm.play();
+        alert('Hatırlatma: ' + notMetni);
+      }, fark);
+    }
+
+    // Not Alanını Gizle
+    document.getElementById('notAlani').style.display = 'none';
+    document.getElementById('notMetni').value = '';
+    document.getElementById('hatirlatmaZamani').value = '';
+  } else {
+    alert('Lütfen not metnini ve hatırlatma zamanını giriniz.');
+  }
+});
+
+
+
+
+
+</script>
+
+
+
+
+
+  
 
     
 
