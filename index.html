@@ -213,39 +213,6 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-
-
-
-
-
-
-
-
-<div id="not-kapsayici">
-  <div id="not-baslik" onclick="notPanelAcKapat()">📋 Not Yaz</div>
-  <div id="not-icerik">
-    <input type="datetime-local" id="tarih-secimi" />
-    <textarea id="not-alani" placeholder="Notunu buraya yaz..."></textarea>
-    <div class="butonlar">
-      <button onclick="notKaydet()">💾 Kaydet</button>
-      <button onclick="alarmKur()">⏰ Hatırlat</button>
-      <button onclick="notPanelAcKapat()">❌ Kapat</button>
-    </div>
-  </div>
-</div>
-
-<audio id="alarm-sesi" src="alarm.mp3" preload="auto"></audio>
-
-
-
-
-
-
-
-
-
-
-
   
 
 <audio id="nature-sound" preload="auto"></audio>
@@ -265,9 +232,7 @@
 
   <script>
     const videoIds = [ 
-      "32OI-8iznQM", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU", "SUXX8nC7RoM",
-    "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0", "mnCOp-xmpCo",
-    "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
+      "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
@@ -315,86 +280,6 @@
       });
     }
 
-<style>
-#not-kapsayici {
-  position: fixed;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  z-index: 9999;
-  font-family: sans-serif;
-}
-
-#not-baslik {
-  background: linear-gradient(45deg, #00ffe0, #007d7d);
-  color: black;
-  padding: 10px 15px;
-  font-weight: bold;
-  cursor: pointer;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  box-shadow: 0 0 10px #00ffe0;
-  animation: parlama 2s infinite alternate;
-}
-
-@keyframes parlama {
-  from { box-shadow: 0 0 10px #00ffe0; }
-  to { box-shadow: 0 0 20px #00ffe0; }
-}
-
-#not-icerik {
-  background: rgba(0, 0, 0, 0.85);
-  padding: 12px;
-  width: 240px;
-  display: none;
-  flex-direction: column;
-  border-radius: 0 12px 12px 0;
-  color: white;
-  box-shadow: 0 0 15px #00ffe0;
-}
-
-#tarih-secimi, #not-alani {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 6px;
-  border-radius: 6px;
-  border: none;
-  font-size: 14px;
-}
-
-#not-alani {
-  height: 70px;
-  resize: none;
-}
-
-.butonlar {
-  display: flex;
-  justify-content: space-between;
-}
-
-.butonlar button {
-  flex: 1;
-  margin: 2px;
-  padding: 6px;
-  font-size: 12px;
-  background: #00ffe0;
-  color: black;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.butonlar button:hover {
-  background: #00c0a8;
-}
-</style>
-
-
-
-
-
-    
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
       players.player1.mute();
@@ -641,109 +526,35 @@ pauseButton.addEventListener("click", () => {
 
 
   
- 
-
-
- <script>
-   const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
-
-  const cities = [
-    { name: "İstanbul",    lat: 41.0082, lon: 28.9784 },
-    { name: "Kütahya",     lat: 39.4242, lon: 29.9833 },
-    { name: "Uşak",        lat: 38.6823, lon: 29.4082 },
-    { name: "Yozgat",      lat: 39.8181, lon: 34.8147 },
-    { name: "Antalya",     lat: 36.8969, lon: 30.7133 },
-    { name: "Tokat",       lat: 40.3139, lon: 36.5544 },
-    { name: "Diyarbakır",  lat: 37.9144, lon: 40.2306 },
-    { name: "İzmir",       lat: 38.4192, lon: 27.1287 },
-    { name: "Adana",       lat: 37.0000, lon: 35.3213 },
-    { name: "Mersin",      lat: 36.8000, lon: 34.6333 }
-  ];
-
-    
-  
-
-  let currentCityIndex = 0;
-
-  function fetchWeather() {
-    const city = cities[currentCityIndex];
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&lang=tr&units=metric`;
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const temp = data.main.temp.toFixed(1);
-        const desc = data.weather[0].description;
-        document.getElementById("weather").textContent = 
-          `${city.name}: ${temp}°C, ${desc}`;
-      })
-      .catch(error => {
-        console.error("Hata:", error);
-        document.getElementById("weather").textContent = 
-          `${city.name}: Hava durumu alınamadı.`;
-      });
-
-    // Sıradaki şehir için index değiştir
-    currentCityIndex = (currentCityIndex + 1) % cities.length;
-  }
-
-  // İlk çağrı hemen yapılsın
-  fetchWeather();
-
-  // Sonra her 5 saniyede bir tekrar etsin
-  setInterval(fetchWeather, 5000);
-
- </script>
-
-
-
 <script>
-function notPanelAcKapat() {
-  const panel = document.getElementById("not-icerik");
-  panel.style.display = (panel.style.display === "flex") ? "none" : "flex";
-}
+  const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
 
-function notKaydet() {
-  const metin = document.getElementById("not-alani").value;
-  const tarih = document.getElementById("tarih-secimi").value;
-  localStorage.setItem("ozelNot", metin);
-  localStorage.setItem("ozelTarih", tarih);
-  alert("✅ Not kaydedildi.");
-}
+  async function getWeather() {
+    const weatherDiv = document.getElementById('weather');
+    
+    // Kütahya koordinatları (istersen başka şehir yazabiliriz)
+    const lat = 39.4242;
+    const lon = 29.9833;
+    
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=tr`;
 
-function alarmKur() {
-  const seciliZaman = new Date(document.getElementById("tarih-secimi").value);
-  const simdi = new Date();
-  const fark = seciliZaman.getTime() - simdi.getTime();
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
 
-  if (fark > 0) {
-    setTimeout(() => {
-      document.getElementById("alarm-sesi").play();
-      alert("🔔 Hatırlatma zamanı!");
-    }, fark);
-    alert("⏰ Alarm kuruldu.");
-  } else {
-    alert("⚠️ Geçmiş tarih seçilemez!");
+      if (data.main) {
+        const temp = data.main.te	
+    } catch (error) {
+      weatherDiv.innerHTML = "Hava durumu yüklenirken hata oluştu.";
+      console.error(error);
+    }
   }
-}
 
-// Sayfa açıldığında kayıtlı notu getir
-window.onload = () => {
-  const eskiNot = localStorage.getItem("ozelNot");
-  const eskiTarih = localStorage.getItem("ozelTarih");
-  if (eskiNot) document.getElementById("not-alani").value = eskiNot;
-  if (eskiTarih) document.getElementById("tarih-secimi").value = eskiTarih;
-};
+  window.addEventListener("load", getWeather);
 </script>
 
 
 
-
-
-   
-
-
-  
 
 
 
