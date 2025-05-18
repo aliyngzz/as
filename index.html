@@ -156,6 +156,24 @@
     font-weight: bold;
     transition: background 0.3s ease;
   }
+#sloganText {
+  position: fixed;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow:
+    0 0 5px #00ffcc,
+    0 0 10px #00ffcc,
+    0 0 20px #00ffcc,
+    0 0 40px #00ffcc;
+  z-index: 99999;
+  opacity: 0;
+  transition: opacity 2s ease;
+  font-family: 'Arial Black', Gadget, sans-serif;
+}
 
   #nature-controls button:hover {
     background-color: #1b5e20;
@@ -169,7 +187,7 @@
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
-
+<div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
 <iframe id="miniTV" src="https://www.youtube.com/embed/ztmY_cCtUl0" allowfullscreen></iframe>
@@ -480,7 +498,21 @@ pauseButton.addEventListener("click", () => {
 
 
 
+<script>
+  function showSlogan() {
+    const slogan = document.getElementById("sloganText");
+    slogan.style.opacity = 1;
+    setTimeout(() => {
+      slogan.style.opacity = 0;
+    }, 20000); // 20 saniye görünür
+  }
 
+  // Sayfa açılınca ilk gösterim
+  window.addEventListener("load", () => {
+    setTimeout(showSlogan, 1000); // Açılıştan 1 saniye sonra
+    setInterval(showSlogan, 240000); // Her 4 dakikada bir tekrar
+  });
+</script>
 
 
 
