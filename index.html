@@ -213,6 +213,38 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="hatirlatici-panel">
+  <h3>📌 Hatırlatıcı</h3>
+  <input type="datetime-local" id="tarih-sec" />
+  <textarea id="not-metni" placeholder="Notunu yaz..."></textarea>
+  <div class="hatirlat-butonlar">
+    <button onclick="panelAc()">Aç</button>
+    <button onclick="notKaydet()">Kaydet</button>
+    <button onclick="alarmKur()">Hatırlat</button>
+  </div>
+</div>
+
+<audio id="alarm-sesi" src="alarm.mp3" preload="auto"></audio>
+
+
+
+
   
 
 <audio id="nature-sound" preload="auto"></audio>
@@ -281,6 +313,102 @@
         }
       });
     }
+
+
+
+
+
+
+
+
+
+
+
+<style>
+#hatirlatici-panel {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 220px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #00ffe0;
+  box-shadow: 0 0 15px #00ffe0;
+  border-radius: 12px;
+  padding: 15px;
+  z-index: 9999;
+  color: white;
+  font-family: sans-serif;
+  animation: parlama 2s infinite alternate;
+}
+
+@keyframes parlama {
+  from { box-shadow: 0 0 10px #00ffe0; }
+  to { box-shadow: 0 0 25px #00ffe0; }
+}
+
+#hatirlatici-panel h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#tarih-sec {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+}
+
+#not-metni {
+  width: 100%;
+  height: 70px;
+  resize: none;
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.hatirlat-butonlar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hatirlat-butonlar button {
+  flex: 1;
+  margin: 0 2px;
+  padding: 6px;
+  font-size: 13px;
+  background: #00ffe0;
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.hatirlat-butonlar button:hover {
+  background: #00c8b4;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
@@ -580,6 +708,57 @@ pauseButton.addEventListener("click", () => {
   // Sonra her 5 saniyede bir tekrar etsin
   setInterval(fetchWeather, 5000);
 </script>
+
+
+
+
+<script>
+function panelAc() {
+  document.getElementById('not-metni').focus();
+}
+
+function notKaydet() {
+  const metin = document.getElementById('not-metni').value;
+  const tarih = document.getElementById('tarih-sec').value;
+  localStorage.setItem('notMetni', metin);
+  localStorage.setItem('notTarihi', tarih);
+  alert("✅ Not kaydedildi.");
+}
+
+function alarmKur() {
+  const secilenZaman = new Date(document.getElementById('tarih-sec').value);
+  const suan = new Date();
+
+  const fark = secilenZaman.getTime() - suan.getTime();
+
+  if (fark > 0) {
+    setTimeout(() => {
+      document.getElementById("alarm-sesi").play();
+      alert("⏰ Hatırlatma zamanı!");
+    }, fark);
+    alert("🔔 Alarm kuruldu.");
+  } else {
+    alert("📅 Geçmiş bir tarih seçilemez.");
+  }
+}
+
+// Yüklendiğinde varsa eski notu getir
+window.onload = () => {
+  const not = localStorage.getItem('notMetni');
+  const tarih = localStorage.getItem('notTarihi');
+  if (not) document.getElementById('not-metni').value = not;
+  if (tarih) document.getElementById('tarih-sec').value = tarih;
+};
+</script>
+
+
+
+
+
+
+
+   
+
 
 
 
