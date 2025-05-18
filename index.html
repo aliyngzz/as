@@ -611,11 +611,11 @@ pauseButton.addEventListener("click", () => {
 
   async function getWeather() {
     const weatherDiv = document.getElementById('weather');
-    
-    // Kütahya koordinatları (istersen başka şehir yazabiliriz)
+
+    // Kütahya koordinatları
     const lat = 39.4242;
     const lon = 29.9833;
-    
+
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=tr`;
 
     try {
@@ -623,7 +623,18 @@ pauseButton.addEventListener("click", () => {
       const data = await response.json();
 
       if (data.main) {
-        const temp = data.main.te	
+        const temp = data.main.temp;
+        const desc = data.weather[0].description;
+        const icon = data.weather[0].icon;
+        const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
+
+        weatherDiv.innerHTML = `
+          <img src="${iconUrl}" alt="${desc}" style="vertical-align: middle;">
+          ${temp.toFixed(1)}°C - ${desc}
+        `;
+      } else {
+        weatherDiv.innerHTML = "Hava durumu verisi alınamadı.";
+      }
     } catch (error) {
       weatherDiv.innerHTML = "Hava durumu yüklenirken hata oluştu.";
       console.error(error);
@@ -631,9 +642,6 @@ pauseButton.addEventListener("click", () => {
   }
 
   window.addEventListener("load", getWeather);
-
-
-
 </script>
 
 
@@ -701,16 +709,6 @@ pauseButton.addEventListener("click", () => {
 </script>
 
 
-
-
-
-
-
-
-
-
-
-  
 
 
 
