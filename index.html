@@ -213,6 +213,39 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
+
+
+
+
+
+
+
+
+<div id="not-kapsayici">
+  <div id="not-baslik" onclick="notPanelAcKapat()">📋 Not Yaz</div>
+  <div id="not-icerik">
+    <input type="datetime-local" id="tarih-secimi" />
+    <textarea id="not-alani" placeholder="Notunu buraya yaz..."></textarea>
+    <div class="butonlar">
+      <button onclick="notKaydet()">💾 Kaydet</button>
+      <button onclick="alarmKur()">⏰ Hatırlat</button>
+      <button onclick="notPanelAcKapat()">❌ Kapat</button>
+    </div>
+  </div>
+</div>
+
+<audio id="alarm-sesi" src="alarm.mp3" preload="auto"></audio>
+
+
+
+
+
+
+
+
+
+
+
   
 
 <audio id="nature-sound" preload="auto"></audio>
@@ -282,6 +315,86 @@
       });
     }
 
+<style>
+#not-kapsayici {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 9999;
+  font-family: sans-serif;
+}
+
+#not-baslik {
+  background: linear-gradient(45deg, #00ffe0, #007d7d);
+  color: black;
+  padding: 10px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: 0 0 10px #00ffe0;
+  animation: parlama 2s infinite alternate;
+}
+
+@keyframes parlama {
+  from { box-shadow: 0 0 10px #00ffe0; }
+  to { box-shadow: 0 0 20px #00ffe0; }
+}
+
+#not-icerik {
+  background: rgba(0, 0, 0, 0.85);
+  padding: 12px;
+  width: 240px;
+  display: none;
+  flex-direction: column;
+  border-radius: 0 12px 12px 0;
+  color: white;
+  box-shadow: 0 0 15px #00ffe0;
+}
+
+#tarih-secimi, #not-alani {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+}
+
+#not-alani {
+  height: 70px;
+  resize: none;
+}
+
+.butonlar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.butonlar button {
+  flex: 1;
+  margin: 2px;
+  padding: 6px;
+  font-size: 12px;
+  background: #00ffe0;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.butonlar button:hover {
+  background: #00c0a8;
+}
+</style>
+
+
+
+
+
+    
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
       players.player1.mute();
@@ -579,7 +692,58 @@ pauseButton.addEventListener("click", () => {
 
   // Sonra her 5 saniyede bir tekrar etsin
   setInterval(fetchWeather, 5000);
+
+ </script>
+
+
+
+<script>
+function notPanelAcKapat() {
+  const panel = document.getElementById("not-icerik");
+  panel.style.display = (panel.style.display === "flex") ? "none" : "flex";
+}
+
+function notKaydet() {
+  const metin = document.getElementById("not-alani").value;
+  const tarih = document.getElementById("tarih-secimi").value;
+  localStorage.setItem("ozelNot", metin);
+  localStorage.setItem("ozelTarih", tarih);
+  alert("✅ Not kaydedildi.");
+}
+
+function alarmKur() {
+  const seciliZaman = new Date(document.getElementById("tarih-secimi").value);
+  const simdi = new Date();
+  const fark = seciliZaman.getTime() - simdi.getTime();
+
+  if (fark > 0) {
+    setTimeout(() => {
+      document.getElementById("alarm-sesi").play();
+      alert("🔔 Hatırlatma zamanı!");
+    }, fark);
+    alert("⏰ Alarm kuruldu.");
+  } else {
+    alert("⚠️ Geçmiş tarih seçilemez!");
+  }
+}
+
+// Sayfa açıldığında kayıtlı notu getir
+window.onload = () => {
+  const eskiNot = localStorage.getItem("ozelNot");
+  const eskiTarih = localStorage.getItem("ozelTarih");
+  if (eskiNot) document.getElementById("not-alani").value = eskiNot;
+  if (eskiTarih) document.getElementById("tarih-secimi").value = eskiTarih;
+};
 </script>
+
+
+
+
+
+   
+
+
+  
 
 
 
