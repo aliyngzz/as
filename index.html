@@ -255,7 +255,44 @@
   #notPanel button:hover {
     background: #fff;
   }
-    
+    .video-buttons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 30px;
+}
+
+.animated-button {
+  padding: 20px 40px;
+  font-size: 20px;
+  background: #1a1a1a;
+  color: #00ffcc;
+  border: 2px solid #00ffcc;
+  border-radius: 12px;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+  transition: background 0.3s;
+}
+
+.animated-button:hover {
+  background: #00ffcc;
+  color: #000;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(0, 255, 204, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
+}
+
+.video-player {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  background: black;
+}
   </style>
 </head>
 <body>
@@ -282,7 +319,18 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  
+  <div id="videoSelectButtons" class="video-buttons">
+  <button id="webcamBtn" class="animated-button">📹 WEBCAM</button>
+  <button id="mp4Btn" class="animated-button">🎬 MP4</button>
+</div>
+
+<!-- MP4 video oynatıcı -->
+<video id="mp4Player" class="video-player" controls autoplay style="display:none;"></video>
+
+<!-- YouTube alanı -->
+<div id="youtubePlayer" style="display:none;">
+  <!-- Buraya YouTube iframe kodları gelecek -->
+</div>
 
 <audio id="nature-sound" preload="auto"></audio>
 
@@ -681,12 +729,48 @@ pauseButton.addEventListener("click", () => {
 
 
 
-
+<script>
   
+const videoFiles = [
+  "111179-689949805_tiny.mp4",
+  "158349-816637197_tiny.mp4",
+  "246856_tiny.mp4",
+  "120739-724673230_tiny.mp4",
+  "28746-371345147_tiny.mp4",
+  "57647-486227472_tiny.mp4"
+];
+
+const mp4Btn = document.getElementById("mp4Btn");
+const webcamBtn = document.getElementById("webcamBtn");
+const videoPlayer = document.getElementById("mp4Player");
+const youtubePlayer = document.getElementById("youtubePlayer");
+const buttonPanel = document.getElementById("videoSelectButtons");
+
+let currentIndex = 0;
+
+// MP4 oynatma butonuna tıklanınca
+mp4Btn.onclick = () => {
+  buttonPanel.style.display = "none";
+  videoPlayer.style.display = "block";
+  videoPlayer.src = videoFiles[currentIndex];
+  videoPlayer.play();
+
+  videoPlayer.addEventListener("ended", function () {
+    currentIndex = (currentIndex + 1) % videoFiles.length;
+    videoPlayer.src = videoFiles[currentIndex];
+    videoPlayer.play();
+  });
+};
+
+// WEBCAM butonuna tıklanınca
+webcamBtn.onclick = () => {
+  buttonPanel.style.display = "none";
+  youtubePlayer.style.display = "block";
+  // YouTube iframe'leri burada gösterilir
+};
 
 
-
-
+</script>
 
 
 
