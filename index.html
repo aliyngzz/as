@@ -319,10 +319,7 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  <div id="videoSelectButtons" class="video-buttons">
-  <button id="webcamBtn" class="animated-button">📹 WEBCAM</button>
-  <button id="mp4Btn" class="animated-button">🎬 MP4</button>
-</div>
+ 
 
 <!-- MP4 video oynatıcı -->
 <video id="mp4Player" class="video-player" controls autoplay style="display:none;"></video>
@@ -787,9 +784,24 @@ webcamBtn.onclick = () => {
   youtubePlayer.style.display = "block";
   // YouTube iframe'leri burada gösterilir
 };
-
-
 </script>
+<script>
+  // "Webcam" butonuna tıklanınca
+  document.getElementById("webcamBtn").addEventListener("click", () => {
+    document.getElementById("youtubePlayer").style.display = "block";   // YouTube görünür
+    document.getElementById("mp4Player").style.display = "none";        // MP4 gizlenir
+    // Gerekirse burada YouTube oynatmayı başlatabilirsin
+  });
+
+  // "MP4" butonuna tıklanınca
+  document.getElementById("mp4Btn").addEventListener("click", () => {
+    const mp4Player = document.getElementById("mp4Player");
+    mp4Player.src = "videolar/video1.mp4";  // MP4 dosyasını yükle
+    mp4Player.style.display = "block";      // MP4 görünür
+    document.getElementById("youtubePlayer").style.display = "none";  // YouTube gizlenir
+  });
+</script>
+
 
 
 
