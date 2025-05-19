@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-
-<img id="coverImage" src="pexels-akos-szabo-145938-440731.jpg" style="
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 998;
-" onclick="startExperience()">
-
-
-  
   <meta charset="UTF-8">
   <title>Full Screen Video</title>
   <style>
@@ -267,23 +255,7 @@
   #notPanel button:hover {
     background: #fff;
   }
-   .animated-button {
-  padding: 12px 24px;
-  font-size: 20px;
-  margin: 10px;
-  border: none;
-  border-radius: 12px;
-  background-color: #4CAF50;
-  color: white;
-  animation: pulse 1s infinite;
-  cursor: pointer;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
- 
+    
   </style>
 </head>
 <body>
@@ -310,21 +282,7 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  <div id="ekran" onclick="showButtons()" style="cursor: pointer; text-align: center; padding: 30px; font-size: 24px;">
-  EKRANI TIKLA | WEBCAM İLE DOĞA İZLE | MÜZİK DİNLE | TV İZLE
-</div>
-
-<div id="video-buttons" style="display: none; text-align: center; margin-top: 20px;">
-  <button onclick="playWebcam()" class="animated-button">Webcam</button>
-  <button onclick="playMP4()" class="animated-button">MP4</button>
-</div>
-
-<video id="mp4Player" controls autoplay muted style="display: none; width: 80%; margin: 20px auto; display: block;"></video>
-
-<div id="youtubePlayer" style="display: none; text-align: center;">
-  <iframe id="ytFrame" width="80%" height="400" src="" frameborder="0" allowfullscreen></iframe>
-</div>
-
+  
 
 <audio id="nature-sound" preload="auto"></audio>
 
@@ -721,61 +679,13 @@ pauseButton.addEventListener("click", () => {
 </script>
 
 
-<script>
-function startExperience() {
-  document.getElementById("coverImage").style.display = "none";
-  document.getElementById("startBtn").click();
-}
-
-</script>  
 
 
-<script>
-const videoList = [
-  "111179-689949805_tiny.mp4", "158349-816637197_tiny.mp4", "246856_tiny.mp4",
-  "120739-724673230_tiny.mp4", "28746-371345147_tiny.mp4", "57647-486227472_tiny.mp4",
-  "35427-407130886_small.mp4", "263208_small.mp4", "242228_small.mp4",
-  "180057-863401699_small.mp4", "159309-818469332.mp4", "144959-785568576_medium.mp4",
-  "6847-196978755_medium.mp4", "16012-268207204_small.mp4", "228847_tiny.mp4",
-  "71350-538489808.mp4", "71571-538974136.mp4", "854982-hd_1280_720_25fps.mp4",
-  "107027-674703679_medium.mp4", "113004-696349232_medium.mp4", "114552-701830169_tiny.mp4",
-  "145059-785786266_medium.mp4", "155242-809619008_tiny.mp4", "resim.mp4",
-  "170727-843752865_tiny.mp4", "178807-860734626_medium.mp4", "178809-860734631_small.mp4",
-  "184261-873087820_tiny.mp4", "189703-886596102_medium.mp4", "198416-907598367_tiny.mp4",
-  "201446-915698703_medium.mp4", "5744426-hd_1280_720_30fps.mp4", "44798-440001069_small.mp4",
-  "186405-877993676_tiny.mp4", "214732_tiny.mp4", "3904-175596530_medium.mp4",
-  "184972-874460313_medium.mp4", "133101-755975121_medium.mp4"
-];
 
-let currentIndex = 0;
+  
 
-function showButtons() {
-  document.getElementById("video-buttons").style.display = "block";
-}
 
-function playWebcam() {
-  document.getElementById("mp4Player").style.display = "none";
-  document.getElementById("youtubePlayer").style.display = "block";
 
-  // YouTube iframe örneği — kendi YouTube linklerini burada ayarla
-  const ytUrl = "https://www.youtube.com/embed/LqIh5uA3uQA?autoplay=1&mute=1";
-  document.getElementById("ytFrame").src = ytUrl;
-}
-
-function playMP4() {
-  document.getElementById("youtubePlayer").style.display = "none";
-  const player = document.getElementById("mp4Player");
-  player.style.display = "block";
-  player.src = videoList[currentIndex];
-  player.play();
-
-  player.onended = () => {
-    currentIndex = (currentIndex + 1) % videoList.length;
-    player.src = videoList[currentIndex];
-    player.play();
-  };
-}
-</script>
 
 
 
