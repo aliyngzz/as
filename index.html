@@ -278,9 +278,6 @@
   <!-- mevcut tüm içeriğin buraya taşınacak -->
 </div>
 
-<video id="background-video" autoplay muted loop playsinline style="position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1;"></video>
-
-  
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
@@ -685,94 +682,7 @@ pauseButton.addEventListener("click", () => {
 
 
 
-  <script>
-  const video = document.getElementById("background-video");
-  const videoList = [
-    "111179-689949805_tiny.mp4",
-    "158349-816637197_tiny.mp4",
-    "246856_tiny.mp4",
-    "120739-724673230_tiny.mp4",
-    "28746-371345147_tiny.mp4",
-    "57647-486227472_tiny.mp4",
-    "35427-407130886_small.mp4",
-    "263208_small.mp4",
-    "242228_small.mp4",
-    "180057-863401699_small.mp4",
-    "159309-818469332.mp4",
-    "144959-785568576_medium.mp4",
-    "6847-196978755_medium.mp4",
-    "16012-268207204_small.mp4",
-    "228847_tiny.mp4",
-    "71350-538489808.mp4",
-    "71571-538974136.mp4",
-    "854982-hd_1280_720_25fps.mp4",
-    "107027-674703679_medium.mp4",
-    "113004-696349232_medium.mp4",
-    "114552-701830169_tiny.mp4",
-    "145059-785786266_medium.mp4",
-    "155242-809619008_tiny.mp4",
-    "resim.mp4",
-    "170727-843752865_tiny.mp4",
-    "178807-860734626_medium.mp4",
-    "178809-860734631_small.mp4",
-    "184261-873087820_tiny.mp4",
-    "189703-886596102_medium.mp4",
-    "198416-907598367_tiny.mp4",
-    "201446-915698703_medium.mp4",
-    "5744426-hd_1280_720_30fps.mp4",
-    "44798-440001069_small.mp4",
-    "28746-371345147_tiny.mp4",
-    "186405-877993676_tiny.mp4",
-    "214732_tiny.mp4",
-    "35427-407130886_small.mp4",
-    "3904-175596530_medium.mp4",
-    "184972-874460313_medium.mp4",
-    "133101-755975121_medium.mp4"
-  ];
-
-  let currentVideo = 0;
-  let videoLoopActive = true;
-
-  function playNextVideo() {
-    if (!videoLoopActive) return;
-    video.src = videoList[currentVideo];
-    video.play();
-    video.onended = function() {
-      currentVideo = (currentVideo + 1) % videoList.length;
-      playNextVideo();
-    };
-  }
-
-  // Sayfa açılınca başlat
-  playNextVideo();
-
-  // Butonu 5 saniye sonra göster
-  setTimeout(() => {
-    document.getElementById("startBtn").style.display = "block";
-  }, 5000);
-
-  // Butona tıklanınca YouTube videolarına geç
-  document.getElementById("startBtn").addEventListener("click", () => {
-    videoLoopActive = false;
-    video.pause();
-    video.style.display = "none"; // Arka plan videosunu kaldır
-
-    // YouTube iframe örneği:
-    const yt = document.createElement("iframe");
-    yt.src = "https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=0&controls=1";
-    yt.style.position = "fixed";
-    yt.style.top = "0";
-    yt.style.left = "0";
-    yt.style.width = "100%";
-    yt.style.height = "100%";
-    yt.style.zIndex = "1";
-    yt.frameBorder = "0";
-    yt.allow = "autoplay; fullscreen";
-    document.body.appendChild(yt);
-
-    document.getElementById("startBtn").style.display = "none";
-  });
-</script>
+  
 
 
 
