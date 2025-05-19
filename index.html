@@ -255,27 +255,6 @@
   #notPanel button:hover {
     background: #fff;
   }
-
-#resimEkrani, #youtubeEkrani {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#resimEkrani img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  cursor: pointer;
-}
-
-
-
     
   </style>
 </head>
@@ -328,16 +307,7 @@
   <button onclick="saveNote()">💾 Kaydet</button>
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
-<div id="resimEkrani" onclick="resmiKaldirVeYoutubeBaslat()">
-  <img src="pexels-akos-szabo-145938-440731.jpg" alt="Doğa Görseli">
-</div>
 
-<!-- Başlangıçta gizli YouTube video alanı -->
-<div id="youtubeEkrani" style="display: none;">
-  <!-- Örnek YouTube iframe videoları -->
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID1" frameborder="0" allowfullscreen></iframe>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID2" frameborder="0" allowfullscreen></iframe>
-</div>
   
   <button id="tvOpenBtn">TV Aç</button>
 
@@ -712,12 +682,7 @@ pauseButton.addEventListener("click", () => {
 
 
 
-  <script>
-  function resmiKaldirVeYoutubeBaslat() {
-    document.getElementById("resimEkrani").style.display = "none";
-    document.getElementById("youtubeEkrani").style.display = "flex";
-  }
-</script>
+  
 
 
 
