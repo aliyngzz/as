@@ -254,45 +254,6 @@
   #notPanel button:hover {
     background: #fff;
   }
-    #weather-box {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 15px;
-  border-radius: 12px;
-  font-family: sans-serif;
-  z-index: 1000;
-}
-
-
-
-
-#click-message {
-  display: none;
-  position: fixed;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: darkgreen;
-  color: white;
-  font-size: 22px;
-  padding: 12px 20px;
-  border-radius: 10px;
-  z-index: 9999;
-  font-family: Arial;
-}
-
-
-
-
-
-
-
-
-
-
     
   </style>
 </head>
@@ -315,17 +276,13 @@
 <div id="mainContent" style="display: none;">
   <!-- mevcut tüm içeriğin buraya taşınacak -->
 </div>
-<div id="weather-box" class="fade-in">
-  <div id="weather-icon"></div>
-  <div id="weather-info"></div>
-</div>
+
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
   
 
-  
 <audio id="nature-sound" preload="auto"></audio>
 
 
@@ -335,7 +292,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<div id="click-message" style="display:none;">5 saniye sonra sayfayı tıkla...</div>
+
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -608,7 +565,7 @@ pauseButton.addEventListener("click", () => {
   const messageEl = document.getElementById("message");
   const countdownScreen = document.getElementById("countdownScreen");
   const mainContent = document.getElementById("mainContent");
-document.getElementById("click-message").style.display = "block";
+
   const timer = setInterval(() => {
     count--;
     countdownEl.textContent = count;
@@ -716,45 +673,14 @@ document.getElementById("click-message").style.display = "block";
 
 
 
-<script>
 
-const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
-const cities = ['Kütahya', 'Karabük', 'Uşak', 'İstanbul', 'Yozgat', 'İzmir', 'Antalya', 'Samsun', 'Adana'];
-let index = 0;
 
-function showWeather(city) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const iconCode = data.weather[0].icon;
-      const temp = Math.round(data.main.temp);
-      const description = data.weather[0].description;
-      const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-
-      document.getElementById('weather-icon').innerHTML = `<img src="${iconUrl}" alt="${description}" />`;
-      document.getElementById('weather-info').innerHTML = `${city}<br>${temp}°C, ${description}`;
-    })
-    .catch(error => {
-      console.error('Hava durumu alınamadı:', error);
-      document.getElementById('weather-info').innerHTML = `${city}<br>Veri alınamadı`;
-    });
-}
-
-// İlk şehir için başlat
-showWeather(cities[index]);
-
-// 5 saniyede bir şehir değiştir
-setInterval(() => {
-  index = (index + 1) % cities.length;
-  showWeather(cities[index]);
-}, 5000);
 
   
 
 
-</script>
+
 
 
 
