@@ -255,26 +255,7 @@
   #notPanel button:hover {
     background: #fff;
   }
-     #weatherPanel {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      padding: 10px 15px;
-      border-radius: 10px;
-      font-family: Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 0 10px black;
-      z-index: 9999;
-      min-width: 200px;
-    }
-
-    #weatherIcon {
-      width: 40px;
-      height: 40px;
+    
   </style>
 </head>
 <body>
@@ -301,28 +282,15 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  
-<div id="weatherPanel">
-  <img id="weatherIcon" src="" alt="İkon">
-  <div>
-    <div id="cityName">Yükleniyor...</div>
-    <div id="temperature">-- °C</div>
-  </div>
-</div>
-<audio id="nature-sound" preload="auto"></audio>
-<select id="citySelector" style="position: fixed; top: 10px; left: 240px; z-index: 9999; padding: 8px; border-radius: 8px;">
-  <option value="Kütahya">Kütahya</option>
-  <option value="Ankara">Ankara</option>
-  <option value="İstanbul">İstanbul</option>
-  <option value="İzmir">İzmir</option>
-  <option value="Karabük">Karabük</option>
-  <option value="Uşak">Uşak</option>
-</select>
-<div id="weatherPanel">
+  <div id="weatherPanel">
   <span id="cityName"></span> |
   <span id="temperature"></span>
   <img id="weatherIcon" alt="" style="height: 24px; display: none;" />
 </div>
+
+<audio id="nature-sound" preload="auto"></audio>
+
+
 
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
@@ -718,7 +686,16 @@ pauseButton.addEventListener("click", () => {
 
 
 
-  
+  !-- Şehir Seçici Menü -->
+<select id="citySelector" style="position: fixed; top: 10px; left: 240px; z-index: 9999; padding: 8px; border-radius: 8px;">
+  <option value="Kütahya">Kütahya</option>
+  <option value="Ankara">Ankara</option>
+  <option value="İstanbul">İstanbul</option>
+  <option value="İzmir">İzmir</option>
+  <option value="Karabük">Karabük</option>
+  <option value="Uşak">Uşak</option>
+</select>
+
 <script>
   const cityCoordinates = {
     "Kütahya": { lat: 39.42, lon: 29.98 },
@@ -728,6 +705,9 @@ pauseButton.addEventListener("click", () => {
     "Karabük": { lat: 41.20, lon: 32.62 },
     "Uşak": { lat: 38.68, lon: 29.41 }
   };
+
+  const cityList = Object.keys(cityCoordinates);
+  let currentIndex = 0;
 
   async function fetchWeather(city) {
     const { lat, lon } = cityCoordinates[city];
@@ -751,6 +731,9 @@ pauseButton.addEventListener("click", () => {
       document.getElementById("weatherIcon").alt = icon;
       document.getElementById("weatherIcon").style.display = "inline";
 
+      // Seçiciyi güncelle (görsel olarak da değişsin)
+      document.getElementById("citySelector").value = city;
+
     } catch (error) {
       console.error("Hava durumu alınamadı:", error);
       document.getElementById("cityName").textContent = "Hata oluştu";
@@ -758,18 +741,26 @@ pauseButton.addEventListener("click", () => {
     }
   }
 
-  // Sayfa yüklendiğinde varsayılan şehir
+  // İlk yüklemede başlat
   window.addEventListener("load", () => {
-    const defaultCity = document.getElementById("citySelector").value;
-    fetchWeather(defaultCity);
+    fetchWeather(cityList[currentIndex]);
+
+    // Her 5 saniyede bir şehir değiştir
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % cityList.length;
+      fetchWeather(cityList[currentIndex]);
+    }, 5000);
   });
 
-  // Seçim değiştiğinde hava durumunu güncelle
+  // Elle şehir seçilince de çalışsın
   document.getElementById("citySelector").addEventListener("change", function () {
     const selectedCity = this.value;
+    currentIndex = cityList.indexOf(selectedCity); // sıralamayı bozmamak için güncelle
     fetchWeather(selectedCity);
   });
 </script>
+
+
 
 
 
