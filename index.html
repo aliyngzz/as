@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
+<img id="coverImage" src="pexels-akos-szabo-145938-440731.jpg" style="
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 998;
+" onclick="startExperience()">
+
+
+  
   <meta charset="UTF-8">
   <title>Full Screen Video</title>
   <style>
@@ -679,10 +691,13 @@ pauseButton.addEventListener("click", () => {
 </script>
 
 
+<script>
+function startExperience() {
+  document.getElementById("coverImage").style.display = "none";
+  document.getElementById("startBtn").click();
+}
 
-
-
-  
+</script>  
 
 
 
