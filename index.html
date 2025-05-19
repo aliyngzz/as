@@ -255,7 +255,20 @@
   #notPanel button:hover {
     background: #fff;
   }
-    
+   #resimEkrani {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+#resimEkrani img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+} 
   </style>
 </head>
 <body>
@@ -278,6 +291,12 @@
   <!-- mevcut tüm içeriğin buraya taşınacak -->
 </div>
 
+
+<div id="resimEkrani">
+  <img src="pexels-akos-szabo-145938-440731.jpg" alt="Doğa Görseli">
+</div>
+
+  
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
