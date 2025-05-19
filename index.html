@@ -34,14 +34,15 @@
 
   <!-- Seçim Ekranı -->
   <div class="seçim">
-    <h1>Hoşgeldiniz</h1>
-    <p>Devam etmek istediğiniz siteyi seçin:</p>
-    <button class="buton" onclick="goster('site1')">Doğa Temalı Site</button>
-    <button class="buton" onclick="goster('site2')">Hayvan Temalı Site</button>
+    <h1>🌍 Hoşgeldiniz</h1>
+    <p>Girmek istediğiniz temayı seçin:</p>
+    <button class="buton" onclick="goster('site1')">Doğa Temalı</button>
+    <button class="buton" onclick="goster('site2')">Hayvan Temalı</button>
   </div>
 
-  <!-- Doğa Temalı Site -->
- <!DOCTYPE html>
+  <!-- Doğa Temalı Site (Senin kodun burada) -->
+  <div id="site1" class="site">
+    <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -1173,9 +1174,10 @@ setInterval(updateWeather, 5000);
 	
 </body>
 </html>
+  </div>
 
-  <!-- Hayvan Temalı Site -->
-  <!DOCTYPE html>
+  <!-- Hayvan Temalı Site (Bunu sen dolduracaksın) -->
+  <<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
@@ -1871,18 +1873,15 @@ pauseButton.addEventListener("click", () => {
 
 </body>
 </html>
+  </div>
 
-  <!-- Script -->
+  <!-- JavaScript: Seçilen siteyi göster -->
   <script>
     function goster(siteId) {
-      document.querySelector('.seçim').style.display = 'none'; // seçim ekranını gizle
-
-      // Tüm siteleri gizle
+      document.querySelector('.seçim').style.display = 'none';
       document.querySelectorAll('.site').forEach(function(el) {
         el.style.display = 'none';
       });
-
-      // Seçilen siteyi göster
       document.getElementById(siteId).style.display = 'block';
     }
   </script>
