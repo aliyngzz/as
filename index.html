@@ -296,7 +296,7 @@
   </style>
 </head>
 <body>
-  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
+ 
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
@@ -334,7 +334,10 @@
 
 <audio id="nature-sound" preload="auto"></audio>
 
-
+<div id="videoSelectButtons" style="display: none;">
+  <button id="webcamBtn">🎥 Webcam</button>
+  <button id="mp4Btn">🎬 MP4</button>
+</div>
 
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
@@ -611,9 +614,8 @@ pauseButton.addEventListener("click", () => {
 <script>
   let count = 5;
   const countdownEl = document.getElementById("countdown");
-  const messageEl = document.getElementById("message");
   const countdownScreen = document.getElementById("countdownScreen");
-  const mainContent = document.getElementById("mainContent");
+  const videoSelectButtons = document.getElementById("videoSelectButtons"); // 2 butonun olduğu alan
 
   const timer = setInterval(() => {
     count--;
@@ -621,13 +623,30 @@ pauseButton.addEventListener("click", () => {
 
     if (count === 0) {
       clearInterval(timer);
-      messageEl.textContent = "Şimdi tıklayabilirsin!";
-      setTimeout(() => {
-        countdownScreen.style.display = "none";
-        mainContent.style.display = "block";
-      }, 1000); // 1 saniye sonra ekranı kapat, içeriği göster
+
+      // Geri sayım ekranını gizle
+      countdownScreen.style.display = "none";
+
+      // 2 butonu göster
+      videoSelectButtons.style.display = "flex";
+
+      // Tam ekran yap
+      enterFullscreen(document.documentElement);
     }
   }, 1000);
+
+  // Tam ekran fonksiyonu
+  function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    }
+  }
 </script>
 
 
