@@ -282,12 +282,12 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  <div id="weatherPanel">
+  
+<div id="weatherPanel" style="position: fixed; top: 10px; left: 10px; z-index: 9999; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 10px;">
   <span id="cityName"></span> |
   <span id="temperature"></span>
   <img id="weatherIcon" alt="" style="height: 24px; display: none;" />
 </div>
-
 <audio id="nature-sound" preload="auto"></audio>
 
 
@@ -311,7 +311,14 @@
   <button onclick="saveNote()">💾 Kaydet</button>
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
-
+<select id="citySelector" style="position: fixed; top: 10px; left: 240px; z-index: 9999; padding: 8px; border-radius: 8px;">
+  <option value="Kütahya">Kütahya</option>
+  <option value="Ankara">Ankara</option>
+  <option value="İstanbul">İstanbul</option>
+  <option value="İzmir">İzmir</option>
+  <option value="Karabük">Karabük</option>
+  <option value="Uşak">Uşak</option>
+</select>
   
   <button id="tvOpenBtn">TV Aç</button>
 
@@ -686,16 +693,7 @@ pauseButton.addEventListener("click", () => {
 
 
 
-  !-- Şehir Seçici Menü -->
-<select id="citySelector" style="position: fixed; top: 10px; left: 240px; z-index: 9999; padding: 8px; border-radius: 8px;">
-  <option value="Kütahya">Kütahya</option>
-  <option value="Ankara">Ankara</option>
-  <option value="İstanbul">İstanbul</option>
-  <option value="İzmir">İzmir</option>
-  <option value="Karabük">Karabük</option>
-  <option value="Uşak">Uşak</option>
-</select>
-
+  
 <script>
   const cityCoordinates = {
     "Kütahya": { lat: 39.42, lon: 29.98 },
@@ -759,7 +757,6 @@ pauseButton.addEventListener("click", () => {
     fetchWeather(selectedCity);
   });
 </script>
-
 
 
 
