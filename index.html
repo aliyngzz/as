@@ -310,7 +310,21 @@
 
   
   <button id="tvOpenBtn">TV Aç</button>
+<div id="weatherPanel" style="position: fixed; top: 10px; left: 10px; z-index: 9999; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 10px;">
+  <span id="cityName"></span> |
+  <span id="temperature"></span>
+  <img id="weatherIcon" alt="" style="height: 24px; display: none;" />
+</div>
 
+<!-- Şehir Seçici Menü -->
+<select id="citySelector" style="position: fixed; top: 10px; left: 240px; z-index: 9999; padding: 8px; border-radius: 8px;">
+  <option value="Kütahya">Kütahya</option>
+  <option value="Ankara">Ankara</option>
+  <option value="İstanbul">İstanbul</option>
+  <option value="İzmir">İzmir</option>
+  <option value="Karabük">Karabük</option>
+  <option value="Uşak">Uşak</option>
+</select>
   <script>
     const videoIds = [ 
       "32OI-8iznQM", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
@@ -681,7 +695,69 @@ pauseButton.addEventListener("click", () => {
 
 
 
+<script>
+  const cityCoordinates = {
+    "Kütahya": { lat: 39.42, lon: 29.98 },
+    "Ankara": { lat: 39.92, lon: 32.86 },
+    "İstanbul": { lat: 41.01, lon: 28.97 },
+    "İzmir": { lat: 38.42, lon: 27.14 },
+    "Karabük": { lat: 41.20, lon: 32.62 },
+    "Uşak": { lat: 38.68, lon: 29.41 }
+  };
 
+  const cityList = Object.keys(cityCoordinates);
+  let currentIndex = 0;
+
+  async function fetchWeather(city) {
+    const { lat, lon } = cityCoordinates[city];
+
+    try {
+      const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+      const data = await response.json();
+      const weather = data.current_weather;
+
+      document.getElementById("cityName").textContent = city;
+      document.getElementById("temperature").textContent = `${weather.temperature} °C`;
+
+      const iconMap = {
+        0: "☀️", 1: "🌤", 2: "⛅", 3: "☁️",
+        45: "🌫️", 48: "🌫️",
+        51: "🌦", 61: "🌧", 71: "🌨", 95: "⛈"
+      };
+
+      const icon = iconMap[weather.weathercode] || "❓";
+      document.getElementById("weatherIcon").src = "";
+      document.getElementById("weatherIcon").alt = icon;
+      document.getElementById("weatherIcon").style.display = "inline";
+
+      // Seçiciyi güncelle (görsel olarak da değişsin)
+      document.getElementById("citySelector").value = city;
+
+    } catch (error) {
+      console.error("Hava durumu alınamadı:", error);
+      document.getElementById("cityName").textContent = "Hata oluştu";
+      document.getElementById("temperature").textContent = "-- °C";
+    }
+  }
+
+  // İlk yüklemede başlat
+  window.addEventListener("load", () => {
+    fetchWeather(cityList[currentIndex]);
+
+    // Her 5 saniyede bir şehir değiştir
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % cityList.length;
+      fetchWeather(cityList[currentIndex]);
+    }, 5000);
+  });
+
+  // Elle şehir seçilince de çalışsın
+  document.getElementById("citySelector").addEventListener("change", function () {
+    const selectedCity = this.value;
+    currentIndex = cityList.indexOf(selectedCity); // sıralamayı bozmamak için güncelle
+    fetchWeather(selectedCity);
+  });
+</script>
   
 
 
