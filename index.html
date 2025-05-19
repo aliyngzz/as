@@ -41,18 +41,1836 @@
   </div>
 
   <!-- Doğa Temalı Site -->
-  <div id="site1" class="site">
-    <h2>🌲 Doğa Temalı Web Sayfası</h2>
-    <p>Bu doğa temalı sitenin içeriğidir.</p>
-    <video src="dogavideo.mp4" controls width="400"></video>
+ <!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animasyonlu Resimler ve Doğa Sesleri</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #000;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: Arial, sans-serif; font-size: 60px;
+    }
+
+    .video-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    #background-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .banner {
+      white-space: pre;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px;
+      text-align: center;
+      font-size: 60px;
+      font-weight: bold;
+      z-index: 1000;
+      background: none;
+      color: white;
+      text-shadow: 2px 2px 8px #000; /* Gölge ekliyoruz */
+    }
+
+    .nature-image {
+      position: absolute;
+      width: 10vw;
+      height: auto;
+      opacity: 0;
+      z-index: 1;
+      background: transparent;
+      transition: opacity 1s, transform 1s;
+    }
+
+    .fade-in {
+      opacity: 1 !important;
+      transform: scale(1);
+    }
+
+    .scale-up {
+      transform: scale(0.5);
+      opacity: 1;
+    }
+
+    .slide-in {
+      transform: translateX(-100vw);
+      opacity: 1;
+    }
+/* Ses kontrol butonları */
+.audio-controls {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 1001;
+}
+
+.audio-controls button {
+  padding: 10px 20px;
+  font-size: 2rem;
+  color: white;
+  background-color: transparent;
+  border: 2px solid white; /* İstersen bir çerçeve ekleyebilirsin */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+<audio id="nature-sound" src="dogasesi.mp3" autoplay loop></audio>
+
+	  
+.audio-controls button:hover {
+  background-color: #45a049;
+}
+    .click-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      z-index: 2000;
+    background-color: transparent; /* Arka plan tamamen şeffaf */
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    /* Resimli Doğa Sesi Butonu */
+.audio-controls button {
+   padding: 0;  /* İç boşlukları sıfırladık */
+   border: none; /* Çerçevesiz */
+   background-color: transparent; /* Şeffaf arka plan */
+   cursor: pointer;
+   transition: background-color 0.3s;
+}
+
+.audio-controls button:hover {
+   background-color: rgba(0, 0, 0, 0.2); /* Hover efekti */
+}
+
+.audio-button-img {
+   width: 100%; /* Butonun tamamını resim kapsayacak şekilde */
+   height: auto; /* Resmin orijinal oranını korur */
+   max-width: 150px; /* Maksimum genişlik */
+   display: block;
+   margin: 0 auto;
+}
+  </style>
+</head>
+<body>
+
+  <!-- Banner Yazısı -->
+  <div class="banner" id="banner"></div>
+<!-- Ses kontrol butonları -->
+<div class="audio-controls">
+   <button id="nature-sound-btn">
+      <img src="WhatsApp Image 2025-05-04 at 01.36.41.jpeg" alt="Doğa Sesi" class="audio-button-img">
+   </button>
+  <button id="turkey-song-btn">
+  <img src="WhatsApp Image 2025-05-04 at 01.46.55.jpeg" alt="Müzik" class="audio-button-img">
+</button>
+</div>
+<audio id="reminder-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
+
+<div id="weather" style="
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: white;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  background: rgba(0,0,0,0.3);
+  padding: 5px 8px;
+  border-radius: 4px;
+  z-index: 1000;
+">
+  Hava durumu yükleniyor...
+</div>
+
+
+
+
+
+
+
+
+	
+
+  
+  <!-- Videolar -->
+  <div class="video-container">
+  <video id="background-video" autoplay muted preload="auto" src="44798-440001069_small.mp4"></video>
   </div>
 
-  <!-- Hayvan Temalı Site -->
-  <div id="site2" class="site">
-    <h2>🐾 Hayvan Temalı Web Sayfası</h2>
-    <p>Bu hayvan temalı sitenin içeriğidir.</p>
-    <img src="kedi.jpg" alt="Kedi" width="300">
+  <!-- Resimler -->
+  <div class="image-container">
+    <img src="ChatGPT Image 22 Nis 2025 22_51_44.png" class="nature-image" alt="Doğa resmi 1">
+    <img src="ChatGPT Image 23 Nis 2025 21_22_49.png" class="nature-image" alt="Doğa resmi 2">
+    <img src="hummingbird-5111260_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="fox-715588_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="pexels-roshan-kamath-793618-1661179-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="pexels-pixabay-460775-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="pexels-pixabay-236599-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="fox-715588_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="cat-5098930_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="cat-323262_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="cat-111793_1280-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="bird-4410411_1920-removebg-preview.png" class="nature-image" alt="Doğa resmi 4">
+    <img src="0434b7b1-c8b1-4166-a909-a63254113120.png" id="top-center-image" alt="Your Image">
   </div>
+ <!-- Tıklama Mesajı -->
+  <div class="click-message" id="clickMessage">SAYFAYI TIKLA<br>DOĞA SESİ VE MÜZİK DİNLEYİN VEYA TV İZLEYİN</div>
+ 
+  <!-- Arka Plan Müzikleri -->
+<audio id="bg-music" autoplay></audio>
+  <script>
+  // Doğa sesleri ve   Müziklerin dosya listeleri
+const natureSounds = [
+  "birds-in-forest-on-sunny-day-14444.mp3",
+  "forest-birds-summer-sweden-18333.mp3",
+  "woodpecker-and-other-birds-23488.mp3",
+  "bees-29400.mp3",
+  "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+  "fire-sound-310285.mp3",
+  "forest-atmosphere-002localization-poland-329733.mp3",
+  "forest-atmosphere-007localization-poland-330007.mp3",
+  "nature-sound-near-river-or-waterfall-247409.mp3",
+  "relaxing-rain-and-birds-6-minutes-52191.mp3",
+  "soft-wind-314945.mp3",
+  "soft-wind-318856.mp3",
+  "waterfall-176958 (1).mp3",
+  "waterfall-176958.mp3",
+  "water-splashing-108887.mp3",
+  "tui-birdsong-new-zealand-31660.mp3",
+  "smallwaterfall-218855.mp3",
+  "small-mountain-waterfall_nature-sound-203003.mp3",
+  "singing-barn-swallows-3-306979.mp3",
+  "mar-agitado-272999.mp3",
+  "french-coutryside-sunrise-17100.mp3",
+  "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+  "bird-sounds-of-knysna-20130.mp3",
+  "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+
+
+    
+];
+
+const turkeySongs = [
+  "Turku-Ervahi-Ezelden-14 (1).mp3",
+  "Erdal-Erzincan-Deyis.mp3",
+  "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
+"ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+ "Erdal-Erzincan-Yol-Havasi-87.mp3",
+ "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
+     "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
+      "Erdal-Erzincan-Sarma-Havasi-67.mp3",
+     "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
+     "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
+"ates-i-askina-semah.mp3",
+"deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3",
+"Deyiş Devran - Gerçek Olan.mp3",
+"Erdal Erzincan - Deyiş.mp3",
+"eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
+"miraz-uryan-geldim.mp3",
+"Muhabbet Bağında - Deyiş.mp3",
+"sabahat-akkiraz-tevhid.mp3",	  
+"Zülfükâr Arslan - Deyiş.mp3",
+  "bugun-bize-pir-geldi.mp3",
+"Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
+"Erdal-Erzincan-Felek-Senin-Elinden.mp3",
+"Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
+"Erdal-Erzincan-Nem-kaldi.mp3",
+"Erdal-Erzincan-Urfa-Havasi-55.mp3",
+"Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
+	  "Erdal-Erzincan-Goc-54.mp3"
+	 
+	 
+
+
+
+
+	
+];
+
+let currentAudio = document.getElementById("bg-music");
+
+// Doğa sesi butonuna tıklama
+
+let natureSoundIndex = 0;
+
+
+// Doğa sesi butonuna tıklama
+document.getElementById("nature-sound-btn").addEventListener("click", () => {
+  playingList = natureSounds;
+  playNextAudio();
+
+});
+
+// Ses kaynağını değiştiren fonksiyon
+let currentNatureIndex = 0;
+let currentTurkeyIndex = 0;
+let playingList = natureSounds; // Başlangıç doğa sesi
+
+function playNextAudio() {
+  if (playingList.length === 0) return;
+
+  const nextIndex = 
+    (playingList === natureSounds ? currentNatureIndex : currentTurkeyIndex);
+
+  const nextSong = playingList[nextIndex];
+  currentAudio.src = nextSong;
+  currentAudio.play().catch((error) => {
+    console.error('Ses oynatılırken hata:', error);
+  });
+
+  currentAudio.onended = () => {
+    if (playingList === natureSounds) {
+      currentNatureIndex = (currentNatureIndex + 1) % natureSounds.length;
+    } else {
+      currentTurkeyIndex = (currentTurkeyIndex + 1) % turkeySongs.length;
+    }
+    playNextAudio(); // sıradaki otomatik başlar
+  };
+}
+
+  
+document.getElementById("turkey-song-btn").addEventListener("click", () => {
+  playingList = turkeySongs;
+  currentTurkeyIndex = Math.floor(Math.random() * turkeySongs.length); // Rastgele başlangıç
+  playNextAudio();
+});
+
+// Ses kaynağını değiştiren fonksiyon
+function changeAudioSource(songList) {
+  const currentSong = songList[Math.floor(Math.random() * songList.length)];
+  currentAudio.src = currentSong;
+  currentAudio.play().catch((error) => {
+    console.error('Ses oynatılırken hata:', error);
+  });
+}
+
+
+// Sayfa yüklendiğinde, başlangıçta bir ses çalması için:
+window.addEventListener("load", () => {
+  changeAudioSource(natureSounds);  // Bu satır doğa sesini başlatacak şekilde değiştirildi
+  });
+
+
+     
+
+      // Video değişimi (videoların sırayla oynatılması)
+      const video = document.getElementById("background-video");
+      const videoList = [
+       
+      "111179-689949805_tiny.mp4",
+      "158349-816637197_tiny.mp4",
+      "246856_tiny.mp4",
+      "120739-724673230_tiny.mp4",
+      "28746-371345147_tiny.mp4",
+      "57647-486227472_tiny.mp4",
+     
+      "35427-407130886_small.mp4",
+"263208_small.mp4",
+"242228_small.mp4",
+ 
+    "180057-863401699_small.mp4",
+      "159309-818469332.mp4",
+      
+          "144959-785568576_medium.mp4",
+            "6847-196978755_medium.mp4",
+              "16012-268207204_small.mp4",
+ "228847_tiny.mp4",
+ "71350-538489808.mp4",
+ "71571-538974136.mp4",   
+ "854982-hd_1280_720_25fps.mp4",
+"107027-674703679_medium.mp4",
+	"113004-696349232_medium.mp4",
+		"114552-701830169_tiny.mp4",
+	"145059-785786266_medium.mp4",
+		"155242-809619008_tiny.mp4",
+			"resim.mp4",
+	  "170727-843752865_tiny.mp4",
+		  "178807-860734626_medium.mp4",
+			  "178809-860734631_small.mp4",
+				  "184261-873087820_tiny.mp4",
+					  "189703-886596102_medium.mp4",
+		"198416-907598367_tiny.mp4",
+			"201446-915698703_medium.mp4",
+				"5744426-hd_1280_720_30fps.mp4",
+
+ "44798-440001069_small.mp4",
+        "28746-371345147_tiny.mp4",
+        "186405-877993676_tiny.mp4",
+             "214732_tiny.mp4",
+      "35427-407130886_small.mp4",
+      "3904-175596530_medium.mp4",
+      "184972-874460313_medium.mp4",
+
+	      
+	  "133101-755975121_medium.mp4"
+
+
+
+
+
+
+
+
+
+
+
+
+	      
+      
+      ];
+
+const randomIndex = Math.floor(Math.random() * videoList.length);
+video.src = videoList[randomIndex];
+
+	  
+     let videoIndex = 1;
+
+  function changeVideo() {
+  const nextVideo = document.createElement('video');
+  nextVideo.src = videoList[videoIndex];
+  nextVideo.autoplay = true;
+  nextVideo.muted = true;
+  nextVideo.loop = false;
+  nextVideo.playsInline = true;
+  nextVideo.style.position = 'absolute';
+  nextVideo.style.top = 0;
+  nextVideo.style.left = 0;
+  nextVideo.style.width = '100%';
+  nextVideo.style.height = '100%';
+  nextVideo.style.objectFit = 'cover';
+  nextVideo.style.zIndex = '-1';
+  nextVideo.style.opacity = 0;
+
+  const container = document.querySelector('.video-container');
+  container.appendChild(nextVideo);
+
+nextVideo.addEventListener('canplay', () => {
+  const oldVideo = container.querySelector('video');
+  if (oldVideo !== nextVideo && oldVideo) {
+    oldVideo.remove();
+  }
+  nextVideo.style.opacity = 1;
+});
+
+// 🟢 Video bitince sıradakine geç
+nextVideo.addEventListener('ended', () => {
+  videoIndex = (videoIndex + 1) % videoList.length; // buraya taşındı
+  changeVideo();
+
+});
+ document.body.appendChild(newVideo);
+  }
+
+  // 🔻 BU KISMI BURAYA EKLE
+  const firstVideo = document.getElementById('background-video');
+  if (firstVideo) {
+    firstVideo.addEventListener('ended', () => {
+      videoIndex = 1; // İkinci videodan başla
+ 
+      
+
+    changeVideo();
+ });
+    }
+                                
+
+
+   
+
+    video.addEventListener('ended', () => {
+  changeVideo();
+});
+
+    // Rastgele konum ve animasyon
+    function getRandomPosition() {
+      return { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 }; // rastgele konum
+    }
+
+    function getRandomAnimation() {
+      const animations = ['fade-in', 'scale-up', 'slide-in'];
+      return animations[Math.floor(Math.random() * animations.length)];
+    }
+
+    // Resimlerin sıralı görünmesi
+    const images = document.querySelectorAll('.nature-image');
+    let imageIndex = 0;
+
+    function showNextImage() {
+      const image = images[imageIndex];
+      const { x, y } = getRandomPosition();
+      const anim = getRandomAnimation();
+
+      image.style.left = `${x}vw`;
+      image.style.top = `${y}vh`;
+
+      image.classList.add(anim);
+      image.style.opacity = 1;
+
+      setTimeout(() => {
+        image.classList.remove(anim);
+        image.style.opacity = 0;
+        imageIndex = (imageIndex + 1) % images.length;
+        setTimeout(showNextImage, 1000); // Next image without delay
+      }, 2500); // Show each image for 2.5 seconds
+    }
+
+    setTimeout(showNextImage, 3000); // 3 saniye sonra ilk resim başlar
+  </script>
+
+  <div id="contact-icon" title="İletişim"></div>
+
+<!-- 📺 TV Ekranı ve Butonlar -->
+<div id="tv-wrapper">
+  <div id="tv-screen">
+    <iframe id="tv-frame" src="https://www.youtube.com/embed/ScMzIvxBSi4" frameborder="0" allowfullscreen></iframe>
+    <div id="tv-controls">
+      <button id="prev-channel">⬅</button>
+      <button id="next-channel">➡</button>
+    </div>
+  </div>
+  <button id="tv-toggle">📺</button>
+</div>
+
+
+
+
+
+
+
+<div id="mini-tv-container">
+  <iframe id="mini-tv" width="320" height="180" src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&enablejsapi=1" 
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+
+
+<button id="toggle-note-btn" style=" 
+  position: fixed;
+  left: 5px;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 2000;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+">📝 Not</button>
+
+<div id="note-panel" style="
+  display: none;
+  position: fixed;
+  left: 60px;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 200px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 2000;
+  font-size: 12px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.2);
+">
+  <strong>Hatırlatıcı</strong>
+  <textarea id="note-text" style="width: 100%; height: 50px; font-size: 11px; margin-top: 5px;" placeholder="Not yaz..."></textarea>
+  <input type="datetime-local" id="reminder-time" style="width: 100%; font-size: 11px; margin: 5px 0; padding: 2px; border-radius: 4px;">
+  
+  <button onclick="setReminder()" style="
+    width: 100%;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  ">Hatırlat</button>
+
+  <button onclick="saveNote()" style="
+    width: 100%;
+    padding: 5px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  ">Kaydet</button>
+
+  <button onclick="clearNote()" style="
+    width: 100%;
+    padding: 5px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+  ">Sil</button>
+</div>
+
+
+
+	
+  <div id="contact-modal">
+    <form action="https://formspree.io/f/xvgaonbz" method="POST">
+      <label>
+        Adınız:
+        <input type="text" name="name" required>
+      </label>
+      <textarea name="message" id="message" rows="4" required></textarea>
+      <div class="button-group">
+        <button type="submit">Gönder</button>
+        <button type="button" id="cancel-btn">İptal</button>
+      </div>
+    </form>
+  </div>
+
+  <style>
+   #contact-icon {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  background-color: gold;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1001;
+  background-image: url('kus-ikon.png');
+  background-size: cover;
+  width: 150px;
+  height: 150px;
+  display: none;
+}
+
+    #contact-icon.show {
+      display: block;
+    }
+
+    #contact-modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #111;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 15px;
+      z-index: 1002;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+
+    #contact-modal form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #contact-modal input,
+    #contact-modal textarea {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #222;
+      color: white;
+    }
+
+    #contact-modal .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    #contact-modal button {
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+
+#tv-wrapper {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 2000;
+}
+
+#tv-screen {
+  width: 300px;
+  height: 170px;
+  background: black;
+  border: 4px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+  position: relative;
+}
+
+#tv-frame {
+  width: 100%;
+  height: 100%;
+}
+
+#tv-controls {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#tv-controls button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  font-size: 20px;
+  background: rgba(255,255,255,0.7);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#tv-toggle {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#mini-tv-container {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 400px;
+  height: 250px;
+  border: 5px solid #fff;
+  box-shadow: 0 0 15px #00ffcc;
+  border-radius: 15px;
+  z-index: 999;
+  background-color: black;
+}
+#mini-tv {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+
+
+
+
+
+
+
+
+	  
+#top-center-image {
+  position: fixed;
+  top: 10px; /* Sayfanın üst kısmına 10px mesafe bırakır */
+  left: 50%; /* Sayfada ortalar */
+  transform: translateX(-50%); /* Yatayda tam ortalanması */
+  width: 100px; /* Küçük boyut */
+  height: 100px; /* Küçük boyut */
+  z-index: 1000; /* Üstte kalmasını sağlar */
+  animation: rotateAnimation 30s linear infinite; /* Animasyonu ekledik */
+}
+     @keyframes rotateAnimation {
+      0% {
+        transform: translateX(-50%) rotate(0deg); /* Başlangıç durumu */
+      }
+      100% {
+        transform: translateX(-50%) rotate(360deg); /* 360 derece döner */
+         }
+    }
+    #contact-modal button:hover {
+      background-color: #45a049;
+    }
+
+    #cancel-btn {
+      background-color: #f44336;
+    }
+
+    #cancel-btn:hover {
+      background-color: #e53935;
+    }
+
+  </style>
+
+  <script>
+    // Modal iletişim formunu açma ve kapama
+    const contactIcon = document.getElementById('contact-icon');
+    const contactModal = document.getElementById('contact-modal');
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    contactIcon.addEventListener('click', () => {
+      contactModal.style.display = 'block';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      contactModal.style.display = 'none';
+    });
+
+    // Tıklama mesajı gizleme
+    document.getElementById("clickMessage").addEventListener("click", () => {
+      document.getElementById("clickMessage").style.display = "none";
+    });
+
+    // Butonun ekranda 4 saniye görünmesini sağla
+    document.addEventListener("DOMContentLoaded", () => {
+      const contactButton = document.getElementById("contact-icon");
+
+      function toggleButtonVisibility() {
+        contactButton.classList.add("show");
+        setTimeout(() => {
+          contactButton.classList.remove("show");
+        }, 4000);
+
+        setTimeout(toggleButtonVisibility,25000); // 4 saniye görünme + 1dk
+      }
+
+      toggleButtonVisibility(); // İlk gösterim
+    });
+    </script>
+   <script>
+function startImageButtonCycle() {
+  const buttons = document.querySelectorAll('.audio-button-img');
+
+  function showButtons() {
+    buttons.forEach(btn => btn.style.display = 'inline');
+    setTimeout(hideButtons, 5000); // 5 saniye sonra gizle
+  }
+
+  function hideButtons() {
+    buttons.forEach(btn => btn.style.display = 'none');
+    setTimeout(showButtons, 10000); // 30 saniye sonra tekrar göster
+  }
+
+  showButtons(); // Başlat
+}
+
+window.onload = startImageButtonCycle;
+     </script>
+<script>
+  const resim = document.getElementById("resim");
+
+  function gosterGizle() {
+    resim.style.visibility = "visible"; // 5 saniye görünür
+    setTimeout(() => {
+      resim.style.visibility = "hidden"; // 40 saniye gizli
+    }, 5000);
+  }
+
+  gosterGizle(); // İlk başlatma
+  setInterval(gosterGizle, 10000); // Her 45 saniyede bir tekrarla
+
+     
+</script>
+  <script>
+  const image = document.getElementById('top-center-image');
+
+  function toggleImage() {
+    image.style.display = 'block'; // Göster
+    setTimeout(() => {
+      image.style.display = 'none'; // 5 saniye sonra gizle
+    }, 5000);
+  }
+
+  toggleImage(); // Başlangıçta çalıştır
+
+  // Her 45 saniyede bir (5 göster + 40 gizli) döngü
+  setInterval(toggleImage, 10000);
+ </script>
+	  
+  <script>
+
+
+
+
+
+	
+  
+	
+];
+
+let currentChannel = 0;
+
+const tvScreen = document.getElementById("tv-screen");
+const tvToggle = document.getElementById("tv-toggle");
+const tvFrame = document.getElementById("tv-frame");
+const natureSound = document.getElementById("nature-sound"); // doğa sesi audio elemanı
+
+document.getElementById("prev-channel").addEventListener("click", () => {
+  currentChannel = (currentChannel - 1 + tvChannels.length) % tvChannels.length;
+  tvFrame.src = tvChannels[currentChannel];
+});
+
+document.getElementById("next-channel").addEventListener("click", () => {
+  currentChannel = (currentChannel + 1) % tvChannels.length;
+  tvFrame.src = tvChannels[currentChannel];
+});
+
+tvToggle.addEventListener("click", () => {
+  if (tvScreen.style.display === "none") {
+    tvScreen.style.display = "block";
+    tvFrame.src = tvChannels[currentChannel];
+    natureSound.pause(); // TV açıldığında doğa sesini durdur
+  } else {
+    tvScreen.style.display = "none";
+    tvFrame.src = "";
+    natureSound.play(); // TV kapanınca doğa sesine devam et
+  }
+});
+
+  </script>
+
+
+
+<script>
+  const miniTV = document.getElementById("mini-tv");
+  const miniTVVideos = [
+    "F0GOOP82094",
+    "TEXty6vOrmA",
+    "qGfqox0CSrI",
+    "4kRzwJXaeIM",
+    "uXNU0XgGZhs",
+     "F0GOOP82094",
+    "TEXty6vOrmA",
+    "qGfqox0CSrI",
+    "4kRzwJXaeIM",
+    "uXNU0XgGZhs",
+     "AKInuThTUPw",
+     "mIPHBwY5aS0",
+    "DHUnz4dyb54",
+ "uXNU0XgGZhs",
+ "jzx_n25g3kA",
+ "bKLftRxcy3k",
+ "inDzgZjCxmQ",
+"dIChLG4_WNs",
+"uAzUAZEKVJI",
+"1zcIUk66HX4",
+"QhxCVRJrVHs",
+"ULoT2kODKlY",
+"DP9hbJmwbNU",
+"g_L1Ay8P244",
+"LHtzZf4T7xw",
+"og8bbxl0iW8",
+"oI8R4_UG3Fs",
+"jzx_n25g3kA",
+"LDv-f0LCrQc",
+"DsNtwGJXTTs",
+"aWglOXp5id0",
+"Ihr_nwydXi0",
+"BLvr4K2eiRE",
+"bEmFpjwMOvs",
+"YKECtq82zw8",
+"0FBiyFpV__g",
+"OsH_Z88b1UU",
+"Hkj9L-HKXJU",
+"_9E8DuwXCtU",
+"mnCOp-xmpCo",
+"HskMfIydI-4",
+"kHwmzef842g",
+"AAlo3eCPVbk",
+"5e4lsEe4Vew",
+"V08ET209nvU",
+"qwjt-gnItvg",
+"osIj_hLH4Oo",
+"AkszDPeVaVg",
+"zC-S84OGXFs"
+
+  ];
+  let currentMiniIndex = 0;
+
+  function rotateMiniTV() {
+    currentMiniIndex = (currentMiniIndex + 1) % miniTVVideos.length;
+    const nextVideoId = miniTVVideos[currentMiniIndex];
+    miniTV.src = `https://www.youtube.com/embed/${nextVideoId}?autoplay=1&mute=1&enablejsapi=1`;
+  }
+
+  setInterval(rotateMiniTV, 60000); // Her 60 saniyede bir değiştir
+</script>
+
+
+
+<script>
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+shuffleArray(videoList); // Video listesini karıştır
+
+let currentVideoIndex = 0;
+video.src = videoList[currentVideoIndex]; // İlk rastgele video
+
+video.onended = () => {
+  currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+  video.src = videoList[currentVideoIndex];
+  video.play();
+};
+
+</script>
+
+<script>
+const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
+const cities = ['Kütahya','Istanbul', 'Yozgat', 'Karabük', 'Uşak', 'Ankara','Kütahya','Antalya', 'İzmir', 'Adana', 'Mardin', 'Trabzon'];
+let currentIndex = 0;
+
+function updateWeather() {
+  const city = cities[currentIndex];
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const weatherDiv = document.getElementById('weather');
+      if (data && data.main && data.weather) {
+        const temp = data.main.temp.toFixed(1);
+        const desc = data.weather[0].description;
+        weatherDiv.textContent = `${city}: ${temp}°C, ${desc}`;
+      } else {
+        weatherDiv.textContent = `${city}: Hava durumu verisi bulunamadı`;
+      }
+    })
+    .catch(error => {
+      console.error('Hava durumu alınamadı:', error);
+      document.getElementById('weather').textContent = `${city}: Hava durumu alınamadı`;
+    });
+
+  // Şehri değiştir
+  currentIndex = (currentIndex + 1) % cities.length;
+}
+
+// Sayfa yüklenince başlat
+updateWeather();
+
+// Her 5 saniyede bir değiştir
+setInterval(updateWeather, 5000);
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  const toggleBtn = document.getElementById('toggle-note-btn');
+  const notePanel = document.getElementById('note-panel');
+  const noteText = document.getElementById('note-text');
+
+  toggleBtn.addEventListener('click', () => {
+    notePanel.style.display = notePanel.style.display === 'none' ? 'block' : 'none';
+  });
+
+  function saveNote() {
+    const note = noteText.value;
+    localStorage.setItem('savedNote', note);
+    alert("Not kaydedildi.");
+  }
+
+  function clearNote() {
+    if (confirm("Notu silmek istediğinize emin misiniz?")) {
+      localStorage.removeItem('savedNote');
+      noteText.value = '';
+    }
+  }
+
+  // Sayfa açıldığında kaydedilmiş not varsa yükle
+  window.addEventListener('load', () => {
+    const savedNote = localStorage.getItem('savedNote');
+    if (savedNote) {
+      noteText.value = savedNote;
+    }
+  });
+
+  function setReminder() {
+    const timeInput = document.getElementById('reminder-time').value;
+    if (!timeInput) {
+      alert("Lütfen bir zaman seçin.");
+      return;
+    }
+
+    const reminderTime = new Date(timeInput).getTime();
+    const now = new Date().getTime();
+    const delay = reminderTime - now;
+
+    if (delay <= 0) {
+      alert("Geçmiş bir zaman seçtiniz.");
+      return;
+    }
+
+    setTimeout(() => {
+      alert("⏰ Hatırlatma: " + noteText.value);
+    }, delay);
+
+    alert("Hatırlatıcı ayarlandı.");
+  }
+</script>
+
+
+
+
+	
+</body>
+</html>
+
+  <!-- Hayvan Temalı Site -->
+  <!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Full Screen Video</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+  #startBtn {
+  display: none; /* Sayfa yüklendiğinde gizli */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 40px;
+  font-size: 20px;
+  background: #000;
+  color: white;
+  border: 2px solid white;
+  cursor: pointer;
+  z-index: 999;
+}
+
+    .player {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120vw;
+      height: 67.5vw;
+      max-height: 120vh;
+      max-width: 213.33vh;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 2s ease;
+      pointer-events: none;
+    }
+
+    .player.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .player iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* /// YENİ /// Mini TV ekranı ve butonları */
+    #miniTVContainer {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 300px;
+      height: 170px;
+      background: black;
+      border: 2px solid white;
+      display: flex;
+      flex-direction: column;
+      z-index: 20;
+    }
+
+    #miniTV {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #tvControls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .tvBtn {
+      background: #222;
+      color: white;
+      border: 1px solid white;
+      cursor: pointer;
+      padding: 5px;
+      flex: 1;
+      font-size: 12px;
+    }
+
+   #tvOpenBtn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 18px 30px;
+  font-size: 20px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff4081, #7c4dff);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  z-index: 9999;
+  display: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#tvOpenBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+
+    }
+
+#musicControl {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #8e24aa, #5e35b1);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+#weather {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 10px;
+  z-index: 999;
+}
+
+ #nature-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999999; /* Çok yüksek z-index, iframe bile geçemez */
+    background: rgba(255, 255, 255, 0.85);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    display: flex;
+    gap: 10px;
+    backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
+  }
+
+  #nature-controls button {
+    padding: 8px 14px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+#sloganText {
+  position: fixed;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow:
+    0 0 5px #00ffcc,
+    0 0 10px #00ffcc,
+    0 0 20px #00ffcc,
+    0 0 40px #00ffcc;
+  z-index: 99999;
+  opacity: 0;
+  transition: opacity 2s ease;
+  font-family: 'Arial Black', Gadget, sans-serif;
+}
+ #notTrigger {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #fff;
+    animation: pulse 2s infinite;
+    z-index: 1000;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px #fff; }
+    50% { box-shadow: 0 0 20px #f0f; }
+    100% { box-shadow: 0 0 10px #fff; }
+  }
+
+  #notPanel {
+    position: fixed;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #222;
+    color: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 0 20px #0ff;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+
+  #noteText {
+    height: 80px;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    resize: none;
+    font-size: 14px;
+  }
+
+  #alarmTime {
+    border-radius: 8px;
+    padding: 5px;
+  }
+
+  #notPanel button {
+    background: linear-gradient(45deg, #74ebd5, #9face6);
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  #notPanel button:hover {
+    background: #fff;
+  }
+    
+  </style>
+</head>
+<body>
+  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
+<audio id="audioPlayer"></audio>
+
+<button id="musicControl">🎵 Müziği Aç</button>
+  <div id="player1" class="player"></div>
+  <div id="player2" class="player"></div>
+<div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
+  <!-- /// YENİ /// Mini TV ekranı -->
+  <div id="miniTVContainer">
+<iframe id="miniTV" src="https://www.youtube.com/embed/ztmY_cCtUl0" allowfullscreen></iframe>
+    <div id="tvControls">
+      <button class="tvBtn" id="channelBtn">Kanal Değiştir</button>
+      <button class="tvBtn" id="closeTVBtn">TV Kapat</button>
+    </div>
+  </div>
+<div id="mainContent" style="display: none;">
+  <!-- mevcut tüm içeriğin buraya taşınacak -->
+</div>
+
+<div id="countdownScreen" style="text-align: center; padding-top: 100px;">
+  <div id="countdown" style="font-size: 60px; color: green;">5</div>
+  <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
+</div>
+  
+
+<audio id="nature-sound" preload="auto"></audio>
+
+
+
+<!-- Doğa Sesi Butonları -->
+<div id="nature-controls">
+  <button id="play-sound">Doğa Sesini Aç</button>
+  <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
+</div>
+
+<audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+
+<!-- Not butonu -->
+<div id="notTrigger">📝</div>
+
+<!-- Not paneli -->
+<div id="notPanel">
+  <textarea id="noteText" placeholder="Notunu yaz..."></textarea>
+  <input type="datetime-local" id="alarmTime">
+  <button onclick="setAlarm()">⏰ Hatırlat</button>
+  <button onclick="saveNote()">💾 Kaydet</button>
+  <button onclick="closePanel()">❌ Kapat</button>
+</div>
+
+  
+  <button id="tvOpenBtn">TV Aç</button>
+
+  <script>
+    const videoIds = [ 
+      "32OI-8iznQM", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
+    "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
+    "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
+    ]; 
+    const tvChannels = [
+      "https://www.youtube.com/embed/ztmY_cCtUl0",
+      "https://www.youtube.com/embed/ZSWPj9szKb8",
+      "https://www.youtube.com/embed/9KEThxQtWYA"
+    ];
+
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api"; 
+    document.head.appendChild(tag);
+
+    let players = {};
+    let index = 0;
+    let activePlayer = 1;
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      document.getElementById("startBtn").style.display = "none";
+      enterFullscreen(document.documentElement);
+      startVideoPlayer();
+    });
+
+    function onYouTubeIframeAPIReady() {
+      players.player1 = new YT.Player('player1', {
+        videoId: '',
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          mute: 1,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        }
+      });
+
+      players.player2 = new YT.Player('player2', {
+        videoId: '',
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          mute: 1,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        }
+      });
+    }
+
+    function startVideoPlayer() {
+      players.player1.loadVideoById(videoIds[index]);
+      players.player1.mute();
+      players.player1.playVideo();
+      document.getElementById('player1').classList.add('active');
+      scheduleNext();
+    }
+
+    function scheduleNext() {
+      const nextIndex = (index + 1) % videoIds.length;
+      const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+      const nextDiv = activePlayer === 1 ? document.getElementById('player2') : document.getElementById('player1');
+      const currentDiv = activePlayer === 1 ? document.getElementById('player1') : document.getElementById('player2');
+
+      setTimeout(() => {
+        nextPlayer.loadVideoById(videoIds[nextIndex]);
+        nextPlayer.mute();
+        nextPlayer.playVideo();
+      }, 10000);
+
+      setTimeout(() => {
+        currentDiv.classList.remove("active");
+        nextDiv.classList.add("active");
+        index = nextIndex;
+        activePlayer = activePlayer === 1 ? 2 : 1;
+        scheduleNext();
+      }, 15000);
+    }
+
+    function enterFullscreen(elem) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+
+    // /// YENİ /// TV işlevleri
+    let currentTVChannel = 0;
+    const tvFrame = document.getElementById("miniTV");
+    const tvContainer = document.getElementById("miniTVContainer");
+    const tvOpenBtn = document.getElementById("tvOpenBtn");
+
+    document.getElementById("channelBtn").addEventListener("click", () => {
+      currentTVChannel = (currentTVChannel + 1) % tvChannels.length;
+      tvFrame.src = tvChannels[currentTVChannel];
+    });
+
+    document.getElementById("closeTVBtn").addEventListener("click", () => {
+      tvContainer.style.display = "none";
+      tvOpenBtn.style.display = "block";
+    });
+
+    document.getElementById("tvOpenBtn").addEventListener("click", () => {
+      tvContainer.style.display = "flex";
+      tvOpenBtn.style.display = "none";
+    });
+
+
+  </script>
+
+
+
+
+
+
+
+
+<script>
+  const turkeySongs = [
+    "Turku-Ervahi-Ezelden-14 (1).mp3",
+    "Erdal-Erzincan-Deyis.mp3",
+    "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
+    "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+    "Erdal-Erzincan-Yol-Havasi-87.mp3",
+    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
+    "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
+    "Erdal-Erzincan-Sarma-Havasi-67.mp3",
+    "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
+    "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
+    "ates-i-askina-semah.mp3",
+    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3",
+    "Deyiş Devran - Gerçek Olan.mp3",
+    "Erdal Erzincan - Deyiş.mp3",
+    "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
+    "miraz-uryan-geldim.mp3",
+    "Muhabbet Bağında - Deyiş.mp3",
+    "sabahat-akkiraz-tevhid.mp3",
+    "Zülfükâr Arslan - Deyiş.mp3",
+    "bugun-bize-pir-geldi.mp3",
+    "Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
+    "Erdal-Erzincan-Felek-Senin-Elinden.mp3",
+    "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
+    "Erdal-Erzincan-Nem-kaldi.mp3",
+    "Erdal-Erzincan-Urfa-Havasi-55.mp3",
+    "Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
+    "Erdal-Erzincan-Goc-54.mp3"
+  ];
+
+  const player = document.getElementById("audioPlayer");
+  const button = document.getElementById("musicControl");
+  let isPlaying = false;
+  let shuffledSongs = shuffleArray([...turkeySongs]);
+  let currentIndex = 0;
+
+  function shuffleArray(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
+  function playSong(index) {
+    player.src = shuffledSongs[index];
+    player.play();
+  }
+
+  player.addEventListener("ended", () => {
+    currentIndex = (currentIndex + 1) % shuffledSongs.length;
+    playSong(currentIndex);
+  });
+
+  button.addEventListener("click", () => {
+    if (!isPlaying) {
+      playSong(currentIndex);
+      button.textContent = "⏸ Müziği Kapat";
+      isPlaying = true;
+    } else {
+      player.pause();
+      button.textContent = "🎵 Müziği Aç";
+      isPlaying = false;
+    }
+  });
+</script>
+
+
+
+
+<script>
+  const natureSounds = [
+    "birds-in-forest-on-sunny-day-14444.mp3",
+    "forest-birds-summer-sweden-18333.mp3",
+    "woodpecker-and-other-birds-23488.mp3",
+    "bees-29400.mp3",
+    "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+    "fire-sound-310285.mp3",
+    "forest-atmosphere-002localization-poland-329733.mp3",
+    "forest-atmosphere-007localization-poland-330007.mp3",
+    "nature-sound-near-river-or-waterfall-247409.mp3",
+    "relaxing-rain-and-birds-6-minutes-52191.mp3",
+    "soft-wind-314945.mp3",
+    "soft-wind-318856.mp3",
+    "waterfall-176958 (1).mp3",
+    "waterfall-176958.mp3",
+    "water-splashing-108887.mp3",
+    "tui-birdsong-new-zealand-31660.mp3",
+    "smallwaterfall-218855.mp3",
+    "small-mountain-waterfall_nature-sound-203003.mp3",
+    "singing-barn-swallows-3-306979.mp3",
+    "mar-agitado-272999.mp3",
+    "french-coutryside-sunrise-17100.mp3",
+    "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+    "bird-sounds-of-knysna-20130.mp3",
+    "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+  ];
+
+ const audio = document.getElementById("nature-sound");
+const playButton = document.getElementById("play-sound");
+const pauseButton = document.getElementById("pause-sound");
+
+playButton.addEventListener("click", () => {
+  const randomIndex = Math.floor(Math.random() * natureSounds.length);
+  audio.src = natureSounds[randomIndex];
+  audio.play();
+  playButton.style.display = "none";
+  pauseButton.style.display = "inline-block";
+});
+
+pauseButton.addEventListener("click", () => {
+  audio.pause();
+  audio.currentTime = 0;
+  pauseButton.style.display = "none";
+  playButton.style.display = "inline-block";
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  let count = 5;
+  const countdownEl = document.getElementById("countdown");
+  const messageEl = document.getElementById("message");
+  const countdownScreen = document.getElementById("countdownScreen");
+  const mainContent = document.getElementById("mainContent");
+
+  const timer = setInterval(() => {
+    count--;
+    countdownEl.textContent = count;
+
+    if (count === 0) {
+      clearInterval(timer);
+      messageEl.textContent = "Şimdi tıklayabilirsin!";
+      setTimeout(() => {
+        countdownScreen.style.display = "none";
+        mainContent.style.display = "block";
+      }, 1000); // 1 saniye sonra ekranı kapat, içeriği göster
+    }
+  }, 1000);
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  function showSlogan() {
+    const slogan = document.getElementById("sloganText");
+    slogan.style.opacity = 1;
+    setTimeout(() => {
+      slogan.style.opacity = 0;
+    }, 20000); // 20 saniye görünür
+  }
+
+  // Sayfa açılınca ilk gösterim
+  window.addEventListener("load", () => {
+    setTimeout(showSlogan, 1000); // Açılıştan 1 saniye sonra
+    setInterval(showSlogan, 240000); // Her 4 dakikada bir tekrar
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  const panel = document.getElementById('notPanel');
+  const trigger = document.getElementById('notTrigger');
+  const noteInput = document.getElementById('noteText');
+  const alarmInput = document.getElementById('alarmTime');
+  const alarmSound = document.getElementById('alarmSound');
+
+  // Aç/kapat butonu
+  trigger.onclick = () => {
+    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    loadNote();
+  }
+
+  function closePanel() {
+    panel.style.display = 'none';
+  }
+
+  // Notu kaydet
+  function saveNote() {
+    localStorage.setItem('myNote', noteInput.value);
+    alert('Not kaydedildi!');
+  }
+
+  // Notu yükle
+  function loadNote() {
+    noteInput.value = localStorage.getItem('myNote') || '';
+  }
+
+  // Alarm kur
+  function setAlarm() {
+    const alarmTime = new Date(alarmInput.value).getTime();
+    if (!alarmTime) {
+      alert('Tarih seç!');
+      return;
+    }
+    const now = Date.now();
+    const delay = alarmTime - now;
+    if (delay < 0) {
+      alert('Geçmiş zaman seçilemez!');
+      return;
+    }
+
+    setTimeout(() => {
+      alarmSound.play();
+      alert('⏰ Hatırlatma zamanı!');
+    }, delay);
+    alert('Alarm kuruldu!');
+  }
+</script>
+
+
+
+
+
+<script>
+  setTimeout(function() {
+    document.getElementById("startBtn").style.display = "block";
+  }, 5000); // 5 saniye sonra görünür
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+</body>
+</html>
 
   <!-- Script -->
   <script>
