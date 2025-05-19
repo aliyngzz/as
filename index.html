@@ -265,6 +265,35 @@
   font-family: sans-serif;
   z-index: 1000;
 }
+
+
+
+
+#click-message {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: darkgreen;
+  color: white;
+  font-size: 22px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  z-index: 9999;
+  font-family: Arial;
+}
+
+
+
+
+
+
+
+
+
+
+    
   </style>
 </head>
 <body>
@@ -296,6 +325,7 @@
 </div>
   
 
+  
 <audio id="nature-sound" preload="auto"></audio>
 
 
@@ -305,7 +335,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-
+<div id="click-message" style="display:none;">5 saniye sonra sayfayı tıkla...</div>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -578,7 +608,7 @@ pauseButton.addEventListener("click", () => {
   const messageEl = document.getElementById("message");
   const countdownScreen = document.getElementById("countdownScreen");
   const mainContent = document.getElementById("mainContent");
-
+document.getElementById("click-message").style.display = "block";
   const timer = setInterval(() => {
     count--;
     countdownEl.textContent = count;
