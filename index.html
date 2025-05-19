@@ -282,21 +282,6 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-
-
-<!-- 1. MP4 ve Webcam Seçim Butonları -->
-<div id="videoSwitchButtons" style="position: absolute; top: 20%; left: 50%; transform: translateX(-50%); z-index: 10000; display: none; gap: 20px;">
-  <button id="btnWebcam" style="padding: 15px 30px; font-size: 20px; font-weight: bold; background: #00bcd4; color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 0 15px rgba(0,0,0,0.5);">📷 Webcam</button>
-  <button id="btnMp4" style="padding: 15px 30px; font-size: 20px; font-weight: bold; background: #4caf50; color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 0 15px rgba(0,0,0,0.5);">🎞️ MP4</button>
-</div>
-
-<!-- 2. MP4 Video Oynatıcı (başlangıçta gizli) -->
-<video id="mp4Player" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100vw; max-height: 100vh; z-index: 9999; display: none;" controls autoplay muted loop></video>
-
-
-
-
-
   
 
 <audio id="nature-sound" preload="auto"></audio>
@@ -696,50 +681,6 @@ pauseButton.addEventListener("click", () => {
 
 
 
-<script>
-  const mp4Files = [
-    "111179-689949805_tiny.mp4",
-    "158349-816637197_tiny.mp4",
-    "246856_tiny.mp4",
-    "120739-724673230_tiny.mp4",
-    "28746-371345147_tiny.mp4",
-    "57647-486227472_tiny.mp4"
-  ];
-  let mp4Index = 0;
-
-  const mp4Player = document.getElementById("mp4Player");
-  const videoSwitchButtons = document.getElementById("videoSwitchButtons");
-  const btnWebcam = document.getElementById("btnWebcam");
-  const btnMp4 = document.getElementById("btnMp4");
-  const startBtn = document.getElementById("startBtn");
-
-  // Start butonuna tıklanınca seçim butonları gösterilsin
-  startBtn.addEventListener("click", () => {
-    videoSwitchButtons.style.display = "flex";
-  });
-
-  btnWebcam.addEventListener("click", () => {
-    videoSwitchButtons.style.display = "none";
-    mp4Player.style.display = "none";
-    document.getElementById('player1').classList.add('active');
-    startVideoPlayer();
-  });
-
-  btnMp4.addEventListener("click", () => {
-    videoSwitchButtons.style.display = "none";
-    document.getElementById('player1').classList.remove('active');
-    document.getElementById('player2').classList.remove('active');
-    mp4Player.style.display = "block";
-    mp4Player.src = mp4Files[mp4Index];
-    mp4Player.play();
-
-    setInterval(() => {
-      mp4Index = (mp4Index + 1) % mp4Files.length;
-      mp4Player.src = mp4Files[mp4Index];
-      mp4Player.play();
-    }, 15000);
-  });
-</script>
 
   
 
