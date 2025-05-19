@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Full Screen Video</title>
+
+   <title>Hava Durumu Kutusu</title>
   <style>
     html, body {
       margin: 0;
@@ -254,6 +256,47 @@
   #notPanel button:hover {
     background: #fff;
   }
+    #weather-box {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 9999;
+  animation: fade 1s ease-in-out;
+}
+
+@keyframes fade {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+#weather-box img {
+  width: 80px;
+  height: 80px;
+}
+
+.city {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.info {
+  font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
     
   </style>
 </head>
@@ -276,7 +319,12 @@
 <div id="mainContent" style="display: none;">
   <!-- mevcut tüm içeriğin buraya taşınacak -->
 </div>
-
+<div id="weather-box">
+  <img id="icon" src="" alt="Durum">
+  <div class="city" id="city"></div>
+  <div class="info" id="temp"></div>
+  <div class="info" id="humidity"></div>
+</div>
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
@@ -673,13 +721,51 @@ pauseButton.addEventListener("click", () => {
 
 
 
+<script>
+const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
+const cities = [
+  'Kutahya', 'Eskisehir', 'Istanbul', 'Yozgat', 'Ankara', 
+  'Izmir', 'Antalya', 'Usak', 'Karabuk', 'Burdur',
+  'Adana', 'Mersin', 'Samsun'
+];
+
+let index = 0;
+
+async function getWeather(city) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (data.cod !== 200) return;
+
+  document.getElementById('city').textContent = data.name;
+  document.getElementById('temp').textContent = `🌡️ Sıcaklık: ${Math.round(data.main.temp)}°C`;
+  document.getElementById('humidity').textContent = `💧 Nem: %${data.main.humidity}`;
+
+  const weather = data.weather[0].main.toLowerCase();
+  let iconUrl = '';
+
+  if (weather.includes('cloud')) iconUrl = 'https://openweathermap.org/img/wn/03d@2x.png';
+  else if (weather.includes('rain')) iconUrl = 'https://openweathermap.org/img/wn/09d@2x.png';
+  else if (weather.includes('clear')) iconUrl = 'https://openweathermap.org/img/wn/01d@2x.png';
+  else if (weather.includes('snow')) iconUrl = 'https://openweathermap.org/img/wn/13d@2x.png';
+  else iconUrl = 'https://openweathermap.org/img/wn/50d@2x.png';
+
+  document.getElementById('icon').src = iconUrl;
+}
+
+function cycleWeather() {
+  getWeather(cities[index]);
+  index = (index + 1) % cities.length;
+}
+
+cycleWeather();
+setInterval(cycleWeather, 5000);
 
 
 
 
-
-
-  
+  </script>
 
 
 
