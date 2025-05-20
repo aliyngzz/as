@@ -255,9 +255,7 @@
   #notPanel button:hover {
     background: #fff;
   }
-    #introImage {
-  transition: opacity 1s ease;
-}
+    
   </style>
 </head>
 <body>
@@ -284,17 +282,7 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  <div id="introImage" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
-  <img src="pexels-pixabay-158063.jpg" alt="Doğa" style="width:100%; height:100%; object-fit:cover;">
-</div>
-
-<!-- Ana içerik -->
-<div id="mainContent" style="display:none;">
-  <!-- Buraya video, buton vs. eklersin -->
-  <video autoplay muted loop>
-    <source src="videon.mp4" type="video/mp4">
-  </video>
-</div>
+  
 
 <audio id="nature-sound" preload="auto"></audio>
 
@@ -709,13 +697,8 @@ pauseButton.addEventListener("click", () => {
 </script>
 
 
-<script>
-setTimeout(() => {
-  const intro = document.getElementById("introImage");
-  intro.style.opacity = "0";
-  setTimeout(() => intro.style.display = "none", 1000); // 1 saniye sonra tamamen gizle
-  document.getElementById("mainContent").style.display = "block";
-}, 5000);
+
+
 
     
 
