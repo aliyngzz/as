@@ -285,7 +285,10 @@
   
 
 <audio id="nature-sound" preload="auto"></audio>
-
+<div id="videoControls" style="position: fixed; top: 60px; width: 100%; text-align: center; z-index: 99999;">
+  <button onclick="pauseVideo()" style="padding: 10px 20px; font-size: 16px; background-color: crimson; color: white; border-radius: 10px; border: none; margin-right: 10px; cursor: pointer;">⏸ Duraklat</button>
+  <button onclick="playVideo()" style="padding: 10px 20px; font-size: 16px; background-color: green; color: white; border-radius: 10px; border: none; cursor: pointer;">▶️ Devam Et</button>
+</div>
 
 
 <!-- Doğa Sesi Butonları -->
@@ -676,6 +679,35 @@ pauseButton.addEventListener("click", () => {
   setTimeout(function() {
     document.getElementById("startBtn").style.display = "block";
   }, 5000); // 5 saniye sonra görünür
+
+</script>
+
+
+
+
+<script>
+
+function pauseVideo() {
+  if (players['player' + activePlayer]) {
+    players['player' + activePlayer].pauseVideo();
+  }
+}
+
+function playVideo() {
+  if (players['player' + activePlayer]) {
+    players['player' + activePlayer].playVideo();
+  }
+}
+
+
+
+
+
+
+
+
+
+  
 </script>
 
 
