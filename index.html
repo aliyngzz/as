@@ -684,7 +684,17 @@ pauseButton.addEventListener("click", () => {
 
   
 
+<script>
+  // 5 saniye sonra butonu göster
+  setTimeout(() => {
+    document.getElementById("startBtn").style.display = "block";
+  }, 5000);
 
+  // 10 saniye sonra butonu gizle
+  setTimeout(() => {
+    document.getElementById("startBtn").style.display = "none";
+  }, 10000);
+</script>
 
 
 
