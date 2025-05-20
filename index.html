@@ -255,32 +255,6 @@
   #notPanel button:hover {
     background: #fff;
   }
-
-#videoControlButtons {
-  position: fixed;
-  top: 10px;
-  right: 50%;
-  transform: translateX(50%);
-  display: flex;
-  gap: 10px;
-  z-index: 99999;
-}
-
-#videoControlButtons button {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 32px;
-  cursor: pointer;
-  text-shadow: 0 0 10px #fff;
-  transition: transform 0.2s ease;
-}
-
-#videoControlButtons button:hover {
-  transform: scale(1.2);
-}
-
-
     
   </style>
 </head>
@@ -334,12 +308,6 @@
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
 
-<div id="videoControlButtons">
-  <button id="pauseBtn">⏸</button>
-  <button id="playBtn" style="display:none;">▶️</button>
-</div>
-
-  
   
   <button id="tvOpenBtn">TV Aç</button>
 
@@ -714,40 +682,12 @@ pauseButton.addEventListener("click", () => {
 
 
 
- <script>
-  let currentPlayer = null;
+  
 
-  function onYouTubeIframeAPIReady() {
-    // İlk videoyu başlatmak için örnek
-    currentPlayer = new YT.Player('player1', {
-      videoId: videoIds[0],
-      playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1 },
-      events: {
-        'onReady': (event) => {
-          event.target.playVideo();
-        }
-      }
-    });
-  }
 
-  // ⏸ Duraklat düğmesi
-  document.getElementById("pauseBtn").addEventListener("click", function () {
-    if (currentPlayer && currentPlayer.pauseVideo) {
-      currentPlayer.pauseVideo();
-      document.getElementById("pauseBtn").style.display = "none";
-      document.getElementById("playBtn").style.display = "inline";
-    }
-  });
 
-  // ▶️ Oynat düğmesi
-  document.getElementById("playBtn").addEventListener("click", function () {
-    if (currentPlayer && currentPlayer.playVideo) {
-      currentPlayer.playVideo();
-      document.getElementById("playBtn").style.display = "none";
-      document.getElementById("pauseBtn").style.display = "inline";
-    }
-  });
-</script>
+
+
 
 
     
