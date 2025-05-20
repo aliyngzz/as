@@ -265,18 +265,6 @@
   background-size: cover;
   z-index: -1;
 }
-
-#weather {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 99999;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  opacity: 1;
-}
-
-    
   </style>
 </head>
 <body>
@@ -314,9 +302,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<div id="weather" style="font-size:12px; width:130px; padding:6px; background: rgba(0,0,0,0.4); border-radius:8px; color:#fff; font-weight:600; box-shadow: 0 0 8px #00ffcc;">
-  Yükleniyor...
-</div>
+
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -719,7 +705,7 @@ pauseButton.addEventListener("click", () => {
   // 5 saniye sonra butonu göster
   setTimeout(() => {
     document.getElementById("startBtn").style.display = "block";
-  }, 10000);
+  }, 5000);
 
   // 10 saniye sonra butonu gizle
   setTimeout(() => {
@@ -736,100 +722,14 @@ pauseButton.addEventListener("click", () => {
       document.getElementById("mainContent").style.display = "block";
     }, 5000);
   });
+
+
 </script>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-<script>
-
-
-
-const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
-cconst cities = ['Ankara', 'İzmir', 'İstanbul', 'Yozgat', 'Kütahya', 'Karabük', 'Uşak', 'Antalya'];
-  
-
-let currentCityIndex = 0;
-const weatherDiv = document.getElementById('weather');
-
-async function fetchWeather(city) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?id=${city.id}&appid=${apiKey}&units=metric&lang=tr`;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('API hatası');
-    const data = await response.json();
-    return data;
-  } catch (e) {
-    console.error('Hava durumu alınamadı:', e);
-    return null;
-  }
-}
-
-function getWeatherIcon(iconCode) {
-  return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-}
-
-async function updateWeather() {
-  weatherDiv.style.opacity = 0; // fade out
-
-  // 0.5 saniye bekle fade out için
-  await new Promise(r => setTimeout(r, 500));
-
-  const city = cities[currentCityIndex];
-  const weatherData = await fetchWeather(city);
-
-  if (weatherData) {
-    const temp = Math.round(weatherData.main.temp);
-    const icon = getWeatherIcon(weatherData.weather[0].icon);
-    const description = weatherData.weather[0].description;
-
-    weatherDiv.innerHTML = `
-      <div style="display:flex; align-items:center; gap:8px;">
-        <img src="${icon}" alt="${description}" style="width:40px; height:40px;" />
-        <div>
-          <div style="font-size:14px; font-weight:bold;">${city.name}</div>
-          <div>${temp}°C, ${description}</div>
-        </div>
-      </div>
-    `;
-  } else {
-    weatherDiv.textContent = 'Hava durumu yüklenemedi';
-  }
-
-  weatherDiv.style.opacity = 1; // fade in
-
-  currentCityIndex = (currentCityIndex + 1) % cities.length;
-}
-
-// İlk yüklemede hemen göster
-updateWeather();
-
-// Her 5 saniyede bir güncelle
-setInterval(updateWeather, 5000);
-
-
-
-
-
-
-
-
-
-
-
-
-  
-</script>
 
 
 
@@ -863,7 +763,10 @@ setInterval(updateWeather, 5000);
       tvOpenBtn.style.display = "block";
     });
   });
-</script>
+
+
+
+
 
 
 
@@ -874,6 +777,7 @@ setInterval(updateWeather, 5000);
 
 
   
+</script>
 
 
     
