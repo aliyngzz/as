@@ -255,6 +255,36 @@
   #notPanel button:hover {
     background: #fff;
   }
+
+#pauseResumeBtn {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 28px;
+  padding: 12px 24px;
+  border: 2px solid white;
+  border-radius: 50px;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  z-index: 9999;
+  animation: glow 2s infinite ease-in-out;
+  transition: all 0.3s ease;
+}
+
+#pauseResumeBtn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(255,255,255,0.3); }
+  50% { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+  100% { box-shadow: 0 0 5px rgba(255,255,255,0.3); }
+}
+
+
     
   </style>
 </head>
@@ -682,7 +712,47 @@ pauseButton.addEventListener("click", () => {
 
 
 
-  
+  <script>
+  let isPaused = false;
+  const pauseResumeBtn = document.getElementById('pauseResumeBtn');
+
+  pauseResumeBtn.addEventListener('click', () => {
+    const currentPlayer = players[`player${activePlayer}`];
+
+    if (isPaused) {
+      currentPlayer.playVideo();
+      pauseResumeBtn.textContent = '⏸';
+    } else {
+      currentPlayer.pauseVideo();
+      pauseResumeBtn.textContent = '▶️';
+    }
+
+    isPaused = !isPaused;
+  });
+
+  // Video değiştirme fonksiyonunu engellemek için bir koşul kullan
+  function nextVideo() {
+    if (isPaused) return; // Duraklatılmışsa yeni videoya geçme
+
+    index = (index + 1) % videoIds.length;
+    switchPlayer();
+  }
+
+  // Mevcut player'ı değiştirirken sadece otomatik geçişi kontrol et
+  function switchPlayer() {
+    const nextPlayer = activePlayer === 1 ? 2 : 1;
+    players[`player${nextPlayer}`].loadVideoById(videoIds[index]);
+
+    players[`player${activePlayer}`].stopVideo();
+    document.getElementById(`player${activePlayer}`).classList.remove("active");
+    document.getElementById(`player${nextPlayer}`).classList.add("active");
+    activePlayer = nextPlayer;
+  }
+
+  // Bu fonksiyon senin otomatik geçiş planına göre çalıştırılıyor olmalı:
+  // setInterval(nextVideo, 60000); gibi
+
+</script>
 
 
 
@@ -691,6 +761,6 @@ pauseButton.addEventListener("click", () => {
 
 
     
-
+<button id="pauseResumeBtn">⏸</button>
 </body>
 </html>
