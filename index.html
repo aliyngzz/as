@@ -307,7 +307,15 @@
   <button onclick="saveNote()">💾 Kaydet</button>
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
+<div id="introImage" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
+  <img src="pexels-pixabay-158063.jpg" alt="Doğa" style="width:100%; height:100%; object-fit:cover;">
+</div>
 
+<!-- Ana içerik -->
+<div id="mainContent" style="display:none;">
+  <!-- Diğer içerikler -->
+  <!-- Örneğin doğa videoları veya butonlar burada olacak -->
+</div>
   
   <button id="tvOpenBtn">TV Aç</button>
 
@@ -697,7 +705,15 @@ pauseButton.addEventListener("click", () => {
 </script>
 
 
-
+<script>
+  window.addEventListener("load", () => {
+    // 5 saniye sonra resmi gizle ve içeriği göster
+    setTimeout(() => {
+      document.getElementById("introImage").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
+    }, 5000);
+  });
+</script>
 
 
     
