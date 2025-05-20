@@ -714,41 +714,39 @@ pauseButton.addEventListener("click", () => {
 
 
 
-  <script>
+ <script>
+  let currentPlayer = null;
 
-// Butonlar
-const pauseBtn = document.getElementById("pauseBtn");
-const playBtn = document.getElementById("playBtn");
-
-// Otomatik geçişi engelleme için kontrol
-let isPausedManually = false;
-
-pauseBtn.addEventListener("click", () => {
-  isPausedManually = true;
-  players[`player${activePlayer}`].pauseVideo();
-  pauseBtn.style.display = "none";
-  playBtn.style.display = "inline-block";
-});
-
-playBtn.addEventListener("click", () => {
-  isPausedManually = false;
-  players[`player${activePlayer}`].playVideo();
-  playBtn.style.display = "none";
-  pauseBtn.style.display = "inline-block";
-});
-Eğer video bittiğinde bir sonraki videoya otomatik geçmesini engellemek istiyorsan, onPlayerStateChange fonksiyonunda bu kontrolü ekle:
-
-javascript
-Kopyala
-Düzenle
-function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.ENDED && !isPausedManually) {
-    switchVideo();
+  function onYouTubeIframeAPIReady() {
+    // İlk videoyu başlatmak için örnek
+    currentPlayer = new YT.Player('player1', {
+      videoId: videoIds[0],
+      playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1 },
+      events: {
+        'onReady': (event) => {
+          event.target.playVideo();
+        }
+      }
+    });
   }
-}
 
+  // ⏸ Duraklat düğmesi
+  document.getElementById("pauseBtn").addEventListener("click", function () {
+    if (currentPlayer && currentPlayer.pauseVideo) {
+      currentPlayer.pauseVideo();
+      document.getElementById("pauseBtn").style.display = "none";
+      document.getElementById("playBtn").style.display = "inline";
+    }
+  });
 
-
+  // ▶️ Oynat düğmesi
+  document.getElementById("playBtn").addEventListener("click", function () {
+    if (currentPlayer && currentPlayer.playVideo) {
+      currentPlayer.playVideo();
+      document.getElementById("playBtn").style.display = "none";
+      document.getElementById("pauseBtn").style.display = "inline";
+    }
+  });
 </script>
 
 
