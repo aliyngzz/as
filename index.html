@@ -832,6 +832,50 @@ setInterval(updateWeather, 5000);
 </script>
 
 
+
+
+
+
+
+
+<script>
+  // Sayfa yüklendiğinde butonu görünür yap
+  document.addEventListener("DOMContentLoaded", () => {
+    const tvOpenBtn = document.getElementById("tvOpenBtn");
+    const miniTVContainer = document.getElementById("miniTVContainer");
+
+    // İlk başta TV gizli olacak
+    miniTVContainer.style.display = "none";
+
+    // TV Aç butonunu göster
+    tvOpenBtn.style.display = "block";
+
+    // TV Aç düğmesine tıklanınca miniTV görünür hale gelsin
+    tvOpenBtn.addEventListener("click", () => {
+      miniTVContainer.style.display = "flex";
+      tvOpenBtn.style.display = "none"; // Açıldıktan sonra butonu gizle
+    });
+
+    // TV Kapat butonu: miniTV'yi gizle ve "TV Aç" butonunu tekrar göster
+    const closeTVBtn = document.getElementById("closeTVBtn");
+    closeTVBtn.addEventListener("click", () => {
+      miniTVContainer.style.display = "none";
+      tvOpenBtn.style.display = "block";
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
     
 
 </body>
