@@ -261,26 +261,7 @@
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
- <title>YouTube Video Duraklat / Devam</title> #pause-button {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow: 0 0 12px rgba(255,255,255,0.5);
-      transition: transform 0.3s ease;
-    }
-    #pause-button:hover {
-      transform: translateX(-50%) scale(1.1);
-    }
+
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
@@ -296,12 +277,12 @@
 <div id="mainContent" style="display: none;">
   <!-- mevcut tüm içeriğin buraya taşınacak -->
 </div>
-<div id="player"></div>
+
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  <button id="pause-button" onclick="togglePause()">⏸</button>
+  
 
 <audio id="nature-sound" preload="auto"></audio>
 
@@ -445,7 +426,7 @@
 
   </script>
 
-<script src="https://www.youtube.com/iframe_api"></script>
+
 
 
 
@@ -700,42 +681,7 @@ pauseButton.addEventListener("click", () => {
 
 
 
-<script>
-  let player;
-  let isPaused = false;
 
-  // YouTube iFrame API hazır olduğunda player oluştur
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      height: '390',
-      width: '640',
-      videoId: 'Lo0ELoepTCM', // Buraya kendi video ID'ni koy
-      events: {
-        'onReady': onPlayerReady
-      }
-    });
-  }
-
-  function onPlayerReady(event) {
-    event.target.playVideo(); // Otomatik başlat
-  }
-
-  function togglePause() {
-    if (!player) return;
-
-    const button = document.getElementById("pause-button");
-
-    if (isPaused) {
-      player.playVideo();
-      button.textContent = "⏸";
-      isPaused = false;
-    } else {
-      player.pauseVideo();
-      button.textContent = "▶️";
-      isPaused = true;
-    }
-  }
-</script>
   
 
 
