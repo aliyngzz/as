@@ -255,36 +255,6 @@
   #notPanel button:hover {
     background: #fff;
   }
-
-#pauseResumeBtn {
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  font-size: 28px;
-  padding: 12px 24px;
-  border: 2px solid white;
-  border-radius: 50px;
-  backdrop-filter: blur(6px);
-  cursor: pointer;
-  z-index: 9999;
-  animation: glow 2s infinite ease-in-out;
-  transition: all 0.3s ease;
-}
-
-#pauseResumeBtn:hover {
-  background: rgba(255, 255, 255, 0.4);
-}
-
-@keyframes glow {
-  0% { box-shadow: 0 0 5px rgba(255,255,255,0.3); }
-  50% { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
-  100% { box-shadow: 0 0 5px rgba(255,255,255,0.3); }
-}
-
-
     
   </style>
 </head>
@@ -337,7 +307,22 @@
   <button onclick="saveNote()">💾 Kaydet</button>
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
-
+<div style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 9999;">
+  <button id="pause-button" onclick="togglePause()" style="
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(255,255,255,0.5);
+      transition: transform 0.3s ease;
+    " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    ⏸
+  </button>
+</div>
   
   <button id="tvOpenBtn">TV Aç</button>
 
@@ -714,44 +699,23 @@ pauseButton.addEventListener("click", () => {
 
   <script>
   let isPaused = false;
-  const pauseResumeBtn = document.getElementById('pauseResumeBtn');
+  let interval; // Eğer sende otomatik geçiş varsa bu da kontrol için
 
-  pauseResumeBtn.addEventListener('click', () => {
-    const currentPlayer = players[`player${activePlayer}`];
+  function togglePause() {
+    const button = document.getElementById("pause-button");
 
     if (isPaused) {
-      currentPlayer.playVideo();
-      pauseResumeBtn.textContent = '⏸';
+      player.playVideo();
+      isPaused = false;
+      button.textContent = "⏸";
+      interval = setInterval(changeVideo, 60000); // varsa video geçişini başlat
     } else {
-      currentPlayer.pauseVideo();
-      pauseResumeBtn.textContent = '▶️';
+      player.pauseVideo();
+      isPaused = true;
+      button.textContent = "▶️";
+      clearInterval(interval); // varsa video geçişini durdur
     }
-
-    isPaused = !isPaused;
-  });
-
-  // Video değiştirme fonksiyonunu engellemek için bir koşul kullan
-  function nextVideo() {
-    if (isPaused) return; // Duraklatılmışsa yeni videoya geçme
-
-    index = (index + 1) % videoIds.length;
-    switchPlayer();
   }
-
-  // Mevcut player'ı değiştirirken sadece otomatik geçişi kontrol et
-  function switchPlayer() {
-    const nextPlayer = activePlayer === 1 ? 2 : 1;
-    players[`player${nextPlayer}`].loadVideoById(videoIds[index]);
-
-    players[`player${activePlayer}`].stopVideo();
-    document.getElementById(`player${activePlayer}`).classList.remove("active");
-    document.getElementById(`player${nextPlayer}`).classList.add("active");
-    activePlayer = nextPlayer;
-  }
-
-  // Bu fonksiyon senin otomatik geçiş planına göre çalıştırılıyor olmalı:
-  // setInterval(nextVideo, 60000); gibi
-
 </script>
 
 
@@ -761,6 +725,6 @@ pauseButton.addEventListener("click", () => {
 
 
     
-<button id="pauseResumeBtn">⏸</button>
+
 </body>
 </html>
