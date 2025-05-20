@@ -722,6 +722,56 @@ pauseButton.addEventListener("click", () => {
       document.getElementById("mainContent").style.display = "block";
     }, 5000);
   });
+
+</script>
+
+
+
+
+
+
+
+<script>
+const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
+const cities = ['Kütahya', 'İstanbul', 'Yozgat', 'Karabük', 'Uşak'];
+const weatherDiv = document.getElementById('weather');
+
+async function getWeather(city) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return {
+    name: data.name,
+    temp: Math.round(data.main.temp),
+    desc: data.weather[0].description
+  };
+}
+
+async function updateWeather() {
+  let html = '<strong>🌤️ Hava Durumu</strong><br>';
+  for (let city of cities) {
+    try {
+      const weather = await getWeather(city);
+      html += `${weather.name}: ${weather.temp}°C, ${weather.desc}<br>`;
+    } catch (e) {
+      html += `${city}: Bilgi alınamadı<br>`;
+    }
+  }
+  weatherDiv.innerHTML = html;
+}
+
+updateWeather();
+setInterval(updateWeather, 5000);  // 5 saniyede bir güncelle
+
+
+
+
+
+
+
+
+
+  
 </script>
 
 
