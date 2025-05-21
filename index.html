@@ -395,10 +395,10 @@
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
 <div id="introImage"></div>
-  <img src="pexels-pixabay-158063.jpg" class="active" id="img1">
-  <img src="pexels-achim-bongard-87217-352096.jpg" class="active" id="img1">
-  <img src="pexels-akos-szabo-145938-440731.jpg" class="active" id="img1">
-  <img src="pexels-asphotograpy-96627.jpg" class="active" id="img1">
+  <img src="pexels-pixabay-158063.jpg" class="bg active" id="bg1">
+  <img src="pexels-achim-bongard-87217-352096.jpg" class="bg active" id="bg2">
+  <img src="pexels-akos-szabo-145938-440731.jpg" class="bg active" id="bg3">
+  <img src="pexels-asphotograpy-96627.jpg" class="bg active" id="bg4">
 </div>
 
 <!-- Ana içerik -->
@@ -946,35 +946,36 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
 
 
 <script>
-  let showingFirst = true;
+  let current = 1;
 
   setInterval(() => {
-    const img1 = document.getElementById("img1");
-    const img2 = document.getElementById("img2");
+    const bg1 = document.getElementById("bg1");
+    const bg2 = document.getElementById("bg2");
 
-    if (showingFirst) {
-      img1.classList.remove("active");
-      img2.classList.add("active");
+    if (current === 1) {
+      bg1.classList.remove("active");
+      bg2.classList.add("active");
+      current = 2;
     } else {
-      img2.classList.remove("active");
-      img1.classList.add("active");
+      bg2.classList.remove("active");
+      bg1.classList.add("active");
+      current = 1;
     }
-
-    showingFirst = !showingFirst;
-  }, 20000); // 20 saniyede bir değişim
-
-
-
-
-
-
-
-
-
-
-  
-  
+  }, 20000); // 20 saniyede bir değişir
 </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+
 
 
     
