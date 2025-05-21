@@ -316,44 +316,6 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-
-#youtubeBox {
-  position: fixed;
-  top: 50%;
-  right: 70px;
-  transform: translateY(-50%);
-  width: 420px;
-  height: 250px;
-  background: black;
-  border: 2px solid white;
-  border-radius: 10px;
-  display: none;
-  flex-direction: column;
-  z-index: 10000;
-  box-shadow: 0 0 20px rgba(255,0,0,0.8);
-}
-
-#youtubeFrame {
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 10px;
-}
-
-#closeYoutube {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: white;
-  color: red;
-  border: none;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 5px black;
-}
     
   </style>
 </head>
@@ -387,12 +349,6 @@
 <audio id="nature-sound" preload="auto"></audio>
 
 <div id="youtubeBtn" title="YouTube Aç">▶️</div>
-
-<!-- YouTube Mini Tarayıcı -->
-<div id="youtubeBox">
-  <iframe id="youtubeFrame" src="" frameborder="0" allowfullscreen></iframe>
-  <button id="closeYoutube">❌</button>
-</div>
 
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
@@ -912,24 +868,11 @@ pauseButton.addEventListener("click", () => {
   setInterval(updateWeather, 5000);
 </script>
 
-
 <script>
+
 document.getElementById("youtubeBtn").addEventListener("click", function () {
-  const box = document.getElementById("youtubeBox");
-  const iframe = document.getElementById("youtubeFrame");
-
-  // YouTube ANA SAYFA ya da KANAL sayfası (değiştirebilirsiniz)
-  iframe.src = "https://www.youtube.com/";
-
-  box.style.display = "flex";
-});
-
-document.getElementById("closeYoutube").addEventListener("click", function () {
-  const box = document.getElementById("youtubeBox");
-  const iframe = document.getElementById("youtubeFrame");
-
-  box.style.display = "none";
-  iframe.src = ""; // Sayfayı sıfırla
+  // Kanalınızın adresini buraya koyun
+  window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
 
 
