@@ -382,20 +382,23 @@
   <button id="tvOpenBtn">TV Aç</button>
 <div id="player"></div>
   <script>
-    var tag = document.createElement('script');
+  var tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.body.appendChild(tag);
 
   var player;
   var videoIndex = 0;
-  var videoList  = [ 
-      "32OI-8iznQM", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
+  var videoList = [ 
+    "32OI-8iznQM", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
-    "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
-    ]; 
- var timeoutId;
+    // diğer ID'leri ekle...
+  ];
+
+  var timeoutId = null;
+  var playStartTimeout = null;
 
   function onYouTubeIframeAPIReady() {
+    console.log("YT API hazır, video başlatılıyor...");
     player = new YT.Player('player', {
       height: '390',
       width: '640',
@@ -409,27 +412,50 @@
   }
 
   function onPlayerReady(event) {
+    console.log("Player hazır, video oynatılıyor: " + videoList[videoIndex]);
     event.target.playVideo();
+
+    // 3 saniye içinde video başlamazsa geç
+    clearTimeout(playStartTimeout);
+    playStartTimeout = setTimeout(() => {
+      console.warn("Video 3 saniyede başlamadı, sıradaki videoya geçiliyor.");
+      nextVideo();
+    }, 3000);
   }
 
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
-      clearTimeout(timeoutId); // Önceki zamanlayıcıyı temizle
-      timeoutId = setTimeout(nextVideo, 20000); // 20 saniye sonra sonraki video
+      console.log("Video oynuyor: " + videoList[videoIndex]);
+      clearTimeout(playStartTimeout);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        console.log("20 saniye doldu, sıradaki video oynatılıyor.");
+        nextVideo();
+      }, 20000);
+    } else if (event.data == YT.PlayerState.ENDED) {
+      console.log("Video sona erdi, sıradaki video oynatılıyor.");
+      clearTimeout(timeoutId);
+      nextVideo();
     }
   }
 
   function onPlayerError(event) {
-    console.warn("Video yüklenemedi, geçiliyor...");
-    nextVideo(); // Hata varsa hemen sonraki videoya geç
+    console.error("Video hatası, hemen sıradaki videoya geçiliyor. Hata kodu: ", event.data);
+    clearTimeout(playStartTimeout);
+    clearTimeout(timeoutId);
+    nextVideo();
   }
 
   function nextVideo() {
     clearTimeout(timeoutId);
+    clearTimeout(playStartTimeout);
+
     videoIndex = (videoIndex + 1) % videoList.length;
+    console.log("Sonraki video: " + videoList[videoIndex]);
     player.loadVideoById(videoList[videoIndex]);
   }
 </script>
+
 
 
 
