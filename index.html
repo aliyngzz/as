@@ -322,8 +322,8 @@
   top: 50%;
   right: 70px;
   transform: translateY(-50%);
-  width: 320px;
-  height: 180px;
+  width: 420px;
+  height: 250px;
   background: black;
   border: 2px solid white;
   border-radius: 10px;
@@ -337,7 +337,7 @@
   width: 100%;
   height: 100%;
   border: none;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
 }
 
 #closeYoutube {
@@ -354,7 +354,6 @@
   cursor: pointer;
   box-shadow: 0 0 5px black;
 }
-
     
   </style>
 </head>
@@ -386,14 +385,14 @@
 <div id="weather-box">Yükleniyor...</div>
 
 <audio id="nature-sound" preload="auto"></audio>
+
 <div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
-<!-- YouTube Mini Ekranı -->
+<!-- YouTube Mini Tarayıcı -->
 <div id="youtubeBox">
   <iframe id="youtubeFrame" src="" frameborder="0" allowfullscreen></iframe>
   <button id="closeYoutube">❌</button>
 </div>
-
 
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
@@ -913,14 +912,14 @@ pauseButton.addEventListener("click", () => {
   setInterval(updateWeather, 5000);
 </script>
 
-<script>
 
+<script>
 document.getElementById("youtubeBtn").addEventListener("click", function () {
   const box = document.getElementById("youtubeBox");
   const iframe = document.getElementById("youtubeFrame");
 
-  // Video URL’si buraya (istediğiniz video embed linki)
-  iframe.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
+  // YouTube ANA SAYFA ya da KANAL sayfası (değiştirebilirsiniz)
+  iframe.src = "https://www.youtube.com/";
 
   box.style.display = "flex";
 });
@@ -930,24 +929,8 @@ document.getElementById("closeYoutube").addEventListener("click", function () {
   const iframe = document.getElementById("youtubeFrame");
 
   box.style.display = "none";
-  iframe.src = ""; // Videoyu durdur
+  iframe.src = ""; // Sayfayı sıfırla
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
