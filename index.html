@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
+  <title>Video Arka Plan</title>
   <title>Full Screen Video</title>
     <title>Hava Durumu</title>
   <style>
@@ -316,7 +317,21 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-    
+    <style>
+    /* Sayfa tam ekran video için boş ve tam ekran */
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
+    }
+    #backgroundVideo {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      background: black;
+    }
+
   </style>
 </head>
 <body>
@@ -355,7 +370,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-
+<video id="backgroundVideo" autoplay muted playsinline></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -875,10 +890,36 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
 
+</script>
+<script>
+  // Oynatılacak video dosyalarının listesi (aynı klasörde olmalı)
+  const videoList = [
+    "111179-689949805_tiny.mp4",
+    "158349-816637197_tiny.mp4",
+    "246856_tiny.mp4"
+  ];
+
+  let currentIndex = 0;
+  const video = document.getElementById("backgroundVideo");
+
+  function playNextVideo() {
+    video.src = videoList[currentIndex];
+    video.play();
+    currentIndex = (currentIndex + 1) % videoList.length;
+  }
+
+  video.addEventListener("ended", playNextVideo);
+
+  // Sayfa açılır açılmaz ilk videoyu başlat
+  playNextVideo();
+</script>
+
+
 
 
   
-</script>
+  
+
 
 
     
