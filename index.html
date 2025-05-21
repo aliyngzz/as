@@ -874,11 +874,63 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   // Kanalınızın adresini buraya koyun
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
+</script>
+
+<script>
+
+ // iframe ile test et, hata olursa notTrigger'a ekle
+  const notTrigger = [];
+  let checkedCount = 0;
+
+  function testYouTubeVideo(id) {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${id}`;
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    iframe.onload = () => {
+      // YouTube video başarıyla yüklendi demektir
+      done();
+    };
+
+    iframe.onerror = () => {
+      // Hata alındıysa bu ID çalışmıyor
+      notTrigger.push(id);
+      done();
+    };
+
+    // Zaman aşımı kontrolü (örnek: 10 saniye)
+    setTimeout(() => {
+      if (!iframe.contentWindow) {
+        notTrigger.push(id);
+        done();
+      }
+    }, 10000);
+
+    function done() {
+      iframe.remove();
+      checkedCount++;
+      if (checkedCount === videoIds.length) {
+        console.log("Hatalı olan videolar (notTrigger):", notTrigger);
+
+        // Dizi halinde de göster
+        console.log(`const notTrigger = [\n  "${notTrigger.join('",\n  "')}"\n];`);
+      }
+    }
+  }
+
+  // Hepsini sırayla kontrol et
+  videoIds.forEach(id => testYouTubeVideo(id));
+</script>
+
+
+
 
 
 
   
-</script>
+  
+
 
 
     
