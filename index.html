@@ -332,6 +332,38 @@
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
+
+#webcamBtn {
+  padding: 15px 30px;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #00ccff;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#webcamBtn:hover {
+  background-color: #0099cc;
+}
+
+#webcamContainer {
+  margin-top: 20px;
+  display: none;
+}
+
+#video {
+  width: 640px;
+  height: 480px;
+  border-radius: 10px;
+  border: 2px solid #00ccff;
+}
+
+
+
+
+    
   </style>
 </head>
 <body>
@@ -358,7 +390,10 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  
+  <button id="webcamBtn">🎥 Webcam Aç</button>
+<div id="webcamContainer">
+  <video id="video" autoplay></video>
+</div>
 <div id="weather-box">Yükleniyor...</div>
 
 <audio id="nature-sound" preload="auto"></audio>
@@ -922,6 +957,44 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   // Kanalınızın adresini buraya koyun
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
+
+</script>
+
+
+<script>
+
+const btn = document.getElementById("webcamBtn");
+const video = document.getElementById("video");
+const container = document.getElementById("webcamContainer");
+let stream = null;
+let isOpen = false;
+
+btn.addEventListener("click", async () => {
+  if (!isOpen) {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      container.style.display = "block";
+      btn.textContent = "❌ Webcam Kapat";
+      btn.style.backgroundColor = "#cc0000";
+      isOpen = true;
+    } catch (e) {
+      alert("Webcam açma hatası: " + e.message);
+    }
+  } else {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+    container.style.display = "none";
+    btn.textContent = "🎥 Webcam Aç";
+    btn.style.backgroundColor = "#00ccff";
+    isOpen = false;
+  }
+});
+
+
+
+
 
 
 
