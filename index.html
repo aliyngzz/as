@@ -320,7 +320,7 @@
   </style>
 </head>
 <body>
-  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
+  <button id="startBtn"> WEBCAM </button>
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
@@ -378,7 +378,23 @@
   <!-- Diğer içerikler -->
   <!-- Örneğin doğa videoları veya butonlar burada olacak -->
 </div>
-  
+  <div id="webcamToggleContainer" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999;">
+  <button id="startBtn" style="display: none; padding: 4px 10px; font-size: 10px; animation: pulse 1s infinite; border-radius: 15px; background-color: #28a745; color: white; border: none; cursor: pointer;">
+    🎥 Webcam Aç
+  </button>
+</div>
+
+<style>
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+</style>
+
+<div id="webcamContainer" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9998;">
+  <iframe id="webcamPlayer" width="100%" height="100%" src="" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+</div>
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
@@ -907,11 +923,68 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   // Kanalınızın adresini buraya koyun
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
+</script>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const webcamBtn = document.getElementById("startBtn");
+  const webcamContainer = document.getElementById("webcamContainer");
+  const webcamPlayer = document.getElementById("webcamPlayer");
+
+  const youtubeVideos = [
+    "djEyd01KpNU",
+    "0St2Vey_r1E",
+    "5F0dNX7sFzU"
+  ];
+
+  let intervalId = null;
+  let isWebcamOn = false;
+
+  // 5 saniye sonra butonu görünür yap
+  setTimeout(function () {
+    webcamBtn.style.display = "block";
+  }, 5000);
+
+  function playNextVideo() {
+    const randomIndex = Math.floor(Math.random() * youtubeVideos.length);
+    const videoId = youtubeVideos[randomIndex];
+    webcamPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0`;
+  }
+
+  function startWebcam() {
+    webcamContainer.style.display = "block";
+    playNextVideo();
+    intervalId = setInterval(playNextVideo, 40000);
+  }
+
+  function stopWebcam() {
+    clearInterval(intervalId);
+    webcamPlayer.src = "";
+    webcamContainer.style.display = "none";
+  }
+
+  webcamBtn.addEventListener("click", () => {
+    isWebcamOn = !isWebcamOn;
+    webcamBtn.textContent = isWebcamOn ? "🎥 Webcam Kapat" : "🎥 Webcam Aç";
+    if (isWebcamOn) {
+      startWebcam();
+    } else {
+      stopWebcam();
+    }
+  });
+});
+</script>
+
+
+
 
 
 
   
-</script>
+  
+
 
 
     
