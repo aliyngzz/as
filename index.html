@@ -423,7 +423,7 @@ let intervalId = null;
 
   function playNextVideo() {
     const randomIndex = Math.floor(Math.random() * youtubeVideos.length);
-    const videoId = youtubeVideos[randomIndex];
+   const videoId = videoIds[randomIndex];
     webcamPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0`;
   }
 
@@ -469,10 +469,7 @@ let intervalId = null;
     let index = 0;
     let activePlayer = 1;
 
-    document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("startBtn").style.display = "none";
-      enterFullscreen(document.documentElement);
-      startVideoPlayer();
+  
     });
 
     function onYouTubeIframeAPIReady() {
