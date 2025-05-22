@@ -69,11 +69,12 @@
       z-index: 20;
     }
 
-    #miniTV {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+   #miniTV {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999; /* veya 99999, webcam'in üstünde kalacak kadar yüksek */
+}
 
     #tvControls {
       display: flex;
