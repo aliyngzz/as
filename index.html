@@ -316,66 +316,6 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#webcamButton {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #00f2fe, #4facfe);
-  color: white;
-  border: none;
-  padding: 14px 32px;
-  font-size: 24px;
-  border-radius: 40px;
-  cursor: pointer;
-  animation: glow 2s infinite;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-  z-index: 9999;
-}
-
-@keyframes glow {
-  0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px #00f2fe; }
-  50% { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 25px #4facfe; }
-  100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px #00f2fe; }
-}
-
-#videoContainer {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: black;
-  z-index: 9998;
-  display: none;
-}
-
-#videoPlayer, #fallbackImage {
-  width: 100%;
-  height: 100%;
-  border: none;
-  object-fit: cover;
-}
-
-
-
-
-
     
   </style>
 </head>
@@ -410,22 +350,6 @@
 
 <div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
-
-
-
-
-<button id="webcamButton">🎥 Webcam Aç</button>
-
-<div id="videoContainer">
-  <img id="fallbackImage" src="resimler/masaustu.jpg" alt="Masaüstü Görseli">
-  <iframe id="videoPlayer" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-</div>
-
-
-
-
-
-  
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
   <button id="play-sound">Doğa Sesini Aç</button>
@@ -463,61 +387,6 @@
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
-
-
-
-const webcamButton = document.getElementById("webcamButton");
-const videoContainer = document.getElementById("videoContainer");
-const iframe = document.getElementById("videoPlayer");
-const fallbackImage = document.getElementById("fallbackImage");
-
-let webcamOpen = false;
-let currentIndex = 0;
-let intervalId;
-
-function playNextVideo() {
-  const videoId = videoIds[currentIndex % videoIds.length];
-  const url = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding=1&controls=0`;
-
-  iframe.src = url;
-  iframe.style.display = "none";
-  fallbackImage.style.display = "block";
-
-  iframe.onload = () => {
-    iframe.style.display = "block";
-    fallbackImage.style.display = "none";
-  };
-
-  iframe.onerror = () => {
-    iframe.style.display = "none";
-    fallbackImage.style.display = "block";
-  };
-
-  currentIndex++;
-}
-
-webcamButton.addEventListener("click", () => {
-  webcamOpen = !webcamOpen;
-
-  if (webcamOpen) {
-    videoContainer.style.display = "block";
-    webcamButton.textContent = "🎥 Webcam Kapat";
-    playNextVideo();
-    intervalId = setInterval(playNextVideo, 40000); // 40 saniyede bir
-  } else {
-    videoContainer.style.display = "none";
-    webcamButton.textContent = "🎥 Webcam Aç";
-    iframe.src = "";
-    fallbackImage.style.display = "block";
-    clearInterval(intervalId);
-  }
-});
-</script>
-
-
-
-
-    
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
       "https://www.youtube.com/embed/ZSWPj9szKb8",
@@ -1038,12 +907,9 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   // Kanalınızın adresini buraya koyun
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
-</script>
-<script>
-videoContainer.style.display = "none";
-iframe.src = "";
-fallbackImage.style.display = "block"; // Eğer bir yedek resim div'in varsa
-clearInterval(intervalId);
+
+
+
   
 </script>
 
