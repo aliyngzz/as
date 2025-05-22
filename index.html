@@ -316,67 +316,6 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-
- margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: url('https://via.placeholder.com/1920x1080.png?text=Resimli+Sayfa') no-repeat center center fixed;
-      background-size: cover;
-    }
-
-    /* Webcam Butonu */
-    .webcam-button {
-      position: absolute;
-      top: 100px; /* Orta üstün biraz altı */
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #222;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      transition: all 0.3s ease;
-      z-index: 9999;
-    }
-
-    .webcam-button:hover {
-      background-color: #444;
-    }
-
-    /* Video Alanı */
-    .webcam-container {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-      padding: 0;
-      display: none;
-      z-index: 9998;
-      overflow: hidden;
-      background: black;
-    }
-
-    .webcam-container iframe {
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      margin: 0;
-      padding: 0;
-      display: block;
-    }
-
-
-
-
-
-
-    
-
-
-
     
   </style>
 </head>
@@ -417,19 +356,6 @@
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
 
-
-<div id="webcamToggle" class="webcam-button">🎥 webcam: aç</div>
-
-  <!-- Video Gösterim Alanı -->
-  <div id="webcamContainer" class="webcam-container">
-    <iframe id="youtubePlayer" allow="autoplay; fullscreen" allowfullscreen></iframe>
-  </div>
-
-
-
-
-
-  
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -461,49 +387,6 @@
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
-
-
-const webcamBtn = document.getElementById("webcamToggle");
-    const webcamContainer = document.getElementById("webcamContainer");
-    const player = document.getElementById("youtubePlayer");
-
-    let intervalId = null;
-    let isPlaying = false;
-
-    function getRandomVideoId() {
-      const randomIndex = Math.floor(Math.random() * videoIds.length);
-      return videoIds[randomIndex];
-    }
-
-    function playRandomVideo() {
-      const videoId = getRandomVideoId();
-      player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0`;
-    }
-
-    webcamBtn.addEventListener("click", () => {
-      isPlaying = !isPlaying;
-
-      if (isPlaying) {
-        webcamBtn.textContent = "🎥 webcam: kapat";
-        webcamContainer.style.display = "block";
-        document.body.style.overflow = "hidden";
-        playRandomVideo();
-        intervalId = setInterval(playRandomVideo, 40000); // 40 saniye
-      } else {
-        webcamBtn.textContent = "🎥 webcam: aç";
-        webcamContainer.style.display = "none";
-        player.src = "";
-        clearInterval(intervalId);
-        document.body.style.overflow = "";
-      }
-    });
-  </script>
-
-
-
-
-  <script>
-    
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
       "https://www.youtube.com/embed/ZSWPj9szKb8",
