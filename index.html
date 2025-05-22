@@ -342,8 +342,7 @@
 
 #videoContainer {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
   background: black;
@@ -351,7 +350,7 @@
   display: none;
 }
 
-iframe, #fallbackImage {
+#videoPlayer, #fallbackImage {
   width: 100%;
   height: 100%;
   border: none;
@@ -422,13 +421,12 @@ iframe, #fallbackImage {
 </div>
 
 
-<button id="webcamButton">🎥 Webcam</button>
+<button id="webcamButton">🎥 Webcam Aç</button>
 
 <div id="videoContainer">
   <img id="fallbackImage" src="resimler/masaustu.jpg" alt="Görsel Yedeği">
   <iframe id="videoPlayer" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
 
   
   <button id="tvOpenBtn">TV Aç</button>
@@ -445,33 +443,47 @@ const videoContainer = document.getElementById("videoContainer");
 const iframe = document.getElementById("videoPlayer");
 const fallbackImage = document.getElementById("fallbackImage");
 
+let webcamOpen = false;
+
 webcamButton.addEventListener("click", () => {
-  const randomIndex = Math.floor(Math.random() * videoIds.length);
-  const videoId = videoIds[randomIndex];
-  const url = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding=1&controls=1`;
+  if (!webcamOpen) {
+    const randomIndex = Math.floor(Math.random() * videoIds.length);
+    const videoId = videoIds[randomIndex];
+    const url = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding=1&controls=1`;
 
-  videoContainer.style.display = "block";
-  iframe.style.display = "none";
-  fallbackImage.style.display = "block";
-  iframe.src = url;
-
-  iframe.onload = () => {
-    iframe.style.display = "block";
-    fallbackImage.style.display = "none";
-  };
-
-  iframe.onerror = () => {
+    videoContainer.style.display = "block";
     iframe.style.display = "none";
     fallbackImage.style.display = "block";
-  };
+    iframe.src = url;
+    webcamButton.textContent = "🎥 Webcam Kapat";
 
-  setTimeout(() => {
-    if (iframe.contentDocument === null) {
+    iframe.onload = () => {
+      iframe.style.display = "block";
+      fallbackImage.style.display = "none";
+    };
+
+    iframe.onerror = () => {
       iframe.style.display = "none";
       fallbackImage.style.display = "block";
-    }
-  }, 5000);
+    };
+
+    setTimeout(() => {
+      if (iframe.contentDocument === null) {
+        iframe.style.display = "none";
+        fallbackImage.style.display = "block";
+      }
+    }, 5000);
+
+    webcamOpen = true;
+  } else {
+    videoContainer.style.display = "none";
+    iframe.src = "";
+    fallbackImage.style.display = "block";
+    webcamButton.textContent = "🎥 Webcam Aç";
+    webcamOpen = false;
+  }
 });
+
 </script>
 <script>
     
