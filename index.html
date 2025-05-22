@@ -316,29 +316,48 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-   #webcamBtn {
-  padding: 22px 60px;
+ #webcamBtn {
+  padding: 24px 60px;
   font-size: 28px;
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   background: linear-gradient(45deg, #00f2ff, #0077ff, #00ff88);
+  background-size: 300% 300%;
   color: white;
   cursor: pointer;
-  animation: pulse 2s infinite;
-  box-shadow: 0 0 15px #00f2ff;
+  animation: shine 3s ease-in-out infinite, pulse 2s infinite;
+  box-shadow: 0 0 25px #00f2ff, 0 0 50px #00f2ff;
   transition: transform 0.3s;
+  z-index: 9999;
 }
 
 #webcamBtn:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 @keyframes pulse {
-  0%   { box-shadow: 0 0 10px #00f2ff; }
-  50%  { box-shadow: 0 0 25px #00f2ff; }
-  100% { box-shadow: 0 0 10px #00f2ff; }
+  0% { box-shadow: 0 0 15px #00f2ff; }
+  50% { box-shadow: 0 0 40px #00f2ff; }
+  100% { box-shadow: 0 0 15px #00f2ff; }
 }
-  </style>
+
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#webcamContainer {
+  margin-top: 20px;
+  display: none;
+}
+
+#video {
+  width: 640px;
+  height: 480px;
+  border-radius: 10px;
+  border: 2px solid #00ccff;
+}
 </head>
 <body>
   <button id="startBtn">Webcam</button>
@@ -366,7 +385,10 @@
 </div>
   
 <div id="weather-box">Yükleniyor...</div>
-
+<button id="webcamBtn">🎥 Webcam Aç</button>
+<div id="webcamContainer">
+  <video id="video" autoplay></video>
+</div>
 <audio id="nature-sound" preload="auto"></audio>
 
 <div id="youtubeBtn" title="YouTube Aç">▶️</div>
@@ -894,46 +916,41 @@ pauseButton.addEventListener("click", () => {
         throw new Error(data.message);
       }
 
-      const temp = Math.round(data.main.temp);
-      const description = data.weather[0].description;
-      const icon = data.weather[0].icon;
-      const cityName = data.name;
+      const btn = document.getElementById("webcamBtn");
+const video = document.getElementById("video");
+const container = document.getElementById("webcamContainer");
+let stream = null;
+let isOpen = false;
 
-      weatherBox.innerHTML = `
-        <strong>${cityName}</strong><br>
-        ${description}<br>
-        Sıcaklık: ${temp}°C<br>
-        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}" />
-      `;
-    } catch (error) {
-      weatherBox.innerHTML = `Hata: ${error.message}`;
+btn.addEventListener("click", async () => {
+  if (!isOpen) {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      container.style.display = "block";
+      btn.textContent = "❌ Webcam Kapat";
+      btn.style.background = "linear-gradient(45deg, #ff4444, #cc0000)";
+      isOpen = true;
+    } catch (e) {
+      alert("Webcam açma hatası: " + e.message);
     }
+  } else {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+    container.style.display = "none";
+    video.srcObject = null;
+    btn.textContent = "🎥 Webcam Aç";
+    btn.style.background = "linear-gradient(45deg, #00f2ff, #0077ff, #00ff88)";
+    isOpen = false;
   }
-
-  function updateWeather() {
-    const city = cities[currentCityIndex];
-    fetchWeather(city);
-    currentCityIndex = (currentCityIndex + 1) % cities.length;
-  }
-
-  // İlk çağırma
-  updateWeather();
-  // 5 saniyede bir güncelle
-  setInterval(updateWeather, 5000);
+});
 </script>
 
-<script>
-
-document.getElementById("youtubeBtn").addEventListener("click", function () {
-  // Kanalınızın adresini buraya koyun
-  window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
-});
 
 
 
   
-</script>
-
 
     
 
