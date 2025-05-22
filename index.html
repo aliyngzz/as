@@ -320,7 +320,7 @@
   </style>
 </head>
 <body>
-
+  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
@@ -339,28 +339,6 @@
   <!-- mevcut tüm içeriğin buraya taşınacak -->
 </div>
 
-<div id="webcamToggleContainer" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999;">
-  <button id="webcamToggleBtn" style="padding: 5px 10px; font-size: 12px; animation: pulse 1s infinite; border-radius: 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
-    🎥 Webcam Aç
-  </button>
-</div>
-
-<style>
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-</style>
-
-<div id="webcamContainer" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9998;">
-  <iframe id="webcamPlayer" width="100%" height="100%" src="" frameborder="0" allowfullscreen allow="autoplay"></iframe>
-</div>
-
-
-
-
-  
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
@@ -404,53 +382,11 @@
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-
-
-    <script>
-const webcamBtn = document.getElementById("webcamToggleBtn");
-const webcamContainer = document.getElementById("webcamContainer");
-const webcamPlayer = document.getElementById("webcamPlayer");
     const videoIds = [ 
      "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
-
-
-let currentIndex = 0;
-let intervalId = null;
-let isWebcamOn = false;
-
-function startWebcam() {
-  webcamContainer.style.display = "block";
-  playNextVideo();
-  intervalId = setInterval(playNextVideo, 40000);
-}
-
-function stopWebcam() {
-  clearInterval(intervalId);
-  webcamPlayer.src = "";
-  webcamContainer.style.display = "none";
-}
-
-function playNextVideo() {
-  const randomIndex = Math.floor(Math.random() * youtubeVideos.length);
-  const videoId = youtubeVideos[randomIndex];
-  webcamPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0`;
-}
-
-webcamBtn.addEventListener("click", () => {
-  isWebcamOn = !isWebcamOn;
-  webcamBtn.textContent = isWebcamOn ? "🎥 Webcam Kapat" : "🎥 Webcam Aç";
-  if (isWebcamOn) {
-    startWebcam();
-  } else {
-    stopWebcam();
-  }
-});
-</script>
-
-    <script>
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
       "https://www.youtube.com/embed/ZSWPj9szKb8",
