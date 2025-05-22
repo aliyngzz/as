@@ -316,71 +316,11 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-
-    #introPage {
-      background: url('resim.jpg') no-repeat center center/cover;
-      width: 100%;
-      height: 100vh;
-    }
-
-    #videoContainer {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    #webcamBtn {
-      position: fixed;
-      top: 80px; /* orta üstün biraz altı */
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 22px;
-      font-size: 14px;
-      background: linear-gradient(135deg, #6e8efb, #a777e3);
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      z-index: 9999;
-      transition: transform 0.3s ease, background 0.3s;
-      animation: pulse 2s infinite;
-    }
-
-    #webcamBtn:hover {
-      transform: translateX(-50%) scale(1.08);
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(103, 119, 239, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(103, 119, 239, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(103, 119, 239, 0); }
-    }  
-
-
     
   </style>
 </head>
 <body>
-
+  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
@@ -415,15 +355,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<div id="introPage"></div>
 
-<!-- Video tam ekran konteyner -->
-<div id="videoContainer">
-  <video id="webcamVideo" autoplay muted></video>
-</div>
-
-<!-- Yeni küçük animasyonlu buton -->
-<button id="webcamBtn">Webcam AÇ</button>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -450,50 +382,11 @@
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-
-
-
-    const btn = document.getElementById('webcamBtn');
-  const intro = document.getElementById('introPage');
-  const videoContainer = document.getElementById('videoContainer');
-  const videoElement = document.getElementById('webcamVideo');
     const videoIds = [ 
       "32OI-8iznQM", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
-
-let isPlaying = false;
-  let interval;
-
-  function playRandomVideo() {
-    const randomIndex = Math.floor(Math.random() * videoList.length);
-    videoElement.src = videoList[randomIndex];
-    videoElement.play();
-  }
-
-  btn.addEventListener('click', () => {
-    isPlaying = !isPlaying;
-    if (isPlaying) {
-      intro.style.display = "none";
-      videoContainer.style.display = "block";
-      btn.textContent = "Webcam KAPAT";
-      playRandomVideo();
-      interval = setInterval(playRandomVideo, 40000); // 40 saniyede bir video değiştir
-    } else {
-      videoContainer.style.display = "none";
-      intro.style.display = "block";
-      btn.textContent = "Webcam AÇ";
-      clearInterval(interval);
-      videoElement.pause();
-      videoElement.src = "";
-    }
-  });
-</script>
-
-
-<script>
-    
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
       "https://www.youtube.com/embed/ZSWPj9szKb8",
