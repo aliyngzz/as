@@ -316,31 +316,11 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-  #webcamBtn {
-  position: fixed;
-  top: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 14px;
-  font-size: 13px;
-  background: linear-gradient(135deg, #3fa46a, #2f8ee5);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  z-index: 9999;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(63, 164, 106, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(63, 164, 106, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(63, 164, 106, 0); }
-}  
+    
   </style>
 </head>
 <body>
-
+  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
@@ -375,13 +355,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<div id="videoContainer" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9998;">
-  <iframe id="youtubeFrame" width="100%" height="100%" frameborder="0"
-    allowfullscreen allow="autoplay; encrypted-media"></iframe>
-</div>
 
-<!-- Webcam Aç/Kapat Butonu -->
-<button id="webcamBtn">Webcam AÇ</button>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -408,47 +382,11 @@
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-
-
-
-    const webcamBtn = document.getElementById("webcamBtn");
-const videoContainer = document.getElementById("videoContainer");
-const youtubeFrame = document.getElementById("youtubeFrame");
-const introPage = document.getElementById("introPage"); // arka plan resmi varsa
-
     const videoIds = [ 
      "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
-
-let webcamOn = false;
-let webcamInterval;
-
-function playRandomYouTube() {
-  const randomUrl = youtubeVideos[Math.floor(Math.random() * youtubeVideos.length)];
-  youtubeFrame.src = randomUrl;
-}
-
-webcamBtn.addEventListener("click", () => {
-  webcamOn = !webcamOn;
-  if (webcamOn) {
-    videoContainer.style.display = "block";
-    introPage.style.display = "none";
-    webcamBtn.textContent = "Webcam KAPAT";
-    playRandomYouTube();
-    webcamInterval = setInterval(playRandomYouTube, 40000); // 40 saniyede bir değiş
-  } else {
-    clearInterval(webcamInterval);
-    youtubeFrame.src = "";
-    videoContainer.style.display = "none";
-    introPage.style.display = "block";
-    webcamBtn.textContent = "Webcam AÇ";
-  }
-});
-
-
-    
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
       "https://www.youtube.com/embed/ZSWPj9szKb8",
