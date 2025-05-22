@@ -401,17 +401,53 @@
 
   <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-  const webcamBtn = document.getElementById("startBtn");
-  const webcamContainer = document.getElementById("webcamContainer");
-  const webcamPlayer = document.getElementById("webcamPlayer");
+   
 
     const videoIds = [ 
      "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
+document.addEventListener("DOMContentLoaded", function () {
+  const webcamBtn = document.getElementById("startBtn");
+  const webcamContainer = document.getElementById("webcamContainer");
+  const webcamPlayer = document.getElementById("webcamPlayer");
 
+  let intervalId = null;
+  let isWebcamOn = false;
+
+  setTimeout(() => {
+    webcamBtn.style.display = "block";
+  }, 5000);
+
+  function playNextVideo() {
+    const randomIndex = Math.floor(Math.random() * videoIds.length);
+    const videoId = videoIds[randomIndex];
+    webcamPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0`;
+  }
+
+  function startWebcam() {
+    webcamContainer.style.display = "block";
+    playNextVideo();
+    intervalId = setInterval(playNextVideo, 40000);
+  }
+
+  function stopWebcam() {
+    clearInterval(intervalId);
+    webcamPlayer.src = "";
+    webcamContainer.style.display = "none";
+  }
+
+  webcamBtn.addEventListener("click", () => {
+    isWebcamOn = !isWebcamOn;
+    webcamBtn.textContent = isWebcamOn ? "🎥 Webcam Kapat" : "🎥 Webcam Aç";
+    if (isWebcamOn) {
+      startWebcam();
+    } else {
+      stopWebcam();
+    }
+  });
+}); // << BU KAPANIŞ BURADA
 
 let intervalId = null;
   let isWebcamOn = false;
@@ -422,7 +458,7 @@ let intervalId = null;
   }, 5000);
 
   function playNextVideo() {
-    const randomIndex = Math.floor(Math.random() * youtubeVideos.length);
+   const randomIndex = Math.floor(Math.random() * videoIds.length);
    const videoId = videoIds[randomIndex];
     webcamPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0`;
   }
