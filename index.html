@@ -402,7 +402,13 @@
 </div>
 
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+<button id="playVideosBtn">Videoları Oynat</button>
 
+<!-- Video Player -->
+<video id="videoPlayer" width="640" height="360" controls style="display:none;">
+    <source id="videoSource" src="" type="video/mp4">
+    Tarayıcınız video etiketini desteklemiyor.
+</video>
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
 
@@ -982,6 +988,106 @@ closeBtn.addEventListener('click', () => {
   }
 });
 
+</script>
+
+
+
+
+
+
+
+
+<script>
+  // Videoların dosya isimleri (dizin yolunu sitenize göre ekleyin!)
+  const videos = [
+    "111179-689949805_tiny.mp4",
+    "158349-816637197_tiny.mp4",
+    "246856_tiny.mp4",
+    "120739-724673230_tiny.mp4",
+    "28746-371345147_tiny.mp4",
+    "57647-486227472_tiny.mp4",
+    "35427-407130886_small.mp4",
+    "263208_small.mp4",
+    "242228_small.mp4",
+    "180057-863401699_small.mp4",
+    "159309-818469332.mp4",
+    "144959-785568576_medium.mp4",
+    "6847-196978755_medium.mp4",
+    "16012-268207204_small.mp4",
+    "228847_tiny.mp4",
+    "71350-538489808.mp4",
+    "71571-538974136.mp4",
+    "854982-hd_1280_720_25fps.mp4",
+    "107027-674703679_medium.mp4",
+    "113004-696349232_medium.mp4",
+    "114552-701830169_tiny.mp4",
+    "145059-785786266_medium.mp4",
+    "155242-809619008_tiny.mp4",
+    "resim.mp4",
+    "170727-843752865_tiny.mp4",
+    "178807-860734626_medium.mp4",
+    "178809-860734631_small.mp4",
+    "184261-873087820_tiny.mp4",
+    "189703-886596102_medium.mp4",
+    "198416-907598367_tiny.mp4",
+    "201446-915698703_medium.mp4",
+    "5744426-hd_1280_720_30fps.mp4",
+    "44798-440001069_small.mp4",
+    "28746-371345147_tiny.mp4",
+    "186405-877993676_tiny.mp4",
+    "214732_tiny.mp4",
+    "35427-407130886_small.mp4",
+    "3904-175596530_medium.mp4",
+    "184972-874460313_medium.mp4",
+    "133101-755975121_medium.mp4"
+  ];
+
+  const btn = document.getElementById("playVideosBtn");
+  const videoPlayer = document.getElementById("videoPlayer");
+  const videoSource = document.getElementById("videoSource");
+
+  let currentVideoIndex = 0;
+
+  btn.addEventListener("click", () => {
+    // Buton tıklandı, video alanını göster
+    videoPlayer.style.display = "block";
+    btn.style.display = "none";  // Butonu gizle
+
+    // İlk videoyu başlat
+    playVideoAtIndex(currentVideoIndex);
+  });
+
+  function playVideoAtIndex(index) {
+    if(index >= videos.length) {
+      // Tüm videolar bitti, video player gizlenebilir veya ilk videoya dönebilir
+      videoPlayer.style.display = "none";
+      btn.style.display = "block"; // Butonu tekrar göster (isteğe bağlı)
+      currentVideoIndex = 0; // Sıfırla
+      return;
+    }
+    // Video kaynağını değiştir
+    videoSource.src = videos[index];
+    videoPlayer.load();
+    videoPlayer.play();
+  }
+
+  // Video bittiğinde sonraki videoya geç
+  videoPlayer.addEventListener("ended", () => {
+    currentVideoIndex++;
+    playVideoAtIndex(currentVideoIndex);
+  });
+
+
+
+
+
+
+
+
+
+
+
+  
   
 </script>
 
