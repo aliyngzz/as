@@ -402,23 +402,7 @@
 </div>
 
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
-<button id="playVideosBtn"
-  style="position: fixed; top: 150px; left: 20px; z-index: 9999; padding: 10px 20px; font-size: 16px; cursor: pointer;">
-  Videoları Oynat
-</button>
 
-<!-- Tam Ekran Video Kutusu -->
-<div id="videoContainer"
-  style="display:none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: black; z-index: 10000;">
-  <button id="closeVideoBtn"
-    style="position:absolute; top:20px; right:20px; z-index:10001; padding:10px 15px; font-size:16px; cursor:pointer;">
-    Kapat
-  </button>
-  <video id="videoPlayer" width="100%" height="100%" controls autoplay>
-    <source id="videoSource" src="" type="video/mp4" />
-    Tarayıcınız video etiketini desteklemiyor.
-  </video>
-</div>
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
 
@@ -441,7 +425,23 @@
 </div>
   
   <button id="tvOpenBtn">TV Aç</button>
+<button id="playVideosBtn"
+  style="position: fixed; top: 150px; left: 20px; z-index: 9999; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+  Videoları Oynat
+</button>
 
+<!-- Video Kutusu -->
+<div id="videoContainer"
+  style="display:none; position: fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:10000;">
+  <button id="closeVideoBtn"
+    style="position:absolute; top:20px; right:20px; z-index:10001; padding:10px 15px; font-size:16px; cursor:pointer;">
+    Kapat
+  </button>
+  <video id="videoPlayer" width="100%" height="100%" controls autoplay>
+    <source id="videoSource" src="" type="video/mp4" />
+    Tarayıcınız video etiketini desteklemiyor.
+  </video>
+</div>
   <script>
     const videoIds = [ 
      "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
@@ -1011,70 +1011,68 @@ closeBtn.addEventListener('click', () => {
 
 
 
-
-
-
-
-
-
-
 <script>
-  const videos = [
-    "111179-689949805_tiny.mp4", "158349-816637197_tiny.mp4", "246856_tiny.mp4",
-    "120739-724673230_tiny.mp4", "28746-371345147_tiny.mp4", "57647-486227472_tiny.mp4",
-    "35427-407130886_small.mp4", "263208_small.mp4", "242228_small.mp4",
-    "180057-863401699_small.mp4", "159309-818469332.mp4", "144959-785568576_medium.mp4",
-    "6847-196978755_medium.mp4", "16012-268207204_small.mp4", "228847_tiny.mp4",
-    "71350-538489808.mp4", "71571-538974136.mp4", "854982-hd_1280_720_25fps.mp4",
-    "107027-674703679_medium.mp4", "113004-696349232_medium.mp4", "114552-701830169_tiny.mp4",
-    "145059-785786266_medium.mp4", "155242-809619008_tiny.mp4", "resim.mp4",
-    "170727-843752865_tiny.mp4", "178807-860734626_medium.mp4", "178809-860734631_small.mp4",
-    "184261-873087820_tiny.mp4", "189703-886596102_medium.mp4", "198416-907598367_tiny.mp4",
-    "201446-915698703_medium.mp4", "5744426-hd_1280_720_30fps.mp4", "44798-440001069_small.mp4",
-    "186405-877993676_tiny.mp4", "214732_tiny.mp4", "3904-175596530_medium.mp4",
-    "184972-874460313_medium.mp4", "133101-755975121_medium.mp4"
-  ];
+  window.onload = function () {
+    const videos = [
+      "111179-689949805_tiny.mp4", "158349-816637197_tiny.mp4", "246856_tiny.mp4",
+      "120739-724673230_tiny.mp4", "28746-371345147_tiny.mp4", "57647-486227472_tiny.mp4",
+      "35427-407130886_small.mp4", "263208_small.mp4", "242228_small.mp4",
+      "180057-863401699_small.mp4", "159309-818469332.mp4", "144959-785568576_medium.mp4",
+      "6847-196978755_medium.mp4", "16012-268207204_small.mp4", "228847_tiny.mp4",
+      "71350-538489808.mp4", "71571-538974136.mp4", "854982-hd_1280_720_25fps.mp4",
+      "107027-674703679_medium.mp4", "113004-696349232_medium.mp4", "114552-701830169_tiny.mp4",
+      "145059-785786266_medium.mp4", "155242-809619008_tiny.mp4", "resim.mp4",
+      "170727-843752865_tiny.mp4", "178807-860734626_medium.mp4", "178809-860734631_small.mp4",
+      "184261-873087820_tiny.mp4", "189703-886596102_medium.mp4", "198416-907598367_tiny.mp4",
+      "201446-915698703_medium.mp4", "5744426-hd_1280_720_30fps.mp4", "44798-440001069_small.mp4",
+      "186405-877993676_tiny.mp4", "214732_tiny.mp4", "3904-175596530_medium.mp4",
+      "184972-874460313_medium.mp4", "133101-755975121_medium.mp4"
+    ];
 
-  const btnPlay = document.getElementById("playVideosBtn");
-  const container = document.getElementById("videoContainer");
-  const videoPlayer = document.getElementById("videoPlayer");
-  const videoSource = document.getElementById("videoSource");
-  const btnClose = document.getElementById("closeVideoBtn");
+    const btnPlay = document.getElementById("playVideosBtn");
+    const container = document.getElementById("videoContainer");
+    const videoPlayer = document.getElementById("videoPlayer");
+    const videoSource = document.getElementById("videoSource");
+    const btnClose = document.getElementById("closeVideoBtn");
 
-  let currentVideoIndex = 0;
+    let currentVideoIndex = 0;
 
-  btnPlay.addEventListener("click", () => {
-    container.style.display = "block";
-    btnPlay.style.display = "none";
-    playVideoAtIndex(currentVideoIndex);
-  });
+    btnPlay.addEventListener("click", () => {
+      container.style.display = "block";
+      btnPlay.style.display = "none";
+      currentVideoIndex = 0;
+      playVideoAtIndex(currentVideoIndex);
+    });
 
-  btnClose.addEventListener("click", () => {
-    videoPlayer.pause();
-    videoPlayer.currentTime = 0;
-    container.style.display = "none";
-    btnPlay.style.display = "block";
-    currentVideoIndex = 0;
+    btnClose.addEventListener("click", () => {
+      videoPlayer.pause();
+      videoPlayer.currentTime = 0;
+      container.style.display = "none";
+      btnPlay.style.display = "block";
+      window.scrollTo(0, 0); // Ana sayfaya dön
+    });
 
-    // RESİMLİ ANA SAYFAYA geri dönmek için:
-    window.scrollTo(0, 0);
-  });
-
-  function playVideoAtIndex(index) {
-    if (index >= videos.length) {
-      btnClose.click();
-      return;
+    function playVideoAtIndex(index) {
+      if (index >= videos.length) {
+        btnClose.click(); // bittiğinde kapat
+        return;
+      }
+      videoSource.src = videos[index];
+      videoPlayer.load();
+      videoPlayer.play();
     }
-    videoSource.src = videos[index];
-    videoPlayer.load();
-    videoPlayer.play();
-  }
 
-  videoPlayer.addEventListener("ended", () => {
-    currentVideoIndex++;
-    playVideoAtIndex(currentVideoIndex);
-  });
+    videoPlayer.addEventListener("ended", () => {
+      currentVideoIndex++;
+      playVideoAtIndex(currentVideoIndex);
+    });
+  }
 </script>
+
+
+
+
+
 
 
 
