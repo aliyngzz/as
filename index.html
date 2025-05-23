@@ -1,992 +1,122 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Full Screen Video</title>
-    <title>Hava Durumu</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background: black;
-    }
-
-  #startBtn {
-  display: none; /* Sayfa yüklendiğinde gizli */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px 40px;
-  font-size: 20px;
-  background: #000;
-  color: white;
-  border: 2px solid white;
-  cursor: pointer;
-  z-index: 999;
-}
-
-    .player {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 120vw;
-      height: 67.5vw;
-      max-height: 120vh;
-      max-width: 213.33vh;
-      transform: translate(-50%, -50%);
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 2s ease;
-      pointer-events: none;
-    }
-
-    .player.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .player iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* /// YENİ /// Mini TV ekranı ve butonları */
-    #miniTVContainer {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 300px;
-      height: 170px;
-      background: black;
-      border: 2px solid white;
-      display: flex;
-      flex-direction: column;
-      z-index: 20;
-    }
-
-    #miniTV {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    #tvControls {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 5px;
-    }
-
-    .tvBtn {
-      background: #222;
-      color: white;
-      border: 1px solid white;
-      cursor: pointer;
-      padding: 5px;
-      flex: 1;
-      font-size: 12px;
-    }
-
-   #tvOpenBtn {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  padding: 18px 30px;
-  font-size: 20px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #ff4081, #7c4dff);
-  color: white;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-  z-index: 9999;
-  display: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#tvOpenBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
-
-    }
-
-#musicControl {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #8e24aa, #5e35b1);
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  font-size: 18px;
-  border-radius: 30px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 9999;
-}
-#weather {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 10px 15px;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border-radius: 10px;
-  z-index: 999;
-}
-
- #nature-controls {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 999999; /* Çok yüksek z-index, iframe bile geçemez */
-    background: rgba(255, 255, 255, 0.85);
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
-    display: flex;
-    gap: 10px;
-    backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
-  }
-
-  #nature-controls button {
-    padding: 8px 14px;
-    font-size: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #2e7d32;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Video Slideshow</title>
+<style>
+  body {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 100vh; 
+    background: #222; 
     color: white;
-    font-weight: bold;
-    transition: background 0.3s ease;
+    margin: 0;
   }
-#sloganText {
-  position: fixed;
-  top: 10px;
-  width: 100%;
-  text-align: center;
-  font-size: 36px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow:
-    0 0 5px #00ffcc,
-    0 0 10px #00ffcc,
-    0 0 20px #00ffcc,
-    0 0 40px #00ffcc;
-  z-index: 99999;
-  opacity: 0;
-  transition: opacity 2s ease;
-  font-family: 'Arial Black', Gadget, sans-serif;
-}
- #notTrigger {
-    position: fixed;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 30px;
-    text-align: center;
-    line-height: 60px;
-    cursor: pointer;
-    box-shadow: 0 0 15px #fff;
-    animation: pulse 2s infinite;
-    z-index: 1000;
+  video {
+    width: 80vw;
+    max-width: 800px;
+    border: 3px solid #fff;
+    border-radius: 10px;
+    background: black;
   }
-
-  @keyframes pulse {
-    0% { box-shadow: 0 0 10px #fff; }
-    50% { box-shadow: 0 0 20px #f0f; }
-    100% { box-shadow: 0 0 10px #fff; }
-  }
-
-  #notPanel {
-    position: fixed;
-    left: 80px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #222;
-    color: #fff;
-    border-radius: 15px;
-    padding: 15px;
-    width: 250px;
-    box-shadow: 0 0 20px #0ff;
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 1000;
-  }
-
-  #noteText {
-    height: 80px;
+  button {
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 10px 25px;
     border: none;
-    border-radius: 8px;
-    padding: 8px;
-    resize: none;
-    font-size: 14px;
-  }
-
-  #alarmTime {
-    border-radius: 8px;
-    padding: 5px;
-  }
-
-  #notPanel button {
-    background: linear-gradient(45deg, #74ebd5, #9face6);
-    border: none;
-    border-radius: 8px;
-    padding: 8px;
-    color: #000;
+    border-radius: 5px;
+    background-color: #0078d7;
+    color: white;
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
+    transition: background-color 0.3s ease;
   }
-
-  #notPanel button:hover {
-    background: #fff;
+  button:hover {
+    background-color: #005ea3;
   }
-    #introImage {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('pexels-pixabay-158063.jpg') no-repeat center center;
-  background-size: cover;
-  z-index: -1;
-}
-
-
-#weather-box {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  width: 160px;
-  height: auto;
-  line-height: 1.4;
-  box-shadow: 0 0 5px rgba(0,0,0,0.4);
-  z-index: 9999;
-}
-
-#weather-box img {
-  width: 32px;
-  height: 32px;
-  vertical-align: middle;
-}
-
-#youtubeBtn {
-  position: fixed;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  background: red;
-  border-radius: 50%;
-  box-shadow: 0 0 15px red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  color: white;
-  cursor: pointer;
-  z-index: 9999;
-  animation: pulseYT 2s infinite;
-}
-
-@keyframes pulseYT {
-  0% { box-shadow: 0 0 5px red; }
-  50% { box-shadow: 0 0 20px red; }
-  100% { box-shadow: 0 0 5px red; }
-}
-    #startBtn {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 20px 40px;
-  border: none;
-  border-radius: 15px;
-  background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc, #ffcc00);
-  color: white;
-  cursor: pointer;
-  animation: glow 3s linear infinite;
-  box-shadow: 0 0 15px #fff;
-}
-
-@keyframes glow {
-  0% { box-shadow: 0 0 10px #ff00cc; }
-  25% { box-shadow: 0 0 20px #3333ff; }
-  50% { box-shadow: 0 0 20px #00ffcc; }
-  75% { box-shadow: 0 0 25px #ffcc00; }
-  100% { box-shadow: 0 0 10px #ff00cc; }
-}
-
-/* Şeffaf parlak animasyonlu kapat butonu */
-#closeBtn {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.3);
-  color: white;
-  font-weight: bold;
-  padding: 12px 25px;
-  border: 2px solid white;
-  border-radius: 25px;
-  font-size: 18px;
-  cursor: pointer;
-  backdrop-filter: blur(5px);
-  display: none;
-  animation: shine 2s ease-in-out infinite;
-}
-
-@keyframes shine {
-  0% { box-shadow: 0 0 5px white; }
-  50% { box-shadow: 0 0 20px white; }
-  100% { box-shadow: 0 0 5px white; }
-}
-
-  </style>
+</style>
 </head>
 <body>
-  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
-<audio id="audioPlayer"></audio>
 
-<button id="musicControl">🎵 Müziği Aç</button>
-  <div id="player1" class="player"></div>
-  <div id="player2" class="player"></div>
-<div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
-  <!-- /// YENİ /// Mini TV ekranı -->
-  <div id="miniTVContainer">
-<iframe id="miniTV" src="https://www.youtube.com/embed/ztmY_cCtUl0" allowfullscreen></iframe>
-    <div id="tvControls">
-      <button class="tvBtn" id="channelBtn">Kanal Değiştir</button>
-      <button class="tvBtn" id="closeTVBtn">TV Kapat</button>
-    </div>
-  </div>
-<div id="mainContent" style="display: none;">
-  <!-- mevcut tüm içeriğin buraya taşınacak -->
-</div>
-
-<div id="countdownScreen" style="text-align: center; padding-top: 100px;">
-  <div id="countdown" style="font-size: 60px; color: green;">5</div>
-  <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
-</div>
-  <button id="closeBtn">KAPAT</button>
-<div id="weather-box">Yükleniyor...</div>
-
-<audio id="nature-sound" preload="auto"></audio>
-
-<div id="youtubeBtn" title="YouTube Aç">▶️</div>
-
-<!-- Doğa Sesi Butonları -->
-<div id="nature-controls">
-  <button id="play-sound">Doğa Sesini Aç</button>
-  <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
-</div>
-
-<audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
-
-<!-- Not butonu -->
-<div id="notTrigger">📝</div>
-
-<!-- Not paneli -->
-<div id="notPanel">
-  <textarea id="noteText" placeholder="Notunu yaz..."></textarea>
-  <input type="datetime-local" id="alarmTime">
-  <button onclick="setAlarm()">⏰ Hatırlat</button>
-  <button onclick="saveNote()">💾 Kaydet</button>
-  <button onclick="closePanel()">❌ Kapat</button>
-</div>
-<div id="introImage"></div>
-  <img src="pexels-pixabay-158063.jpg" alt="Doğa" style="width:100%; height:100%; object-fit:cover;">
-</div>
-
-<!-- Ana içerik -->
-<div id="mainContent" style="display:none;">
-  <!-- Diğer içerikler -->
-  <!-- Örneğin doğa videoları veya butonlar burada olacak -->
-</div>
-  
-  <button id="tvOpenBtn">TV Aç</button>
-
-  <script>
-    const videoIds = [ 
-     "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
-    "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
-    "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
-    ]; 
-    const tvChannels = [
-      "https://www.youtube.com/embed/ztmY_cCtUl0",
-      "https://www.youtube.com/embed/ZSWPj9szKb8",
-      "https://www.youtube.com/embed/9KEThxQtWYA"
-    ];
-
-    let tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api"; 
-    document.head.appendChild(tag);
-
-    let players = {};
-    let index = 0;
-    let activePlayer = 1;
-
-    document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("startBtn").style.display = "none";
-      enterFullscreen(document.documentElement);
-      startVideoPlayer();
-    });
-
-    function onYouTubeIframeAPIReady() {
-      players.player1 = new YT.Player('player1', {
-        videoId: '',
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          mute: 1,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-        }
-      });
-
-      players.player2 = new YT.Player('player2', {
-        videoId: '',
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          mute: 1,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-        }
-      });
-    }
-
-    function startVideoPlayer() {
-      players.player1.loadVideoById(videoIds[index]);
-      players.player1.mute();
-      players.player1.playVideo();
-      document.getElementById('player1').classList.add('active');
-      scheduleNext();
-    }
-
-    function scheduleNext() {
-      const nextIndex = (index + 1) % videoIds.length;
-      const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-      const nextDiv = activePlayer === 1 ? document.getElementById('player2') : document.getElementById('player1');
-      const currentDiv = activePlayer === 1 ? document.getElementById('player1') : document.getElementById('player2');
-
-      setTimeout(() => {
-        nextPlayer.loadVideoById(videoIds[nextIndex]);
-        nextPlayer.mute();
-        nextPlayer.playVideo();
-      }, 10000);
-
-      setTimeout(() => {
-        currentDiv.classList.remove("active");
-        nextDiv.classList.add("active");
-        index = nextIndex;
-        activePlayer = activePlayer === 1 ? 2 : 1;
-        scheduleNext();
-      }, 15000);
-    }
-
-    function enterFullscreen(elem) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      }
-    }
-
-    // /// YENİ /// TV işlevleri
-    let currentTVChannel = 0;
-    const tvFrame = document.getElementById("miniTV");
-    const tvContainer = document.getElementById("miniTVContainer");
-    const tvOpenBtn = document.getElementById("tvOpenBtn");
-
-    document.getElementById("channelBtn").addEventListener("click", () => {
-      currentTVChannel = (currentTVChannel + 1) % tvChannels.length;
-      tvFrame.src = tvChannels[currentTVChannel];
-    });
-
-    document.getElementById("closeTVBtn").addEventListener("click", () => {
-      tvContainer.style.display = "none";
-      tvOpenBtn.style.display = "block";
-    });
-
-    document.getElementById("tvOpenBtn").addEventListener("click", () => {
-      tvContainer.style.display = "flex";
-      tvOpenBtn.style.display = "none";
-    });
-
-
-  </script>
-
-
-
-
-
-
-
+<video id="videoPlayer" controls></video>
+<button id="toggleBtn">Başlat</button>
 
 <script>
-  const turkeySongs = [
-    "Turku-Ervahi-Ezelden-14 (1).mp3",
-    "Erdal-Erzincan-Deyis.mp3",
-    "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-    "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-    "Erdal-Erzincan-Yol-Havasi-87.mp3",
-    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
-    "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
-    "Erdal-Erzincan-Sarma-Havasi-67.mp3",
-    "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
-    "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
-    "ates-i-askina-semah.mp3",
-    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3",
-    "Deyiş Devran - Gerçek Olan.mp3",
-    "Erdal Erzincan - Deyiş.mp3",
-    "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
-    "miraz-uryan-geldim.mp3",
-    "Muhabbet Bağında - Deyiş.mp3",
-    "sabahat-akkiraz-tevhid.mp3",
-    "Zülfükâr Arslan - Deyiş.mp3",
-    "bugun-bize-pir-geldi.mp3",
-    "Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
-    "Erdal-Erzincan-Felek-Senin-Elinden.mp3",
-    "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
-    "Erdal-Erzincan-Nem-kaldi.mp3",
-    "Erdal-Erzincan-Urfa-Havasi-55.mp3",
-    "Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
-    "Erdal-Erzincan-Goc-54.mp3",
-    "dertli-divani-ayirma-bizi.mp3",
-  "dertli-divani-bilesin (1).mp3",
-  "dertli-divani-bir-dunya-istiyoruz.mp3",
-  "dertli-divani-birisi-muhammed-biri-ali-dir.mp3",
-  "dertli-divani-bulandi-askimin-seli.mp3",
-  "dertli-divani-candan-ya-ali.mp3",
-  "dertli-divani-cehalet-ruzgari.mp3",
-  "dertli-divani-diktigimiz-fidanlar.mp3",
-  "dertli-divani-direzi-nedir.mp3",
-  "dertli-divani-donen-de-oldu.mp3",
-  "dertli-divani-erenler-cemi.mp3",
-  "dertli-divani-geldik-bu-hana.mp3",
-  "dertli-divani-goremediler.mp3",
-
-  "asik-gulabi-abdal-musa.mp3",
-"asik-gulabi-acilin-kapilar-saha-gidelim.mp3",
-
-  "asik-gulabi-aglar-huseyin-askina.mp3",
-  "asik-gulabi-alin-var-haci-bektas.mp3",
-  "asik-gulabi-ali-olmasaydi.mp3",
-  "erdal-erzincan-al-mendil.mp3",
-  "mustafa-ozarslan-agir-halay.mp3",
-  "mustafa-ozarslan-ahu-bakislim.mp3",
-  "mustafa-ozarslan-arayi-arayi.mp3",
-  "mustafa-ozarslan-asagidan-bir-yel-esti.mp3",
-  "mustafa-ozarslan-ayrilamam-ben-o-gul-yuzlu-yardan.mp3",
-  "mustafa-ozarslan-bu-senede-boyle-oldu.mp3",
-  "mustafa-ozarslan-hey-onbesli.mp3",
-  "ozcan-ture-ben-omrume-yanarim.mp3"
-  
-
-
-    
+  const videos = [
+    "111179-689949805_tiny.mp4",
+    "158349-816637197_tiny.mp4",
+    "246856_tiny.mp4",
+    "120739-724673230_tiny.mp4",
+    "28746-371345147_tiny.mp4",
+    "57647-486227472_tiny.mp4",
+    "35427-407130886_small.mp4",
+    "263208_small.mp4",
+    "242228_small.mp4",
+    "180057-863401699_small.mp4",
+    "159309-818469332.mp4",
+    "144959-785568576_medium.mp4",
+    "6847-196978755_medium.mp4",
+    "16012-268207204_small.mp4",
+    "228847_tiny.mp4",
+    "71350-538489808.mp4",
+    "71571-538974136.mp4",
+    "854982-hd_1280_720_25fps.mp4",
+    "107027-674703679_medium.mp4",
+    "113004-696349232_medium.mp4",
+    "114552-701830169_tiny.mp4",
+    "145059-785786266_medium.mp4",
+    "155242-809619008_tiny.mp4",
+    "resim.mp4",
+    "170727-843752865_tiny.mp4",
+    "178807-860734626_medium.mp4",
+    "178809-860734631_small.mp4",
+    "184261-873087820_tiny.mp4",
+    "189703-886596102_medium.mp4",
+    "198416-907598367_tiny.mp4",
+    "201446-915698703_medium.mp4",
+    "5744426-hd_1280_720_30fps.mp4",
+    "44798-440001069_small.mp4",
+    "28746-371345147_tiny.mp4",
+    "186405-877993676_tiny.mp4",
+    "214732_tiny.mp4",
+    "35427-407130886_small.mp4",
+    "3904-175596530_medium.mp4",
+    "184972-874460313_medium.mp4",
+    "133101-755975121_medium.mp4"
   ];
 
-  const player = document.getElementById("audioPlayer");
-  const button = document.getElementById("musicControl");
-  let isPlaying = false;
-  let shuffledSongs = shuffleArray([...turkeySongs]);
   let currentIndex = 0;
+  let isPlaying = false;
+  const videoPlayer = document.getElementById('videoPlayer');
+  const toggleBtn = document.getElementById('toggleBtn');
 
-  function shuffleArray(array) {
-    return array.sort(() => Math.random() - 0.5);
-  }
+  // İlk videoyu yükle
+  videoPlayer.src = videos[currentIndex];
 
-  function playSong(index) {
-    player.src = shuffledSongs[index];
-    player.play();
-  }
-
-  player.addEventListener("ended", () => {
-    currentIndex = (currentIndex + 1) % shuffledSongs.length;
-    playSong(currentIndex);
+  // Videolar sırayla oynasın
+  videoPlayer.addEventListener('ended', () => {
+    if (!isPlaying) return; // durduysa devam etme
+    currentIndex = (currentIndex + 1) % videos.length;
+    videoPlayer.src = videos[currentIndex];
+    videoPlayer.play();
   });
 
-  button.addEventListener("click", () => {
+  toggleBtn.addEventListener('click', () => {
     if (!isPlaying) {
-      playSong(currentIndex);
-      button.textContent = "⏸ Müziği Kapat";
+      // Oynatmaya başla
       isPlaying = true;
+      toggleBtn.textContent = 'Durdur';
+      videoPlayer.play();
     } else {
-      player.pause();
-      button.textContent = "🎵 Müziği Aç";
+      // Oynatmayı durdur
       isPlaying = false;
+      toggleBtn.textContent = 'Başlat';
+      videoPlayer.pause();
     }
   });
 </script>
-
-
-
-
-<script>
-  const natureSounds = [
-    "birds-in-forest-on-sunny-day-14444.mp3",
-    "forest-birds-summer-sweden-18333.mp3",
-    "woodpecker-and-other-birds-23488.mp3",
-    "bees-29400.mp3",
-    "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
-    "fire-sound-310285.mp3",
-    "forest-atmosphere-002localization-poland-329733.mp3",
-    "forest-atmosphere-007localization-poland-330007.mp3",
-    "nature-sound-near-river-or-waterfall-247409.mp3",
-    "relaxing-rain-and-birds-6-minutes-52191.mp3",
-    "soft-wind-314945.mp3",
-    "soft-wind-318856.mp3",
-    "waterfall-176958 (1).mp3",
-    "waterfall-176958.mp3",
-    "water-splashing-108887.mp3",
-    "tui-birdsong-new-zealand-31660.mp3",
-    "smallwaterfall-218855.mp3",
-    "small-mountain-waterfall_nature-sound-203003.mp3",
-    "singing-barn-swallows-3-306979.mp3",
-    "mar-agitado-272999.mp3",
-    "french-coutryside-sunrise-17100.mp3",
-    "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
-    "bird-sounds-of-knysna-20130.mp3",
-    "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
-  ];
-
- const audio = document.getElementById("nature-sound");
-const playButton = document.getElementById("play-sound");
-const pauseButton = document.getElementById("pause-sound");
-
-playButton.addEventListener("click", () => {
-  const randomIndex = Math.floor(Math.random() * natureSounds.length);
-  audio.src = natureSounds[randomIndex];
-  audio.play();
-  playButton.style.display = "none";
-  pauseButton.style.display = "inline-block";
-});
-
-pauseButton.addEventListener("click", () => {
-  audio.pause();
-  audio.currentTime = 0;
-  pauseButton.style.display = "none";
-  playButton.style.display = "inline-block";
-});
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  let count = 5;
-  const countdownEl = document.getElementById("countdown");
-  const messageEl = document.getElementById("message");
-  const countdownScreen = document.getElementById("countdownScreen");
-  const mainContent = document.getElementById("mainContent");
-
-  const timer = setInterval(() => {
-    count--;
-    countdownEl.textContent = count;
-
-    if (count === 0) {
-      clearInterval(timer);
-      messageEl.textContent = "Şimdi tıklayabilirsin!";
-      setTimeout(() => {
-        countdownScreen.style.display = "none";
-        mainContent.style.display = "block";
-      }, 1000); // 1 saniye sonra ekranı kapat, içeriği göster
-    }
-  }, 1000);
-</script>
-
-
-
-
-
-
-
-
-
-<script>
-  function showSlogan() {
-    const slogan = document.getElementById("sloganText");
-    slogan.style.opacity = 1;
-    setTimeout(() => {
-      slogan.style.opacity = 0;
-    }, 20000); // 20 saniye görünür
-  }
-
-  // Sayfa açılınca ilk gösterim
-  window.addEventListener("load", () => {
-    setTimeout(showSlogan, 1000); // Açılıştan 1 saniye sonra
-    setInterval(showSlogan, 240000); // Her 4 dakikada bir tekrar
-  });
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  const panel = document.getElementById('notPanel');
-  const trigger = document.getElementById('notTrigger');
-  const noteInput = document.getElementById('noteText');
-  const alarmInput = document.getElementById('alarmTime');
-  const alarmSound = document.getElementById('alarmSound');
-
-  // Aç/kapat butonu
-  trigger.onclick = () => {
-    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
-    loadNote();
-  }
-
-  function closePanel() {
-    panel.style.display = 'none';
-  }
-
-  // Notu kaydet
-  function saveNote() {
-    localStorage.setItem('myNote', noteInput.value);
-    alert('Not kaydedildi!');
-  }
-
-  // Notu yükle
-  function loadNote() {
-    noteInput.value = localStorage.getItem('myNote') || '';
-  }
-
-  // Alarm kur
-  function setAlarm() {
-    const alarmTime = new Date(alarmInput.value).getTime();
-    if (!alarmTime) {
-      alert('Tarih seç!');
-      return;
-    }
-    const now = Date.now();
-    const delay = alarmTime - now;
-    if (delay < 0) {
-      alert('Geçmiş zaman seçilemez!');
-      return;
-    }
-
-    setTimeout(() => {
-      alarmSound.play();
-      alert('⏰ Hatırlatma zamanı!');
-    }, delay);
-    alert('Alarm kuruldu!');
-  }
-</script>
-
-
-
-
-
-<script>
-  setTimeout(function() {
-    document.getElementById("startBtn").style.display = "block";
-  }, 5000); // 5 saniye sonra görünür
-</script>
-
-
-
-
-
-  
-
-<script>
-  // 5 saniye sonra butonu göster
-  setTimeout(() => {
-    document.getElementById("startBtn").style.display = "block";
-  }, 5000);
-
-  // 10 saniye sonra butonu gizle
-  setTimeout(() => {
-    document.getElementById("startBtn").style.display = "none";
-  }, 60000);
-</script>
-
-
-<script>
-  window.addEventListener("load", () => {
-    // 5 saniye sonra resmi gizle ve içeriği göster
-    setTimeout(() => {
-      document.getElementById("introImage").style.display = "none";
-      document.getElementById("mainContent").style.display = "block";
-    }, 5000);
-  });
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  // Sayfa yüklendiğinde butonu görünür yap
-  document.addEventListener("DOMContentLoaded", () => {
-    const tvOpenBtn = document.getElementById("tvOpenBtn");
-    const miniTVContainer = document.getElementById("miniTVContainer");
-
-    // İlk başta TV gizli olacak
-    miniTVContainer.style.display = "none";
-
-    // TV Aç butonunu göster
-    tvOpenBtn.style.display = "block";
-
-    // TV Aç düğmesine tıklanınca miniTV görünür hale gelsin
-    tvOpenBtn.addEventListener("click", () => {
-      miniTVContainer.style.display = "flex";
-      tvOpenBtn.style.display = "none"; // Açıldıktan sonra butonu gizle
-    });
-
-    // TV Kapat butonu: miniTV'yi gizle ve "TV Aç" butonunu tekrar göster
-    const closeTVBtn = document.getElementById("closeTVBtn");
-    closeTVBtn.addEventListener("click", () => {
-      miniTVContainer.style.display = "none";
-      tvOpenBtn.style.display = "block";
-    });
-  });
-
-</script>
-
-<script>
-
- const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
-  const cities = [
-    "Kutahya", "Karabuk", "Usak", "Istanbul", "Ankara",
-    "Izmir", "Adana", "Antalya", "Samsun", "Eskisehir"
-  ];
-
-  let currentCityIndex = 0;
-  const weatherBox = document.getElementById('weather-box');
-
-  async function fetchWeather(city) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},TR&units=metric&lang=tr&appid=${apiKey}`;
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.cod !== 200) {
-        throw new Error(data.message);
-      }
-
-      const temp = Math.round(data.main.temp);
-      const description = data.weather[0].description;
-      const icon = data.weather[0].icon;
-      const cityName = data.name;
-
-      weatherBox.innerHTML = `
-        <strong>${cityName}</strong><br>
-        ${description}<br>
-        Sıcaklık: ${temp}°C<br>
-        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}" />
-      `;
-    } catch (error) {
-      weatherBox.innerHTML = `Hata: ${error.message}`;
-    }
-  }
-
-  function updateWeather() {
-    const city = cities[currentCityIndex];
-    fetchWeather(city);
-    currentCityIndex = (currentCityIndex + 1) % cities.length;
-  }
-
-  // İlk çağırma
-  updateWeather();
-  // 5 saniyede bir güncelle
-  setInterval(updateWeather, 5000);
-</script>
-
-<script>
-
-document.getElementById("youtubeBtn").addEventListener("click", function () {
-  // Kanalınızın adresini buraya koyun
-  window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
-});
-
-</script>
-
-
-
-
-<script>
-
-  const startBtn = document.getElementById('startBtn');
-const closeBtn = document.getElementById('closeBtn');
-const videoSection = document.getElementById('videoSection'); // varsa yoksa sen ekle
-
-startBtn.addEventListener('click', () => {
-  startBtn.style.display = 'none';
-  videoSection.style.display = 'block';
-  closeBtn.style.display = 'block';
-});
-
-closeBtn.addEventListener('click', () => {
-  startBtn.style.display = 'inline-block';
-  videoSection.style.display = 'none';
-  closeBtn.style.display = 'none';
-
-  // YouTube iframe'i durdur
-  const iframe = document.querySelector('iframe');
-  if (iframe) {
-    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-  }
-});
-
-  
-</script>
-
-
-    
 
 </body>
 </html>
