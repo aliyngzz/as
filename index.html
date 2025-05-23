@@ -362,6 +362,53 @@
   100% { box-shadow: 0 0 5px white; }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+#mp4-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid white;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 50px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  animation: glow 2s infinite alternate;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
+@keyframes glow {
+  0%   { box-shadow: 0 0 5px #fff; }
+  100% { box-shadow: 0 0 20px #0ff; }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    
   </style>
 </head>
 <body>
@@ -425,7 +472,17 @@
 </div>
   
   <button id="tvOpenBtn">TV Aç</button>
+<div id="mp4-button">MP4</div>
 
+<!-- Video ekranı (başlangıçta gizli) -->
+<div id="video-screen" style="display:none;">
+  <video id="background-video" autoplay muted playsinline></video>
+</div>
+
+<!-- Görsel ekran (başlangıçta gösteriliyor) -->
+<div id="image-screen">
+  <img src="resim.jpg" alt="Arka Plan Resmi" style="width:100%;height:100%;object-fit:cover;">
+</div>
   <script>
     const videoIds = [ 
      "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
@@ -981,6 +1038,106 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
+
+</script>
+
+
+
+
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const video = document.getElementById("background-video");
+  const videoScreen = document.getElementById("video-screen");
+  const imageScreen = document.getElementById("image-screen");
+  const mp4Button = document.getElementById("mp4-button");
+
+  const videoList = [
+    "111179-689949805_tiny.mp4",
+    "158349-816637197_tiny.mp4",
+    "246856_tiny.mp4",
+    "120739-724673230_tiny.mp4",
+    "28746-371345147_tiny.mp4",
+    "57647-486227472_tiny.mp4",
+    "35427-407130886_small.mp4",
+    "263208_small.mp4",
+    "242228_small.mp4",
+    "180057-863401699_small.mp4",
+    "159309-818469332.mp4",
+    "144959-785568576_medium.mp4",
+    "6847-196978755_medium.mp4",
+    "16012-268207204_small.mp4",
+    "228847_tiny.mp4",
+    "71350-538489808.mp4",
+    "71571-538974136.mp4",
+    "854982-hd_1280_720_25fps.mp4",
+    "107027-674703679_medium.mp4",
+    "113004-696349232_medium.mp4",
+    "114552-701830169_tiny.mp4",
+    "145059-785786266_medium.mp4",
+    "155242-809619008_tiny.mp4",
+    "resim.mp4",
+    "170727-843752865_tiny.mp4",
+    "178807-860734626_medium.mp4",
+    "178809-860734631_small.mp4",
+    "184261-873087820_tiny.mp4",
+    "189703-886596102_medium.mp4",
+    "198416-907598367_tiny.mp4",
+    "201446-915698703_medium.mp4",
+    "5744426-hd_1280_720_30fps.mp4",
+    "44798-440001069_small.mp4",
+    "186405-877993676_tiny.mp4",
+    "214732_tiny.mp4",
+    "3904-175596530_medium.mp4",
+    "184972-874460313_medium.mp4",
+    "133101-755975121_medium.mp4"
+  ];
+
+  let videoPlaying = false;
+
+  function getRandomVideo() {
+    return videoList[Math.floor(Math.random() * videoList.length)];
+  }
+
+  function playRandomVideo() {
+    const src = getRandomVideo();
+    video.src = src;
+    video.play();
+  }
+
+  mp4Button.addEventListener("click", () => {
+    if (!videoPlaying) {
+      imageScreen.style.display = "none";
+      videoScreen.style.display = "block";
+      playRandomVideo();
+      mp4Button.textContent = "Kapat";
+      videoPlaying = true;
+    } else {
+      video.pause();
+      videoScreen.style.display = "none";
+      imageScreen.style.display = "block";
+      mp4Button.textContent = "MP4";
+      videoPlaying = false;
+    }
+  });
+
+  video.addEventListener("ended", () => {
+    if (videoPlaying) {
+      playRandomVideo();
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
 
   
 </script>
