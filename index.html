@@ -316,7 +316,52 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-    
+    #startBtn {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 40px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc, #ffcc00);
+  color: white;
+  cursor: pointer;
+  animation: glow 3s linear infinite;
+  box-shadow: 0 0 15px #fff;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px #ff00cc; }
+  25% { box-shadow: 0 0 20px #3333ff; }
+  50% { box-shadow: 0 0 20px #00ffcc; }
+  75% { box-shadow: 0 0 25px #ffcc00; }
+  100% { box-shadow: 0 0 10px #ff00cc; }
+}
+
+/* Şeffaf parlak animasyonlu kapat butonu */
+#closeBtn {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: bold;
+  padding: 12px 25px;
+  border: 2px solid white;
+  border-radius: 25px;
+  font-size: 18px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  display: none;
+  animation: shine 2s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% { box-shadow: 0 0 5px white; }
+  50% { box-shadow: 0 0 20px white; }
+  100% { box-shadow: 0 0 5px white; }
+}
+
   </style>
 </head>
 <body>
@@ -343,7 +388,7 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-  
+  <button id="closeBtn">KAPAT</button>
 <div id="weather-box">Yükleniyor...</div>
 
 <audio id="nature-sound" preload="auto"></audio>
@@ -908,7 +953,34 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
 
+</script>
 
+
+
+
+<script>
+
+  const startBtn = document.getElementById('startBtn');
+const closeBtn = document.getElementById('closeBtn');
+const videoSection = document.getElementById('videoSection'); // varsa yoksa sen ekle
+
+startBtn.addEventListener('click', () => {
+  startBtn.style.display = 'none';
+  videoSection.style.display = 'block';
+  closeBtn.style.display = 'block';
+});
+
+closeBtn.addEventListener('click', () => {
+  startBtn.style.display = 'inline-block';
+  videoSection.style.display = 'none';
+  closeBtn.style.display = 'none';
+
+  // YouTube iframe'i durdur
+  const iframe = document.querySelector('iframe');
+  if (iframe) {
+    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+  }
+});
 
   
 </script>
