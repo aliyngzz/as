@@ -400,7 +400,10 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-
+<button id="playVideosBtn" 
+  style="position: fixed; top: 70px; left: 20px; z-index: 9999; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+  Videoları Oynat
+</button>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -1111,12 +1114,15 @@ closeBtn.addEventListener('click', () => {
 
 
 
+<script>
 
 
+const btnPlay = document.getElementById("playVideosBtn");
+btnPlay.addEventListener("click", () => {
+  // Video oynatma işlemleri burada
+});
 
-
-
-  
+ </script> 
 
 
 
