@@ -15,7 +15,7 @@
     }
 
   #startBtn {
-
+  display: none; /* Sayfa yüklendiğinde gizli */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -316,45 +316,11 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-  
-
-
-
-
- #webcamBtn {
-    position: fixed; /* Sayfanın her yerinde sabit kalsın */
-    top: 20px;       /* Üstten biraz boşluk */
-    left: 50%;       /* Yatayda ortala */
-    transform: translateX(-50%);
-    padding: 15px 30px;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    color: white;
-    background: linear-gradient(270deg, #ff0057, #ff9500, #00d2ff, #00ff85);
-    background-size: 800% 800%;
-    animation: gradientAnimation 10s ease infinite;
-    box-shadow: 0 0 15px rgba(255, 0, 87, 0.6);
-    transition: box-shadow 0.3s ease;
-    z-index: 9999; /* Önde olsun */
-  }
-
-  #webcamBtn:hover {
-    box-shadow: 0 0 30px rgba(255, 149, 0, 0.9);
-  }
-
-  @keyframes gradientAnimation {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-  }
-
+    
   </style>
 </head>
 <body>
-  
+  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
@@ -377,10 +343,6 @@
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
   <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
 </div>
-
-
-
-
   
 <div id="weather-box">Yükleniyor...</div>
 
@@ -393,7 +355,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<button id="webcamBtn">📷 Webcam Aç</button>
+
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -440,7 +402,7 @@
     let activePlayer = 1;
 
     document.getElementById("startBtn").addEventListener("click", () => {
-      
+      document.getElementById("startBtn").style.display = "none";
       enterFullscreen(document.documentElement);
       startVideoPlayer();
     });
@@ -833,7 +795,7 @@ pauseButton.addEventListener("click", () => {
 
   // 10 saniye sonra butonu gizle
   setTimeout(() => {
-
+    document.getElementById("startBtn").style.display = "none";
   }, 10000);
 </script>
 
@@ -939,14 +901,15 @@ pauseButton.addEventListener("click", () => {
   setInterval(updateWeather, 5000);
 </script>
 
-
-
-
 <script>
-document.getElementById('webcamBtn').addEventListener('click', () => {
-  alert("Webcam açma işlemi buraya gelecek!");
-  // Burada webcam açma fonksiyonunu çağırabilirsin.
+
+document.getElementById("youtubeBtn").addEventListener("click", function () {
+  // Kanalınızın adresini buraya koyun
+  window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
+
+
+
   
 </script>
 
