@@ -321,66 +321,36 @@
 
 
 
-#webcamBtn {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-}
-#webcamBtn {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 15px 30px;
-  font-size: 20px;
-  color: white;
-  background: rgba(0, 0, 0, 0.3); /* saydamlık */
-  border: 2px solid white;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 1000;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-  animation: glow 1.5s ease-in-out infinite alternate;
-}
-
-/* ışıl ışıl animasyon */
-@keyframes glow {
-  from {
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+ #webcamBtn {
+    position: fixed; /* Sayfanın her yerinde sabit kalsın */
+    top: 20px;       /* Üstten biraz boşluk */
+    left: 50%;       /* Yatayda ortala */
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(270deg, #ff0057, #ff9500, #00d2ff, #00ff85);
+    background-size: 800% 800%;
+    animation: gradientAnimation 10s ease infinite;
+    box-shadow: 0 0 15px rgba(255, 0, 87, 0.6);
+    transition: box-shadow 0.3s ease;
+    z-index: 9999; /* Önde olsun */
   }
-  to {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+
+  #webcamBtn:hover {
+    box-shadow: 0 0 30px rgba(255, 149, 0, 0.9);
   }
-}
-🔁 İsteğe Bağlı JavaScript (görünürlü
-    .webcam-button {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  cursor: pointer;
-  z-index: 9999;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  animation: pulse 2s infinite;
-  transition: transform 0.3s ease;
-}
 
-.webcam-button:hover {
-  transform: scale(1.1);
-  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
-}
+  @keyframes gradientAnimation {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 154, 158, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 154, 158, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 154, 158, 0); }
-}
   </style>
 </head>
 <body>
@@ -423,7 +393,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<button id="startBtn" class="webcam-button">📷 Videoları Başlat</button>
+<button id="webcamBtn">📷 Webcam Aç</button>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -969,17 +939,13 @@ pauseButton.addEventListener("click", () => {
   setInterval(updateWeather, 5000);
 </script>
 
-<script>
 
-document.getElementById("youtubeBtn").addEventListener("click", function () {
-  // Kanalınızın adresini buraya koyun
-  window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
-});
-</script>
+
+
 <script>
-document.getElementById("startBtn").addEventListener("click", () => {
-  enterFullscreen(document.documentElement); // Ekranı tam yap
-  startVideoPlayer(); // YouTube video geçişini başlat
+document.getElementById('webcamBtn').addEventListener('click', () => {
+  alert("Webcam açma işlemi buraya gelecek!");
+  // Burada webcam açma fonksiyonunu çağırabilirsin.
 });
   
 </script>
