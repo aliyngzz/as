@@ -447,7 +447,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-
+<div id="mp4-button" onclick="playMP4()">MP4</div>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -1130,17 +1130,32 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+</script>
 
 
 
+<script>
+function playMP4() {
+  // Video öğesini seç
+  const video = document.getElementById('background-video');
+  const screen = document.getElementById('video-screen');
 
+  // Video kaynağını ayarla
+  video.src = 'video1.mp4'; // burada MP4 dosyanın yolu olmalı
 
+  // Video kutusunu göster
+  screen.style.display = 'block';
+
+  // Videoyu başlat
+  video.play();
+}
+</script>
 
 
 
 
   
-</script>
+
 
 
     
