@@ -402,13 +402,7 @@
 </div>
 
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
-<button id="playVideosBtn">Videoları Oynat</button>
 
-<!-- Video Player -->
-<video id="videoPlayer" width="640" height="360" controls style="display:none;">
-    <source id="videoSource" src="" type="video/mp4">
-    Tarayıcınız video etiketini desteklemiyor.
-</video>
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
 
@@ -431,6 +425,26 @@
 </div>
   
   <button id="tvOpenBtn">TV Aç</button>
+<!-- Videoları Başlat Butonu -->
+<button id="playVideosBtn" style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+  Videoları Oynat
+</button>
+
+<!-- Tam ekran video container -->
+<div id="videoContainer" style="display:none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9999;">
+
+  <!-- Kapat Butonu -->
+  <button id="closeVideoBtn" 
+          style="position: absolute; top: 20px; right: 20px; z-index: 1001; padding: 10px 15px; font-size: 16px; cursor: pointer;">
+    Kapat
+  </button>
+
+  <!-- Video Player tam ekran -->
+  <video id="videoPlayer" width="100%" height="100%" controls autoplay>
+    <source id="videoSource" src="" type="video/mp4">
+    Tarayıcınız video etiketini desteklemiyor.
+  </video>
+</div>
 
   <script>
     const videoIds = [ 
@@ -988,6 +1002,7 @@ closeBtn.addEventListener('click', () => {
   }
 });
 
+
 </script>
 
 
@@ -997,8 +1012,18 @@ closeBtn.addEventListener('click', () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 <script>
-  // Videoların dosya isimleri (dizin yolunu sitenize göre ekleyin!)
   const videos = [
     "111179-689949805_tiny.mp4",
     "158349-816637197_tiny.mp4",
@@ -1042,54 +1067,57 @@ closeBtn.addEventListener('click', () => {
     "133101-755975121_medium.mp4"
   ];
 
-  const btn = document.getElementById("playVideosBtn");
+  const btnPlay = document.getElementById("playVideosBtn");
+  const container = document.getElementById("videoContainer");
   const videoPlayer = document.getElementById("videoPlayer");
   const videoSource = document.getElementById("videoSource");
+  const btnClose = document.getElementById("closeVideoBtn");
 
   let currentVideoIndex = 0;
 
-  btn.addEventListener("click", () => {
-    // Buton tıklandı, video alanını göster
-    videoPlayer.style.display = "block";
-    btn.style.display = "none";  // Butonu gizle
-
-    // İlk videoyu başlat
+  btnPlay.addEventListener("click", () => {
+    container.style.display = "block";  // Video container göster
+    btnPlay.style.display = "none";     // Başlat butonu gizle
     playVideoAtIndex(currentVideoIndex);
   });
 
+  btnClose.addEventListener("click", () => {
+    videoPlayer.pause();
+    videoPlayer.currentTime = 0;
+    container.style.display = "none";   // Video container gizle
+    btnPlay.style.display = "block";    // Başlat butonu göster
+    currentVideoIndex = 0;               // Videolar sıfırlanır
+  });
+
   function playVideoAtIndex(index) {
-    if(index >= videos.length) {
-      // Tüm videolar bitti, video player gizlenebilir veya ilk videoya dönebilir
-      videoPlayer.style.display = "none";
-      btn.style.display = "block"; // Butonu tekrar göster (isteğe bağlı)
-      currentVideoIndex = 0; // Sıfırla
+    if (index >= videos.length) {
+      // Tüm videolar bitti, container kapat
+      btnClose.click();  // Kapatma fonksiyonunu tetikle
       return;
     }
-    // Video kaynağını değiştir
     videoSource.src = videos[index];
     videoPlayer.load();
     videoPlayer.play();
   }
 
-  // Video bittiğinde sonraki videoya geç
   videoPlayer.addEventListener("ended", () => {
     currentVideoIndex++;
     playVideoAtIndex(currentVideoIndex);
   });
-
-
-
-
-
-
-
-
-
-
-
-  
-  
 </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
 
 
     
