@@ -316,45 +316,6 @@
   50% { box-shadow: 0 0 20px red; }
   100% { box-shadow: 0 0 5px red; }
 }
-
-#startBtn {
-  padding: 20px 30px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 15px;
-  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet);
-  background-size: 400% 400%;
-  color: white;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.4), 0 0 60px rgba(255, 0, 255, 0.3);
-  animation: glow 5s linear infinite, colorshift 10s ease-in-out infinite;
-  cursor: pointer;
-  text-shadow: 0 0 5px #fff, 0 0 10px #f0f, 0 0 15px #0ff;
-  transition: transform 0.2s;
-}
-
-#startBtn:hover {
-  transform: scale(1.05);
-}
-
-@keyframes glow {
-  0% { box-shadow: 0 0 10px red; }
-  25% { box-shadow: 0 0 20px orange; }
-  50% { box-shadow: 0 0 30px green; }
-  75% { box-shadow: 0 0 40px blue; }
-  100% { box-shadow: 0 0 50px violet; }
-}
-
-@keyframes colorshift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-
-
-
-
     
   </style>
 </head>
@@ -411,12 +372,7 @@
 <div id="introImage"></div>
   <img src="pexels-pixabay-158063.jpg" alt="Doğa" style="width:100%; height:100%; object-fit:cover;">
 </div>
-<video id="natureVideo" autoplay loop muted style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
-  <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
-  Tarayıcınız video etiketini desteklemiyor.
-</video>
 
-<button id="closeBtn" style="display:none; position:absolute; top:20px; left:50%; transform:translateX(-50%); padding:10px 20px; font-size:14px; border:2px solid white; border-radius:10px; background:rgba(255,255,255,0.2); color:white; cursor:pointer; z-index:3; box-shadow:0 0 10px white; backdrop-filter:blur(3px);">Kapat</button>
 <!-- Ana içerik -->
 <div id="mainContent" style="display:none;">
   <!-- Diğer içerikler -->
@@ -743,7 +699,7 @@ pauseButton.addEventListener("click", () => {
     slogan.style.opacity = 1;
     setTimeout(() => {
       slogan.style.opacity = 0;
-    }, 60000); // 1  dakika  görünür
+    }, 20000); // 20 saniye görünür
   }
 
   // Sayfa açılınca ilk gösterim
@@ -835,12 +791,12 @@ pauseButton.addEventListener("click", () => {
   // 5 saniye sonra butonu göster
   setTimeout(() => {
     document.getElementById("startBtn").style.display = "block";
-  }, 60000);
+  }, 5000);
 
   // 10 saniye sonra butonu gizle
   setTimeout(() => {
     document.getElementById("startBtn").style.display = "none";
-  }, 60000);
+  }, 10000);
 </script>
 
 
@@ -952,29 +908,8 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
 
-</script>
 
 
-
-<script>
-
-
-
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("natureVideo").style.display = "block";
-  document.getElementById("closeBtn").style.display = "block";
-  document.body.style.backgroundImage = "none"; // Arka planı temizle
-});
-
-document.getElementById("closeBtn").addEventListener("click", () => {
-  const video = document.getElementById("natureVideo");
-  video.pause();
-  video.style.display = "none";
-  document.getElementById("closeBtn").style.display = "none";
-  document.body.style.backgroundImage = "url('https://source.unsplash.com/1600x900/?nature')";
-});
-
-  
   
 </script>
 
