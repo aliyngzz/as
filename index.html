@@ -361,82 +361,7 @@
   50% { box-shadow: 0 0 20px white; }
   100% { box-shadow: 0 0 5px white; }
 }
-#mp4-button {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  width: 60px;
-  height: 30px;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  box-shadow:
-    0 0 5px rgba(255,255,255,0.6),
-    0 0 10px rgba(255,255,255,0.4),
-    0 0 15px rgba(255,255,255,0.3);
-  animation: pulseLight 2s infinite alternate;
-  overflow: visible;
-  z-index: 1000;
-}
 
-/* İç içe ışık halkaları animasyonu */
-#mp4-button::before, #mp4-button::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0.5;
-}
-#mp4-button::before {
-  width: 80px;
-  height: 80px;
-  box-shadow: 0 0 15px 5px rgba(255,255,255,0.4);
-  animation: ringPulse 3s infinite;
-}
-#mp4-button::after {
-  width: 100px;
-  height: 100px;
-  box-shadow: 0 0 20px 10px rgba(255,255,255,0.2);
-  animation: ringPulse 3s infinite 1.5s;
-}
-
-@keyframes pulseLight {
-  0% {
-    box-shadow:
-      0 0 5px rgba(255,255,255,0.6),
-      0 0 10px rgba(255,255,255,0.4),
-      0 0 15px rgba(255,255,255,0.3);
-  }
-  100% {
-    box-shadow:
-      0 0 15px rgba(255,255,255,0.9),
-      0 0 25px rgba(255,255,255,0.7),
-      0 0 35px rgba(255,255,255,0.5);
-  }
-}
-
-@keyframes ringPulse {
-  0% {
-    transform: translate(-50%, -50%) scale(0.7);
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.4);
-    opacity: 0;
-  }
-}
   </style>
 </head>
 <body>
@@ -469,20 +394,13 @@
 <audio id="nature-sound" preload="auto"></audio>
 
 <div id="youtubeBtn" title="YouTube Aç">▶️</div>
-<div id="video-screen" style="display: none;">
-  <video id="background-video" autoplay muted playsinline style="width: 100vw; height: 100vh; object-fit: cover;"></video>
-</div>
 
-<!-- Resim ekranı -->
-<div id="image-screen" style="display: flex;">
-  <img src="resim.jpg" style="width: 100vw; height: 100vh; object-fit: cover;" />
-</div>
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<div id="mp4-button">MP4</div>
+
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -1063,122 +981,6 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
-
-
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-
-
-
-
-
-const video = document.getElementById("background-video");
-const videoScreen = document.getElementById("video-screen");
-const imageScreen = document.getElementById("image-screen");
-const mp4Button = document.getElementById("mp4-button");
-
-const videoList = [
-  "111179-689949805_tiny.mp4",
-  "158349-816637197_tiny.mp4",
-  "246856_tiny.mp4",
-  "120739-724673230_tiny.mp4",
-  "28746-371345147_tiny.mp4",
-  "57647-486227472_tiny.mp4",
-  "35427-407130886_small.mp4",
-  "263208_small.mp4",
-  "242228_small.mp4",
-  "180057-863401699_small.mp4",
-  "159309-818469332.mp4",
-  "144959-785568576_medium.mp4",
-  "6847-196978755_medium.mp4",
-  "16012-268207204_small.mp4",
-  "228847_tiny.mp4",
-  "71350-538489808.mp4",
-  "71571-538974136.mp4",
-  "854982-hd_1280_720_25fps.mp4",
-  "107027-674703679_medium.mp4",
-  "113004-696349232_medium.mp4",
-  "114552-701830169_tiny.mp4",
-  "145059-785786266_medium.mp4",
-  "155242-809619008_tiny.mp4",
-  "resim.mp4",
-  "170727-843752865_tiny.mp4",
-  "178807-860734626_medium.mp4",
-  "178809-860734631_small.mp4",
-  "184261-873087820_tiny.mp4",
-  "189703-886596102_medium.mp4",
-  "198416-907598367_tiny.mp4",
-  "201446-915698703_medium.mp4",
-  "5744426-hd_1280_720_30fps.mp4",
-  "44798-440001069_small.mp4",
-  "28746-371345147_tiny.mp4",
-  "186405-877993676_tiny.mp4",
-  "214732_tiny.mp4",
-  "35427-407130886_small.mp4",
-  "3904-175596530_medium.mp4",
-  "184972-874460313_medium.mp4",
-  "133101-755975121_medium.mp4"
-];
-
-let videoPlaying = false;
-
-function getRandomVideo() {
-  return videoList[Math.floor(Math.random() * videoList.length)];
-}
-
-function playRandomVideo() {
-  const nextVideo = getRandomVideo();
-  video.src = nextVideo;
-  video.play();
-}
-
-mp4Button.addEventListener("click", () => {
-  if (!videoPlaying) {
-    // Aç: video ekranını göster, resmi gizle, videoyu başlat
-    imageScreen.style.display = "none";
-    videoScreen.style.display = "flex";
-    playRandomVideo();
-    mp4Button.textContent = "Kapat";
-    videoPlaying = true;
-  } else {
-    // Kapat: videoyu durdur, video ekranını gizle, resmi göster
-    video.pause();
-    videoScreen.style.display = "none";
-    imageScreen.style.display = "flex";
-    mp4Button.textContent = "MP4";
-    videoPlaying = false;
-  }
-});
-
-video.addEventListener("ended", () => {
-  if(videoPlaying){
-    playRandomVideo();
-  }
-});
-
-
-
-
-
-
-
-
-
 
   
 </script>
