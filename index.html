@@ -426,13 +426,16 @@
 </div>
   
   <button id="tvOpenBtn">TV Aç</button>
-<div id="uyariAlani" style="color: yellow; font-weight: bold; padding: 10px;"></div>
+button id="bekletBtn" style="display: none; position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 18px; z-index: 999;">Beklet</button>
+
+<button id="devamBtn" style="display: none; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 18px; z-index: 999;">Devam Et</button>
   <script>
     const videoIds = [ 
+"g4CmWNxgsic",
       "LCGYWfbyBWc",
  "Fw9hgttWzIg",
  "RmP5eN7gQ6A",
- "g4CmWNxgsic",
+ 
  "CcnlJI_UXyM",
  "hFr5w9KLEA4",
  "DsNtwGJXTTs",
@@ -559,48 +562,8 @@
       tvContainer.style.display = "flex";
       tvOpenBtn.style.display = "none";
     });
-function onPlayerError(event) {
-    const failedVideoId = videoIds[currentVideoIndex];
-    
-    // 1. Hatalı videoyu console'a ve ekrana yaz
-    console.warn("Video çalışmıyor, siliniyor:", failedVideoId);
-    document.getElementById("uyariAlani").innerText = `⚠️ Video çalışmıyor: ${failedVideoId} – geçiliyor...`;
 
-    // 2. Video listeden siliniyor
-    videoIds.splice(currentVideoIndex, 1);
 
-    // 3. Eğer tüm videolar silindiyse
-    if (videoIds.length === 0) {
-        document.getElementById("uyariAlani").innerText = "❌ Hiçbir video çalışmıyor!";
-        return;
-    }
-
-    // 4. Aynı indexte tekrar video oynat (çünkü diziden biri silindi)
-    if (currentVideoIndex >= videoIds.length) {
-        currentVideoIndex = 0;
-    }
-
-    // 5. 1 saniye sonra sonraki videoya geç
-    setTimeout(() => {
-        player.loadVideoById(videoIds[currentVideoIndex]);
-    }, 1000);
-}
-player = new YT.Player('player', {
-    height: '360',
-    width: '640',
-    videoId: videoIds[currentVideoIndex],
-    playerVars: {
-        autoplay: 1,
-        controls: 1,
-        rel: 0,
-        modestbranding: 1
-    },
-    events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange,
-        'onError': onPlayerError // 🔴 Zorunlu satır
-    }
-});
   </script>
 
 
@@ -1043,7 +1006,78 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
+let currentVideoIndex = 0;
+let player;
+let videoTimer;
+let bekletildi = false;
 
+const videoIds = [ "abc123", "xyz456", "def789" ]; // YouTube video ID dizisi
+const videoDuration = 20; // saniye
+
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '360',
+        width: '640',
+        videoId: videoIds[currentVideoIndex],
+        playerVars: {
+            autoplay: 1,
+            controls: 1,
+            rel: 0,
+            modestbranding: 1
+        },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange,
+            'onError': onPlayerError
+        }
+    });
+}
+
+function onPlayerReady(event) {
+    baslatSayac();
+}
+
+function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.PLAYING && !bekletildi) {
+        baslatSayac();
+    }
+}
+
+function baslatSayac() {
+    clearTimeout(videoTimer);
+    document.getElementById("bekletBtn").style.display = "none";
+    document.getElementById("devamBtn").style.display = "none";
+
+    videoTimer = setTimeout(() => {
+        player.pauseVideo();
+        document.getElementById("bekletBtn").style.display = "block";
+    }, videoDuration * 1000);
+}
+
+function oynatSonrakiVideo() {
+    clearTimeout(videoTimer);
+    bekletildi = false;
+    currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+    player.loadVideoById(videoIds[currentVideoIndex]);
+}
+
+function onPlayerError(event) {
+    console.warn("Video bozuk:", videoIds[currentVideoIndex]);
+    oynatSonrakiVideo();
+}
+
+// BEKLET butonu: Süresiz izleme başlatılır
+document.getElementById("bekletBtn").addEventListener("click", () => {
+    bekletildi = true;
+    document.getElementById("bekletBtn").style.display = "none";
+    document.getElementById("devamBtn").style.display = "block";
+    player.playVideo(); // durdurulmuştu, devam ettir
+});
+
+// DEVAM ET butonu: bir sonraki videoya geçilir
+document.getElementById("devamBtn").addEventListener("click", () => {
+    oynatSonrakiVideo();
+});
   
 </script>
 
