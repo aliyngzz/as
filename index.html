@@ -1003,6 +1003,39 @@ closeBtn.addEventListener('click', () => {
   }
 });
 
+</script>
+
+
+
+
+
+
+<script>
+
+
+
+function onPlayerError(event) {
+    console.error("Video oynatılamıyor, hata kodu:", event.data);
+    
+    // Hatalı video ID'sini notlara yaz
+    const videoId = videoIds[currentVideoIndex];
+    const notes = document.getElementById('notes');
+    notes.value += `Hatalı video: ${videoId}\n`;
+
+    // Beklemeden diğer videoya geç
+    currentVideoIndex++;
+    if (currentVideoIndex >= videoIds.length) currentVideoIndex = 0;
+    playYouTubeVideo(videoIds[currentVideoIndex]);
+}
+
+
+
+
+
+
+
+
+
   
 </script>
 
