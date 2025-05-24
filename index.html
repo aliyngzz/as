@@ -470,7 +470,22 @@ function onYouTubeIframeAPIReady() {
     }
   });
 }
-
+player = new YT.Player('player', {
+    height: '360',
+    width: '640',
+    videoId: videoIds[currentVideoIndex],
+    playerVars: {
+        autoplay: 1,
+        controls: 1,
+        rel: 0,
+        modestbranding: 1
+    },
+    events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange,
+        'onError': onPlayerError  // Bu satır önemli!
+    }
+});
 function onPlayerReady(event) {
   event.target.playVideo();
 }
