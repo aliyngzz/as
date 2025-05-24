@@ -459,13 +459,14 @@
 
     <div id="youtubeBtn" title="YouTube Kanalını Aç">▶️</div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // YouTube API'si yüklendiğinde otomatik olarak çağrılacak fonksiyon (iframe_api tarafından)
-        // Eğer bu şekilde çalışmazsa, `tag.src` yöntemine geri dönmeliyiz.
-        // `https://www.youtube.com/iframe_api` doğrudan dahil edildiği için `tag` kodu kaldırıldı.
-    </script>
-    <script>
+        // YouTube IFrame Player API'sini yükle
+        // Bu, API hazır olduğunda onYouTubeIframeAPIReady fonksiyonunu çağıracaktır.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
         // --- Sabitler ve Değişkenler ---
         const videoIds = [
             "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A", "CcnlJI_UXyM", "hFr5w9KLEA4",
@@ -483,14 +484,21 @@
         ];
 
         // Buradaki TV kanal ID'lerini güncel YouTube canlı yayın ID'leriyle değiştirmelisiniz.
-        // Örnek: "UC-xHtvGk9gY42e9x-8Yy10g" gibi bir kanal ID'si veya canlı yayın video ID'si.
-        // Genellikle canlı yayınlar için gömme linkleri (embed URLs) kullanılır.
-        // Eğer TV kanalının URL'si değişirse, burayı güncellemeniz gerekir.
+        // YouTube'un embed politikaları sık değişebilir. Canlı yayınlar için genellikle gömme linkleri (embed URLs) kullanılır.
+        // Örnekler:
+        // TRT Haber: "UC_uQzI7K-8gR5Jk92o1G25w" (Kanal ID'si, embed için video ID'si lazım)
+        // NTV: "UC_uQzI7K-8gR5Jk92o1G25w" (Kanal ID'si)
+        // Habertürk: "UC_uQzI7K-8gR5Jk92o1G25w" (Kanal ID'si)
+        // Bu yüzden, doğrudan video ID'lerini kullanmak daha güvenli olabilir.
+        // Örnek olarak bazı genel yayın akışları (kullanılabilirlik zamana göre değişebilir):
         const tvChannels = [
-            "https://www.youtube.com/embed/live_stream?channel=UC-xHtvGk9gY42e9x-8Yy10g&autoplay=1&mute=1&controls=0", // TRT Haber Canlı (Örnek)
-            "https://www.youtube.com/embed/live_stream?channel=UCW_N0bM9WjS7XbBfX5fV0dQ&autoplay=1&mute=1&controls=0", // NTV Canlı (Örnek)
-            "https://www.youtube.com/embed/live_stream?channel=UCP_r0iW8-y8rN-Z20J9YJ4w&autoplay=1&mute=1&controls=0"  // Haber Global Canlı (Örnek)
+            "live_video_id_for_trt_haber", // TRT Haber canlı yayın anlık video ID'si
+            "live_video_id_for_ntv",      // NTV canlı yayın anlık video ID'si
+            "live_video_id_for_haberturk" // Habertürk canlı yayın anlık video ID'si
+            // Not: Bu ID'ler zamanla değişir. Canlı yayınları izlemek için güncel video ID'lerini bulup buraya yazmalısınız.
+            // Aksi takdirde, TV işlevi çalışmayabilir.
         ];
+
 
         let players = {};
         let index = 0;
@@ -499,13 +507,16 @@
 
         // --- DOM Yüklendiğinde Başlangıç Akışı ---
         document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOMContentLoaded: Sayfa yüklendi.");
             // Giriş resmi 5 saniye sonra solarak kaybolur
             setTimeout(() => {
                 document.getElementById("introImage").style.opacity = 0;
+                console.log("Intro resmi kayboluyor...");
                 setTimeout(() => {
                     document.getElementById("introImage").style.display = "none";
                     document.getElementById("countdownScreen").style.display = "flex"; // Geri sayım ekranını göster
                     startCountdown(); // Geri sayımı başlat
+                    console.log("Geri sayım başlatıldı.");
                 }, 1000); // Opaklık geçişi sonrası tamamen gizle
             }, 5000); // 5 saniye sonra başlat
         });
@@ -529,20 +540,23 @@
                     document.getElementById("countdownScreen").style.display = "none"; // Geri sayım ekranını gizle
                     document.getElementById("startBtn").style.display = "block"; // Başlat butonunu göster
                     document.getElementById("tvOpenBtn").style.display = "block"; // TV Aç butonunu göster
+                    console.log("Geri sayım bitti, başlat butonları görünür.");
                 }
             }, 1000);
         }
 
         // --- Buton Olay Dinleyicileri ---
         document.getElementById("startBtn").addEventListener("click", () => {
+            console.log("Start butonu tıklandı.");
             document.getElementById("startBtn").style.display = "none";
             document.getElementById("closeBtn").style.display = "block"; // Kapat butonunu göster
             enterFullscreen(document.documentElement);
-            startVideoPlayer();
+            startVideoPlayer(); // YouTube oynatıcılarını başlat
             showSlogan(); // Sloganı göster
         });
 
         document.getElementById("closeBtn").addEventListener("click", () => {
+            console.log("Kapat butonu tıklandı.");
             exitFullscreen(); // Tam ekrandan çık
             resetAllFeatures(); // Tüm özellikleri sıfırla ve gizle
             document.getElementById("startBtn").style.display = "block"; // Başlat butonunu tekrar göster
@@ -551,6 +565,7 @@
         });
 
         function resetAllFeatures() {
+            console.log("Tüm özellikler sıfırlanıyor...");
             resetVideoPlayer(); // Video oynatıcıları sıfırla
             document.getElementById("sloganText").style.opacity = 0; // Sloganı gizle
             document.getElementById("miniTVContainer").style.display = "none"; // Mini TV'yi gizle
@@ -571,10 +586,13 @@
             // Alarm sesini durdur (eğer çalıyorsa)
             document.getElementById("alarmSound").pause();
             document.getElementById("alarmSound").currentTime = 0;
+            console.log("Tüm özellikler sıfırlandı.");
         }
 
         // --- YouTube Oynatıcı İşlevleri ---
-        function onYouTubeIframeAPIReady() {
+        // onYouTubeIframeAPIReady global olarak tanımlanmalı
+        window.onYouTubeIframeAPIReady = function() {
+            console.log("onYouTubeIframeAPIReady: YouTube API hazır.");
             // Player 1 oluşturma
             players.player1 = new YT.Player('player1', {
                 videoId: '', // Başlangıçta boş bırakılacak
@@ -588,7 +606,10 @@
                 },
                 events: {
                     onReady: (e) => {
+                        console.log("Player1 hazır.");
                         e.target.setVolume(0); // Ses seviyesini sıfırla
+                        // Eğer startVideoPlayer buradan çağrılacaksa dikkatli olun.
+                        // İlk kez start butonuna basıldığında çağrılmalı.
                     },
                     onStateChange: onPlayerStateChange,
                     onError: onPlayerError, // Hata durumunu dinle
@@ -608,20 +629,33 @@
                 },
                 events: {
                     onReady: (e) => {
+                        console.log("Player2 hazır.");
                         e.target.setVolume(0);
                     },
                     onStateChange: onPlayerStateChange,
                     onError: onPlayerError, // Hata durumunu dinle
                 }
             });
-        }
+        };
 
         function startVideoPlayer() {
             if (videoIds.length === 0) {
                 console.warn("Video listesi boş!");
                 return;
             }
-            // İlk videoyu yükle ve oynat
+            // Players objesinin YT.Player instance'ları içerdiğinden emin ol
+            if (!players.player1 || !players.player1.loadVideoById) {
+                console.error("Player1 henüz başlatılamadı veya YouTube API yüklenmedi.");
+                // API'nin yüklenmesini beklemek için bir gecikme ekleyebilirsiniz,
+                // veya kullanıcıya bir hata mesajı gösterebilirsiniz.
+                // Bu durumda, startVideoPlayer'ı DOMContentLoaded içinde değil, API hazır olduğunda tetiklemek en iyisidir.
+                // Ancak mevcut yapıda "Start" butonu basıldığında tetikleniyor.
+                // Eğer bu hata sıkça geliyorsa, startVideoPlayer'ı onYouTubeIframeAPIReady içinde çağırmayı düşünebilirsiniz,
+                // ama o zaman otomatik başlar, bu da istenmeyebilir.
+                return;
+            }
+
+            console.log(`İlk video yükleniyor: ${videoIds[index]}`);
             players.player1.loadVideoById(videoIds[index]);
             players.player1.mute();
             players.player1.playVideo();
@@ -630,23 +664,23 @@
         }
 
         function onPlayerStateChange(event) {
+            console.log(`Player State Changed: ${event.data} for player ${event.target.getIframe().id}`);
             // Video bittiğinde otomatik geçiş yap
             if (event.data === YT.PlayerState.ENDED) {
                 console.log("Video bitti, bir sonraki videoya geçiliyor.");
                 switchVideo();
             }
-            // Diğer durumlar (örneğin donma, yüklenememe) için onError devreye girecek.
-            // Bu nedenle, sadece ENDED durumunda geçiş yapıyoruz.
         }
 
         function onPlayerError(event) {
-            console.error("YouTube Player Hatası:", event.data); // Hata kodunu konsola yazdır
+            console.error(`Youtubeer Hatası (${event.data}) for player ${event.target.getIframe().id}`);
             // Hata oluştuğunda normal geçiş zamanlayıcısını iptal et ve hemen bir sonraki videoya geç
             clearTimeout(videoChangeTimeout); // Önemli: Mevcut zamanlayıcıyı iptal et
             switchVideo(); // Hemen bir sonraki videoya geçişi tetikle
         }
 
         function resetVideoPlayer() {
+            console.log("Video oynatıcılar sıfırlanıyor...");
             clearTimeout(videoChangeTimeout); // Tüm zamanlayıcıları temizle
             // Oynatıcıları durdur ve temizle
             if (players.player1 && players.player1.stopVideo) {
@@ -662,10 +696,12 @@
             document.getElementById('player2').classList.remove('active');
             index = 0; // İndeksi sıfırla
             activePlayer = 1; // Aktif oynatıcıyı sıfırla
+            console.log("Video oynatıcılar sıfırlandı.");
         }
 
         function scheduleNext() {
             clearTimeout(videoChangeTimeout); // Önceki zamanlayıcıyı temizle
+            console.log("scheduleNext: Bir sonraki video için planlama yapılıyor.");
 
             // Sonraki videoyu arka planda yüklemek için zamanlayıcı (örneğin 5 saniye sonra)
             const nextVideoLoadDelay = 5000;
@@ -673,19 +709,24 @@
                 const nextIndex = (index + 1) % videoIds.length;
                 const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
                 if (nextPlayer && nextPlayer.loadVideoById) {
+                    console.log(`nextPlayer: Sonraki video (${videoIds[nextIndex]}) yükleniyor.`);
                     nextPlayer.loadVideoById(videoIds[nextIndex]);
                     nextPlayer.mute();
+                } else {
+                    console.warn("nextPlayer henüz hazır değil veya loadVideoById metodu yok.");
                 }
             }, nextVideoLoadDelay);
 
             // Normal video değişimi için zamanlayıcı (15 saniye sonra aktif oynatıcıyı değiştir)
             const videoSwitchDelay = 15000;
             videoChangeTimeout = setTimeout(() => {
+                console.log("videoChangeTimeout tetiklendi, switchVideo çağrılıyor.");
                 switchVideo();
             }, videoSwitchDelay);
         }
 
         function switchVideo() {
+            console.log("switchVideo: Videolar arasında geçiş yapılıyor.");
             const nextIndex = (index + 1) % videoIds.length;
             const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
             const nextDiv = activePlayer === 1 ? document.getElementById("player2") : document.getElementById("player1");
@@ -707,6 +748,11 @@
             if (nextPlayer && nextPlayer.playVideo) {
                 nextPlayer.playVideo();
                 nextPlayer.mute();
+                console.log(`Yeni aktif video: ${videoIds[index]}`);
+            } else {
+                console.warn("Yeni oynatıcı henüz hazır değil veya playVideo metodu yok.");
+                // Eğer yeni oynatıcı hazır değilse, hata oluşmuş olabilir. Hemen bir sonraki videoya geçmeyi dene.
+                setTimeout(switchVideo, 1000);
             }
 
             // Bir sonraki video için zamanlayıcıyı tekrar kur
@@ -722,6 +768,7 @@
             } else if (elem.msRequestFullscreen) { /* IE11 */
                 elem.msRequestFullscreen();
             }
+            console.log("Tam ekrana geçiş denendi.");
         }
 
         function exitFullscreen() {
@@ -732,14 +779,17 @@
             } else if (document.msExitFullscreen) { /* IE11 */
                 document.msExitFullscreen();
             }
+            console.log("Tam ekrandan çıkış denendi.");
         }
 
         // --- Slogan İşlevleri ---
         function showSlogan() {
             const slogan = document.getElementById("sloganText");
             slogan.style.opacity = 1;
+            console.log("Slogan göründü.");
             setTimeout(() => {
                 slogan.style.opacity = 0;
+                console.log("Slogan kayboldu.");
             }, 20000); // 20 saniye görünür
         }
 
@@ -815,10 +865,12 @@
                 playNextSong();
                 musicControlBtn.textContent = "⏸ Müziği Kapat";
                 isMusicPlaying = true;
+                console.log("Müzik başlatıldı.");
             } else {
                 audioPlayer.pause();
                 musicControlBtn.textContent = "🎵 Müziği Aç";
                 isMusicPlaying = false;
+                console.log("Müzik durduruldu.");
             }
         });
 
@@ -852,6 +904,7 @@
             });
             playSoundBtn.style.display = "none";
             pauseSoundBtn.style.display = "inline-block";
+            console.log("Doğa sesi başlatıldı.");
         });
 
         pauseSoundBtn.addEventListener("click", () => {
@@ -859,6 +912,7 @@
             natureAudio.currentTime = 0;
             pauseSoundBtn.style.display = "none";
             playSoundBtn.style.display = "inline-block";
+            console.log("Doğa sesi durduruldu.");
         });
 
         // --- Mini TV İşlevleri ---
@@ -871,20 +925,26 @@
 
         channelBtn.addEventListener("click", () => {
             currentTVChannel = (currentTVChannel + 1) % tvChannels.length;
-            tvFrame.src = tvChannels[currentTVChannel];
+            const tvVideoId = tvChannels[currentTVChannel];
+            // TV için YouTube video ID'si kullanılıyorsa:
+            tvFrame.src = `https://www.youtube.com/embed/${tvVideoId}?autoplay=1&controls=1&mute=0&rel=0&modestbranding=1&playsinline=1`;
+            console.log(`TV kanalı değiştirildi: ${tvVideoId}`);
         });
 
         closeTVBtn.addEventListener("click", () => {
             tvContainer.style.display = "none";
             tvOpenBtn.style.display = "block";
             tvFrame.src = "about:blank"; // TV'yi kapatırken iframe içeriğini temizle
+            console.log("TV kapatıldı.");
         });
 
         tvOpenBtn.addEventListener("click", () => {
             tvContainer.style.display = "flex";
             tvOpenBtn.style.display = "none";
             // TV açıldığında otomatik olarak ilk kanalı yükle ve oynat
-            tvFrame.src = tvChannels[currentTVChannel];
+            const tvVideoId = tvChannels[currentTVChannel];
+            tvFrame.src = `https://www.youtube.com/embed/${tvVideoId}?autoplay=1&controls=1&mute=0&rel=0&modestbranding=1&playsinline=1`;
+            console.log(`TV açıldı, kanal yükleniyor: ${tvVideoId}`);
         });
 
         // --- Not ve Alarm İşlevleri ---
@@ -899,20 +959,26 @@
             notPanel.style.display = notPanel.style.display === 'flex' ? 'none' : 'flex';
             if (notPanel.style.display === 'flex') {
                 loadNote(); // Notu yükle
+                console.log("Not paneli açıldı.");
+            } else {
+                console.log("Not paneli kapatıldı.");
             }
         }
 
         function closePanel() {
             notPanel.style.display = 'none';
+            console.log("Not paneli kapatıldı (butondan).");
         }
 
         function saveNote() {
             localStorage.setItem('myNote', noteText.value);
             alert('Not kaydedildi!');
+            console.log("Not kaydedildi.");
         }
 
         function loadNote() {
             noteText.value = localStorage.getItem('myNote') || '';
+            console.log("Not yüklendi.");
         }
 
         function setAlarm() {
@@ -932,8 +998,10 @@
             setTimeout(() => {
                 alarmSound.play().catch(e => console.error("Alarm sesi oynatma hatası:", e));
                 alert('⏰ Hatırlatma zamanı: ' + (noteText.value || 'Bir notunuz var!'));
+                console.log("Alarm tetiklendi.");
             }, delay);
             alert('Alarm kuruldu!');
+            console.log("Alarm kuruldu.");
         }
 
         // --- Hava Durumu İşlevleri ---
@@ -966,6 +1034,7 @@
                     Sıcaklık: ${temp}°C<br>
                     <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}" />
                 `;
+                console.log(`Hava durumu güncellendi: ${cityName}`);
             } catch (error) {
                 console.error("Hava durumu bilgisi alınamadı:", error);
                 weatherBox.innerHTML = `Hata: Hava durumu yüklenemedi.`;
@@ -985,12 +1054,9 @@
         // --- YouTube Kanal Butonu İşlevi ---
         document.getElementById("youtubeBtn").addEventListener("click", function () {
             // Kendi YouTube kanalınızın tam URL'sini buraya ekleyin
-            // YouTube'un yeni politikaları nedeniyle "popup" pencereleri kısıtlanabilir.
-            // Direkt yeni sekmede açmak daha güvenli olabilir.
-            window.open("https://www.youtube.com/@YOUR_CHANNEL_NAME", "_blank"); // Kendi kanal adınızı buraya yazın
+            window.open("https://www.youtube.com/@esmadogannnn", "_blank"); // Kanal adı: esmadogannnn
+            console.log("YouTube kanalı açıldı.");
         });
-</script>
-
-    </body>
+    </script>
+</body>
 </html>
-
