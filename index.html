@@ -500,7 +500,7 @@
         }
       });
     }
-
+let videoChangeTimeout; // setTimeout için bir değişken
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
       players.player1.mute();
@@ -510,25 +510,40 @@
     }
 
     function scheduleNext() {
+    // Mevcut zamanlayıcıyı iptal et, çünkü bir sonraki videoya geçiş başka bir şekilde de tetiklenebilir.
+    clearTimeout(videoChangeTimeout);
+
+    // Sonraki videoyu yüklemek için zamanlayıcı (10 saniye sonra yükle)
+    setTimeout(() => {
       const nextIndex = (index + 1) % videoIds.length;
       const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-      const nextDiv = activePlayer === 1 ? document.getElementById('player2') : document.getElementById('player1');
-      const currentDiv = activePlayer === 1 ? document.getElementById('player1') : document.getElementById('player2');
+      nextPlayer.loadVideoById(videoIds[nextIndex]);
+      nextPlayer.mute();
+      nextPlayer.playVideo();
+    }, 10000); // 10 saniye sonra sonraki videoyu yükle
 
-      setTimeout(() => {
-        nextPlayer.loadVideoById(videoIds[nextIndex]);
-        nextPlayer.mute();
-        nextPlayer.playVideo();
-      }, 10000);
+    // Video değişimi için zamanlayıcı (15 saniye sonra geçiş yap)
+    videoChangeTimeout = setTimeout(() => {
+      switchVideo();
+    }, 15000);
+  }
+function switchVideo() {
+    const nextIndex = (index + 1) % videoIds.length;
+    const nextDiv =
+      activePlayer === 1
+        ? document.getElementById("player2")
+        : document.getElementById("player1");
+    const currentDiv =
+      activePlayer === 1
+        ? document.getElementById("player1")
+        : document.getElementById("player2");
 
-      setTimeout(() => {
-        currentDiv.classList.remove("active");
-        nextDiv.classList.add("active");
-        index = nextIndex;
-        activePlayer = activePlayer === 1 ? 2 : 1;
-        scheduleNext();
-      }, 15000);
-    }
+    currentDiv.classList.remove("active");
+    nextDiv.classList.add("active");
+    index = nextIndex;
+    activePlayer = activePlayer === 1 ? 2 : 1;
+    scheduleNext(); // Yeni video için tekrar zamanlayıcıyı kur
+  }
 
     function enterFullscreen(elem) {
       if (elem.requestFullscreen) {
@@ -560,7 +575,20 @@
       tvContainer.style.display = "flex";
       tvOpenBtn.style.display = "none";
     });
+ events: {
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError, // Hata durumunu dinle
+      },
 
+// Yeni onPlayerError fonksiyonu
+  function onPlayerError(event) {
+    console.error("YouTube Player Hatası:", event.data);
+    // Hata oluştuğunda hemen bir sonraki videoya geç
+    clearTimeout(videoChangeTimeout); // Mevcut zamanlayıcıyı iptal et
+    switchVideo(); // Hemen geçişi tetikle
+  }
+
+          
 
   </script>
 
