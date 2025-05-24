@@ -1002,6 +1002,61 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
+</script>
+
+
+
+<script>
+
+function onYouTubeIframeAPIReady() {
+  players.player1 = new YT.Player('player1', {
+    videoId: '',
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      mute: 1,
+      rel: 0,
+      modestbranding: 1,
+      playsinline: 1
+    },
+    events: {
+      onReady: event => {
+        event.target.setPlaybackQuality('hd1080');
+      },
+      onStateChange: event => {
+        if (event.data === YT.PlayerState.PLAYING) {
+          event.target.setPlaybackQuality('hd1080');
+        }
+      }
+    }
+  });
+
+  players.player2 = new YT.Player('player2', {
+    videoId: '',
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      mute: 1,
+      rel: 0,
+      modestbranding: 1,
+      playsinline: 1
+    },
+    events: {
+      onReady: event => {
+        event.target.setPlaybackQuality('hd1080');
+      },
+      onStateChange: event => {
+        if (event.data === YT.PlayerState.PLAYING) {
+          event.target.setPlaybackQuality('hd1080');
+        }
+      }
+    }
+  });
+}
+
+
+
+
 
   
 </script>
