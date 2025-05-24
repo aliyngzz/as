@@ -423,7 +423,10 @@
   <!-- Diğer içerikler -->
   <!-- Örneğin doğa videoları veya butonlar burada olacak -->
 </div>
-  
+  <div id="video-container">
+  <iframe id="youtubePlayer" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+  <video id="mp4Player" width="560" height="315" controls style="display: none;"></video>
+</div>
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
@@ -453,6 +456,62 @@
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
+const mp4Videos = {
+"111179-689949805_tiny.mp4",
+      "158349-816637197_tiny.mp4",
+      "246856_tiny.mp4",
+      "120739-724673230_tiny.mp4",
+      "28746-371345147_tiny.mp4",
+      "57647-486227472_tiny.mp4",
+     
+      "35427-407130886_small.mp4",
+"263208_small.mp4",
+"242228_small.mp4",
+ 
+    "180057-863401699_small.mp4",
+      "159309-818469332.mp4",
+      
+          "144959-785568576_medium.mp4",
+            "6847-196978755_medium.mp4",
+              "16012-268207204_small.mp4",
+ "228847_tiny.mp4",
+ "71350-538489808.mp4",
+ "71571-538974136.mp4",   
+ "854982-hd_1280_720_25fps.mp4",
+"107027-674703679_medium.mp4",
+	"113004-696349232_medium.mp4",
+		"114552-701830169_tiny.mp4",
+	"145059-785786266_medium.mp4",
+		"155242-809619008_tiny.mp4",
+			"resim.mp4",
+	  "170727-843752865_tiny.mp4",
+		  "178807-860734626_medium.mp4",
+			  "178809-860734631_small.mp4",
+				  "184261-873087820_tiny.mp4",
+					  "189703-886596102_medium.mp4",
+		"198416-907598367_tiny.mp4",
+			"201446-915698703_medium.mp4",
+				"5744426-hd_1280_720_30fps.mp4",
+
+ "44798-440001069_small.mp4",
+        "28746-371345147_tiny.mp4",
+        "186405-877993676_tiny.mp4",
+             "214732_tiny.mp4",
+      "35427-407130886_small.mp4",
+      "3904-175596530_medium.mp4",
+      "184972-874460313_medium.mp4",
+
+	      
+	  "133101-755975121_medium.mp4"
+
+
+
+};
+
+
+
+
+    
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
       "https://www.youtube.com/embed/ZSWPj9szKb8",
@@ -1003,8 +1062,54 @@ closeBtn.addEventListener('click', () => {
   }
 });
 
-  
 </script>
+
+<script>
+let currentIndex = 0;
+
+function playNextVideo() {
+  const id = videoIds[currentIndex];
+  const youtubePlayer = document.getElementById('youtubePlayer');
+  const mp4Player = document.getElementById('mp4Player');
+
+  youtubePlayer.style.display = "block";
+  mp4Player.style.display = "none";
+  youtubePlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+
+  youtubePlayer.onerror = function () {
+    youtubePlayer.style.display = "none";
+    if (mp4Videos[id]) {
+      mp4Player.src = mp4Videos[id];
+      mp4Player.style.display = "block";
+      mp4Player.play();
+    } else {
+      document.getElementById("notes").value += `Hatalı: ${id}\n`;
+      playNext(); // bir sonrakine geç
+    }
+  };
+
+  youtubePlayer.onload = function () {
+    // YouTube sorunsuz açılırsa, bir süre sonra sonrakine geç
+    setTimeout(playNext, 15000); // 15 saniyede bir değiş
+  };
+}
+
+function playNext() {
+  currentIndex++;
+  if (currentIndex < videoIds.length) {
+    playNextVideo();
+  }
+}
+
+window.onload = playNextVideo;
+</script>
+
+
+
+
+  
+  
+
 
 
     
