@@ -401,6 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
+<div id="player"></div>
 
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
@@ -428,7 +429,9 @@
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-    const videoIds = [ 
+   let player;
+let currentVideoIndex = 0;
+const videoIds = [
       "LCGYWfbyBWc",
  "Fw9hgttWzIg",
  "RmP5eN7gQ6A",
@@ -454,6 +457,60 @@
     "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
     "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
     ]; 
+
+
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    height: '360',
+    width: '640',
+    videoId: videoIds[currentVideoIndex],
+    playerVars: {
+      autoplay: 1,
+      controls: 1,
+      rel: 0,
+      modestbranding: 1
+    },
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange,
+      'onError': onPlayerError
+    }
+  });
+}
+
+function onPlayerReady(event) {
+  event.target.playVideo();
+}
+
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.ENDED) {
+    oynatSonrakiVideo();
+  }
+}
+
+function onPlayerError(event) {
+  const videoId = videoIds[currentVideoIndex];
+  console.warn("Video bozuk:", videoId);
+
+  // Hiçbir şey gösterme, sadece 20 saniye bekle
+  document.getElementById('player').style.display = 'none';
+
+  // 20 saniye sonra devam et
+  setTimeout(() => {
+    document.getElementById('player').style.display = 'block';
+    oynatSonrakiVideo();
+  }, 20000);
+}
+
+function oynatSonrakiVideo() {
+  currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+  player.loadVideoById(videoIds[currentVideoIndex]);
+}
+
+
+
+    
     const tvChannels = [
       "https://www.youtube.com/embed/ztmY_cCtUl0",
       "https://www.youtube.com/embed/ZSWPj9szKb8",
@@ -1003,9 +1060,9 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
-
+<script src="https://www.youtube.com/iframe_api"></script>
   
-</script>
+
 
 
     
