@@ -29,7 +29,11 @@
   cursor: pointer;
   z-index: 999;
 }
-
+events: {
+    'onReady': onPlayerReady,
+    'onStateChange': onPlayerStateChange,
+    'onError': onPlayerError  // ✅ EKLENECEK SATIR
+}
     .player {
       position: absolute;
       top: 50%;
@@ -486,7 +490,11 @@
           playsinline: 1
         }
       });
-
+function onPlayerError(event) {
+    console.warn("Video çalışmadı:", videoIds[currentVideoIndex]);
+    currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+    player.loadVideoById(videoIds[currentVideoIndex]);
+}
       players.player2 = new YT.Player('player2', {
         videoId: '',
         playerVars: {
