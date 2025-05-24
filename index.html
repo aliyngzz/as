@@ -418,7 +418,8 @@
 <div id="introImage"></div>
   <img src="pexels-pixabay-158063.jpg" alt="Doğa" style="width:100%; height:100%; object-fit:cover;">
 </div>
-
+<div id="player"></div>
+<textarea id="notlar" rows="5" cols="40"></textarea>
 <!-- Ana içerik -->
 <div id="mainContent" style="display:none;">
   <!-- Diğer içerikler -->
@@ -509,9 +510,23 @@ function oynatSonrakiVideo() {
         console.warn("Player hazır değil. Video geçilemedi:", sonrakiVideoId);
     }
 }
+function oynatSonrakiVideo() {
+    currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+    const sonrakiVideoId = videoIds[currentVideoIndex];
+    if (player && player.loadVideoById) {
+        player.loadVideoById(sonrakiVideoId);
+    } else {
+        console.warn("Player hazır değil.");
+    }
+}
 
-
-
+function notEkle(mesaj) {
+    const notlarAlani = document.getElementById("notlar");
+    if (notlarAlani) {
+        const tarih = new Date().toLocaleString();
+        notlarAlani.value += `[${tarih}] ${mesaj}\n`;
+    }
+}
     
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
@@ -975,7 +990,7 @@ function onPlayerError(event) {
     const videoId = videoIds[currentVideoIndex];
     console.warn("Video çalışmadı:", videoId);
     notEkle(`[HATA] ${videoId}`);
-    oynatSonrakiVideo(); // Beklemeden diğer videoya geç
+    oynatSonrakiVideo(); // 20 saniye beklemeden sonraki videoya geç
 }
 
 player = new YT.Player('player', {
