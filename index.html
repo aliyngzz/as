@@ -500,6 +500,19 @@
       });
     }
 
+function oynatSonrakiVideo() {
+    currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+    const sonrakiVideoId = videoIds[currentVideoIndex];
+    if (player && player.loadVideoById) {
+        player.loadVideoById(sonrakiVideoId);
+    } else {
+        console.warn("Player hazır değil. Video geçilemedi:", sonrakiVideoId);
+    }
+}
+
+
+
+    
     function startVideoPlayer() {
       players.player1.loadVideoById(videoIds[index]);
       players.player1.mute();
@@ -962,7 +975,7 @@ function onPlayerError(event) {
     const videoId = videoIds[currentVideoIndex];
     console.warn("Video çalışmadı:", videoId);
     notEkle(`[HATA] ${videoId}`);
-    oynatSonrakiVideo(); // 20 saniye beklemeden atla
+    oynatSonrakiVideo(); // Beklemeden diğer videoya geç
 }
 
 player = new YT.Player('player', {
@@ -980,7 +993,24 @@ player = new YT.Player('player', {
         'onStateChange': onPlayerStateChange,
         'onError': onPlayerError // 🔴 Çalışmayan videoları atlamak için şart
     }
+player = new YT.Player('player', {
+    height: '360',
+    width: '640',
+  
+    videoId: videoIds[currentVideoIndex],
+    playerVars: {
+        autoplay: 1,
+        controls: 1,
+        rel: 0,
+        modestbranding: 1
+    },
+    events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange,
+        'onError': onPlayerError // 🔴 Bu satırı ekle, sonuna virgül koyma
+    }
 });
+
 
 
 
