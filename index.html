@@ -426,7 +426,7 @@
 </div>
   
   <button id="tvOpenBtn">TV Aç</button>
-
+<div id="uyariAlani" style="color: yellow; font-weight: bold; padding: 10px;"></div>
   <script>
     const videoIds = [ 
       "LCGYWfbyBWc",
@@ -559,8 +559,48 @@
       tvContainer.style.display = "flex";
       tvOpenBtn.style.display = "none";
     });
+function onPlayerError(event) {
+    const failedVideoId = videoIds[currentVideoIndex];
+    
+    // 1. Hatalı videoyu console'a ve ekrana yaz
+    console.warn("Video çalışmıyor, siliniyor:", failedVideoId);
+    document.getElementById("uyariAlani").innerText = `⚠️ Video çalışmıyor: ${failedVideoId} – geçiliyor...`;
 
+    // 2. Video listeden siliniyor
+    videoIds.splice(currentVideoIndex, 1);
 
+    // 3. Eğer tüm videolar silindiyse
+    if (videoIds.length === 0) {
+        document.getElementById("uyariAlani").innerText = "❌ Hiçbir video çalışmıyor!";
+        return;
+    }
+
+    // 4. Aynı indexte tekrar video oynat (çünkü diziden biri silindi)
+    if (currentVideoIndex >= videoIds.length) {
+        currentVideoIndex = 0;
+    }
+
+    // 5. 1 saniye sonra sonraki videoya geç
+    setTimeout(() => {
+        player.loadVideoById(videoIds[currentVideoIndex]);
+    }, 1000);
+}
+player = new YT.Player('player', {
+    height: '360',
+    width: '640',
+    videoId: videoIds[currentVideoIndex],
+    playerVars: {
+        autoplay: 1,
+        controls: 1,
+        rel: 0,
+        modestbranding: 1
+    },
+    events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange,
+        'onError': onPlayerError // 🔴 Zorunlu satır
+    }
+});
   </script>
 
 
