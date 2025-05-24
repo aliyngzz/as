@@ -426,9 +426,7 @@
 </div>
   
   <button id="tvOpenBtn">TV Aç</button>
-button id="bekletBtn" style="display: none; position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 18px; z-index: 999;">Beklet</button>
 
-<button id="devamBtn" style="display: none; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 18px; z-index: 999;">Devam Et</button>
   <script>
     const videoIds = [ 
 "g4CmWNxgsic",
@@ -1006,78 +1004,7 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
-let currentVideoIndex = 0;
-let player;
-let videoTimer;
-let bekletildi = false;
 
-const videoIds = [ "abc123", "xyz456", "def789" ]; // YouTube video ID dizisi
-const videoDuration = 20; // saniye
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        height: '360',
-        width: '640',
-        videoId: videoIds[currentVideoIndex],
-        playerVars: {
-            autoplay: 1,
-            controls: 1,
-            rel: 0,
-            modestbranding: 1
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange,
-            'onError': onPlayerError
-        }
-    });
-}
-
-function onPlayerReady(event) {
-    baslatSayac();
-}
-
-function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.PLAYING && !bekletildi) {
-        baslatSayac();
-    }
-}
-
-function baslatSayac() {
-    clearTimeout(videoTimer);
-    document.getElementById("bekletBtn").style.display = "none";
-    document.getElementById("devamBtn").style.display = "none";
-
-    videoTimer = setTimeout(() => {
-        player.pauseVideo();
-        document.getElementById("bekletBtn").style.display = "block";
-    }, videoDuration * 1000);
-}
-
-function oynatSonrakiVideo() {
-    clearTimeout(videoTimer);
-    bekletildi = false;
-    currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
-    player.loadVideoById(videoIds[currentVideoIndex]);
-}
-
-function onPlayerError(event) {
-    console.warn("Video bozuk:", videoIds[currentVideoIndex]);
-    oynatSonrakiVideo();
-}
-
-// BEKLET butonu: Süresiz izleme başlatılır
-document.getElementById("bekletBtn").addEventListener("click", () => {
-    bekletildi = true;
-    document.getElementById("bekletBtn").style.display = "none";
-    document.getElementById("devamBtn").style.display = "block";
-    player.playVideo(); // durdurulmuştu, devam ettir
-});
-
-// DEVAM ET butonu: bir sonraki videoya geçilir
-document.getElementById("devamBtn").addEventListener("click", () => {
-    oynatSonrakiVideo();
-});
   
 </script>
 
