@@ -956,6 +956,35 @@ pauseButton.addEventListener("click", () => {
     }
   }
 
+
+
+function onPlayerError(event) {
+    const videoId = videoIds[currentVideoIndex];
+    console.warn("Video çalışmadı:", videoId);
+    notEkle(`[HATA] ${videoId}`);
+    oynatSonrakiVideo(); // 20 saniye beklemeden atla
+}
+
+player = new YT.Player('player', {
+    height: '360',
+    width: '640',
+    videoId: videoIds[currentVideoIndex],
+    playerVars: {
+        autoplay: 1,
+        controls: 1,
+        rel: 0,
+        modestbranding: 1
+    },
+    events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange,
+        'onError': onPlayerError // 🔴 Çalışmayan videoları atlamak için şart
+    }
+});
+
+
+
+  
   function updateWeather() {
     const city = cities[currentCityIndex];
     fetchWeather(city);
