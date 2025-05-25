@@ -516,6 +516,27 @@
     const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
     loadVideo(currentPlayer, videoIds[index], currentDiv);
   }
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("startBtn").style.display = "none";
+  enterFullscreen(document.documentElement); // ✅ Bu satır TAM EKRAN başlatır
+  startVideoPlayer();
+});
+
+    function enterFullscreen(elem) {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+}
+
+
+
+
+    
 </script>
 
 
