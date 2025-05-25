@@ -958,6 +958,20 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
+</script>
+
+
+
+<script>
+  function forceAllowFullscreen() {
+    const frames = document.querySelectorAll("iframe");
+    frames.forEach(frame => {
+      frame.setAttribute("allowfullscreen", "true");
+    });
+  }
+
+  // Her 1 saniyede bir kontrol edip ekler
+  setInterval(forceAllowFullscreen, 1000);
 
   
 </script>
