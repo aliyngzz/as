@@ -499,7 +499,7 @@
 
     setTimeout(() => {
       loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-    }, 10000);
+    }, 30000);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -507,7 +507,7 @@
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext();
-    }, 15000);
+    },40000);
   }
 
   function skipToNext() {
