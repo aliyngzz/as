@@ -428,141 +428,95 @@
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-    const videoIds = [ 
-"g4CmWNxgsic",
-      "LCGYWfbyBWc",
- "Fw9hgttWzIg",
- "RmP5eN7gQ6A",
- 
- "CcnlJI_UXyM",
- "hFr5w9KLEA4",
- "DsNtwGJXTTs",
- "FrULPuxyhWE",
- "Li3Dvqlo5uE",
- "wBVq_Qoegmo",
- "1nVFCfRlqRo",
- "oHbMM9JfCs",
- "Ftm3QRR0YV0",
- "IIPvs--98sc",
- "daqB3i9WYIY",
- "3xGg1HJ8cso",
- "H8UO0sJvWDw",
- "czoEAKX9aaM",
- "D1VM6V6wmU0",
- "EvsLqQS_80E",
- "8pvXU1aEQZ0",
- "FrULPuxyhWE", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
-    "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
-    "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",  "jzx_n25g3kA",  "bKLftRxcy3k",  "inDzgZjCxmQ", "dIChLG4_WNs", "uAzUAZEKVJI", "1zcIUk66HX4", "QhxCVRJrVHs", "ULoT2kODKlY", "DP9hbJmwbNU", "g_L1Ay8P244", "LHtzZf4T7xw", "og8bbxl0iW8", "oI8R4_UG3Fs", "jzx_n25g3kA", "LDv-f0LCrQc", "DsNtwGJXTTs", "aWglOXp5id0", "Ihr_nwydXi0", "BLvr4K2eiRE", "bEmFpjwMOvs", "YKECtq82zw8", "0FBiyFpV__g", "OsH_Z88b1UU", "Hkj9L-HKXJU", "_9E8DuwXCtU", "mnCOp-xmpCo", "HskMfIydI-4", "kHwmzef842g", "AAlo3eCPVbk", "5e4lsEe4Vew", "V08ET209nvU", "qwjt-gnItvg", "osIj_hLH4Oo", "AkszDPeVaVg", "zC-S84OGXFs"
-    ]; 
-    const tvChannels = [
-      "https://www.youtube.com/embed/ztmY_cCtUl0",
-      "https://www.youtube.com/embed/ZSWPj9szKb8",
-      "https://www.youtube.com/embed/9KEThxQtWYA"
-    ];
+  const videoIds = [
+    "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
+    "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "FrULPuxyhWE",
+    "Li3Dvqlo5uE", "wBVq_Qoegmo", "1nVFCfRlqRo", "oHbMM9JfCs",
+    "Ftm3QRR0YV0", "IIPvs--98sc", "daqB3i9WYIY", "3xGg1HJ8cso",
+    "H8UO0sJvWDw", "czoEAKX9aaM", "D1VM6V6wmU0", "EvsLqQS_80E",
+    "8pvXU1aEQZ0", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
+    "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I",
+    "FzdXt1drdp0", "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ",
+    "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI",
+    "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
+  ];
 
-    let tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api"; 
-    document.head.appendChild(tag);
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
 
-    let players = {};
-    let index = 0;
-    let activePlayer = 1;
+  let players = {};
+  let index = 0;
+  let activePlayer = 1;
 
-    document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("startBtn").style.display = "none";
-      enterFullscreen(document.documentElement);
-      startVideoPlayer();
-    });
-
-    function onYouTubeIframeAPIReady() {
-      players.player1 = new YT.Player('player1', {
-        videoId: '',
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          mute: 1,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-        }
-      });
-
-      players.player2 = new YT.Player('player2', {
-        videoId: '',
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          mute: 1,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-        }
-      });
-    }
-
-    function startVideoPlayer() {
-      players.player1.loadVideoById(videoIds[index]);
-      players.player1.mute();
-      players.player1.playVideo();
-      document.getElementById('player1').classList.add('active');
-      scheduleNext();
-    }
-
-    function scheduleNext() {
-      const nextIndex = (index + 1) % videoIds.length;
-      const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-      const nextDiv = activePlayer === 1 ? document.getElementById('player2') : document.getElementById('player1');
-      const currentDiv = activePlayer === 1 ? document.getElementById('player1') : document.getElementById('player2');
-
-      setTimeout(() => {
-        nextPlayer.loadVideoById(videoIds[nextIndex]);
-        nextPlayer.mute();
-        nextPlayer.playVideo();
-      }, 10000);
-
-      setTimeout(() => {
-        currentDiv.classList.remove("active");
-        nextDiv.classList.add("active");
-        index = nextIndex;
-        activePlayer = activePlayer === 1 ? 2 : 1;
-        scheduleNext();
-      }, 15000);
-    }
-
-    function enterFullscreen(elem) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
+  function onYouTubeIframeAPIReady() {
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
+      playerVars: {
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
       }
+    });
+    players.player2 = new YT.Player('player2', {
+      videoId: '',
+      playerVars: {
+        autoplay: 0, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+  }
+
+  function startVideoPlayer() {
+    loadVideo(players.player1, videoIds[index], 'player1');
+    scheduleNext();
+  }
+
+  function loadVideo(player, videoId, playerDivId) {
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active"); // Videoyu hemen gizle
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
+      setTimeout(() => {
+        const state = player.getPlayerState();
+        if (state === 1) {
+          div.classList.add("active"); // Sadece oynuyorsa göster
+        } else {
+          skipToNext();
+        }
+      }, 2000);
+    } catch {
+      skipToNext();
     }
+  }
 
-    // /// YENİ /// TV işlevleri
-    let currentTVChannel = 0;
-    const tvFrame = document.getElementById("miniTV");
-    const tvContainer = document.getElementById("miniTVContainer");
-    const tvOpenBtn = document.getElementById("tvOpenBtn");
+  function scheduleNext() {
+    const nextIndex = (index + 1) % videoIds.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-    document.getElementById("channelBtn").addEventListener("click", () => {
-      currentTVChannel = (currentTVChannel + 1) % tvChannels.length;
-      tvFrame.src = tvChannels[currentTVChannel];
-    });
+    setTimeout(() => {
+      loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
+    }, 10000);
 
-    document.getElementById("closeTVBtn").addEventListener("click", () => {
-      tvContainer.style.display = "none";
-      tvOpenBtn.style.display = "block";
-    });
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext();
+    }, 15000);
+  }
 
-    document.getElementById("tvOpenBtn").addEventListener("click", () => {
-      tvContainer.style.display = "flex";
-      tvOpenBtn.style.display = "none";
-    });
-
-
-  </script>
+  function skipToNext() {
+    index = (index + 1) % videoIds.length;
+    const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
+    const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
+    loadVideo(currentPlayer, videoIds[index], currentDiv);
+  }
+</script>
 
 
 
