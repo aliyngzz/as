@@ -428,7 +428,7 @@
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-  const videoIds = [
+const videoIds = shuffleArray([
     "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
     "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "FrULPuxyhWE",
     "Li3Dvqlo5uE", "wBVq_Qoegmo", "1nVFCfRlqRo", "oHbMM9JfCs",
@@ -499,7 +499,7 @@
 
     setTimeout(() => {
       loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-    }, 10000);
+    }, 30000);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -507,7 +507,7 @@
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext();
-    }, 15000);
+    }, 40000);
   }
 
   function skipToNext() {
