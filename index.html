@@ -428,7 +428,7 @@
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-const videoIds = shuffleArray([
+  const videoIds = [
     "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
     "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "FrULPuxyhWE",
     "Li3Dvqlo5uE", "wBVq_Qoegmo", "1nVFCfRlqRo", "oHbMM9JfCs",
@@ -499,7 +499,7 @@ const videoIds = shuffleArray([
 
     setTimeout(() => {
       loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-    }, 30000);
+    }, 10000);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -507,7 +507,7 @@ const videoIds = shuffleArray([
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext();
-    },40000);
+    }, 15000);
   }
 
   function skipToNext() {
@@ -516,24 +516,6 @@ const videoIds = shuffleArray([
     const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
     loadVideo(currentPlayer, videoIds[index], currentDiv);
   }
-
-
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("startBtn").style.display = "none";
-  enterFullscreen(document.documentElement); // ✅ Bu satır TAM EKRAN başlatır
-  startVideoPlayer();
-});
-
-function enterFullscreen(elem) {
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  }
-}
-    
 </script>
 
 
@@ -976,27 +958,9 @@ closeBtn.addEventListener('click', () => {
     iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
-</script>
-
-
-
-<script>
-  function forceAllowFullscreen() {
-    const frames = document.querySelectorAll("iframe");
-    frames.forEach(frame => {
-      frame.setAttribute("allowfullscreen", "true");
-    });
-  }
-
-  // Her 1 saniyede bir kontrol edip ekler
-  setInterval(forceAllowFullscreen, 1000);
-</script>
-
-
-
 
   
-
+</script>
 
 
     
