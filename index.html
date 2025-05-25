@@ -472,25 +472,28 @@ const videoIds = shuffleArray([
     scheduleNext();
   }
 
-  function loadVideo(player, videoId, playerDivId) {
-    const div = document.getElementById(playerDivId);
-    div.classList.remove("active"); // Videoyu hemen gizle
-    try {
-      player.loadVideoById(videoId);
-      player.mute();
-      setTimeout(() => {
-        const state = player.getPlayerState();
-        if (state === 1) {
-          div.classList.add("active"); // Sadece oynuyorsa göster
-        } else {
-          skipToNext();
-        }
-      }, 2000);
-    } catch {
-      skipToNext();
-    }
-  }
+ function loadVideo(player, videoId, playerDivId) {
+  const div = document.getElementById(playerDivId);
+  div.classList.remove("active"); // görünmesin
 
+  try {
+    player.loadVideoById(videoId);
+    player.mute();
+
+    setTimeout(() => {
+      const state = player.getPlayerState();
+      if (state === 1) {
+        // video oynuyorsa göster
+        div.classList.add("active");
+      } else {
+        // video açılmıyorsa atla
+        skipToNext();
+      }
+    }, 2000); // 2 saniyede kontrol et
+  } catch (e) {
+    skipToNext(); // hata varsa direkt atla
+  }
+}
   function scheduleNext() {
     const nextIndex = (index + 1) % videoIds.length;
     const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
@@ -510,7 +513,7 @@ const videoIds = shuffleArray([
     },40000);
   }
 
-  function skipToNext() {
+ function skipToNext() {
     index = (index + 1) % videoIds.length;
     const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
     const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
