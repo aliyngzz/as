@@ -493,17 +493,15 @@ function shuffleArray(array) {
 }
 
     function startVideoPlayer() {
-  shuffleArray(videoIds); // 👈 burada karıştır
+  shuffleArray(videoIds);       // 🔁 listeyi karıştır
+  index = 0;                    // ✅ karıştırılmış dizide ilk videoyu seç
   loadVideo(players.player1, videoIds[index], 'player1');
-  scheduleNext();
+  scheduleNext();               // 🔄 sırayla devam et
 }
 
 
     
-  function startVideoPlayer() {
-    loadVideo(players.player1, videoIds[index], 'player1');
-    scheduleNext();
-  }
+  
 
   function loadVideo(player, videoId, playerDivId) {
     const div = document.getElementById(playerDivId);
