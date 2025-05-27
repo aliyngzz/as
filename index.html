@@ -158,40 +158,7 @@
     gap: 10px;
     backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
   }
-<!-- BEKLE Butonu -->
-<button id="waitBtn" style="
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 12px 24px;
-  font-size: 18px;
-  background: #ff4081;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  z-index: 9999;
-  display: none;
-  animation: pulse 1.2s infinite;
-">⏸ BEKLE</button>
 
-<!-- DEVAM ET Butonu -->
-<button id="continueBtn" style="
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 20px;
-  font-size: 16px;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 9999;
-  display: none;
-">▶️ DEVAM ET</button>
   #nature-controls button {
     padding: 8px 14px;
     font-size: 14px;
@@ -462,7 +429,7 @@
 
   <script>
 const videoIds = [ 
- "ma1zaH2WSDc",
+
   "V08ET209nvU",
 "eT_W9pSC3mY",
 "17L1ahq27ro",
@@ -538,36 +505,32 @@ function shuffleArray(array) {
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
+  div.classList.remove("active"); // Videoyu başta gizle
 
   try {
     player.loadVideoById(videoId);
     player.mute();
 
-    let timeout = setTimeout(() => {
-      skipToNext(); // ⏱ 3 saniye doldu, hala başlamadıysa geç
-    }, 3000);
+    let tryCount = 0;
+    const checkInterval = setInterval(() => {
+      const state = player.getPlayerState();
 
-    const checker = setInterval(() => {
-      try {
-        const state = player.getPlayerState();
-
-        if (state === 1) {
-          clearTimeout(timeout);
-          clearInterval(checker);
-          div.classList.add("active"); // 🔥 sadece oynuyorsa göster
+      if (state === 1) {
+        clearInterval(checkInterval);
+        div.classList.add("active"); // ✅ video çalışıyorsa göster
+      } else {
+        tryCount++;
+        if (tryCount >= 2) { // ❌ 2 saniye dene, hala yoksa geç
+          clearInterval(checkInterval);
+          skipToNext();
         }
-      } catch (e) {
-        clearTimeout(timeout);
-        clearInterval(checker);
-        skipToNext(); // 🔁 iframe hatası, geç
       }
-    }, 500);
-  } catch {
-    skipToNext(); // 🔁 video hiç yüklenmediyse geç
+    }, 1000); // her 1 saniyede bir kontrol
+
+  } catch (err) {
+    skipToNext(); // 🎯 Hata varsa hemen geç
   }
 }
-
 
 
   function scheduleNext() {
@@ -1080,21 +1043,9 @@ closeBtn.addEventListener('click', () => {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
-</style>
-
-
-
-<style>
-@keyframes pulse {
-  0% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.1); }
-  100% { transform: translateX(-50%) scale(1); }
-}
-</style>
-
 
   
-
+</script>
 
 
     
