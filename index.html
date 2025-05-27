@@ -505,7 +505,7 @@ function shuffleArray(array) {
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // Her zaman önce gizle
+  div.classList.remove("active");
 
   try {
     player.loadVideoById(videoId);
@@ -518,25 +518,26 @@ function loadVideo(player, videoId, playerDivId) {
         state = player.getPlayerState();
       } catch (e) {
         clearInterval(check);
-        skipToNext(); // iframe bile yüklenmediyse geç
+        skipToNext();
         return;
       }
 
       if (state === 1) {
         clearInterval(check);
-        div.classList.add("active"); // oynuyorsa göster
+        div.classList.add("active");
       } else {
         attempts++;
         if (attempts >= 2) {
           clearInterval(check);
-          skipToNext(); // 2 saniye sonra hala başlamadıysa geç
+          skipToNext();
         }
       }
     }, 1000);
   } catch {
-    skipToNext(); // doğrudan geç
+    skipToNext();
   }
 }
+
 
 
 
