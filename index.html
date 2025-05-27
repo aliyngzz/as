@@ -490,10 +490,10 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
-}
+ 
 
     function startVideoPlayer() {
-  shuffleArray(videoIds); // 👈 burada karıştır
+  shuffleArray(videoIds); // 🔁 Rastgele sırala
   loadVideo(players.player1, videoIds[index], 'player1');
   scheduleNext();
 }
