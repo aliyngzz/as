@@ -505,32 +505,39 @@ function shuffleArray(array) {
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // Videoyu başta gizle
+  div.classList.remove("active"); // Her zaman önce gizle
 
   try {
     player.loadVideoById(videoId);
     player.mute();
 
-    let tryCount = 0;
-    const checkInterval = setInterval(() => {
-      const state = player.getPlayerState();
+    let attempts = 0;
+    const check = setInterval(() => {
+      let state;
+      try {
+        state = player.getPlayerState();
+      } catch (e) {
+        clearInterval(check);
+        skipToNext(); // iframe bile yüklenmediyse geç
+        return;
+      }
 
       if (state === 1) {
-        clearInterval(checkInterval);
-        div.classList.add("active"); // ✅ video çalışıyorsa göster
+        clearInterval(check);
+        div.classList.add("active"); // oynuyorsa göster
       } else {
-        tryCount++;
-        if (tryCount >= 2) { // ❌ 2 saniye dene, hala yoksa geç
-          clearInterval(checkInterval);
-          skipToNext();
+        attempts++;
+        if (attempts >= 2) {
+          clearInterval(check);
+          skipToNext(); // 2 saniye sonra hala başlamadıysa geç
         }
       }
-    }, 1000); // her 1 saniyede bir kontrol
-
-  } catch (err) {
-    skipToNext(); // 🎯 Hata varsa hemen geç
+    }, 1000);
+  } catch {
+    skipToNext(); // doğrudan geç
   }
 }
+
 
 
   function scheduleNext() {
