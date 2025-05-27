@@ -376,7 +376,6 @@
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
 <iframe id="miniTV" src="https://www.youtube.com/embed/ztmY_cCtUl0" allowfullscreen></iframe>
-    <iframe id="miniTV" src="https://www.youtube.com/watch?v=ma1zaH2WSDc" allowfullscreen></iframe>
     <div id="tvControls">
       <button class="tvBtn" id="channelBtn">Kanal Değiştir</button>
       <button class="tvBtn" id="closeTVBtn">TV Kapat</button>
@@ -596,8 +595,16 @@ function loadVideo(player, videoId, playerDivId) {
   }
 }
 
-
-    
+const tvChannels = [
+  "https://www.youtube.com/embed/ztmY_cCtUl0",
+  "https://www.youtube.com/embed/ma1zaH2WSDc"
+];
+   let tvIndex = 0;
+const miniTV = document.getElementById("miniTV");
+document.getElementById("channelBtn").addEventListener("click", () => {
+  tvIndex = (tvIndex + 1) % tvChannels.length;
+  miniTV.src = tvChannels[tvIndex];
+}); 
 </script>
 
 
@@ -929,10 +936,11 @@ pauseButton.addEventListener("click", () => {
 
 
 <script>
- document.addEventListener("DOMContentLoaded", () => {
-  const tvOpenBtn = document.getElementById("tvOpenBtn");
-  const miniTVContainer = document.getElementById("miniTVContainer");
-  const closeTVBtn = document.getElementById("closeTVBtn");
+  // Sayfa yüklendiğinde butonu görünür yap
+  document.addEventListener("DOMContentLoaded", () => {
+    const tvOpenBtn = document.getElementById("tvOpenBtn");
+    const miniTVContainer = document.getElementById("miniTVContainer");
+
     // İlk başta TV gizli olacak
     miniTVContainer.style.display = "none";
 
@@ -941,16 +949,15 @@ pauseButton.addEventListener("click", () => {
 
     // TV Aç düğmesine tıklanınca miniTV görünür hale gelsin
     tvOpenBtn.addEventListener("click", () => {
-    miniTVContainer.style.display = "flex";
-    tvOpenBtn.style.display = "none";
-  });
+      miniTVContainer.style.display = "flex";
+      tvOpenBtn.style.display = "none"; // Açıldıktan sonra butonu gizle
+    });
 
     // TV Kapat butonu: miniTV'yi gizle ve "TV Aç" butonunu tekrar göster
     const closeTVBtn = document.getElementById("closeTVBtn");
     closeTVBtn.addEventListener("click", () => {
-    miniTVContainer.style.display = "none";
-    tvOpenBtn.style.display = "block";
-  
+      miniTVContainer.style.display = "none";
+      tvOpenBtn.style.display = "block";
     });
   });
 
@@ -1011,8 +1018,6 @@ document.getElementById("youtubeBtn").addEventListener("click", function () {
   // Kanalınızın adresini buraya koyun
   window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
 });
-
-  
 
 </script>
 
