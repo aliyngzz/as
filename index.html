@@ -575,34 +575,7 @@ document.getElementById("startBtn").addEventListener("click", () => {
   }
 }
 
-function loadVideo(player, videoId, playerDivId) {
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
-  let attempt = 0;
 
-  try {
-    player.loadVideoById(videoId);
-    player.mute();
-
-    const checkInterval = setInterval(() => {
-      const state = player.getPlayerState();
-
-      // Eğer 1 (oynuyor) değilse 1 saniyede 3 kez dene, sonra geç
-      if (state === 1) {
-        clearInterval(checkInterval);
-        div.classList.add("active");
-      } else {
-        attempt++;
-        if (attempt >= 3) {
-          clearInterval(checkInterval);
-          skipToNext(); // ❗ Hatalı video → hemen geç
-        }
-      }
-    }, 1000); // her saniye kontrol et
-  } catch {
-    skipToNext();
-  }
-}
 
 const tvChannels = [
   "https://www.youtube.com/embed/ztmY_cCtUl0",
