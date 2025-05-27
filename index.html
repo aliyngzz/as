@@ -362,8 +362,50 @@
   50% { box-shadow: 0 0 20px white; }
   100% { box-shadow: 0 0 5px white; }
 }
+<!-- BEKLE Butonu -->
+<button id="waitBtn" style="
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  font-size: 18px;
+  background: #ff4081;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 9999;
+  display: none;
+  animation: pulse 1.2s infinite;
+">⏸ BEKLE</button>
 
-  </style>
+<!-- DEVAM ET Butonu -->
+<button id="continueBtn" style="
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 9999;
+  display: none;
+">▶️ DEVAM ET</button>
+
+<!-- Nabız efekti -->
+<style>
+@keyframes pulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+</style>
+ 
 </head>
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
@@ -532,16 +574,25 @@ function loadVideo(player, videoId, playerDivId) {
   }
 }
 
+let autoNextTimeout; // en üste tanımlanmalı
 
-  function scheduleNext() {
+function scheduleNext() {
+  const waitBtn = document.getElementById("waitBtn");
+  const continueBtn = document.getElementById("continueBtn");
+
+  waitBtn.style.display = "block";
+  continueBtn.style.display = "none";
+
+  autoNextTimeout = setTimeout(() => {
+    waitBtn.style.display = "none";
+    continueBtn.style.display = "none";
+
     const nextIndex = (index + 1) % videoIds.length;
     const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-    setTimeout(() => {
-      loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-    }, 30000);
+    loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -549,8 +600,12 @@ function loadVideo(player, videoId, playerDivId) {
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext();
-    }, 40000);
-  }
+    }, 10000);
+
+  }, 30000); // 30 saniye sonra geç
+}
+
+  
 
   function skipToNext() {
     index = (index + 1) % videoIds.length;
@@ -1043,7 +1098,22 @@ closeBtn.addEventListener('click', () => {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+</script>
 
+<script>
+
+
+document.getElementById("waitBtn").addEventListener("click", () => {
+  clearTimeout(autoNextTimeout); // geçiş iptal
+  document.getElementById("waitBtn").style.display = "none";
+  document.getElementById("continueBtn").style.display = "block";
+});
+
+document.getElementById("continueBtn").addEventListener("click", () => {
+  document.getElementById("continueBtn").style.display = "none";
+  scheduleNext(); // yeniden başlat
+});
+  
   
 </script>
 
