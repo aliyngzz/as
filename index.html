@@ -928,11 +928,10 @@ pauseButton.addEventListener("click", () => {
 
 
 <script>
-  // Sayfa yüklendiğinde butonu görünür yap
-  document.addEventListener("DOMContentLoaded", () => {
-    const tvOpenBtn = document.getElementById("tvOpenBtn");
-    const miniTVContainer = document.getElementById("miniTVContainer");
-
+ document.addEventListener("DOMContentLoaded", () => {
+  const tvOpenBtn = document.getElementById("tvOpenBtn");
+  const miniTVContainer = document.getElementById("miniTVContainer");
+  const closeTVBtn = document.getElementById("closeTVBtn");
     // İlk başta TV gizli olacak
     miniTVContainer.style.display = "none";
 
@@ -941,15 +940,16 @@ pauseButton.addEventListener("click", () => {
 
     // TV Aç düğmesine tıklanınca miniTV görünür hale gelsin
     tvOpenBtn.addEventListener("click", () => {
-      miniTVContainer.style.display = "flex";
-      tvOpenBtn.style.display = "none"; // Açıldıktan sonra butonu gizle
-    });
+    miniTVContainer.style.display = "flex";
+    tvOpenBtn.style.display = "none";
+  });
 
     // TV Kapat butonu: miniTV'yi gizle ve "TV Aç" butonunu tekrar göster
     const closeTVBtn = document.getElementById("closeTVBtn");
     closeTVBtn.addEventListener("click", () => {
-      miniTVContainer.style.display = "none";
-      tvOpenBtn.style.display = "block";
+    miniTVContainer.style.display = "none";
+    tvOpenBtn.style.display = "block";
+  
     });
   });
 
