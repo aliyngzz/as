@@ -490,18 +490,20 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
- 
+}
 
-   function startVideoPlayer() {
-  shuffleArray(videoIds);              // 🔁 Listeyi karıştır
-  index = 0;                           // ✅ Karışık listedeki ilk video oynatılır
-  loadVideo(players.player1, videoIds[index], 'player1'); // ▶️ Oynat
-  scheduleNext();                      // 🔄 Devamını sıraya koy
+    function startVideoPlayer() {
+  shuffleArray(videoIds); // 👈 burada karıştır
+  loadVideo(players.player1, videoIds[index], 'player1');
+  scheduleNext();
 }
 
 
     
-  
+  function startVideoPlayer() {
+    loadVideo(players.player1, videoIds[index], 'player1');
+    scheduleNext();
+  }
 
   function loadVideo(player, videoId, playerDivId) {
     const div = document.getElementById(playerDivId);
