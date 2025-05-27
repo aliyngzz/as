@@ -158,7 +158,40 @@
     gap: 10px;
     backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
   }
+<!-- BEKLE Butonu -->
+<button id="waitBtn" style="
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  font-size: 18px;
+  background: #ff4081;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 9999;
+  display: none;
+  animation: pulse 1.2s infinite;
+">⏸ BEKLE</button>
 
+<!-- DEVAM ET Butonu -->
+<button id="continueBtn" style="
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 9999;
+  display: none;
+">▶️ DEVAM ET</button>
   #nature-controls button {
     padding: 8px 14px;
     font-size: 14px;
@@ -1047,9 +1080,21 @@ closeBtn.addEventListener('click', () => {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+</style>
+
+
+
+<style>
+@keyframes pulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+</style>
+
 
   
-</script>
+
 
 
     
