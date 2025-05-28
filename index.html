@@ -518,7 +518,7 @@ function loadVideo(player, videoId, playerDivId) {
         div.classList.add("active");
       } else {
         tryCount++;
-        if (tryCount >= 2) {
+        if (tryCount >= 1) {
           clearInterval(checkInterval);
           hataliVideolar.push(videoId);
           document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n";
