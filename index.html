@@ -401,7 +401,12 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
+<div id="countdownScreen" style="text-align: center; padding-top: 100px;">
+  <img src="masaustu.jpg" alt="Açılış Ekranı" style="width:100%; max-width:800px;">
+</div>
 
+<!-- YouTube oynatıcı alanı -->
+<div id="player"></div>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -426,7 +431,7 @@
 </div>
   
   <button id="tvOpenBtn">TV Aç</button>
-
+<script src="https://www.youtube.com/iframe_api"></script>
   <script>
 const videoIds = [ 
 
@@ -458,80 +463,55 @@ const videoIds = [
     "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
-  let tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
+ let currentVideoIndex = 0;
+  let player;
 
-  let players = {};
-  let index = 0;
-  let activePlayer = 1;
-
+  // YouTube player hazır olunca
   function onYouTubeIframeAPIReady() {
-    players.player1 = new YT.Player('player1', {
-      videoId: '',
-      events: { onReady: () => startVideoPlayer() },
-      playerVars: {
-        autoplay: 1, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
-    });
-    players.player2 = new YT.Player('player2', {
-      videoId: '',
-      playerVars: {
-        autoplay: 0, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
+    player = new YT.Player("player", {
+      height: "390",
+      width: "640",
+      videoId: videoIds[currentVideoIndex],
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError
       }
     });
   }
 
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+  function onPlayerReady(event) {
+    event.target.playVideo();
   }
-  return array;
-}
 
-    function startVideoPlayer() {
-  shuffleArray(videoIds);       // 🔁 listeyi karıştır
-  index = 0;                    // ✅ karıştırılmış dizide ilk videoyu seç
-  loadVideo(players.player1, videoIds[index], 'player1');
-  scheduleNext();               // 🔄 sırayla devam et
-}
+  function onPlayerStateChange(event) {
+    // Video başladıysa açılış ekranı kapanır
+    if (event.data === YT.PlayerState.PLAYING) {
+      const masaustu = document.getElementById("countdownScreen");
+      if (masaustu) masaustu.style.display = "none";
+    }
 
+    // Video bittiyse sıradaki videoya geç
+    if (event.data === YT.PlayerState.ENDED) {
+      goToNextVideo();
+    }
 
-    
-  
-
-function loadVideo(player, videoId, playerDivId) {
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // Videoyu başta gizle
-
-  try {
-    player.loadVideoById(videoId);
-    player.mute();
-
-    let tryCount = 0;
-    const checkInterval = setInterval(() => {
-      const state = player.getPlayerState();
-
-      if (state === 1) {
-        clearInterval(checkInterval);
-        div.classList.add("active"); // ✅ video çalışıyorsa göster
-      } else {
-        tryCount++;
-        if (tryCount >= 2) { // ❌ 2 saniye dene, hala yoksa geç
-          clearInterval(checkInterval);
-          skipToNext();
-        }
-      }
-    }, 1000); // her 1 saniyede bir kontrol
-
-  } catch (err) {
-    skipToNext(); // 🎯 Hata varsa hemen geç
+    // Hatalı ya da yüklenemeyen video ise hızlı geç
+    if (event.data === -1 || event.data === 0) {
+      setTimeout(goToNextVideo, 1000);
+    }
   }
-}
 
+  function onPlayerError(event) {
+    console.warn("Video hatası:", event.data);
+    goToNextVideo();
+  }
+
+  function goToNextVideo() {
+    currentVideoIndex++;
+    if (currentVideoIndex >= videoIds.length) currentVideoIndex = 0;
+    player.loadVideoById(videoIds[currentVideoIndex]);
+  }
 
   function scheduleNext() {
     const nextIndex = (index + 1) % videoIds.length;
