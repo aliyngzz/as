@@ -563,7 +563,7 @@ function scheduleNext() {
 
   setTimeout(() => {
     loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-  }, 5000);
+  }, 19000); // 19. saniyede sıradaki yüklenir
 
   setTimeout(() => {
     document.getElementById(currentDivId).classList.remove("active");
@@ -571,7 +571,7 @@ function scheduleNext() {
     index = nextIndex;
     activePlayer = activePlayer === 1 ? 2 : 1;
     scheduleNext();
-  }, 6000);
+  }, 20000); // 20. saniyede geçiş olur
 }
 
 // ✅ Artık bu fonksiyon dışarıda!
