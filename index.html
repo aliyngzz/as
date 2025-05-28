@@ -371,7 +371,7 @@
 
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
-  <div id="player2" class="player"></div>
+
 <div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
@@ -489,11 +489,22 @@ function shuffleArray(array) {
   return array;
 }
 
-    function startVideoPlayer() {
-  shuffleArray(videoIds);       // 🔁 listeyi karıştır
-  index = 0;                    // ✅ karıştırılmış dizide ilk videoyu seç
-  loadVideo(players.player1, videoIds[index], 'player1');
-  scheduleNext();               // 🔄 sırayla devam et
+   function onYouTubeIframeAPIReady() {
+  player = new YT.Player("player", {
+    videoId: videoIds[videoIndex],
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      mute: 1,
+      modestbranding: 1,
+      rel: 0
+    },
+    events: {
+      onReady: event => event.target.playVideo(),
+      onStateChange: onPlayerStateChange,
+      onError: skipToNext
+    }
+  });
 }
 
 
@@ -1035,7 +1046,14 @@ if (iframe && iframe.contentWindow) {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
 
+document.getElementById("startBtn").onclick = () => {
+  document.getElementById("startBtn").style.display = "none";
+  onYouTubeIframeAPIReady();
+};
   
 </script>
 
