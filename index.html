@@ -363,7 +363,41 @@
   100% { box-shadow: 0 0 5px white; }
 }
 
-  </style>
+
+
+
+  #freezeBtn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 10px #4caf50;
+    animation: pulse 2s infinite;
+  }
+
+  #freezeBtn:hover {
+    background: #45a049;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px #4caf50; }
+    50% { box-shadow: 0 0 20px #4caf50; }
+    100% { box-shadow: 0 0 10px #4caf50; }
+  }
+</style>
+
+
+
+    
+ 
 </head>
 <body>
   <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
@@ -401,7 +435,9 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-
+<button onclick="toggleFreeze()" id="freezeBtn">
+  🔒 Sabitle
+</button>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -415,9 +451,7 @@
   <button onclick="saveNote()">💾 Kaydet</button>
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
-<button onclick="toggleFreeze()" id="freezeBtn" style="position: absolute; top: 10px; right: 10px; z-index: 9999;">
-  🔒 Sabitle
-</button>
+
 <!-- Ana içerik -->
 <div id="mainContent" style="display:none;">
   <!-- Diğer içerikler -->
@@ -1042,32 +1076,45 @@ closeBtn.addEventListener('click', () => {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+
 </script>
-  <script>
+
+
+
+
+<script>
   let videoFreezeMode = false;
+  let videoInterval;
 
-    setInterval(() => {
-  if (!videoFreezeMode) {
-    playNextVideo();
+  function startVideoRotation() {
+    clearInterval(videoInterval); // Önceki varsa temizle
+    videoInterval = setInterval(() => {
+      if (!videoFreezeMode) {
+        playNextVideo();
+      }
+    }, 40000);
   }
-}, 40000);
 
-function toggleFreeze() {
-  videoFreezeMode = !videoFreezeMode;
-  const btn = document.getElementById('freezeBtn');
-  if (videoFreezeMode) {
-    btn.innerText = '🔓 Devam Et';
-    console.log("Video sabitlendi.");
-  } else {
-    btn.innerText = '🔒 Sabitle';
-    console.log("Sıralı oynatma devam ediyor.");
-    playNextVideo(); // Kaldığı yerden devam ettir
+  function toggleFreeze() {
+    videoFreezeMode = !videoFreezeMode;
+    const btn = document.getElementById('freezeBtn');
+
+    if (videoFreezeMode) {
+      btn.innerText = '🔓 Sabitlemeyi Kaldır';
+      console.log("Video sabitlendi.");
+    } else {
+      btn.innerText = '🔒 Sabitle';
+      console.log("Sıralı oynatma devam ediyor.");
+      playNextVideo(); // Devam ederken sıradaki videoya geç
+    }
   }
-}
 
-
-    
+  window.addEventListener("load", startVideoRotation);
 </script>
+
+
+
+  
 
 
     
