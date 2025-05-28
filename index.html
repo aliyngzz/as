@@ -415,7 +415,9 @@
   <button onclick="saveNote()">💾 Kaydet</button>
   <button onclick="closePanel()">❌ Kapat</button>
 </div>
-
+<button onclick="toggleFreeze()" id="freezeBtn" style="position: absolute; top: 10px; right: 10px; z-index: 9999;">
+  🔒 Sabitle
+</button>
 <!-- Ana içerik -->
 <div id="mainContent" style="display:none;">
   <!-- Diğer içerikler -->
@@ -1040,8 +1042,31 @@ closeBtn.addEventListener('click', () => {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+</script>
+  <script>
+  let videoFreezeMode = false;
 
-  
+    setInterval(() => {
+  if (!videoFreezeMode) {
+    playNextVideo();
+  }
+}, 40000);
+
+function toggleFreeze() {
+  videoFreezeMode = !videoFreezeMode;
+  const btn = document.getElementById('freezeBtn');
+  if (videoFreezeMode) {
+    btn.innerText = '🔓 Devam Et';
+    console.log("Video sabitlendi.");
+  } else {
+    btn.innerText = '🔒 Sabitle';
+    console.log("Sıralı oynatma devam ediyor.");
+    playNextVideo(); // Kaldığı yerden devam ettir
+  }
+}
+
+
+    
 </script>
 
 
