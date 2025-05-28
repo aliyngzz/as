@@ -520,14 +520,15 @@ function loadVideo(player, videoId, playerDivId) {
         tryCount++;
         if (tryCount >= 2) {
           clearInterval(checkInterval);
-          hataliVideolar.push(videoId); // ❗ Hatalı video not al
-          document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n"; // 📝 Not'a yaz
+          hataliVideolar.push(videoId);
+          document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n";
           skipToNext();
         }
       }
     }, 1000);
   } catch (err) {
     hataliVideolar.push(videoId);
+    document.getElementById("noteText").value += "Hatalı video (catch): " + videoId + "\n";
     skipToNext();
   }
 }
