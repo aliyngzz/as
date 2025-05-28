@@ -464,8 +464,7 @@ const videoIds = [
   let activePlayer = 1;
 let hataliVideolar = [];
   function onYouTubeIframeAPIReady() {
-    players.player1 = new YT.Player('player1', {
-      videoId: '',
+  videoId: videoIds[0],
       events: { onReady: () => startVideoPlayer() },
       playerVars: {
         autoplay: 1, controls: 0, mute: 1,
