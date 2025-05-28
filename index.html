@@ -556,23 +556,38 @@ function loadVideo(player, videoId, playerDivId) {
 
 
 function scheduleNext() {
-  const nextIndex = (index + 1) % videoIds.length;
+  let nextIndex = (index + 1) % videoIds.length;
+
+  // ❗ Hatalı video tekrar gelmesin diye kontrol
+  let deneme = 0;
+  while (hataliVideolar.includes(videoIds[nextIndex]) && deneme < videoIds.length) {
+    nextIndex = (nextIndex + 1) % videoIds.length;
+    deneme++;
+  }
+
   const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
   const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
   const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
+  // ✅ 15. saniyede sonraki video yükle
   setTimeout(() => {
     loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-  }, 14000); // 14. saniyede sıradaki yüklenir
+  }, 15000);
 
+  // ✅ 20. saniyede geçiş yap
   setTimeout(() => {
     document.getElementById(currentDivId).classList.remove("active");
     document.getElementById(nextDivId).classList.add("active");
     index = nextIndex;
     activePlayer = activePlayer === 1 ? 2 : 1;
     scheduleNext();
-  }, 20000); // 20. saniyede geçiş olur
+  }, 20000);
 }
+
+
+
+    
+
 
 // ✅ Artık bu fonksiyon dışarıda!
 function skipToNext() {
