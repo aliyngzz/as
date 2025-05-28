@@ -421,7 +421,7 @@
   <!-- Diğer içerikler -->
   <!-- Örneğin doğa videoları veya butonlar burada olacak -->
 </div>
-  <div id="player"></div>
+  
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
@@ -455,53 +455,31 @@ const videoIds = [
     "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
- let videoIndex = 0;
-  let player;
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
 
-  // YouTube Player API yüklendiğinde çalışır
+  let players = {};
+  let index = 0;
+  let activePlayer = 1;
+
   function onYouTubeIframeAPIReady() {
-    player = new YT.Player("player", {
-      width: "100%",
-      height: "360",
-      videoId: videoIds[videoIndex],
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
       playerVars: {
-        autoplay: 1,
-        controls: 1,
-        rel: 0,
-        modestbranding: 1,
-      },
-      events: {
-        onReady: onPlayerReady,
-        onError: onPlayerError,
-      },
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+    players.player2 = new YT.Player('player2', {
+      videoId: '',
+      playerVars: {
+        autoplay: 0, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
     });
   }
-
-  // Video hazır olduğunda otomatik başlat
-  function onPlayerReady(event) {
-    event.target.playVideo();
-  }
-
-  // Hata olduğunda kontrol et ve atla
-  function onPlayerError(event) {
-    const hataKodu = event.data;
-    console.warn("Video Hatası:", hataKodu);
-
-    // 101 veya 150 => Gömülü oynatma devre dışı
-    if (hataKodu === 101 || hataKodu === 150) {
-      console.log("Embed yasak, sıradaki videoya geçiliyor...");
-      skipToNextVideo();
-    } else {
-      console.log("Diğer hata kodu:", hataKodu);
-    }
-  }
-
-  function skipToNextVideo() {
-    videoIndex = (videoIndex + 1) % videoIds.length;
-    player.loadVideoById(videoIds[videoIndex]);
-  }
-
-
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
