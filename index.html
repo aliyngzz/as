@@ -500,10 +500,10 @@ function shuffleArray(array) {
       rel: 0
     },
     events: {
-      onReady: event => event.target.playVideo(),
-      onStateChange: onPlayerStateChange,
-      onError: skipToNext
-    }
+  onReady: event => event.target.playVideo(),
+  onStateChange: onPlayerStateChange,
+  onError: skipToNext
+}
   });
 }
 
@@ -560,12 +560,11 @@ function loadVideo(player, videoId, playerDivId) {
     }, 40000);
   }
 
-  function skipToNext() {
-    index = (index + 1) % videoIds.length;
-    const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
-    const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
-    loadVideo(currentPlayer, videoIds[index], currentDiv);
-  }
+function skipToNext() {
+  videoIndex = (videoIndex + 1) % videoIds.length;
+  player.loadVideoById(videoIds[videoIndex]);
+}
+  
 
 document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("startBtn").style.display = "none";
