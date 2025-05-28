@@ -462,7 +462,7 @@ const videoIds = [
   let players = {};
   let index = 0;
   let activePlayer = 1;
-
+let hataliVideolar = [];
   function onYouTubeIframeAPIReady() {
     players.player1 = new YT.Player('player1', {
       videoId: '',
@@ -497,12 +497,13 @@ function shuffleArray(array) {
 }
 
 
+
     
   
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // Videoyu başta gizle
+  div.classList.remove("active");
 
   try {
     player.loadVideoById(videoId);
@@ -514,18 +515,20 @@ function loadVideo(player, videoId, playerDivId) {
 
       if (state === 1) {
         clearInterval(checkInterval);
-        div.classList.add("active"); // ✅ video çalışıyorsa göster
+        div.classList.add("active");
       } else {
         tryCount++;
-        if (tryCount >= 2) { // ❌ 2 saniye dene, hala yoksa geç
+        if (tryCount >= 2) {
           clearInterval(checkInterval);
+          hataliVideolar.push(videoId); // ❗ Hatalı video not al
+          document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n"; // 📝 Not'a yaz
           skipToNext();
         }
       }
-    }, 1000); // her 1 saniyede bir kontrol
-
+    }, 1000);
   } catch (err) {
-    skipToNext(); // 🎯 Hata varsa hemen geç
+    hataliVideolar.push(videoId);
+    skipToNext();
   }
 }
 
@@ -549,12 +552,17 @@ function loadVideo(player, videoId, playerDivId) {
     }, 40000);
   }
 
-  function skipToNext() {
+function skipToNext() {
+  let deneme = 0;
+  do {
     index = (index + 1) % videoIds.length;
-    const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
-    const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
-    loadVideo(currentPlayer, videoIds[index], currentDiv);
-  }
+    deneme++;
+  } while (hataliVideolar.includes(videoIds[index]) && deneme < videoIds.length);
+
+  const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
+  const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
+  loadVideo(currentPlayer, videoIds[index], currentDiv);
+}
 
 document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("startBtn").style.display = "none";
@@ -1036,7 +1044,7 @@ if (iframe && iframe.contentWindow) {
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
 
-  
+  document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n";
 </script>
 
 
