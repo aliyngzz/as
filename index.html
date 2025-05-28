@@ -540,18 +540,17 @@ function loadVideo(player, videoId, playerDivId) {
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-    setTimeout(() => {
-      loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-    }, 30000);
+  setTimeout(() => {
+  loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
+}, 5000); // 5 saniye sonra yükle
 
-    setTimeout(() => {
-      document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
-      index = nextIndex;
-      activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext();
-    }, 40000);
-  }
+setTimeout(() => {
+  document.getElementById(currentDivId).classList.remove("active");
+  document.getElementById(nextDivId).classList.add("active");
+  index = nextIndex;
+  activePlayer = activePlayer === 1 ? 2 : 1;
+  scheduleNext();
+}, 6000); // 6 saniye sonra geç
 
 function skipToNext() {
   let deneme = 0;
