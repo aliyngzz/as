@@ -498,6 +498,7 @@ function shuffleArray(array) {
       mute: 1,
       modestbranding: 1,
       rel: 0
+       enablejsapi: 1
     },
     events: {
   onReady: event => event.target.playVideo(),
@@ -1053,6 +1054,26 @@ document.getElementById("startBtn").onclick = () => {
   document.getElementById("startBtn").style.display = "none";
   onYouTubeIframeAPIReady();
 };
+
+
+
+
+function onPlayerError(event) {
+  const errorCode = event.data;
+  console.warn("Video hatası: ", errorCode);
+  if ([2, 5, 100, 101, 150].includes(errorCode)) {
+    skipToNext(); // ❌ Hatalı video anında atlanır
+  }
+}
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.ENDED) {
+    skipToNext();
+  }
+}
+
+
+
+
   
 </script>
 
