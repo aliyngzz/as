@@ -370,9 +370,8 @@
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
- 
-<div id="player1" class="player"></div>
-<div id="player2" class="player"></div>
+  <div id="player1" class="player"></div>
+  <div id="player2" class="player"></div>
 <div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
@@ -456,7 +455,31 @@ const videoIds = [
     "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
- let players = {};
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+
+  let players = {};
+  let index = 0;
+  let activePlayer = 1;
+
+  function onYouTubeIframeAPIReady() {
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
+      playerVars: {
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+    players.player2 = new YT.Player('player2', {
+      videoId: '',
+      playerVars: {
+        autoplay: 0, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+  }
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -466,41 +489,13 @@ function shuffleArray(array) {
   return array;
 }
 
-function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player("player1", {
-    videoId: videoIds[videoIndex],
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      mute: 1,
-      modestbranding: 1,
-      rel: 0,
-      enablejsapi: 1
-    },
-    events: {
-      onReady: event => event.target.playVideo(),
-      onStateChange: onPlayerStateChange,
-      onError: skipToNext
-    }
-  });
-
-  players.player2 = new YT.Player("player2", {
-    videoId: videoIds[videoIndex + 1], // farklı video istersen
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      mute: 1,
-      modestbranding: 1,
-      rel: 0,
-      enablejsapi: 1
-    },
-    events: {
-      onReady: event => event.target.playVideo(),
-      onStateChange: onPlayerStateChange,
-      onError: skipToNext
-    }
-  });
+    function startVideoPlayer() {
+  shuffleArray(videoIds);       // 🔁 listeyi karıştır
+  index = 0;                    // ✅ karıştırılmış dizide ilk videoyu seç
+  loadVideo(players.player1, videoIds[index], 'player1');
+  scheduleNext();               // 🔄 sırayla devam et
 }
+
 
     
   
@@ -554,11 +549,12 @@ function loadVideo(player, videoId, playerDivId) {
     }, 40000);
   }
 
-function skipToNext() {
-  videoIndex = (videoIndex + 1) % videoIds.length;
-  player.loadVideoById(videoIds[videoIndex]);
-}
-  
+  function skipToNext() {
+    index = (index + 1) % videoIds.length;
+    const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
+    const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
+    loadVideo(currentPlayer, videoIds[index], currentDiv);
+  }
 
 document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("startBtn").style.display = "none";
@@ -1039,33 +1035,6 @@ if (iframe && iframe.contentWindow) {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
-const tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
-
-document.getElementById("startBtn").onclick = () => {
-  document.getElementById("startBtn").style.display = "none";
-  onYouTubeIframeAPIReady();
-};
-
-
-
-
-function onPlayerError(event) {
-  const errorCode = event.data;
-  console.warn("Video hatası: ", errorCode);
-  if ([2, 5, 100, 101, 150].includes(errorCode)) {
-    skipToNext(); // ❌ Hatalı video anında atlanır
-  }
-}
-function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.ENDED) {
-    skipToNext();
-  }
-}
-
-
-
 
   
 </script>
