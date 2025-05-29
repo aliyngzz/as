@@ -1036,6 +1036,29 @@ if (iframe && iframe.contentWindow) {
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
 
+  function logBadVideo(videoId) {
+  const notInput = document.getElementById("noteText");
+  const existing = notInput.value;
+  if (!existing.includes(videoId)) {
+    notInput.value += `\nHatalı video: ${videoId}`;
+    localStorage.setItem("myNote", notInput.value);
+  }
+}
+
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.UNSTARTED || event.data === -1) {
+    const duration = player.getDuration();
+    const title = player.getVideoData().title;
+    if (duration === 0 || !title || title.toLowerCase().includes("unavailable")) {
+      const badId = videoIds[currentVideoIndex];
+      logBadVideo(badId); // notlara yaz
+      nextVideo(); // hemen geç
+    }
+  }
+}
+
+
+
   
 </script>
 
