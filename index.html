@@ -362,7 +362,20 @@
   50% { box-shadow: 0 0 20px white; }
   100% { box-shadow: 0 0 5px white; }
 }
+.transition-in {
+  animation: slideInZoom 1s ease forwards;
+}
 
+@keyframes slideInZoom {
+  0% {
+    transform: scale(0.4) translate(150px, -150px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+}
   </style>
 </head>
 <body>
@@ -1035,6 +1048,31 @@ if (iframe && iframe.contentWindow) {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+
+
+
+setTimeout(() => {
+  // 1. Eski video gizlenir
+  document.getElementById(currentDivId).classList.remove("active");
+
+  // 2. Yeni video aktif yapılır ve animasyon sınıfı eklenir
+  const nextDiv = document.getElementById(nextDivId);
+  nextDiv.classList.add("active", "transition-in");
+
+  // 3. Animasyon bitince transition-in sınıfı kaldırılır
+  setTimeout(() => {
+    nextDiv.classList.remove("transition-in");
+  }, 1000); // animasyon süresi
+
+  // 4. Değişken güncellenir
+  index = nextIndex;
+  activePlayer = activePlayer === 1 ? 2 : 1;
+
+  // 5. Sonraki geçiş ayarlanır
+  scheduleNext();
+}, 60000); // gösterimdeki video süresi (örnek: 60 saniye)
+
+
 
   
 </script>
