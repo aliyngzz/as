@@ -384,6 +384,8 @@
 <div id="mainContent" style="display: none;">
   <!-- mevcut tüm içeriğin buraya taşınacak -->
 </div>
+<iframe id="miniTV" width="300" height="170" frameborder="0" allowfullscreen></iframe>
+<button id="channelBtn">Kanal Değiştir</button>
 
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
   <div id="countdown" style="font-size: 60px; color: green;">5</div>
@@ -455,6 +457,68 @@ const videoIds = [
     "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
+
+
+
+
+let tvIndex = -1; // başlangıçta -1, ilk tıklamada 0 olacak
+const miniTV = document.getElementById("miniTV");
+
+document.getElementById("channelBtn").addEventListener("click", () => {
+  changeChannel();
+});
+
+function changeChannel() {
+  if (tvChannels.length === 0) {
+    miniTV.style.display = "none";
+    alert("Uygun kanal bulunamadı!");
+    return;
+  }
+
+  tvIndex = (tvIndex + 1) % tvChannels.length;
+  const testUrl = tvChannels[tvIndex];
+
+  testYouTubeEmbed(testUrl, (isWorking) => {
+    if (isWorking) {
+      miniTV.src = testUrl;
+      miniTV.style.display = "block";
+    } else {
+      console.warn("Çalışmayan video silindi:", testUrl);
+      tvChannels.splice(tvIndex, 1);
+      tvIndex--; // bir sonraki index'i kaydır
+      changeChannel(); // bir sonrakine geç
+    }
+  });
+}
+
+// YouTube embed testi (iframe yükleniyor mu kontrolü)
+function testYouTubeEmbed(url, callback) {
+  const tester = document.createElement("iframe");
+  tester.style.display = "none";
+  tester.src = url;
+
+  const timeout = setTimeout(() => {
+    document.body.removeChild(tester);
+    callback(false);
+  }, 3000); // 3 saniyede yüklenemezse hatalı say
+
+  tester.onload = () => {
+    clearTimeout(timeout);
+    document.body.removeChild(tester);
+    callback(true);
+  };
+
+  document.body.appendChild(tester);
+
+
+
+
+
+
+
+
+
+    
   let tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
