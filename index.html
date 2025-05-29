@@ -401,7 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<iframe src="https://www.youtube.com/embed/VIDEO_ID?enablejsapi=1" ...></iframe>
+
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -426,6 +426,7 @@
 
   <script>
 const videoIds = [ 
+
   "V08ET209nvU",
 "eT_W9pSC3mY",
 "17L1ahq27ro",
@@ -458,47 +459,27 @@ const videoIds = [
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
 
+  let players = {};
+  let index = 0;
+  let activePlayer = 1;
 
-
-let players = {};
-let index = 0;
-let activePlayer = 1;
-let hataliVideolar = [];
-
-function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: videoIds[0],
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      mute: 1,
-      rel: 0,
-      modestbranding: 1,
-      playsinline: 1
-    },
-    events: {
-      onReady: () => startVideoPlayer()
-    }
-  });
-
-  players.player2 = new YT.Player('player2', {
-    videoId: '',
-    playerVars: {
-      autoplay: 0,
-      controls: 0,
-      mute: 1,
-      rel: 0,
-      modestbranding: 1,
-      playsinline: 1
-    }
-  });
-}
-
-
-
-
-
-    
+  function onYouTubeIframeAPIReady() {
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
+      playerVars: {
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+    players.player2 = new YT.Player('player2', {
+      videoId: '',
+      playerVars: {
+        autoplay: 0, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+  }
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -508,96 +489,72 @@ function shuffleArray(array) {
   return array;
 }
 
+    function startVideoPlayer() {
+  shuffleArray(videoIds);       // 🔁 listeyi karıştır
+  index = 0;                    // ✅ karıştırılmış dizide ilk videoyu seç
+  loadVideo(players.player1, videoIds[index], 'player1');
+  scheduleNext();               // 🔄 sırayla devam et
+}
 
 
-function scheduleNext() {
-  let nextIndex = (index + 1) % videoIds.length;
-  let deneme = 0;
+    
+  
 
-  while (hataliVideolar.includes(videoIds[nextIndex]) && deneme < videoIds.length) {
-    nextIndex = (nextIndex + 1) % videoIds.length;
-    deneme++;
-  }
+function loadVideo(player, videoId, playerDivId) {
+  const div = document.getElementById(playerDivId);
+  div.classList.remove("active"); // Videoyu başta gizle
 
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
+  try {
+    player.loadVideoById(videoId);
+    player.mute();
 
-  let ikinciHazir = false;
+    let tryCount = 0;
+    const checkInterval = setInterval(() => {
+      const state = player.getPlayerState();
 
-  // ✅ 15. saniyede sonraki video arka planda yüklenir
-  setTimeout(() => {
-    try {
-      nextPlayer.loadVideoById(videoIds[nextIndex]);
-      nextPlayer.mute();
-
-      let tryCount = 0;
-      const kontrol = setInterval(() => {
-        const durum = nextPlayer.getPlayerState();
-        if (durum === 1) {
-          clearInterval(kontrol);
-          ikinciHazir = true;
-        } else {
-          tryCount++;
-          if (tryCount >= 2) {
-            clearInterval(kontrol);
-            hataliVideolar.push(videoIds[nextIndex]);
-            
-            scheduleNext(); // kendini tekrar çağırır, sıradaki düzgün videoya geçer
-          }
+      if (state === 1) {
+        clearInterval(checkInterval);
+        div.classList.add("active"); // ✅ video çalışıyorsa göster
+      } else {
+        tryCount++;
+        if (tryCount >= 2) { // ❌ 2 saniye dene, hala yoksa geç
+          clearInterval(checkInterval);
+          skipToNext();
         }
-      }, 1000);
-    } catch (err) {
-      hataliVideolar.push(videoIds[nextIndex]);
-      document.getElementById("noteText").value += "Hatalı video (catch geçiş): " + videoIds[nextIndex] + "\n";
-      scheduleNext();
-    }
-  }, 15000);
+      }
+    }, 1000); // her 1 saniyede bir kontrol
 
-  // ✅ 20. saniyede geçiş yapılır ama sadece eğer 2. video hazırsa
-  setTimeout(() => {
-    if (ikinciHazir) {
+  } catch (err) {
+    skipToNext(); // 🎯 Hata varsa hemen geç
+  }
+}
+
+
+  function scheduleNext() {
+    const nextIndex = (index + 1) % videoIds.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
+
+    setTimeout(() => {
+      loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
+    }, 30000);
+
+    setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
       document.getElementById(nextDivId).classList.add("active");
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext();
-    } else {
-      // ❗ Hazır değilse 5 saniye daha beklenir, sonra zorla geçilir
-      setTimeout(() => {
-        document.getElementById(currentDivId).classList.remove("active");
-        document.getElementById(nextDivId).classList.add("active");
-        index = nextIndex;
-        activePlayer = activePlayer === 1 ? 2 : 1;
-        scheduleNext();
-      }, 5000);
-    }
-  }, 20000);
-}
+    }, 40000);
+  }
 
-
-
-
-    
-
-
-// ✅ Artık bu fonksiyon dışarıda!
-function skipToNext() {
-  let deneme = 0;
-  do {
+  function skipToNext() {
     index = (index + 1) % videoIds.length;
-    deneme++;
-  } while (hataliVideolar.includes(videoIds[index]) && deneme < videoIds.length);
-
-  const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
-  const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
-  loadVideo(currentPlayer, videoIds[index], currentDiv);
-}
-
-
-
-
-    
+    const currentPlayer = activePlayer === 1 ? players.player1 : players.player2;
+    const currentDiv = activePlayer === 1 ? 'player1' : 'player2';
+    loadVideo(currentPlayer, videoIds[index], currentDiv);
+  }
 
 document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("startBtn").style.display = "none";
@@ -1079,76 +1036,8 @@ if (iframe && iframe.contentWindow) {
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
 
-  document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n";
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  function forceAllowFullscreen() {
-    const frames = document.querySelectorAll("iframe");
-    frames.forEach(frame => {
-      frame.setAttribute("allowfullscreen", "true");
-
-      // Eğer YouTube videosuysa ve enablejsapi eklenmemişse, URL'ye ekle
-      if (frame.src && frame.src.includes("youtube.com") && !frame.src.includes("enablejsapi=1")) {
-        let newSrc = frame.src;
-        // ? varsa & ekle, yoksa ? ile başlat
-        newSrc += frame.src.includes("?") ? "&enablejsapi=1" : "?enablejsapi=1";
-        frame.src = newSrc;
-      }
-    });
-  }
-
-  // Her saniye kontrol et
-  setInterval(forceAllowFullscreen, 1000);
-</script>
-
-
   
-
-
-
-
-<script>
-  // videoId tanımlıysa not paneline yaz
-  try {
-    if (typeof videoId !== "undefined") {
-      const noteBox = document.getElementById("noteText");
-      if (noteBox) {
-        noteBox.value += "Hatalı video: " + videoId + "\n";
-      }
-    }
-  } catch (e) {
-    console.warn("Not yazılırken hata oluştu:", e);
-  }
 </script>
-
-
-
-
-
-  
-
 
 
     
