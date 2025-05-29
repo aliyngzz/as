@@ -508,57 +508,12 @@ function shuffleArray(array) {
   return array;
 }
 
-    function startVideoPlayer() {
-  shuffleArray(videoIds);       // 🔁 listeyi karıştır
-  index = 0;                    // ✅ karıştırılmış dizide ilk videoyu seç
-  loadVideo(players.player1, videoIds[index], 'player1');
-  scheduleNext();               // 🔄 sırayla devam et
-}
-
-
-
-    
-  
-
-function loadVideo(player, videoId, playerDivId) {
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
-
-  try {
-    player.loadVideoById(videoId);
-    player.mute();
-
-    let tryCount = 0;
-    const checkInterval = setInterval(() => {
-      const state = player.getPlayerState();
-
-      if (state === 1) {
-        clearInterval(checkInterval);
-        div.classList.add("active");
-      } else {
-        tryCount++;
-        if (tryCount >= 1) {
-          clearInterval(checkInterval);
-          hataliVideolar.push(videoId);
-          document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n";
-          skipToNext();
-        }
-      }
-    }, 1000);
-  } catch (err) {
-    hataliVideolar.push(videoId);
-    document.getElementById("noteText").value += "Hatalı video (catch): " + videoId + "\n";
-    skipToNext();
-  }
-}
-
 
 
 function scheduleNext() {
   let nextIndex = (index + 1) % videoIds.length;
-
-  // ❗ Hatalı video tekrar gelmesin diye kontrol
   let deneme = 0;
+
   while (hataliVideolar.includes(videoIds[nextIndex]) && deneme < videoIds.length) {
     nextIndex = (nextIndex + 1) % videoIds.length;
     deneme++;
@@ -568,20 +523,58 @@ function scheduleNext() {
   const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
   const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  // ✅ 15. saniyede sonraki video yükle
+  let ikinciHazir = false;
+
+  // ✅ 15. saniyede sonraki video arka planda yüklenir
   setTimeout(() => {
-    loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
+    try {
+      nextPlayer.loadVideoById(videoIds[nextIndex]);
+      nextPlayer.mute();
+
+      let tryCount = 0;
+      const kontrol = setInterval(() => {
+        const durum = nextPlayer.getPlayerState();
+        if (durum === 1) {
+          clearInterval(kontrol);
+          ikinciHazir = true;
+        } else {
+          tryCount++;
+          if (tryCount >= 2) {
+            clearInterval(kontrol);
+            hataliVideolar.push(videoIds[nextIndex]);
+            document.getElementById("noteText").value += "Hatalı video (geçişte): " + videoIds[nextIndex] + "\n";
+            scheduleNext(); // kendini tekrar çağırır, sıradaki düzgün videoya geçer
+          }
+        }
+      }, 1000);
+    } catch (err) {
+      hataliVideolar.push(videoIds[nextIndex]);
+      document.getElementById("noteText").value += "Hatalı video (catch geçiş): " + videoIds[nextIndex] + "\n";
+      scheduleNext();
+    }
   }, 15000);
 
-  // ✅ 20. saniyede geçiş yap
+  // ✅ 20. saniyede geçiş yapılır ama sadece eğer 2. video hazırsa
   setTimeout(() => {
-    document.getElementById(currentDivId).classList.remove("active");
-    document.getElementById(nextDivId).classList.add("active");
-    index = nextIndex;
-    activePlayer = activePlayer === 1 ? 2 : 1;
-    scheduleNext();
+    if (ikinciHazir) {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext();
+    } else {
+      // ❗ Hazır değilse 5 saniye daha beklenir, sonra zorla geçilir
+      setTimeout(() => {
+        document.getElementById(currentDivId).classList.remove("active");
+        document.getElementById(nextDivId).classList.add("active");
+        index = nextIndex;
+        activePlayer = activePlayer === 1 ? 2 : 1;
+        scheduleNext();
+      }, 5000);
+    }
   }, 20000);
 }
+
 
 
 
