@@ -2,108 +2,71 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Geçiş Sistemi</title>
+  <title>Sadece Sağlam Video Göster</title>
   <style>
-    body { margin: 0; overflow: hidden; background: black; color: white; font-family: Arial; }
-    #playerFrame { width: 100vw; height: 100vh; border: none; }
+    body { margin: 0; background: black; }
+    #playerFrame { width: 100vw; height: 100vh; border: none; display: none; }
     #noteText {
-      position: absolute; bottom: 10px; left: 10px; width: 300px; height: 100px;
-      background: rgba(0, 0, 0, 0.5); color: #fff; border: 1px solid #ccc; padding: 5px;
-      font-size: 12px;
+      position: fixed; top: 10px; left: 10px; width: 300px; height: 150px;
+      background: rgba(255,255,255,0.9); padding: 10px; font-size: 12px; z-index: 1000;
     }
   </style>
 </head>
 <body>
+  <textarea id="noteText" placeholder="Bozuk videolar buraya yazılır..."></textarea>
+  <iframe id="playerFrame" allow="autoplay" allowfullscreen></iframe>
 
-<iframe id="playerFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-<textarea id="noteText" readonly></textarea>
+  <script>
+    const videoIds = [
+      "V08ET209nvU", "eT_W9pSC3mY", "17L1ahq27ro", "OteVW3af3BU", "Gd9d4q6WvUY",
+      "sgtA6GUJk2I", "NqOmHpwMUxs", "FrULPuxyhWE", "V_I168MM-ik", "OYuD6HIxcXc",
+      "xBBRLWF0mM", "Lic2fD18wnw", "pW_S5RTdnSQ", "z6BNMoj9Pyo", "EoARdUpNjJ8",
+      "aNxF7t9-HgI", "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
+      "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "Li3Dvqlo5uE", "wBVq_Qoegmo",
+      "1nVFCfRlqRo", "oHbMM9JfCs", "Ftm3QRR0YV0", "IIPvs--98sc", "daqB3i9WYIY",
+      "3xGg1HJ8cso", "H8UO0sJvWDw", "czoEAKX9aaM", "D1VM6V6wmU0", "EvsLqQS_80E",
+      "8pvXU1aEQZ0", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU", "SUXX8nC7RoM"
+    ];
 
-<script>
-const videoIds = [
-  "V08ET209nvU", "eT_W9pSC3mY", "17L1ahq27ro", "OteVW3af3BU", "Gd9d4q6WvUY",
-  "sgtA6GUJk2I", "NqOmHpwMUxs", "FrULPuxyhWE", "V_I168MM-ik", "OYuD6HIxcXc",
-  "xBBRLWF0mM", "Lic2fD18wnw", "pW_S5RTdnSQ", "z6BNMoj9Pyo", "EoARdUpNjJ8",
-  "aNxF7t9-HgI", "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
-  "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "FrULPuxyhWE", "Li3Dvqlo5uE",
-  "wBVq_Qoegmo", "1nVFCfRlqRo", "oHbMM9JfCs", "Ftm3QRR0YV0", "IIPvs--98sc",
-  "daqB3i9WYIY", "3xGg1HJ8cso", "H8UO0sJvWDw", "czoEAKX9aaM", "D1VM6V6wmU0",
-  "EvsLqQS_80E", "8pvXU1aEQZ0", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
-  "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
-  "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU",
-  "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54",
-  "jzx_n25g3kA"
-];
+    let currentIndex = 0;
 
-let currentIndex = 0;
-let nextVideoReady = false;
-let nextIndex = null;
+    function testVideo(index) {
+      if (index >= videoIds.length) {
+        alert("Hiç geçerli video bulunamadı.");
+        return;
+      }
 
-function playVideo(index) {
-  const videoId = videoIds[index];
-  currentIndex = index;
-  nextVideoReady = false;
-  nextIndex = null;
+      const testId = videoIds[index];
+      const test = document.createElement("iframe");
+      test.style.display = "none";
+      test.src = `https://www.youtube.com/embed/${testId}?autoplay=1&mute=1&enablejsapi=1`;
 
-  const iframe = document.getElementById("playerFrame");
-  iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1`;
+      document.body.appendChild(test);
 
-  // 10. saniyede sıradaki video test edilir
-  setTimeout(() => {
-    prepareNextValidVideo(index + 1);
-  }, 10000);
-
-  // 20. saniyede geçiş hazırsa yapılır
-  setTimeout(() => {
-    if (nextVideoReady && nextIndex !== null) {
-      playVideo(nextIndex);
-    } else {
-      waitUntilNextReady();
+      setTimeout(() => {
+        const blocked = !test.contentWindow || test.contentDocument?.body?.innerHTML.includes("www.youtube.com/404") || test.contentDocument?.body?.innerText.includes("This video is unavailable");
+        
+        if (blocked) {
+          document.getElementById("noteText").value += `\nBozuk video: ${testId}`;
+          test.remove();
+          testVideo(index + 1); // sonraki videoya geç
+        } else {
+          showMainVideo(testId);
+          test.remove();
+        }
+      }, 1500); // 1.5 saniyede bozuksa anlaşılıyor
     }
-  }, 20000);
-}
 
-function prepareNextValidVideo(startIndex) {
-  const testId = videoIds[startIndex];
-  if (!testId) return;
-
-  const testIframe = document.createElement("iframe");
-  testIframe.src = `https://www.youtube.com/embed/${testId}?enablejsapi=1&autoplay=1`;
-  testIframe.style.display = "none";
-  document.body.appendChild(testIframe);
-
-  let success = false;
-
-  setTimeout(() => {
-    success = true;
-    nextVideoReady = true;
-    nextIndex = startIndex;
-    testIframe.remove();
-  }, 1000);
-
-  setTimeout(() => {
-    if (!success) {
-      document.getElementById("noteText").value += `\nBozuk video: ${testId}`;
-      testIframe.remove();
-      prepareNextValidVideo(startIndex + 1);
+    function showMainVideo(videoId) {
+      const player = document.getElementById("playerFrame");
+      player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&enablejsapi=1`;
+      player.style.display = "block";
     }
-  }, 1500);
-}
 
-function waitUntilNextReady() {
-  const kontrol = setInterval(() => {
-    if (nextVideoReady && nextIndex !== null) {
-      clearInterval(kontrol);
-      playVideo(nextIndex);
-    }
-  }, 1000);
-}
-
-// Başlangıçta ilk videoyu başlat
-window.onload = () => {
-  playVideo(currentIndex);
-};
-</script>
-
+    // Sayfa yüklenince sağlam videoyu bul
+    window.onload = () => {
+      testVideo(0);
+    };
+  </script>
 </body>
 </html>
