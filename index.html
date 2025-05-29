@@ -2,14 +2,24 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Doğa Videosu Döngüsü</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Sayfası</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      background: black;
       overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+    }
+
+    iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      border: none;
     }
 
     #startButton {
@@ -17,14 +27,14 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 28px;
+      font-size: 2rem;
       padding: 20px 40px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
+      background: rgba(0, 128, 0, 0.8);
       color: white;
+      border: none;
+      border-radius: 15px;
       cursor: pointer;
-      animation: pulse 2s infinite;
+      animation: pulse 1.5s infinite;
       z-index: 1000;
     }
 
@@ -34,103 +44,83 @@
       100% { transform: translate(-50%, -50%) scale(1); }
     }
 
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      display: none;
-      z-index: 1;
+    /* Animasyonlar */
+    .fade { animation: fadeIn 1s ease; }
+    .slide { animation: slideIn 1s ease; }
+    .zoom  { animation: zoomIn 1s ease; }
+    .rotate { animation: rotateIn 1s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    #loader {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 24px;
-      display: none;
-      z-index: 999;
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(1.4); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes rotateIn {
+      from { transform: rotateY(90deg); opacity: 0; }
+      to { transform: rotateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
-
   <button id="startButton">🎬 Video Başlat</button>
-  <div id="loader">🔄 Yükleniyor...</div>
-
-  <iframe id="video1" allow="autoplay"></iframe>
-  <iframe id="video2" allow="autoplay"></iframe>
+  <iframe id="video1" allow="autoplay" style="display: none;"></iframe>
+  <iframe id="video2" allow="autoplay" style="display: none;"></iframe>
 
   <script>
     const videoIds = [ 
       "V08ET209nvU", "eT_W9pSC3mY", "17L1ahq27ro", "OteVW3af3BU", "Gd9d4q6WvUY",
       "sgtA6GUJk2I", "NqOmHpwMUxs", "FrULPuxyhWE", "V_I168MM-ik", "OYuD6HIxcXc",
       "xBBRLWF0mM", "Lic2fD18wnw", "pW_S5RTdnSQ", "z6BNMoj9Pyo", "EoARdUpNjJ8",
-      "aNxF7t9-HgI", "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
-      "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "FrULPuxyhWE", "Li3Dvqlo5uE",
-      "wBVq_Qoegmo", "1nVFCfRlqRo", "oHbMM9JfCs", "Ftm3QRR0YV0", "IIPvs--98sc",
-      "daqB3i9WYIY", "3xGg1HJ8cso", "H8UO0sJvWDw", "czoEAKX9aaM", "D1VM6V6wmU0",
-      "EvsLqQS_80E", "8pvXU1aEQZ0", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
-      "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I", "FzdXt1drdp0",
-      "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ", "ECmjT2D1SzI", "yalfhK84SNU",
-      "F0GOOP82094", "qGfqox0CSrI", "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
+      "aNxF7t9-HgI", "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A"
     ];
 
     let index = 0;
-    let current = 'video1';
-    let next = 'video2';
+    let current = "video1";
+    let next = "video2";
 
-    document.getElementById("startButton").addEventListener("click", () => {
-      document.getElementById("startButton").style.display = "none";
-      openFullscreen();
-      playLoop();
-    });
-
-    function openFullscreen() {
-      const docEl = document.documentElement;
-      if (docEl.requestFullscreen) docEl.requestFullscreen();
-      else if (docEl.mozRequestFullScreen) docEl.mozRequestFullScreen();
-      else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
-      else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
-    }
+    const animations = ["fade", "slide", "zoom", "rotate"];
+    const getRandomAnim = () => animations[Math.floor(Math.random() * animations.length)];
 
     function playLoop() {
       const v1 = document.getElementById(current);
       const v2 = document.getElementById(next);
-      const loader = document.getElementById("loader");
-
-      loader.style.display = "block";
 
       const id1 = videoIds[index % videoIds.length];
       const id2 = videoIds[(index + 1) % videoIds.length];
 
-      // İlk video yükleniyor
+      const animClass = getRandomAnim();
+      v1.className = animClass;
       v1.src = `https://www.youtube.com/embed/${id1}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0`;
       v1.style.display = "block";
 
-      // 5 saniye sonra loader kaldır
-      setTimeout(() => {
-        loader.style.display = "none";
-      }, 5000);
-
-      // 15. saniyede ikinci video arka planda hazırlanır
       setTimeout(() => {
         v2.src = `https://www.youtube.com/embed/${id2}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0`;
       }, 15000);
 
-      // 30. saniyede geçiş yapılır
       setTimeout(() => {
         v1.style.display = "none";
-        v1.src = ""; // bellek temizliği
+        v1.src = "";
+        v1.className = "";
         [current, next] = [next, current];
         index++;
         playLoop();
       }, 30000);
     }
+
+    document.getElementById("startButton").addEventListener("click", () => {
+      document.getElementById("startButton").style.display = "none";
+      playLoop();
+    });
   </script>
 </body>
 </html>
