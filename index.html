@@ -2,71 +2,129 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Sadece Sağlam Video Göster</title>
+  <title>Gizli Yükleme | Sadece Sağlam Video</title>
   <style>
-    body { margin: 0; background: black; }
-    #playerFrame { width: 100vw; height: 100vh; border: none; display: none; }
+    html, body {
+      margin: 0; padding: 0; overflow: hidden;
+      background-color: black;
+    }
+    #mainPlayer, #testPlayer {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      display: none;
+    }
+    #mainPlayer {
+      z-index: 10;
+      display: block;
+    }
     #noteText {
-      position: fixed; top: 10px; left: 10px; width: 300px; height: 150px;
-      background: rgba(255,255,255,0.9); padding: 10px; font-size: 12px; z-index: 1000;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 300px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      font-size: 12px;
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
-  <textarea id="noteText" placeholder="Bozuk videolar buraya yazılır..."></textarea>
-  <iframe id="playerFrame" allow="autoplay" allowfullscreen></iframe>
 
-  <script>
-    const videoIds = [
-      "V08ET209nvU", "eT_W9pSC3mY", "17L1ahq27ro", "OteVW3af3BU", "Gd9d4q6WvUY",
-      "sgtA6GUJk2I", "NqOmHpwMUxs", "FrULPuxyhWE", "V_I168MM-ik", "OYuD6HIxcXc",
-      "xBBRLWF0mM", "Lic2fD18wnw", "pW_S5RTdnSQ", "z6BNMoj9Pyo", "EoARdUpNjJ8",
-      "aNxF7t9-HgI", "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
-      "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "Li3Dvqlo5uE", "wBVq_Qoegmo",
-      "1nVFCfRlqRo", "oHbMM9JfCs", "Ftm3QRR0YV0", "IIPvs--98sc", "daqB3i9WYIY",
-      "3xGg1HJ8cso", "H8UO0sJvWDw", "czoEAKX9aaM", "D1VM6V6wmU0", "EvsLqQS_80E",
-      "8pvXU1aEQZ0", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU", "SUXX8nC7RoM"
-    ];
+<textarea id="noteText" placeholder="Bozuk videolar buraya yazılır..."></textarea>
+<div id="mainPlayer"></div>
+<div id="testPlayer" style="visibility: hidden;"></div>
 
-    let currentIndex = 0;
+<script>
+  const videoIds = [
+    "V08ET209nvU", "eT_W9pSC3mY", "17L1ahq27ro", "OteVW3af3BU",
+    "Gd9d4q6WvUY", "sgtA6GUJk2I", "NqOmHpwMUxs", "FrULPuxyhWE",
+    "V_I168MM-ik", "OYuD6HIxcXc", "xBBRLWF0mM", "Lic2fD18wnw"
+  ];
 
-    function testVideo(index) {
-      if (index >= videoIds.length) {
-        alert("Hiç geçerli video bulunamadı.");
-        return;
-      }
+  let currentIndex = 0;
+  let testPlayer, mainPlayer;
 
-      const testId = videoIds[index];
-      const test = document.createElement("iframe");
-      test.style.display = "none";
-      test.src = `https://www.youtube.com/embed/${testId}?autoplay=1&mute=1&enablejsapi=1`;
+  function loadYouTubeAPI() {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
 
-      document.body.appendChild(test);
+  function onYouTubeIframeAPIReady() {
+    tryNextVideo();
+  }
 
-      setTimeout(() => {
-        const blocked = !test.contentWindow || test.contentDocument?.body?.innerHTML.includes("www.youtube.com/404") || test.contentDocument?.body?.innerText.includes("This video is unavailable");
-        
-        if (blocked) {
-          document.getElementById("noteText").value += `\nBozuk video: ${testId}`;
-          test.remove();
-          testVideo(index + 1); // sonraki videoya geç
-        } else {
-          showMainVideo(testId);
-          test.remove();
+  function tryNextVideo() {
+    if (currentIndex >= videoIds.length) {
+      document.getElementById("noteText").value += "\nHiç geçerli video bulunamadı.";
+      return;
+    }
+
+    const videoId = videoIds[currentIndex];
+
+    if (testPlayer) testPlayer.destroy();
+    if (mainPlayer) mainPlayer.destroy();
+
+    testPlayer = new YT.Player('testPlayer', {
+      height: '100%',
+      width: '100%',
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        controls: 0,
+        modestbranding: 1,
+        rel: 0
+      },
+      events: {
+        'onReady': (event) => {
+          event.target.playVideo();
+          setTimeout(() => {
+            const state = event.target.getPlayerState();
+            if (state === YT.PlayerState.PLAYING) {
+              showMainPlayer(videoId);
+            } else {
+              logBrokenVideo(videoId);
+            }
+          }, 2000);
+        },
+        'onError': () => {
+          logBrokenVideo(videoId);
         }
-      }, 1500); // 1.5 saniyede bozuksa anlaşılıyor
-    }
+      }
+    });
+  }
 
-    function showMainVideo(videoId) {
-      const player = document.getElementById("playerFrame");
-      player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&enablejsapi=1`;
-      player.style.display = "block";
-    }
+  function showMainPlayer(videoId) {
+    mainPlayer = new YT.Player('mainPlayer', {
+      height: '100%',
+      width: '100%',
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        controls: 0,
+        modestbranding: 1,
+        rel: 0
+      }
+    });
+    document.getElementById("mainPlayer").style.display = "block";
+  }
 
-    // Sayfa yüklenince sağlam videoyu bul
-    window.onload = () => {
-      testVideo(0);
-    };
-  </script>
+  function logBrokenVideo(id) {
+    document.getElementById("noteText").value += `\nBozuk video: ${id}`;
+    currentIndex++;
+    tryNextVideo();
+  }
+
+  loadYouTubeAPI();
+</script>
+
 </body>
 </html>
