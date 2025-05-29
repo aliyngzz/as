@@ -363,6 +363,39 @@
   100% { box-shadow: 0 0 5px white; }
 }
 
+.video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 1;
+}
+
+.video-player.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Geçiş animasyonu */
+.video-player.transition-in {
+  animation: slideInZoom 1s ease forwards;
+}
+
+@keyframes slideInZoom {
+  0% {
+    transform: scale(0.3) translate(200px, -200px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+}
+
+    
   </style>
 </head>
 <body>
@@ -1035,6 +1068,30 @@ if (iframe && iframe.contentWindow) {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+
+
+
+
+
+setTimeout(() => {
+  // Eski videoyu gizle
+  document.getElementById(currentDivId).classList.remove("active");
+
+  // Yeni videoyu aktif yap, animasyonla göster
+  const nextDiv = document.getElementById(nextDivId);
+  nextDiv.classList.add("active", "transition-in");
+
+  // Animasyon bittiğinde temizle
+  setTimeout(() => {
+    nextDiv.classList.remove("transition-in");
+  }, 1000); // animasyon süresi kadar
+
+  // Index ve aktif player ayarı
+  index = nextIndex;
+  activePlayer = activePlayer === 1 ? 2 : 1;
+  scheduleNext();
+}, 60000); // örnek: 60. saniyede geçiş
+
 
   
 </script>
