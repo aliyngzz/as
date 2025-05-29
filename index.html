@@ -362,39 +362,7 @@
   50% { box-shadow: 0 0 20px white; }
   100% { box-shadow: 0 0 5px white; }
 }
-.transition-in {
-  animation: slideInZoom 1s ease forwards;
-}
 
-@keyframes slideInZoom {
-  0% {
-    transform: scale(0.4) translate(150px, -150px);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1) translate(0, 0);
-    opacity: 1;
-  }
-}
-
-video-box.error {
-  border: 3px dashed red;
-  color: red;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #111;
-}
-.video-box.error p {
-  margin: 0;
-  padding: 20px;
-  text-align: center;
-}
-
-
-
-    
   </style>
 </head>
 <body>
@@ -1067,91 +1035,6 @@ if (iframe && iframe.contentWindow) {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
-
-
-
-setTimeout(() => {
-  // 1. Eski video gizlenir
-  document.getElementById(currentDivId).classList.remove("active");
-
-  // 2. Yeni video aktif yapılır ve animasyon sınıfı eklenir
-  const nextDiv = document.getElementById(nextDivId);
-  nextDiv.classList.add("active", "transition-in");
-
-  // 3. Animasyon bitince transition-in sınıfı kaldırılır
-  setTimeout(() => {
-    nextDiv.classList.remove("transition-in");
-  }, 1000); // animasyon süresi
-
-  // 4. Değişken güncellenir
-  index = nextIndex;
-  activePlayer = activePlayer === 1 ? 2 : 1;
-
-  // 5. Sonraki geçiş ayarlanır
-  scheduleNext();
-}, 60000); // gösterimdeki video süresi (örnek: 60 saniye)
-
-
-function markAsError(divId) {
-  const div = document.getElementById(divId);
-  div.innerHTML = '<p>❌ Bu video kullanılamıyor.</p>';
-  div.classList.add("error");
-}
-  player.addEventListener("onError", () => {
-  // Notlara hatalı video ID’sini yaz
-  addNote("Hatalı video: " + videoIds[index]);
-
-  // Görüntüyü kırmızı çerçeveyle göster
-  markAsError(currentDivId); // veya nextDivId (hangisi hatalıysa)
-
-  // Sıradaki videoya geç
-  scheduleNext();
-});
-
-function loadVideoSafely(player, videoId, divId, callback) {
-  let timeout;
-  const done = () => clearTimeout(timeout);
-
-  player.loadVideoById(videoId);
-  
-  timeout = setTimeout(() => {
-    addNote("Hatalı video: " + videoId);
-    markAsError(divId);
-    callback(false); // Başarısız
-  }, 3000); // 3 saniye içinde başlamazsa geçersiz
-
-  player.addEventListener("onStateChange", (event) => {
-    if (event.data === YT.PlayerState.PLAYING) {
-      done();
-      callback(true); // Başarılı
-    }
-  });
-
-  player.addEventListener("onError", () => {
-    done();
-    addNote("Hatalı video (onError): " + videoId);
-    markAsError(divId);
-    callback(false);
-  });
-}
-
-loadVideoSafely(player, videoIds[nextIndex], nextDivId, (success) => {
-  if (!success) {
-    nextIndex = (nextIndex + 1) % videoIds.length;
-    loadVideoSafely(player, videoIds[nextIndex], nextDivId, () => {});
-    return;
-  }
-
-  // Başarılıysa geçişi planla
-  setTimeout(() => {
-    document.getElementById(currentDivId).classList.remove("active");
-    document.getElementById(nextDivId).classList.add("active");
-    index = nextIndex;
-    activePlayer = activePlayer === 1 ? 2 : 1;
-    scheduleNext();
-  }, 60000); // Örnek: 60. saniyede geçiş
-});
-
 
   
 </script>
