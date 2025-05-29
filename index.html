@@ -1036,6 +1036,39 @@ if (iframe && iframe.contentWindow) {
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
 
+
+
+function skipToNextValidVideo() {
+  currentVideoIndex++;
+  const nextId = videoIds[currentVideoIndex];
+
+  if (!nextId) return; // video kalmadıysa dur
+
+  const testFrame = document.createElement('iframe');
+  testFrame.style.display = 'none';
+  testFrame.src = `https://www.youtube.com/embed/${nextId}?enablejsapi=1`;
+
+  document.body.appendChild(testFrame);
+
+  setTimeout(() => {
+    // Hatalıysa
+    const iframeDoc = testFrame.contentDocument || testFrame.contentWindow.document;
+    if (!iframeDoc || iframeDoc.body.innerText.includes("video")) {
+      // Not paneline ekle
+      const hataliList = document.getElementById('noteText');
+      hataliList.value += `\nHatalı Video: ${nextId}`;
+      localStorage.setItem('myNote', hataliList.value);
+
+      document.body.removeChild(testFrame);
+      skipToNextValidVideo(); // bir sonrakine geç
+    } else {
+      document.body.removeChild(testFrame);
+      playVideo(currentVideoIndex); // geçerli video bulunduysa oynat
+    }
+  }, 1000);
+}
+
+  
   
 </script>
 
