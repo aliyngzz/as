@@ -455,6 +455,82 @@ const videoIds = [
     "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
+
+
+
+let currentIndex = 0;
+let player;
+let nextVideoReady = false;
+let nextIndex = null;
+
+function playVideo(index) {
+  const videoId = videoIds[index];
+  currentIndex = index;
+  nextVideoReady = false;
+  nextIndex = null;
+
+  const iframe = document.getElementById("playerFrame");
+  iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1`;
+
+  // 10. saniyede arka planda sıradaki video test edilsin
+  setTimeout(() => {
+    prepareNextValidVideo(index + 1);
+  }, 10000); // 10 saniye sonra test başlasın
+
+  // 20. saniyede geçiş hazırsa yapılacak
+  setTimeout(() => {
+    if (nextVideoReady && nextIndex != null) {
+      playVideo(nextIndex); // hazırsa geç
+    } else {
+      waitUntilNextReady(); // hazır değilse bekle
+    }
+  }, 20000);
+}
+
+function prepareNextValidVideo(startIndex) {
+  const testId = videoIds[startIndex];
+  if (!testId) return; // dizinin sonuysa çık
+
+  const testIframe = document.createElement("iframe");
+  testIframe.src = `https://www.youtube.com/embed/${testId}?enablejsapi=1&autoplay=1`;
+  testIframe.style.display = "none";
+  document.body.appendChild(testIframe);
+
+  let success = false;
+
+  // 1 saniye sonra başarı kontrolü
+  setTimeout(() => {
+    success = true;
+    nextVideoReady = true;
+    nextIndex = startIndex;
+    testIframe.remove(); // arka plan iframe silinir
+  }, 1000);
+
+  // 1.5 saniyede hala başarı yoksa bozuk
+  setTimeout(() => {
+    if (!success) {
+      document.getElementById("noteText").value += `\nBozuk video: ${testId}`;
+      testIframe.remove();
+      prepareNextValidVideo(startIndex + 1); // sıradakini dene
+    }
+  }, 1500);
+}
+
+function waitUntilNextReady() {
+  const kontrol = setInterval(() => {
+    if (nextVideoReady && nextIndex != null) {
+      clearInterval(kontrol);
+      playVideo(nextIndex);
+    }
+  }, 1000);
+}
+
+
+
+
+
+
+    
   let tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
