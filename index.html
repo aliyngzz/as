@@ -376,6 +376,25 @@
     opacity: 1;
   }
 }
+
+video-box.error {
+  border: 3px dashed red;
+  color: red;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+}
+.video-box.error p {
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+
+
+    
   </style>
 </head>
 <body>
@@ -1073,8 +1092,21 @@ setTimeout(() => {
 }, 60000); // gösterimdeki video süresi (örnek: 60 saniye)
 
 
+function markAsError(divId) {
+  const div = document.getElementById(divId);
+  div.innerHTML = '<p>❌ Bu video kullanılamıyor.</p>';
+  div.classList.add("error");
+}
+  player.addEventListener("onError", () => {
+  // Notlara hatalı video ID’sini yaz
+  addNote("Hatalı video: " + videoIds[index]);
 
-  
+  // Görüntüyü kırmızı çerçeveyle göster
+  markAsError(currentDivId); // veya nextDivId (hangisi hatalıysa)
+
+  // Sıradaki videoya geç
+  scheduleNext();
+});
 </script>
 
 
