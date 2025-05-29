@@ -401,7 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-
+<iframe src="https://www.youtube.com/embed/VIDEO_ID?enablejsapi=1" ...></iframe>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <!-- Not butonu -->
@@ -542,7 +542,7 @@ function scheduleNext() {
           if (tryCount >= 2) {
             clearInterval(kontrol);
             hataliVideolar.push(videoIds[nextIndex]);
-            document.getElementById("noteText").value += "Hatalı video (geçişte): " + videoIds[nextIndex] + "\n";
+            
             scheduleNext(); // kendini tekrar çağırır, sıradaki düzgün videoya geçer
           }
         }
@@ -1080,7 +1080,75 @@ if (iframe && iframe.contentWindow) {
   setInterval(forceAllowFullscreen, 1000);
 
   document.getElementById("noteText").value += "Hatalı video: " + videoId + "\n";
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function forceAllowFullscreen() {
+    const frames = document.querySelectorAll("iframe");
+    frames.forEach(frame => {
+      frame.setAttribute("allowfullscreen", "true");
+
+      // Eğer YouTube videosuysa ve enablejsapi eklenmemişse, URL'ye ekle
+      if (frame.src && frame.src.includes("youtube.com") && !frame.src.includes("enablejsapi=1")) {
+        let newSrc = frame.src;
+        // ? varsa & ekle, yoksa ? ile başlat
+        newSrc += frame.src.includes("?") ? "&enablejsapi=1" : "?enablejsapi=1";
+        frame.src = newSrc;
+      }
+    });
+  }
+
+  // Her saniye kontrol et
+  setInterval(forceAllowFullscreen, 1000);
+</script>
+
+
+  
+
+
+
+
+<script>
+  // videoId tanımlıysa not paneline yaz
+  try {
+    if (typeof videoId !== "undefined") {
+      const noteBox = document.getElementById("noteText");
+      if (noteBox) {
+        noteBox.value += "Hatalı video: " + videoId + "\n";
+      }
+    }
+  } catch (e) {
+    console.warn("Not yazılırken hata oluştu:", e);
+  }
+</script>
+
+
+
+
+
+  
+
 
 
     
