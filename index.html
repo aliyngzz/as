@@ -1107,6 +1107,53 @@ function markAsError(divId) {
   // Sıradaki videoya geç
   scheduleNext();
 });
+
+function loadVideoSafely(player, videoId, divId, callback) {
+  let timeout;
+  const done = () => clearTimeout(timeout);
+
+  player.loadVideoById(videoId);
+  
+  timeout = setTimeout(() => {
+    addNote("Hatalı video: " + videoId);
+    markAsError(divId);
+    callback(false); // Başarısız
+  }, 3000); // 3 saniye içinde başlamazsa geçersiz
+
+  player.addEventListener("onStateChange", (event) => {
+    if (event.data === YT.PlayerState.PLAYING) {
+      done();
+      callback(true); // Başarılı
+    }
+  });
+
+  player.addEventListener("onError", () => {
+    done();
+    addNote("Hatalı video (onError): " + videoId);
+    markAsError(divId);
+    callback(false);
+  });
+}
+
+loadVideoSafely(player, videoIds[nextIndex], nextDivId, (success) => {
+  if (!success) {
+    nextIndex = (nextIndex + 1) % videoIds.length;
+    loadVideoSafely(player, videoIds[nextIndex], nextDivId, () => {});
+    return;
+  }
+
+  // Başarılıysa geçişi planla
+  setTimeout(() => {
+    document.getElementById(currentDivId).classList.remove("active");
+    document.getElementById(nextDivId).classList.add("active");
+    index = nextIndex;
+    activePlayer = activePlayer === 1 ? 2 : 1;
+    scheduleNext();
+  }, 60000); // Örnek: 60. saniyede geçiş
+});
+
+
+  
 </script>
 
 
