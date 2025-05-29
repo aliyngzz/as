@@ -393,8 +393,7 @@
 <div id="weather-box">Yükleniyor...</div>
 
 <audio id="nature-sound" preload="auto"></audio>
-<button id="startBtn">Start Video</button>
-<div id="player"></div>
+
 <div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
 <!-- Doğa Sesi Butonları -->
@@ -456,126 +455,6 @@ const videoIds = [
     "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
-
-
-
-let currentIndex = -1;
-let player;
-let checkTimer;
-let preloadStarted = false;
-let startTime = 0;
-
-document.getElementById("startBtn").addEventListener("click", () => {
-  startNextValidVideo();
-});
-
-function startNextValidVideo() {
-  currentIndex++;
-
-  // Liste bitti mi?
-  if (currentIndex >= videoIds.length) {
-    alert("Gösterilecek geçerli video kalmadı.");
-    return;
-  }
-
-  const videoId = videoIds[currentIndex];
-
-  testYouTubeEmbed(videoId, (isWorking) => {
-    if (isWorking) {
-      console.log("✔ Geçerli video bulundu:", videoId);
-      loadPlayer(videoId);
-    } else {
-      console.warn("❌ Hatalı video silindi:", videoId);
-      videoIds.splice(currentIndex, 1);  // videoyu sil
-      currentIndex--; // tekrar bu index'i dene
-      startNextValidVideo(); // yeniden başlat
-    }
-  });
-}
-
-function loadPlayer(videoId) {
-  if (player) player.destroy();  // önceki player'ı temizle
-
-  player = new YT.Player('player', {
-    videoId: videoId,
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      mute: 1,
-      modestbranding: 1,
-      rel: 0,
-      showinfo: 0
-    },
-    events: {
-      onReady: (event) => {
-        event.target.playVideo();
-        startTime = Date.now();
-        preloadStarted = false;
-        clearInterval(checkTimer);
-        checkTimer = setInterval(videoLoop, 1000);
-      }
-    }
-  });
-}
-
-function videoLoop() {
-  const elapsed = (Date.now() - startTime) / 1000;
-
-  // 15. saniyede ikinci videoyu test et
-  if (elapsed > 15 && !preloadStarted) {
-    preloadStarted = true;
-    const nextId = videoIds[currentIndex + 1];
-    if (!nextId) return;
-
-    testYouTubeEmbed(nextId, (isWorking) => {
-      if (isWorking) {
-        console.log("✔ Geçişe hazır video:", nextId);
-        currentIndex++;
-        loadPlayer(nextId);
-      } else {
-        console.warn("❌ 2. video da hatalı, silindi:", nextId);
-        videoIds.splice(currentIndex + 1, 1); // listeden çıkar
-        preloadStarted = false; // tekrar test etsin
-      }
-    });
-  }
-
-  // 30 saniye sonra sıradaki videoya geç
-  if (elapsed > 30) {
-    startNextValidVideo();
-  }
-}
-
-// 👇 Videoyu gösterip göstermediğini test eder
-function testYouTubeEmbed(videoId, callback) {
-  const iframe = document.createElement("iframe");
-  iframe.style.display = "none";
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
-
-  // 3 saniye içinde açılmazsa hata
-  const timeout = setTimeout(() => {
-    document.body.removeChild(iframe);
-    callback(false);
-  }, 3000);
-
-  iframe.onload = () => {
-    clearTimeout(timeout);
-    document.body.removeChild(iframe);
-    callback(true);
-  };
-
-  document.body.appendChild(iframe);
-}
-
-
-
-
-
-
-
-
-
-    
   let tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
@@ -1157,22 +1036,8 @@ if (iframe && iframe.contentWindow) {
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
 
-</script>
-
-
-
-<script>
-function loadYouTubeAPI() {
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-}
-loadYouTubeAPI();
-</script>
-
-
   
-
+</script>
 
 
     
