@@ -464,14 +464,27 @@ const videoIds = [
   let activePlayer = 1;
 
   function onYouTubeIframeAPIReady() {
-    players.player1 = new YT.Player('player1', {
-      videoId: '',
-      events: { onReady: () => startVideoPlayer() },
-      playerVars: {
-        autoplay: 1, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
-    });
+
+players.player1 = new YT.Player('player1', {
+  videoId: '',
+  events: {
+    onReady: () => startVideoPlayer(),
+    onError: (event) => onVideoError(event, players.player1)
+  },
+  playerVars: { autoplay: 1, controls: 0, mute: 1, rel: 0, modestbranding: 1, playsinline: 1 }
+});
+players.player2 = new YT.Player('player2', {
+  videoId: '',
+  events: {
+    onError: (event) => onVideoError(event, players.player2)
+  },
+  playerVars: { autoplay: 0, controls: 0, mute: 1, rel: 0, modestbranding: 1, playsinline: 1 }
+});
+
+
+
+
+    
     players.player2 = new YT.Player('player2', {
       videoId: '',
       playerVars: {
@@ -1036,6 +1049,49 @@ if (iframe && iframe.contentWindow) {
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
 
+
+function onVideoError(event, player) {
+  const videoId = player.getVideoData().video_id;
+  console.log(`Hata oluştu video ID: ${videoId}`, event.data);
+
+  // Hatalı video ID'sini listeden çıkar
+  const index = videoIds.indexOf(videoId);
+  if (index > -1) {
+    videoIds.splice(index, 1);
+  }
+
+  // Eğer hata player1'deyse, hemen sonraki videoya geç
+  if (player === players.player1) {
+    playNextVideo();
+  }
+}
+let currentIndex = 0;
+
+function playNextVideo() {
+  if (videoIds.length === 0) {
+    console.log("Oynanacak video kalmadı.");
+    return;
+  }
+  currentIndex = (currentIndex + 1) % videoIds.length;
+  playVideo(players.player1, videoIds[currentIndex]);
+  preloadNextVideo();
+}
+
+function preloadNextVideo() {
+  if (videoIds.length === 0) return;
+
+  const nextIndex = (currentIndex + 1) % videoIds.length;
+  const nextVideoId = videoIds[nextIndex];
+  if (players.player2 && players.player2.cueVideoById) {
+    players.player2.cueVideoById(nextVideoId);
+  }
+}
+function playVideo(player, videoId) {
+  if (player && player.cueVideoById) {
+    player.cueVideoById(videoId);
+    player.playVideo();
+  }
+}
   
 </script>
 
