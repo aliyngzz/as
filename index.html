@@ -506,25 +506,28 @@ function shuffleArray(array) {
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // Başta görünmesin
+  div.classList.remove("active");
 
   try {
     player.loadVideoById(videoId);
     player.mute();
 
-    let tryCount = 0;
+    let attempt = 0;
+    const maxAttempts = 5;
+
     const checkInterval = setInterval(() => {
       const state = player.getPlayerState();
 
-      if (state === 1) {
+      // Durum 1 = Oynatılıyor, 3 = Yükleniyor
+      if (state === 1 || state === 3) {
         clearInterval(checkInterval);
-        div.classList.add("active"); // ✅ video çalışıyorsa göster
+        div.classList.add("active");
       } else {
-        tryCount++;
-        if (tryCount >= 2) {
+        attempt++;
+        if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
-          logBadVideo(videoId); // ❗ Not paneline yaz
-          skipToNext();         // 🚀 sıradakine geç
+          logBadVideo(videoId);
+          skipToNext();
         }
       }
     }, 1000);
@@ -534,8 +537,13 @@ function loadVideo(player, videoId, playerDivId) {
   }
 }
 
-
-
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
 
 
 
