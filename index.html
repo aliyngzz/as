@@ -401,7 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
+
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 <video
@@ -1290,7 +1290,96 @@ function logBadVideo(badId) {
 </script>
 
 	
+<script>
+  // YouTube player’larını oluşturduğun kodun üstünde veya yanında olmalı:
+  const mp4Videos = [
+    /* Senin mp4Videos dizin */
+  ];
 
+  let currentMp4Index = 0;
+
+  function playMp4FallbackOnce(onEnded) {
+    const mp4 = document.getElementById("mp4Player");
+    if (currentMp4Index >= mp4Videos.length) {
+      onEnded();
+      return;
+    }
+
+    // MP4’i ayarla ve çal
+    mp4.src = mp4Videos[currentMp4Index++];
+    mp4.playbackRate = 1.5;
+    mp4.style.display = "block";
+    mp4.play();
+
+    // Bittiğinde callback
+    mp4.onended = () => {
+      mp4.style.display = "none";
+      mp4.onended = null;
+      onEnded();
+    };
+  }
+
+  function stopMp4() {
+    const mp4 = document.getElementById("mp4Player");
+    mp4.pause();
+    mp4.style.display = "none";
+    mp4.onended = null;
+  }
+
+  function loadVideo(player, videoId, playerDivId) {
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
+
+    let attempt = 0;
+    const maxAttempts = 5;
+    let fallbackUsed = false;
+
+    function tryLoad() {
+      attempt = 0;
+      fallbackUsed = false;
+      player.loadVideoById(videoId);
+      player.mute();
+
+      const interval = setInterval(() => {
+        const state = player.getPlayerState();
+        if (state === 1) {
+          // YouTube oynuyor
+          clearInterval(interval);
+          div.classList.add("active");
+          stopMp4();
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(interval);
+            startFallback();
+          }
+        }
+      }, 1000);
+    }
+
+    function startFallback() {
+      if (!fallbackUsed) {
+        // 1 kere MP4 fallback
+        fallbackUsed = true;
+        playMp4FallbackOnce(() => {
+          // MP4 bitti, YouTube’u tekrar dene
+          tryLoad();
+        });
+      } else {
+        // Fallback zaten kullanıldı, hata say, sıradaki videoya geç
+        logBadVideo(videoId);
+        skipToNext();
+      }
+    }
+
+    // İlk deneme
+    tryLoad();
+  }
+
+  // YouTube API hazır olduğunda loadVideo’yu çağırdığın yerin aynısı:
+  // players.player1 = new YT.Player(..., events: { onReady: () => loadVideo(players.player1, videoIds[index], 'player1') }, ...);
+
+</script>
 
 
     
