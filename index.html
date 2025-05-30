@@ -507,15 +507,17 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
+  mp4.style.display = "none"; // önce gizli
+
   mp4.src = mp4Videos[currentMp4Index];
-  mp4.style.display = "block";
-  mp4.play();
+  mp4.load();
+
+  mp4.oncanplay = () => {
+    mp4.style.display = "block"; // sadece hazırsa göster
+    mp4.play();
+  };
+
   currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
-}
-function stopMp4() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.style.display = "none";
 }
 
     
@@ -545,6 +547,30 @@ function stopMp4() {
     });
   }
 
+
+
+
+
+
+
+
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
+}
+
+
+
+
+
+
+
+
+
+
+
+	  
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
