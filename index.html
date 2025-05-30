@@ -401,9 +401,9 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-
+<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
-<video id="mp4Player" autoplay muted loop playsinline style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;"></video>
+
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
 
@@ -507,17 +507,15 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  mp4.style.display = "none"; // önce gizli
-
   mp4.src = mp4Videos[currentMp4Index];
-  mp4.load();
-
-  mp4.oncanplay = () => {
-    mp4.style.display = "block"; // sadece hazırsa göster
-    mp4.play();
-  };
-
+  mp4.style.display = "block";
+  mp4.play();
   currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+}
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
 }
 
     
@@ -529,25 +527,17 @@ function playMp4Fallback() {
   let index = 0;
   let activePlayer = 1;
 
-
-function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: videoIds[index],
-    events: { onReady: () => startVideoPlayer() },
-    ...
-  });
-
-
-
-
-	  
+  function onYouTubeIframeAPIReady() {
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
       playerVars: {
         autoplay: 1, controls: 0, mute: 1,
         rel: 0, modestbranding: 1, playsinline: 1
       }
     });
     players.player2 = new YT.Player('player2', {
-     videoId: videoIds[0],
+      videoId: '',
       playerVars: {
         autoplay: 0, controls: 0, mute: 1,
         rel: 0, modestbranding: 1, playsinline: 1
@@ -555,30 +545,6 @@ function onYouTubeIframeAPIReady() {
     });
   }
 
-
-
-
-
-
-
-
-function stopMp4() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.style.display = "none";
-}
-
-
-
-
-
-
-
-
-
-
-
-	  
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -602,11 +568,9 @@ function shuffleArray(array) {
 
 
 
-
-
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // Videoyu hiç göstermeden başla
+  div.classList.remove("active");
 
   try {
     player.loadVideoById(videoId);
@@ -618,35 +582,24 @@ function loadVideo(player, videoId, playerDivId) {
     const checkInterval = setInterval(() => {
       const state = player.getPlayerState();
 
-      // Sadece gerçekten oynuyorsa göster
+      // Durum 1 = Oynatılıyor, 3 = Yükleniyor
       if (state === 1 || state === 3) {
         clearInterval(checkInterval);
-        stopMp4(); // 🔇 MP4 varsa durdur
-        div.classList.add("active"); // ✅ video çalışıyor, şimdi göster
+        div.classList.add("active");
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
           logBadVideo(videoId);
-          playMp4Fallback(); // ❌ YouTube bozuksa MP4 başlat
-          skipToNext();      // 🚀 Sıradaki videoya geç
+          skipToNext();
         }
       }
-    }, 1000); // her saniye kontrol
+    }, 1000);
   } catch (err) {
     logBadVideo(videoId);
-    playMp4Fallback();
     skipToNext();
   }
 }
-
-
-
-
-
-
-
-	  
 
 function logBadVideo(badId) {
   const note = document.getElementById("noteText");
@@ -673,19 +626,13 @@ function logBadVideo(badId) {
     }, 30000);
 
     setTimeout(() => {
-  document.getElementById(currentDivId).classList.remove("active");
-  // ❗ YENİ: sadece video çalışıyorsa .active ver
-  const state = (activePlayer === 1 ? players.player2 : players.player1).getPlayerState();
-  if (state === 1 || state === 3) {
-    document.getElementById(nextDivId).classList.add("active");
-  } else {
-    playMp4Fallback(); // bozuksa MP4'e geç
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext();
+    }, 40000);
   }
-
-  index = nextIndex;
-  activePlayer = activePlayer === 1 ? 2 : 1;
-  scheduleNext();
-}, 40000);
 
 
 function scheduleNext() {
@@ -1250,22 +1197,7 @@ function logBadVideo(badId) {
     note.value += `\nHatalı Video ID: ${badId}`;
   }
 }
-  function skipToNext() {
-  index = (index + 1) % videoIds.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDiv = activePlayer === 1 ? 'player2' : 'player1';
-
-  loadVideo(nextPlayer, videoIds[index], nextDiv);
-
-  setTimeout(() => {
-    document.getElementById('player1').classList.remove("active");
-    document.getElementById('player2').classList.remove("active");
-    document.getElementById(nextDiv).classList.add("active");
-
-    activePlayer = activePlayer === 1 ? 2 : 1;
-    scheduleNext();
-  }, 1000);
-}
+  
 </script>
 
 
