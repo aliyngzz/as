@@ -1221,8 +1221,39 @@ function logBadVideo(badId) {
     note.value += `\nHatalı Video ID: ${badId}`;
   }
 }
-  
+
+
+
+
+<script>
+window.addEventListener("load", () => {
+  const mp4 = document.getElementById("mp4Player");
+  const firstVideo = mp4Videos[currentMp4Index];
+
+  mp4.src = firstVideo;
+  mp4.style.display = "block";
+  mp4.play();
+
+  // Bu videoyu tekrar göstermemek için listeye ekle
+  usedMp4Indexes.push(currentMp4Index);
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+});
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
 
 
     
