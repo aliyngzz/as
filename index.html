@@ -500,9 +500,13 @@ function shuffleArray(array) {
     
   
 
+
+
+
+
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // Videoyu başta gizle
+  div.classList.remove("active"); // Başta görünmesin
 
   try {
     player.loadVideoById(videoId);
@@ -517,18 +521,27 @@ function loadVideo(player, videoId, playerDivId) {
         div.classList.add("active"); // ✅ video çalışıyorsa göster
       } else {
         tryCount++;
-        if (tryCount >= 2) { // ❌ 2 saniye dene, hala yoksa geç
+        if (tryCount >= 2) {
           clearInterval(checkInterval);
-          skipToNext();
+          logBadVideo(videoId); // ❗ Not paneline yaz
+          skipToNext();         // 🚀 sıradakine geç
         }
       }
-    }, 1000); // her 1 saniyede bir kontrol
-
+    }, 1000);
   } catch (err) {
-    skipToNext(); // 🎯 Hata varsa hemen geç
+    logBadVideo(videoId);
+    skipToNext();
   }
 }
 
+
+
+
+
+
+
+
+    
 
   function scheduleNext() {
     const nextIndex = (index + 1) % videoIds.length;
@@ -1035,6 +1048,20 @@ if (iframe && iframe.contentWindow) {
 
   // Her 1 saniyede bir kontrol edip ekler
   setInterval(forceAllowFullscreen, 1000);
+</script>
+
+
+<script>
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
+
+
+
 
   
 </script>
