@@ -665,13 +665,19 @@ function logBadVideo(badId) {
     }, 30000);
 
     setTimeout(() => {
-      document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
-      index = nextIndex;
-      activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext();
-    }, 40000);
+  document.getElementById(currentDivId).classList.remove("active");
+  // ❗ YENİ: sadece video çalışıyorsa .active ver
+  const state = (activePlayer === 1 ? players.player2 : players.player1).getPlayerState();
+  if (state === 1 || state === 3) {
+    document.getElementById(nextDivId).classList.add("active");
+  } else {
+    playMp4Fallback(); // bozuksa MP4'e geç
   }
+
+  index = nextIndex;
+  activePlayer = activePlayer === 1 ? 2 : 1;
+  scheduleNext();
+}, 40000);
 
 
 function scheduleNext() {
