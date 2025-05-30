@@ -504,46 +504,70 @@ const mp4Videos = [
 
 ];
 let currentMp4Index = 0;
+let usedMp4Indexes = [];
+
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
+
+  // Kullanılmamış bir MP4 bulana kadar dene
+  let attempts = 0;
+  while (usedMp4Indexes.includes(currentMp4Index) && attempts < mp4Videos.length) {
+    currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+    attempts++;
+  }
+
+  // Eğer tüm videolar oynatıldıysa sıfırla
+  if (attempts >= mp4Videos.length) {
+    usedMp4Indexes = [];
+  }
+
+  // Şimdiki videoyu işaretle
+  usedMp4Indexes.push(currentMp4Index);
+
+  // MP4 oynat
   mp4.src = mp4Videos[currentMp4Index];
   mp4.style.display = "block";
   mp4.play();
-  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
-}
-function stopMp4() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.style.display = "none";
-}
 
-    
-  let tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
+  const currentIndexToCheck = (index + 1) % videoIds.length;
 
-  let players = {};
-  let index = 0;
-  let activePlayer = 1;
+  // 20 saniye sonra kontrol et: YouTube hazır mı?
+  setTimeout(() => {
+    stopMp4(); // MP4'ü kapat
 
-  function onYouTubeIframeAPIReady() {
-    players.player1 = new YT.Player('player1', {
-      videoId: '',
-      events: { onReady: () => startVideoPlayer() },
-      playerVars: {
-        autoplay: 1, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
+    const testPlayer = activePlayer === 1 ? players.player2 : players.player1;
+
+    testPlayer.loadVideoById(videoIds[currentIndexToCheck]);
+    testPlayer.mute();
+
+    setTimeout(() => {
+      const state = testPlayer.getPlayerState();
+      if (state === 1 || state === 3) {
+        // YouTube düzgün → ona geç
+        index = currentIndexToCheck;
+        const divId = activePlayer === 1 ? 'player2' : 'player1';
+        document.getElementById('player1').classList.remove("active");
+        document.getElementById('player2').classList.remove("active");
+        document.getElementById(divId).classList.add("active");
+        activePlayer = activePlayer === 1 ? 2 : 1;
+        scheduleNext(); // devam et
+      } else {
+        // YouTube da bozuksa → başka MP4 dene
+        currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+        playMp4Fallback(); // yeniden MP4
       }
-    });
-    players.player2 = new YT.Player('player2', {
-      videoId: '',
-      playerVars: {
-        autoplay: 0, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
-    });
-  }
+    }, 3000); // YouTube yanıt süresi
+  }, 20000); // MP4 oynama süresi
+}
+
+
+
+
+
+
+
+	  
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
