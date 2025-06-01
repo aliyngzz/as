@@ -1315,66 +1315,81 @@ function logBadVideo(badId) {
 
 
 
-
-
-
-	<script>
+<script>
 const backupVideo = document.getElementById("backupVideo");
-const backupVideos = [
-  "178809-860734631_small.mp4"
-  "178809-860734631_small.mp4"
-  "178809-860734631_small.mp4"
-  "178809-860734631_small.mp4"
-   "178809-860734631_small.mp4"
+const backupSources = [
+ "178809-860734631_small.mp4",
+ "186405-877993676_tiny.mp4",
+ "44798-440001069_small.mp4",
+  "5744426-hd_1280_720_30fps.mp4",
+  "178809-860734631_small.mp4",
+"71350-538489808.mp4",
+"71350-538489808.mp4"
+
+	
 ];
 
-let currentIndex = 0;
+let currentBackupIndex = 0;
 let backupInterval = null;
 
-function playNextBackup() {
-  backupVideo.src = backupVideos[currentIndex];
+// 10 saniyede bir diğer videoya geç
+function playBackupVideo() {
+  backupVideo.src = backupSources[currentBackupIndex];
+  backupVideo.load();
   backupVideo.play();
-  currentIndex = (currentIndex + 1) % backupVideos.length;
+  currentBackupIndex = (currentBackupIndex + 1) % backupSources.length;
 }
 
+// Yedek videoları başlat
 function startBackupPlayback() {
-  // Diğer video ve sesleri gizle
+  // Diğer medya elemanlarını gizle
   document.querySelectorAll('iframe, video, audio').forEach(el => {
     if (el !== backupVideo) el.style.display = "none";
   });
 
   backupVideo.style.display = "block";
-  playNextBackup();
-
-  // 10 saniyede bir diğer videoya geç
+  playBackupVideo();
   if (backupInterval) clearInterval(backupInterval);
-  backupInterval = setInterval(playNextBackup, 10000);
+  backupInterval = setInterval(playBackupVideo, 10000);
 }
 
+// Yedek videoları durdur
 function stopBackupPlayback() {
   clearInterval(backupInterval);
   backupVideo.pause();
   backupVideo.style.display = "none";
 
-  // Diğer video ve sesleri geri getir
+  // Diğer medya elemanlarını geri göster
   document.querySelectorAll('iframe, video, audio').forEach(el => {
     if (el !== backupVideo) el.style.display = "";
   });
 }
 
-// İnternet bağlantısına göre kontrol
-function checkConnection() {
-  if (!navigator.onLine) {
-    startBackupPlayback();
-  } else {
+// Bağlantı kontrolü
+function checkInternetConnection() {
+  if (navigator.onLine) {
     stopBackupPlayback();
+  } else {
+    startBackupPlayback();
   }
 }
 
-window.addEventListener("load", checkConnection);
-window.addEventListener("online", checkConnection);
-window.addEventListener("offline", checkConnection);
+window.addEventListener("load", checkInternetConnection);
+window.addEventListener("online", checkInternetConnection);
+window.addEventListener("offline", checkInternetConnection);
 </script>
+
+
+
+
+
+
+
+
+
+
+
+	
 
 
 	
