@@ -41,7 +41,7 @@
       transform: translate(-50%, -50%);
       z-index: 0;
       opacity: 0;
-      transition: opacity 2s ease;
+     transition: opacity 0.1s ease;
       pointer-events: none;
     }
 
@@ -660,8 +660,10 @@ function logBadVideo(badId) {
     }, 30000);
 
     setTimeout(() => {
+
+     document.getElementById(nextDivId).classList.add("active");
       document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
+     
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext();
