@@ -573,6 +573,8 @@ function shuffleArray(array) {
 
 
 
+
+
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
   div.classList.remove("active");
@@ -581,30 +583,48 @@ function loadVideo(player, videoId, playerDivId) {
     player.loadVideoById(videoId);
     player.mute();
 
+    // 👇 Arka plandaki videolara DÜŞÜK kalite uygula
+    if (playerDivId !== 'player1' && playerDivId !== 'player2') {
+      player.setPlaybackQuality('small');
+    }
+
     let attempt = 0;
     const maxAttempts = 5;
 
     const checkInterval = setInterval(() => {
       const state = player.getPlayerState();
 
-      // Durum 1 = Oynatılıyor, 3 = Yükleniyor
-      if (state === 1 || state === 3) {
+      if (state === 1) {
         clearInterval(checkInterval);
+
+        // 👇 Ekrana gelen video en yüksek kaliteyle oynasın
+        player.setPlaybackQuality('hd1080');
         div.classList.add("active");
+        stopMp4();
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
           logBadVideo(videoId);
+          playMp4Fallback();
           skipToNext();
         }
       }
     }, 1000);
   } catch (err) {
     logBadVideo(videoId);
+    playMp4Fallback();
     skipToNext();
   }
 }
+
+
+
+
+
+
+
+	  
 
 function logBadVideo(badId) {
   const note = document.getElementById("noteText");
