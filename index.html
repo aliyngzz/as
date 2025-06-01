@@ -404,7 +404,9 @@
 <video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
-
+<video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
+  <source src="189703-886596102_medium.mp4" type="video/mp4">
+</video>
 
 
 
@@ -1306,7 +1308,46 @@ function logBadVideo(badId) {
       skipToNext();
     }
   }
+
 </script>
+
+
+
+<script>
+const backupVideo = document.getElementById('backupVideo');
+backupVideo.innerHTML = `<source src="189703-886596102_medium.mp4" type="video/mp4">`;
+
+// İnternet kontrolü
+function checkConnection() {
+  if (!navigator.onLine) {
+    // YouTube videoları ve sesleri durdur, yedek videoyu göster
+    document.querySelectorAll('iframe, audio, video').forEach(el => {
+      if (el !== backupVideo) el.style.display = 'none';
+    });
+    backupVideo.style.display = 'block';
+    backupVideo.play();
+  } else {
+    backupVideo.pause();
+    backupVideo.style.display = 'none';
+    // Diğer öğeleri geri getir
+    document.querySelectorAll('iframe, audio, video').forEach(el => {
+      if (el !== backupVideo) el.style.display = '';
+    });
+  }
+}
+
+// Sayfa ilk açıldığında ve bağlantı değiştiğinde kontrol et
+window.addEventListener('load', checkConnection);
+window.addEventListener('online', checkConnection);
+window.addEventListener('offline', checkConnection);
+</script>
+
+
+
+
+
+	
+
 
 	
 
