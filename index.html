@@ -404,13 +404,7 @@
 <video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
-<video
-  id="mp4Player"
-  preload="none"
-  style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;"
-  muted
-  autoplay
-></video>
+
 
 
 
@@ -645,26 +639,6 @@ function logBadVideo(badId) {
     }, 40000);
   }
 
-
-function scheduleNext() {
-  const nextIndex = (index + 1) % videoIds.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDiv = activePlayer === 1 ? 'player2' : 'player1';
-
-  setTimeout(() => {
-    loadVideo(nextPlayer, videoIds[nextIndex], nextDiv);
-  }, 30000); // sonraki video arkadan 30. saniyede yüklenir
-
-  setTimeout(() => {
-    document.getElementById("player1").classList.remove("active");
-    document.getElementById("player2").classList.remove("active");
-    document.getElementById(nextDiv).classList.add("active");
-
-    index = nextIndex;
-    activePlayer = activePlayer === 1 ? 2 : 1;
-    scheduleNext();
-  }, 40000); // görüntü 40. saniyede değişir
-}
 
 
 
