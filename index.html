@@ -510,7 +510,8 @@ const mp4Videos = [
 ];
 
 
-
+shuffleArray(mp4Videos);
+let currentMp4Index = 0;
 	  
 
 
@@ -1231,29 +1232,33 @@ function logBadVideo(badId) {
 
  let currentMp4Index = 0;
 
-  function playMp4Fallback() {
-    const mp4 = document.getElementById("mp4Player");
-    // Sıra bitti mi?
-    if (currentMp4Index >= mp4Videos.length) return;
+ function playMp4Fallback() {
+  const mp4 = document.getElementById("mp4Player");
 
-    // Önceki kaynağı boşalt
+  // Liste bitti mi? Baştan karıştır ve sıfırla
+  if (currentMp4Index >= mp4Videos.length) {
+    shuffleArray(mp4Videos); // 🔁 tekrar karıştır
+    currentMp4Index = 0;
+  }
+
+  // Videoyu ata ve başlat
+  mp4.pause();
+  mp4.removeAttribute('src');
+  mp4.load();
+
+  mp4.src = mp4Videos[currentMp4Index++];
+  mp4.playbackRate = 1.0;
+  mp4.style.display = "block";
+  mp4.play();
+
+  // Bittiğinde ekranı temizle
+  mp4.onended = () => {
+    mp4.pause();
     mp4.removeAttribute('src');
     mp4.load();
-
-    // Yeni videoyu ata ve oynat
-    mp4.src = mp4Videos[currentMp4Index++];
-    mp4.playbackRate = 1.5;     // Hızı 1.5×
-    mp4.style.display = "block";
-    mp4.play();
-
-    // Bittiğinde kaynağı kaldır ve gizle
-    mp4.onended = () => {
-      mp4.pause();
-      mp4.removeAttribute('src');
-      mp4.load();
-      mp4.style.display = "none";
-    };
-  }
+    mp4.style.display = "none";
+  };
+}
 
   function stopMp4() {
     const mp4 = document.getElementById("mp4Player");
