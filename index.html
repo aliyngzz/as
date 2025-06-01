@@ -630,9 +630,11 @@ function loadVideo(player, videoId, playerDivId) {
       const state = player.getPlayerState();
 
       // Durum 1 = Oynatılıyor, 3 = Yükleniyor
-      if (state === 1 || state === 3) {
-        clearInterval(checkInterval);
-        div.classList.add("active");
+      if (state === 1) {
+  clearInterval(interval);
+  div.classList.add("active"); // ✅ sadece YouTube gerçekten oynuyorsa
+  stopMp4();
+}
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
