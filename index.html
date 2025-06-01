@@ -405,10 +405,20 @@
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
-<video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
-  <source src="189703-886596102_medium.mp4" type="video/mp4">
+
+
+<video id="backupVideo" preload="auto" autoplay muted loop playsinline style="display: none; width: 100%; height: 100%; object-fit: cover;">
+  <source src=""189703-886596102_medium.mp4" type="video/mp4">
 </video>
 
+
+
+
+
+
+
+
+	
 
 	
 <!-- Not butonu -->
@@ -1309,38 +1319,41 @@ function logBadVideo(badId) {
     }
   }
 
-</script>
 
 
 
 
-<script>
-const backupVideo = document.getElementById('backupVideo');
-backupVideo.innerHTML = `<source src="189703-886596102_medium.mp4" type="video/mp4">`;
+let ytPlayer;
+let ytTimeout;
+let ytHasStarted = false;
 
-// İnternet kontrolü
-function checkConnection() {
-  if (!navigator.onLine) {
-    // YouTube videoları ve sesleri durdur, yedek videoyu göster
-    document.querySelectorAll('iframe, audio, video').forEach(el => {
-      if (el !== backupVideo) el.style.display = 'none';
-    });
-    backupVideo.style.display = 'block';
-    backupVideo.play();
-  } else {
-    backupVideo.pause();
-    backupVideo.style.display = 'none';
-    // Diğer öğeleri geri getir
-    document.querySelectorAll('iframe, audio, video').forEach(el => {
-      if (el !== backupVideo) el.style.display = '';
-    });
+function onPlayerReady(event) {
+  ytPlayer = event.target;
+  ytPlayer.playVideo();
+
+  // 5 saniyede video başlamazsa yedek devreye girsin
+  ytTimeout = setTimeout(() => {
+    if (!ytHasStarted) {
+      console.log("YouTube çok yavaş ya da açılmıyor. Yedek video gösteriliyor.");
+      showBackupVideo();
+    }
+  }, 5000);
+}
+
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.PLAYING) {
+    ytHasStarted = true;
+    clearTimeout(ytTimeout);
   }
 }
 
-// Sayfa ilk açıldığında ve bağlantı değiştiğinde kontrol et
-window.addEventListener('load', checkConnection);
-window.addEventListener('online', checkConnection);
-window.addEventListener('offline', checkConnection);
+// Sadece tek yedek video gösterilsin
+function showBackupVideo() {
+  const backupVideo = document.getElementById("backupVideo");
+  backupVideo.style.display = "block";
+  backupVideo.play();
+}
+
 </script>
 
 
