@@ -405,16 +405,9 @@
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
-<div id="ytPlayer" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
-
-<!-- Yedek MP4 video (önceden yüklenmiş) -->
-<video id="backupVideo" autoplay muted loop playsinline preload="auto"
-style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:2;">
-  <source src="yedek/189703-886596102_medium.mp4" type="video/mp4">
+<video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
+  <source src="189703-886596102_medium.mp4" type="video/mp4">
 </video>
-
-<!-- YouTube API -->
-<script src="https://www.youtube.com/iframe_api"></script>
 
 
 	
@@ -1323,11 +1316,12 @@ function logBadVideo(badId) {
 
 <script>
 const backupVideo = document.getElementById('backupVideo');
+backupVideo.innerHTML = `<source src="189703-886596102_medium.mp4" type="video/mp4">`;
 
 // İnternet kontrolü
 function checkConnection() {
   if (!navigator.onLine) {
-    // YouTube ve sesleri durdur, yedek videoyu göster
+    // YouTube videoları ve sesleri durdur, yedek videoyu göster
     document.querySelectorAll('iframe, audio, video').forEach(el => {
       if (el !== backupVideo) el.style.display = 'none';
     });
@@ -1336,7 +1330,7 @@ function checkConnection() {
   } else {
     backupVideo.pause();
     backupVideo.style.display = 'none';
-    // Diğer medya elemanlarını geri getir
+    // Diğer öğeleri geri getir
     document.querySelectorAll('iframe, audio, video').forEach(el => {
       if (el !== backupVideo) el.style.display = '';
     });
@@ -1350,38 +1344,7 @@ window.addEventListener('offline', checkConnection);
 </script>
 
 
-<script>
-let yedekVideo = document.getElementById("backupVideo");
-let youtubeOynadi = false;
-let kontrolZamani;
 
-function onYouTubeIframeAPIReady() {
-  new YT.Player('ytPlayer', {
-    videoId: "189703-886596102_medium.mp4",
-    events: {
-      'onReady': (event) => {
-        event.target.playVideo();
-        kontrolZamani = setTimeout(() => {
-          if (!youtubeOynadi) yedekAc();
-        }, 4000); // 4 saniye içinde YouTube başlamazsa yedeğe geç
-      },
-      'onStateChange': (event) => {
-        if (event.data === YT.PlayerState.PLAYING) {
-          youtubeOynadi = true;
-          clearTimeout(kontrolZamani);
-        }
-      },
-      'onError': () => yedekAc()
-    }
-  });
-}
-
-function yedekAc() {
-  document.getElementById("ytPlayer").style.display = "none";
-  yedekVideo.style.display = "block";
-  yedekVideo.play();
-}
-</script>
 
 
 	
