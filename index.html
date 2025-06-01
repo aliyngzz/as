@@ -405,7 +405,9 @@
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
-
+<video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
+  <source src="189703-886596102_medium.mp4" type="video/mp4">
+</video>
 
 
 	
@@ -426,15 +428,7 @@
   <!-- Diğer içerikler -->
   <!-- Örneğin doğa videoları veya butonlar burada olacak -->
 </div>
-
-
-<video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
-  <source src= "178809-860734631_small.mp4" type="video/mp4">
-</video>
-
-
-
-	
+  
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
@@ -1314,12 +1308,15 @@ function logBadVideo(badId) {
       skipToNext();
     }
   }
+
 </script>
+
+
 
 
 <script>
 const backupVideo = document.getElementById('backupVideo');
-backupVideo.innerHTML = `<source src= "178809-860734631_small.mp4" type="video/mp4">`;
+backupVideo.innerHTML = `<source src="189703-886596102_medium.mp4" type="video/mp4">`;
 
 // İnternet kontrolü
 function checkConnection() {
@@ -1344,17 +1341,14 @@ function checkConnection() {
 window.addEventListener('load', checkConnection);
 window.addEventListener('online', checkConnection);
 window.addEventListener('offline', checkConnection);
-
-
-
-
+</script>
 
 
 
 
 
 	
-</script>
+
 
 	
 
