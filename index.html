@@ -1140,6 +1140,11 @@ function logBadVideo(badId) {
 }
 
 
+
+
+
+
+
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
   div.classList.remove("active");
@@ -1154,17 +1159,17 @@ function loadVideo(player, videoId, playerDivId) {
     const checkInterval = setInterval(() => {
       const state = player.getPlayerState();
 
-      if (state === 1 || state === 3) {
+      if (state === 1) {
         clearInterval(checkInterval);
-        div.classList.add("active");
-        stopMp4(); // 🔁 YouTube çalıştıysa MP4 durdur
+      
+        stopMp4(); // MP4 varsa durdur
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
           logBadVideo(videoId);
-          playMp4Fallback(); // 🎯 YouTube olmadı → MP4 başlat
-          skipToNext();      // 🔁 YouTube’da sıradakine geç
+          playMp4Fallback(); // 🔄 Yedek MP4 çalıştır
+          skipToNext();      // ➡️ Diğer YouTube videosuna geç
         }
       }
     }, 1000);
@@ -1174,6 +1179,13 @@ function loadVideo(player, videoId, playerDivId) {
     skipToNext();
   }
 }
+
+
+
+
+
+
+	
 
 function logBadVideo(badId) {
   const note = document.getElementById("noteText");
