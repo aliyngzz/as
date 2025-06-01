@@ -363,47 +363,6 @@
   100% { box-shadow: 0 0 5px white; }
 }
 
-
-
-#introScreen {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, rgba(255,0,150,0.2), rgba(0,255,200,0.2));
-  backdrop-filter: blur(12px);
-  animation: shimmer 10s linear infinite;
-  z-index: 9999;
-}
-
-#startBtn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  border: 2px solid white;
-  padding: 20px 40px;
-  font-size: 24px;
-  border-radius: 30px;
-  backdrop-filter: blur(6px);
-  cursor: pointer;
-  animation: pulse 2s infinite;
-}
-
-
-
-
-
-
-	  
-@keyframes pulse {
-  0% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.05); }
-  100% { transform: translate(-50%, -50%) scale(1); }
-}
-
-	  
   </style>
 </head>
 <body>
@@ -446,9 +405,7 @@
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
-<div id="introScreen">
-  <button id="startBtn">DOĞAYI BAŞLAT</button>
-</div>
+
 
 
 	
@@ -1383,11 +1340,7 @@ function checkNextPlayerReady(player, callback) {
 
 
 
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("introScreen").style.display = "none"; // ✨ Giriş ekranını kaldır
-  enterFullscreen(document.documentElement); // F11 efekti
-  startVideoPlayer(); // Video sistemini başlat
-});
+
 
 
 	
