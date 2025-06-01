@@ -41,7 +41,7 @@
       transform: translate(-50%, -50%);
       z-index: 0;
       opacity: 0;
-     transition: opacity 0.1s ease;
+      transition: opacity 2s ease;
       pointer-events: none;
     }
 
@@ -401,7 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay ></video>
+<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
@@ -648,35 +648,28 @@ function logBadVideo(badId) {
 
 
     
-function scheduleNext() {
-  const nextIndex = (index + 1) % videoIds.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  // 30. saniyede sıradaki videoyu yükle
-  setTimeout(() => {
-    loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
-  }, 30000);
+  function scheduleNext() {
+    const nextIndex = (index + 1) % videoIds.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  // 40. saniyede yeni video gerçekten hazır mı kontrol et
-  setTimeout(() => {
-    checkNextPlayerReady(nextPlayer, (isReady) => {
-      if (isReady) {
-        // ✅ Yeni video hazırsa geçiş yap
-        document.getElementById(nextDivId).classList.add("active");
-        document.getElementById(currentDivId).classList.remove("active");
-        index = nextIndex;
-        activePlayer = activePlayer === 1 ? 2 : 1;
-     
-      } else {
-        // ❌ Hazır değilse 3 saniye sonra tekrar dene (ama eski video açık kalır!)
-       console.log("Yeni video hazır değil, 3 saniye sonra tekrar denenecek");
-        setTimeout(scheduleNext, 3000);
-      }
-    });
-  }, 40000);
-}
+    setTimeout(() => {
+      loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
+    }, 30000);
+
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext();
+    }, 40000);
+  }
+
+
+
 
 
 
@@ -1313,37 +1306,6 @@ function logBadVideo(badId) {
       skipToNext();
     }
   }
-
-
-
-
-
-function checkNextPlayerReady(player, callback) {
-  let attempts = 0;
-  const maxAttempts = 10;
-
-  const interval = setInterval(() => {
-    const state = player.getPlayerState();
-    if (state === 1) {
-      clearInterval(interval);
-      callback(true);  // oynuyorsa tamamdır
-    } else {
-      attempts++;
-      if (attempts >= maxAttempts) {
-        clearInterval(interval);
-        callback(false); // olmadı, hata var
-      }
-    }
-  }, 300); // her 300ms'de bir dene
-}
-
-
-
-
-
-
-
-	
 </script>
 
 	
