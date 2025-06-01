@@ -404,9 +404,8 @@
 <video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
-<video id="backupVideo" width="100%" height="100%" autoplay muted style="display: none; position: fixed; top: 0; left: 0; z-index: 9999;"></video>
 
-
+<video id="backupVideo" width="100%" height="100%" autoplay muted style="display: none; position: fixed; top: 0; left: 0; z-index: 9999; object-fit: cover;"></video>
 
 	
 <!-- Not butonu -->
@@ -1317,6 +1316,8 @@ function logBadVideo(badId) {
 
 <script>
 const backupVideo = document.getElementById("backupVideo");
+
+// 5 tane yedek video yolu
 const backupSources = [
  "178809-860734631_small.mp4",
  "186405-877993676_tiny.mp4",
@@ -1329,54 +1330,58 @@ const backupSources = [
 	
 ];
 
-let currentBackupIndex = 0;
-let backupInterval = null;
 
-// 10 saniyede bir diğer videoya geç
-function playBackupVideo() {
-  backupVideo.src = backupSources[currentBackupIndex];
+
+let currentIndex = 0;
+let intervalId = null;
+
+// Yedek videoyu sırayla oynat
+function playNextBackupVideo() {
+  backupVideo.src = backupSources[currentIndex];
   backupVideo.load();
-  backupVideo.play();
-  currentBackupIndex = (currentBackupIndex + 1) % backupSources.length;
+  backupVideo.play().catch(() => {}); // sessiz hata
+  currentIndex = (currentIndex + 1) % backupSources.length;
 }
 
-// Yedek videoları başlat
-function startBackupPlayback() {
-  // Diğer medya elemanlarını gizle
+// Yedek video başlatıcı
+function startBackupVideos() {
+  console.log("📴 İnternet yok, yedek videolar devrede.");
+  // Diğer öğeleri gizle
   document.querySelectorAll('iframe, video, audio').forEach(el => {
     if (el !== backupVideo) el.style.display = "none";
   });
 
   backupVideo.style.display = "block";
-  playBackupVideo();
-  if (backupInterval) clearInterval(backupInterval);
-  backupInterval = setInterval(playBackupVideo, 10000);
+  playNextBackupVideo();
+  if (intervalId) clearInterval(intervalId);
+  intervalId = setInterval(playNextBackupVideo, 10000);
 }
 
-// Yedek videoları durdur
-function stopBackupPlayback() {
-  clearInterval(backupInterval);
+// Normal video gösterimine geri dön
+function stopBackupVideos() {
+  console.log("🌐 İnternet geri geldi.");
+  clearInterval(intervalId);
   backupVideo.pause();
   backupVideo.style.display = "none";
-
-  // Diğer medya elemanlarını geri göster
+  
+  // Diğer öğeleri tekrar göster
   document.querySelectorAll('iframe, video, audio').forEach(el => {
     if (el !== backupVideo) el.style.display = "";
   });
 }
 
-// Bağlantı kontrolü
-function checkInternetConnection() {
+// Bağlantı kontrol sistemi
+function checkConnection() {
   if (navigator.onLine) {
-    stopBackupPlayback();
+    stopBackupVideos();
   } else {
-    startBackupPlayback();
+    startBackupVideos();
   }
 }
 
-window.addEventListener("load", checkInternetConnection);
-window.addEventListener("online", checkInternetConnection);
-window.addEventListener("offline", checkInternetConnection);
+window.addEventListener("load", checkConnection);
+window.addEventListener("online", checkConnection);
+window.addEventListener("offline", checkConnection);
 </script>
 
 
