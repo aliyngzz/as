@@ -672,7 +672,6 @@ function scheduleNext() {
       } else {
         // ❌ Hazır değilse 3 saniye sonra tekrar dene (ama eski video açık kalır!)
        console.log("Yeni video hazır değil, 3 saniye sonra tekrar denenecek");
-	       index = nextIndex; // 🔥 BUNU EKLE!
         setTimeout(scheduleNext, 3000);
       }
     });
