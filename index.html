@@ -668,7 +668,7 @@ function scheduleNext() {
         document.getElementById(currentDivId).classList.remove("active");
         index = nextIndex;
         activePlayer = activePlayer === 1 ? 2 : 1;
-        scheduleNext();
+     
       } else {
         // ❌ Hazır değilse 3 saniye sonra tekrar dene (ama eski video açık kalır!)
        console.log("Yeni video hazır değil, 3 saniye sonra tekrar denenecek");
