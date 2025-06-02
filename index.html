@@ -615,9 +615,8 @@ function playMp4Fallback() {
   }, 1000);
 
 mp4.onended = () => {
-  playMp4Fallback(); // ❌ bu satır videoları tekrar oynatır
+  skipToNext(); // ✅ MP4 bittiğinde YouTube’a geç
 };
-
 
 
 
@@ -1407,7 +1406,7 @@ function skipToNext() {
 let nextTimeout1 = null;
 let nextTimeout2 = null;
 
-function skipToNext() {
+
   clearTimeout(nextTimeout1);
   clearTimeout(nextTimeout2);
 
