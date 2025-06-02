@@ -628,9 +628,9 @@ function playMp4Fallback() {
     }
   }, 1000);
 
-  mp4.onended = () => {
-    playMp4Fallback();
-  };
+ mp4.onended = () => {
+  skipToNext(); // ✅ diğer YouTube videosuna geç
+};
 }
 
 
@@ -1403,19 +1403,30 @@ window.addEventListener('offline', checkConnection);
   function getValidVideos() {
     return videoIds.filter(id => !badVideoIds.includes(id));
   }
+
+
+
+	
+
+function skipToNext() {
+  const validList = getValidVideos();
+  if (validList.length === 0) {
+    console.warn("Geçerli YouTube videosu yok.");
+    return;
+  }
+
+  index = (index + 1) % validList.length;
+  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+  loadVideo(nextPlayer, validList[index], nextDivId);
+}
+
+
+
+
+	
+
 </script>
-
-
-	
-
-
-
-
-
-
-	
-
-
 	
 
 
