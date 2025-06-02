@@ -568,13 +568,21 @@ function shuffleArray(array) {
 
 
 
-	  
-    function startVideoPlayer() {
-  shuffleArray(videoIds);       // 🔁 listeyi karıştır
-  index = 0;                    // ✅ karıştırılmış dizide ilk videoyu seç
-  loadVideo(players.player1, videoIds[index], 'player1');
-  scheduleNext();               // 🔄 sırayla devam et
-}
+
+  function startVideoPlayer() {
+    const validList = getValidVideos();
+    if (validList.length === 0) {
+      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
+
+    shuffleArray(validList);
+    index = 0;
+    loadVideo(players.player1, validList[index], 'player1');
+    scheduleNext(validList);
+  }
+
 
 
     
@@ -650,16 +658,15 @@ function logBadVideo(badId) {
 
 
 
-    
 
-  function scheduleNext() {
-    const nextIndex = (index + 1) % videoIds.length;
+  function scheduleNext(validList = getValidVideos()) {
+    const nextIndex = (index + 1) % validList.length;
     const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
     setTimeout(() => {
-      loadVideo(nextPlayer, videoIds[nextIndex], nextDivId);
+      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
     }, 30000);
 
     setTimeout(() => {
@@ -667,7 +674,7 @@ function logBadVideo(badId) {
       document.getElementById(nextDivId).classList.add("active");
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext();
+      scheduleNext(validList);
     }, 40000);
   }
 
@@ -1344,6 +1351,63 @@ window.addEventListener('load', checkConnection);
 window.addEventListener('online', checkConnection);
 window.addEventListener('offline', checkConnection);
 </script>
+
+
+
+<script>
+  const badVideoIds = [];
+
+  // Sayfa yüklenince hafızadakileri yükle
+  window.addEventListener('load', loadBadIds);
+
+  function loadBadIds() {
+    const stored = localStorage.getItem('badVideoIds');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          badVideoIds.push(...parsed);
+        }
+      } catch (e) {
+        console.warn("Kayıtlı hatalı video verisi okunamadı:", e);
+      }
+    }
+  }
+
+  function saveBadIds() {
+    localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
+  }
+
+  function logBadVideo(badId) {
+    const note = document.getElementById("noteText");
+    const currentNote = note.value;
+    if (!currentNote.includes(badId)) {
+      note.value += `\nHatalı Video ID: ${badId}`;
+    }
+    if (!badVideoIds.includes(badId)) {
+      badVideoIds.push(badId);
+      saveBadIds();
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  function getValidVideos() {
+    return videoIds.filter(id => !badVideoIds.includes(id));
+  }
+</script>
+
+
+	
+
 
 
 
