@@ -1200,15 +1200,15 @@ function loadVideo(player, videoId, playerDivId) {
 
       if (state === 1) {
         clearInterval(checkInterval);
-      
-        stopMp4(); // MP4 varsa durdur
+        div.classList.add("active"); // ✅ SADECE çalışıyorsa görünür
+        stopMp4(); // MP4 görünmesin
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
           logBadVideo(videoId);
-          playMp4Fallback(); // 🔄 Yedek MP4 çalıştır
-          skipToNext();      // ➡️ Diğer YouTube videosuna geç
+          playMp4Fallback(); // ❗MP4 hemen göster
+          skipToNext();      // YouTube bozuksa sıradaki denensin
         }
       }
     }, 1000);
@@ -1218,6 +1218,7 @@ function loadVideo(player, videoId, playerDivId) {
     skipToNext();
   }
 }
+
 
 
 
@@ -1267,11 +1268,10 @@ function logBadVideo(badId) {
     mp4.play();
 
     // MP4 video bittiğinde sıradakine geç
-    mp4.onended = () => {
-      playMp4Fallback(); // bir sonrakine geç
-    };
-  }
-
+   mp4.onended = () => {
+  skipToNext(); // ✅ MP4 bitti → YouTube’a geç
+};
+ }
   function stopMp4() {
     const mp4 = document.getElementById("mp4Player");
     mp4.pause();
