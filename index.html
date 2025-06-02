@@ -605,13 +605,12 @@ function loadVideo(player, videoId, playerDivId) {
     const checkInterval = setInterval(() => {
       const state = player.getPlayerState();
 
-      if (state === 1) {
-        clearInterval(checkInterval);
-
-        // 👇 Ekrana gelen video en yüksek kaliteyle oynasın
-        player.setPlaybackQuality('hd1080');
-        div.classList.add("active");
-        stopMp4();
+      if (state === 1 && player.getCurrentTime() > 2) {
+  clearInterval(checkInterval);
+  player.setPlaybackQuality('hd1080');
+  div.classList.add("active");
+  stopMp4();
+}
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
