@@ -551,17 +551,28 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  mp4.src = mp4Videos[currentMp4Index];
+
+  // Liste bitti mi? Artık video oynatma
+  if (currentMp4Index >= mp4Videos.length) {
+    console.log("Tüm MP4 videolar oynatıldı. Artık MP4 yok.");
+    mp4.style.display = "none";
+    return;
+  }
+
+  mp4.pause();
+  mp4.removeAttribute('src');
+  mp4.load();
+
+  mp4.src = mp4Videos[currentMp4Index++];
+  mp4.playbackRate = 1.0;
   mp4.style.display = "block";
   mp4.play();
-  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
-}
-function stopMp4() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.style.display = "none";
-}
 
+  // Video bittiğinde sıradakine geç
+  mp4.onended = () => {
+    playMp4Fallback(); // Sadece kalan varsa
+  };
+}
     
   let tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
