@@ -611,14 +611,19 @@ function shuffleArray(array) {
 
 
 
+function startVideoPlayer() {
+  const validList = getValidVideos();
+  if (validList.length === 0) {
+    console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+    playMp4Fallback();
+    return;
+  }
 
-  function startVideoPlayer() {
-    const validList = getValidVideos();
-    if (validList.length === 0) {
-      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
-      playMp4Fallback();
-      return;
-    }
+  shuffleArray(validList); // ✅ HER zaman karıştır
+  index = 0;
+  loadVideo(players.player1, validList[index], 'player1');
+  scheduleNext(validList);
+}
 
     shuffleArray(validList);
     index = 0;
