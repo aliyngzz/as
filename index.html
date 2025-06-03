@@ -362,26 +362,7 @@
   50% { box-shadow: 0 0 20px white; }
   100% { box-shadow: 0 0 5px white; }
 }
-.player {
-  opacity: 0 !important; /* başlangıçta görünmesin */
-  pointer-events: none;
-}
 
-.player.active {
-  opacity: 1 !important; /* sadece oynayan görünür */
-  pointer-events: auto;
-}
-
-.player {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
-}
-
-
-
-
-	  
   </style>
 </head>
 <body>
@@ -551,28 +532,17 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-
-  // Liste bitti mi? Artık video oynatma
-  if (currentMp4Index >= mp4Videos.length) {
-    console.log("Tüm MP4 videolar oynatıldı. Artık MP4 yok.");
-    mp4.style.display = "none";
-    return;
-  }
-
-  mp4.pause();
-  mp4.removeAttribute('src');
-  mp4.load();
-
-  mp4.src = mp4Videos[currentMp4Index++];
-  mp4.playbackRate = 1.0;
+  mp4.src = mp4Videos[currentMp4Index];
   mp4.style.display = "block";
   mp4.play();
-
-  // Video bittiğinde sıradakine geç
-  mp4.onended = () => {
-    playMp4Fallback(); // Sadece kalan varsa
-  };
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
+}
+
     
   let tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
@@ -611,21 +581,21 @@ function shuffleArray(array) {
 
 
 
-function startVideoPlayer() {
-  const validList = getValidVideos();
-  if (validList.length === 0) {
-    console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
-    playMp4Fallback();
-    return;
+
+  function startVideoPlayer() {
+    const validList = getValidVideos();
+    if (validList.length === 0) {
+      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
+
+    shuffleArray(validList);
+    index = 0;
+    loadVideo(players.player1, validList[index], 'player1');
+    scheduleNext(validList);
   }
 
-  shuffleArray(validList); // ✅ HER zaman karıştır
-  index = 0;
-  loadVideo(players.player1, validList[index], 'player1');
-  scheduleNext(validList);
-}
-
-   
 
 
     
@@ -1213,14 +1183,23 @@ if (iframe && iframe.contentWindow) {
 
 
 <script>
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
+
+
+
 
 
 
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // görünürlüğü kaldır
-  div.style.opacity = "0";        // görünmesin
+  div.classList.remove("active");
 
   try {
     player.loadVideoById(videoId);
@@ -1232,18 +1211,17 @@ function loadVideo(player, videoId, playerDivId) {
     const checkInterval = setInterval(() => {
       const state = player.getPlayerState();
 
-      if (state === 1) { // sadece gerçekten oynuyorsa göster
+      if (state === 1) {
         clearInterval(checkInterval);
-        div.classList.add("active");
-        div.style.opacity = "1";  // sadece çalışan video görünür
-        stopMp4();
+        div.classList.add("active"); // ✅ SADECE çalışıyorsa görünür
+        stopMp4(); // MP4 görünmesin
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
           logBadVideo(videoId);
-          playMp4Fallback();
-          skipToNext(); // bozuksa sıradakine geç
+          playMp4Fallback(); // ❗MP4 hemen göster
+          skipToNext();      // YouTube bozuksa sıradaki denensin
         }
       }
     }, 1000);
@@ -1262,7 +1240,13 @@ function loadVideo(player, videoId, playerDivId) {
 
 	
 
-
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
 </script>
 
 
@@ -1389,24 +1373,36 @@ window.addEventListener('offline', checkConnection);
   // Sayfa yüklenince hafızadakileri yükle
   window.addEventListener('load', loadBadIds);
 
- function loadBadIds() {
-  const stored = localStorage.getItem('badVideoIds');
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed)) {
-        badVideoIds.push(...parsed);
+  function loadBadIds() {
+    const stored = localStorage.getItem('badVideoIds');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          badVideoIds.push(...parsed);
+        }
+      } catch (e) {
+        console.warn("Kayıtlı hatalı video verisi okunamadı:", e);
       }
-    } catch (e) {
-      console.warn("Kayıtlı hatalı video verisi okunamadı:", e);
     }
   }
-}
 
   function saveBadIds() {
     localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
   }
 
+  function logBadVideo(badId) {
+    const note = document.getElementById("noteText");
+    const currentNote = note.value;
+    if (!currentNote.includes(badId)) {
+      note.value += `\nHatalı Video ID: ${badId}`;
+    }
+    if (!badVideoIds.includes(badId)) {
+      badVideoIds.push(badId);
+      saveBadIds();
+    }
+  }
+</script>
 
 
 
@@ -1416,9 +1412,7 @@ window.addEventListener('offline', checkConnection);
 
 
 
-
-
-
+<script>
   function getValidVideos() {
     return videoIds.filter(id => !badVideoIds.includes(id));
   }
@@ -1452,18 +1446,10 @@ var player = new YT.Player('player', {
 
 
 
-<script>
-// Tüm YouTube iframe'lerini gizle (ekstra koruma)
-document.querySelectorAll('.player').forEach(div => {
-  div.style.opacity = "0";
-  div.style.pointerEvents = "none";
-});
-</script>
+
 
 	
-<script>
-let badVideoIds = []; // ← Tanımlanmalı yoksa hata olur
-</script>
+
 
 	
 
