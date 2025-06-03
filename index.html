@@ -1213,16 +1213,6 @@ if (iframe && iframe.contentWindow) {
 
 
 <script>
-function logBadVideo(badId) {
-  const note = document.getElementById("noteText");
-  const currentNote = note.value;
-  if (!currentNote.includes(badId)) {
-    note.value += `\nHatalı Video ID: ${badId}`;
-  }
-}
-
-
-
 
 
 
@@ -1272,13 +1262,7 @@ function loadVideo(player, videoId, playerDivId) {
 
 	
 
-function logBadVideo(badId) {
-  const note = document.getElementById("noteText");
-  const currentNote = note.value;
-  if (!currentNote.includes(badId)) {
-    note.value += `\nHatalı Video ID: ${badId}`;
-  }
-}
+
 </script>
 
 
@@ -1405,36 +1389,24 @@ window.addEventListener('offline', checkConnection);
   // Sayfa yüklenince hafızadakileri yükle
   window.addEventListener('load', loadBadIds);
 
-  function loadBadIds() {
-    const stored = localStorage.getItem('badVideoIds');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          badVideoIds.push(...parsed);
-        }
-      } catch (e) {
-        console.warn("Kayıtlı hatalı video verisi okunamadı:", e);
+ function loadBadIds() {
+  const stored = localStorage.getItem('badVideoIds');
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        badVideoIds.push(...parsed);
       }
+    } catch (e) {
+      console.warn("Kayıtlı hatalı video verisi okunamadı:", e);
     }
-  
+  }
+}
 
   function saveBadIds() {
     localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
   }
 
-  function logBadVideo(badId) {
-    const note = document.getElementById("noteText");
-    const currentNote = note.value;
-    if (!currentNote.includes(badId)) {
-      note.value += `\nHatalı Video ID: ${badId}`;
-    }
-    if (!badVideoIds.includes(badId)) {
-      badVideoIds.push(badId);
-      saveBadIds();
-    }
-  }
-</script>
 
 
 
@@ -1444,7 +1416,9 @@ window.addEventListener('offline', checkConnection);
 
 
 
-<script>
+
+
+
   function getValidVideos() {
     return videoIds.filter(id => !badVideoIds.includes(id));
   }
@@ -1487,7 +1461,9 @@ document.querySelectorAll('.player').forEach(div => {
 </script>
 
 	
-
+<script>
+let badVideoIds = []; // ← Tanımlanmalı yoksa hata olur
+</script>
 
 	
 
