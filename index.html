@@ -1221,48 +1221,50 @@ function logBadVideo(badId) {
 
 
 
-
 function loadVideo(player, videoId, playerDivId) {
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
-  div.style.opacity = "0";
-  div.innerHTML = ""; // ✅ Önceki iframe’ı da temizle
+  isEmbeddable(videoId, function (canPlay) {
+    if (!canPlay) {
+      console.warn("⛔ Embed edilemiyor, atlanıyor:", videoId);
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+      return;
+    }
 
-  let isValid = false;
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
+    div.style.opacity = "0";
 
-  try {
-    player.cueVideoById(videoId); // yükle ama başlatma
-    setTimeout(() => {
-      player.playVideo(); // 100ms sonra başlat
-    }, 100);
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
 
-    // ✅ 1 saniyede başlamazsa geç
-    const timeout = setTimeout(() => {
-      if (!isValid) {
-        console.warn("❌ 1 saniyede başlamadı → geçiliyor:", videoId);
-        logBadVideo(videoId);
-        playMp4Fallback();
-        skipToNext();
-      }
-    }, 1000);
+      let attempt = 0;
+      const max = 10;
 
-    const checkInterval = setInterval(() => {
-      const state = player.getPlayerState();
-      if (state === 1) {
-        clearTimeout(timeout);
-        clearInterval(checkInterval);
-        isValid = true;
-        div.classList.add("active");
-        div.style.opacity = "1";
-        stopMp4();
-      }
-    }, 100);
-  } catch (err) {
-    console.warn("🚫 try/catch hatası:", videoId);
-    logBadVideo(videoId);
-    playMp4Fallback();
-    skipToNext();
-  }
+      const checker = setInterval(() => {
+        const state = player.getPlayerState();
+        if (state === 1) {
+          clearInterval(checker);
+          div.classList.add("active");
+          div.style.opacity = "1";
+          stopMp4();
+        } else {
+          attempt++;
+          if (attempt >= max) {
+            clearInterval(checker);
+            logBadVideo(videoId);
+            playMp4Fallback();
+            skipToNext();
+          }
+        }
+      }, 100);
+    } catch (e) {
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  });
 }
 
 
@@ -1487,6 +1489,28 @@ function handleError(event, playerDivId) {
 }
 
 
+
+function isEmbeddable(videoId, callback) {
+  const testIframe = document.createElement("iframe");
+  testIframe.style.display = "none";
+  testIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1`;
+  document.body.appendChild(testIframe);
+
+  const timeout = setTimeout(() => {
+    document.body.removeChild(testIframe);
+    callback(false);
+  }, 1000); // sadece 1 saniye test süresi
+
+  testIframe.onload = () => {
+    clearTimeout(timeout);
+    document.body.removeChild(testIframe);
+    callback(true);
+  };
+}
+
+
+
+	
 	
 </script>
 
