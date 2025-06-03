@@ -1220,11 +1220,10 @@ function logBadVideo(badId) {
 
 
 
-
 function loadVideo(player, videoId, playerDivId) {
-  isEmbeddable(videoId, function (canPlay) {
+  isYouTubeEmbeddable(videoId, function (canPlay) {
     if (!canPlay) {
-      console.warn("⛔ Embed edilemiyor, atlanıyor:", videoId);
+      console.warn("❌ EMBED EDİLEMİYOR:", videoId);
       logBadVideo(videoId);
       playMp4Fallback();
       skipToNext();
@@ -1240,33 +1239,33 @@ function loadVideo(player, videoId, playerDivId) {
       player.mute();
 
       let attempt = 0;
-      const max = 10;
+      const maxAttempts = 10;
 
-      const checker = setInterval(() => {
+      const interval = setInterval(() => {
         const state = player.getPlayerState();
         if (state === 1) {
-          clearInterval(checker);
+          clearInterval(interval);
           div.classList.add("active");
           div.style.opacity = "1";
           stopMp4();
         } else {
           attempt++;
-          if (attempt >= max) {
-            clearInterval(checker);
+          if (attempt >= maxAttempts) {
+            clearInterval(interval);
+            console.warn("🚫 HATA DURUMU:", videoId);
             logBadVideo(videoId);
             playMp4Fallback();
             skipToNext();
           }
         }
-      }, 100);
-    } catch (e) {
+      }, 100); // her 100ms kontrol et → toplam 1 saniye
+    } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
       skipToNext();
     }
   });
 }
-
 
 	
 
@@ -1509,7 +1508,29 @@ function isEmbeddable(videoId, callback) {
 }
 
 
+function isYouTubeEmbeddable(videoId, callback) {
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0`;
+  document.body.appendChild(iframe);
 
+  const timeout = setTimeout(() => {
+    document.body.removeChild(iframe);
+    callback(false); // 1 saniye içinde yüklenmezse bozuk
+  }, 1000);
+
+  iframe.onload = () => {
+    clearTimeout(timeout);
+    document.body.removeChild(iframe);
+    callback(true); // iframe düzgün yüklendiyse kullanılabilir
+  };
+}
+
+
+
+
+
+	
 	
 	
 </script>
