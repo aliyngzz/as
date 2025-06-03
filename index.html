@@ -363,6 +363,7 @@
   100% { box-shadow: 0 0 5px white; }
 }
 
+
 .player {
   opacity: 0 !important; /* başlangıçta görünmesin */
   pointer-events: none;
@@ -373,12 +374,13 @@
   pointer-events: auto;
 }
 
+
 .player {
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease;
 }
-	  
+
 	  
   </style>
 </head>
@@ -546,35 +548,20 @@ shuffleArray(mp4Videos);
 let currentMp4Index = 0;
 	  
 
+
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-
- if (currentMp4Index >= mp4Videos.length) {
-    console.log("Tüm MP4 videolar oynatıldı. Artık MP4 yok.");
-    mp4.style.display = "none";
-    return;
-  }
-
-  mp4.pause();
-  mp4.removeAttribute('src');
-  mp4.load();
-
-  mp4.src = mp4Videos[currentMp4Index++];
-  mp4.playbackRate = 1.0;
+  mp4.src = mp4Videos[currentMp4Index];
   mp4.style.display = "block";
   mp4.play();
-
-  // Video bittiğinde sıradakine geç
-  mp4.onended = () => {
-    playMp4Fallback(); // Sadece kalan varsa
-  };
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+}
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
 }
 
-
-
-
-
-	  
     
   let tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
@@ -1228,7 +1215,6 @@ function logBadVideo(badId) {
 
 
 
-
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
   div.classList.remove("active"); // görünürlüğü kaldır
@@ -1265,6 +1251,8 @@ function loadVideo(player, videoId, playerDivId) {
     skipToNext();
   }
 }
+
+
 
 
 
@@ -1474,6 +1462,9 @@ document.querySelectorAll('.player').forEach(div => {
   div.style.opacity = "0";
   div.style.pointerEvents = "none";
 });
+
+
+
 
 	
 </script>
