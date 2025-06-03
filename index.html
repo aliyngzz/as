@@ -362,7 +362,15 @@
   50% { box-shadow: 0 0 20px white; }
   100% { box-shadow: 0 0 5px white; }
 }
+.player {
+  opacity: 0 !important; /* başlangıçta görünmesin */
+  pointer-events: none;
+}
 
+.player.active {
+  opacity: 1 !important; /* sadece oynayan görünür */
+  pointer-events: auto;
+}
   </style>
 </head>
 <body>
@@ -1199,7 +1207,8 @@ function logBadVideo(badId) {
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
+  div.classList.remove("active"); // görünürlüğü kaldır
+  div.style.opacity = "0";        // görünmesin
 
   try {
     player.loadVideoById(videoId);
@@ -1211,17 +1220,18 @@ function loadVideo(player, videoId, playerDivId) {
     const checkInterval = setInterval(() => {
       const state = player.getPlayerState();
 
-      if (state === 1) {
+      if (state === 1) { // sadece gerçekten oynuyorsa göster
         clearInterval(checkInterval);
-        div.classList.add("active"); // ✅ SADECE çalışıyorsa görünür
-        stopMp4(); // MP4 görünmesin
+        div.classList.add("active");
+        div.style.opacity = "1";  // sadece çalışan video görünür
+        stopMp4();
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
           logBadVideo(videoId);
-          playMp4Fallback(); // ❗MP4 hemen göster
-          skipToNext();      // YouTube bozuksa sıradaki denensin
+          playMp4Fallback();
+          skipToNext(); // bozuksa sıradakine geç
         }
       }
     }, 1000);
