@@ -1224,47 +1224,43 @@ function logBadVideo(badId) {
 
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
-  div.classList.remove("active"); // görünürlüğü kaldır
-  div.style.opacity = "0";        // görünmesin
+  div.classList.remove("active");
+  div.style.opacity = "0";
+
+  let isValid = false;
 
   try {
     player.loadVideoById(videoId);
     player.mute();
 
-   let attempts = 0;
-const maxAttempts = 2;
+    // ⏱️ 1 saniye içinde oynuyorsa devam, yoksa geç!
+    const timeout = setTimeout(() => {
+      if (!isValid) {
+        console.warn("❌ 1 saniyede başlamadı → geçiliyor:", videoId);
+        logBadVideo(videoId);
+        playMp4Fallback();
+        skipToNext();
+      }
+    }, 1000); // ✅ sadece 1 saniye veriyoruz
 
-const checkInterval = setInterval(() => {
-  const state = player.getPlayerState();
-
-  if (state === 1) {
-    clearInterval(checkInterval);
-    div.classList.add("active");
-    div.style.opacity = "1";
-    stopMp4();
-  } else {
-    attempts++;
-    if (attempts >= maxAttempts) {
-      clearInterval(checkInterval);
-      console.warn("Bozuk video atlandı:", videoId);
-      logBadVideo(videoId);
-      playMp4Fallback();
-      skipToNext();
-    }
-  }
-}, 100); // her saniyede bir dene (toplam 2 saniye bekler)
-
-
-
-	  
+    const checkInterval = setInterval(() => {
+      const state = player.getPlayerState();
+      if (state === 1) {
+        clearTimeout(timeout);
+        clearInterval(checkInterval);
+        isValid = true;
+        div.classList.add("active");
+        div.style.opacity = "1";
+        stopMp4();
+      }
+    }, 100); // her 100ms'de kontrol et
   } catch (err) {
+    console.warn("🚫 Hata ile karşılaşıldı:", videoId);
     logBadVideo(videoId);
     playMp4Fallback();
     skipToNext();
   }
 }
-
-
 
 
 
