@@ -1224,27 +1224,32 @@ function loadVideo(player, videoId, playerDivId) {
     player.loadVideoById(videoId);
     player.mute();
 
-    let attempt = 0;
-    const maxAttempts = 5;
+   let attempts = 0;
+const maxAttempts = 2;
 
-    const checkInterval = setInterval(() => {
-      const state = player.getPlayerState();
+const checkInterval = setInterval(() => {
+  const state = player.getPlayerState();
 
-      if (state === 1) { // sadece gerçekten oynuyorsa göster
-        clearInterval(checkInterval);
-        div.classList.add("active");
-        div.style.opacity = "1";  // sadece çalışan video görünür
-        stopMp4();
-      } else {
-        attempt++;
-        if (attempt >= maxAttempts) {
-          clearInterval(checkInterval);
-          logBadVideo(videoId);
-          playMp4Fallback();
-          skipToNext(); // bozuksa sıradakine geç
-        }
-      }
-    }, 1000);
+  if (state === 1) {
+    clearInterval(checkInterval);
+    div.classList.add("active");
+    div.style.opacity = "1";
+    stopMp4();
+  } else {
+    attempts++;
+    if (attempts >= maxAttempts) {
+      clearInterval(checkInterval);
+      console.warn("Bozuk video atlandı:", videoId);
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  }
+}, 100); // her saniyede bir dene (toplam 2 saniye bekler)
+
+
+
+	  
   } catch (err) {
     logBadVideo(videoId);
     playMp4Fallback();
