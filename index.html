@@ -1456,7 +1456,13 @@ var player = new YT.Player('player', {
 
 
 
-
+<script>
+// Tüm YouTube iframe'lerini gizle (ekstra koruma)
+document.querySelectorAll('.player').forEach(div => {
+  div.style.opacity = "0";
+  div.style.pointerEvents = "none";
+});
+</script>
 
 	
 
