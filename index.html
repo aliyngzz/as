@@ -1403,6 +1403,28 @@ window.addEventListener('offline', checkConnection);
   function getValidVideos() {
     return videoIds.filter(id => !badVideoIds.includes(id));
   }
+
+
+function onPlayerError(event) {
+  const errorCode = event.data;
+  const videoId = event.target.getVideoData().video_id;
+
+  // Geçerli hata kodları: 2, 5, 100, 101, 150
+  if ([2, 5, 100, 101, 150].includes(errorCode)) {
+    console.warn("Hatalı video algılandı:", videoId);
+    logBadVideo(videoId); // senin fonksiyonun
+  }
+}
+
+var player = new YT.Player('player', {
+  videoId: currentVideoId,
+  events: {
+    'onReady': onPlayerReady,
+    'onStateChange': onPlayerStateChange,
+    'onError': onPlayerError // ← burası eksikse çalışmaz
+  }
+});
+	
 </script>
 
 
