@@ -1229,31 +1229,27 @@ function loadVideo(player, videoId, playerDivId) {
     player.loadVideoById(videoId);
     player.mute();
 
-    let testDuration = 1000; // 1 saniye
-    let checkInterval = 100;
-    let elapsed = 0;
+    let attempt = 0;
+    const maxAttempts = 10; // 100ms x 10 = 1 saniye
 
-    const test = setInterval(() => {
+    const interval = setInterval(() => {
       const state = player.getPlayerState();
-      elapsed += checkInterval;
+      attempt++;
 
       if (state === 1) {
-        // ✅ Video oynuyor
-        clearInterval(test);
+        clearInterval(interval);
+        console.log("✅ Video çalışıyor:", videoId);
         div.classList.add("active");
         div.style.opacity = "1";
-        stopMp4(); // MP4 kapat
-      }
-
-      else if (elapsed >= testDuration) {
-        // ❌ Video bozuk veya başlamadı
-        clearInterval(test);
-        console.warn("❌ Video oynatılmıyor:", videoId);
+        stopMp4(); // MP4 varsa durdur
+      } else if (attempt >= maxAttempts) {
+        clearInterval(interval);
+        console.warn("❌ Video çalışmıyor:", videoId);
         logBadVideo(videoId);
-        playMp4Fallback();  // MP4 aç
-        skipToNext();       // sıradaki videoya hazırlan
+        playMp4Fallback(); // MP4’e geç
+        skipToNext();      // sıradaki videoyu hazırla
       }
-    }, checkInterval);
+    }, 100); // her 100ms kontrol et → toplam 1 saniye
 
   } catch (err) {
     logBadVideo(videoId);
@@ -1523,7 +1519,11 @@ function isYouTubeEmbeddable(videoId, callback) {
 
 
 
-
+if (badVideoIds.includes(videoId)) {
+  console.warn("⛔ Bu video zaten bozuktu, hiç deneme:", videoId);
+  skipToNext();
+  return;
+}
 	
 	
 	
