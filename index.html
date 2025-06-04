@@ -493,7 +493,9 @@ const videoIds = [
   
     "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
-
+let validVideoIds = [];
+let badVideoIds = [];
+let testIndex = 0;
 const mp4Videos = [
       "158349-816637197_tiny.mp4",
       "246856_tiny.mp4",
@@ -1525,10 +1527,76 @@ function isYouTubeEmbeddable(videoId, callback) {
 
 
 
+function testYouTubeVideosSequentially() {
+  if (testIndex >= videoIds.length) {
+    console.log("✅ Tüm YouTube videoları test edildi.");
+    return;
+  }
 
+  const videoId = videoIds[testIndex];
+  if (badVideoIds.includes(videoId) || validVideoIds.includes(videoId)) {
+    testIndex++;
+    testYouTubeVideosSequentially(); // zaten test edilmişse geç
+    return;
+  }
 
+  isYouTubeEmbeddable(videoId, function (canPlay) {
+    if (canPlay) {
+      validVideoIds.push(videoId);
+      console.log("✅ SAĞLAM:", videoId);
+    } else {
+      badVideoIds.push(videoId);
+      logBadVideo(videoId);
+      console.warn("❌ BOZUK:", videoId);
+    }
+
+    testIndex++;
+    setTimeout(testYouTubeVideosSequentially, 500); // her test arası 0.5 saniye
+  });
+}
+
+window.addEventListener("load", () => {
+  playMp4Fallback(); // Hemen MP4 başlasın
+  testYouTubeVideosSequentially(); // Arka planda test başlasın
+
+  setTimeout(() => {
+    stopMp4();
+    if (validVideoIds.length === 0) {
+      console.warn("⛔ Hiç sağlam YouTube videosu bulunamadı.");
+      playMp4Fallback(); // yine MP4 devam etsin
+    } else {
+      console.log("🎬 YouTube geçerli videolar başlatılıyor...");
+      startValidYouTubeLoop();
+    }
+  }, 300000); // 5 dakika = 300000ms
+});
 	
-	
+let currentValidIndex = 0;
+function startValidYouTubeLoop() {
+  if (validVideoIds.length === 0) return;
+
+  const player = players.player1;
+  const div = document.getElementById("player1");
+
+  function playNext() {
+    const videoId = validVideoIds[currentValidIndex];
+    div.classList.remove("active");
+    div.style.opacity = "0";
+
+    player.loadVideoById(videoId);
+    player.mute();
+
+    setTimeout(() => {
+      div.classList.add("active");
+      div.style.opacity = "1";
+    }, 1000);
+
+    currentValidIndex = (currentValidIndex + 1) % validVideoIds.length;
+    setTimeout(playNext, 10000); // 10 saniye sonra sonraki video
+  }
+
+  playNext();
+}	
 	
 </script>
 
