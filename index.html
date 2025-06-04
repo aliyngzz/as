@@ -380,12 +380,7 @@
   pointer-events: none;
   transition: opacity 1s ease;
 }
-.player iframe {
-  visibility: hidden;
-}
-.player.active iframe {
-  visibility: visible;
-}
+
 	  
   </style>
 </head>
@@ -555,48 +550,71 @@ let currentMp4Index = 0;
 
 
 function playMp4Fallback() {
-  // YouTube videolarını tamamen gizle
-  document.querySelectorAll('.player').forEach(div => {
-    div.classList.remove("active");
-    div.style.opacity = "0";
-    div.style.display = "none";
-  });
-
   const mp4 = document.getElementById("mp4Player");
-  const backup = document.getElementById("backupVideo");
-
-  if (currentMp4Index >= mp4Videos.length) {
-    shuffleArray(mp4Videos);
-    currentMp4Index = 0;
-  }
-
-  mp4.pause();
-  mp4.removeAttribute('src');
-  mp4.load();
-
-  mp4.src = mp4Videos[currentMp4Index++];
-  mp4.playbackRate = 1.0;
+  mp4.src = mp4Videos[currentMp4Index];
   mp4.style.display = "block";
   mp4.play();
-
-  let tried = false;
-
-  // 1 saniye sonra hâlâ başlamadıysa yedek videoya geç
-  setTimeout(() => {
-    if (!tried && mp4.currentTime < 0.2) {
-      tried = true;
-      console.log("MP4 başlamadı, yedek devrede!");
-      mp4.style.display = "none";
-      backup.style.display = "block";
-      backup.play();
-    }
-  }, 1000);
-
-  // Bittiğinde tekrar çağır
-  mp4.onended = () => {
-    playMp4Fallback();
-  };
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
+}
+
+    
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+
+  let players = {};
+  let index = 0;
+  let activePlayer = 1;
+
+function onYouTubeIframeAPIReady() {
+  players.player1 = new YT.Player('player1', {
+    videoId: '',
+    events: {
+      onReady: () => startVideoPlayer(),
+      onError: (event) => handleError(event, 'player1')
+    },
+    playerVars: {
+      autoplay: 1, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+
+  players.player2 = new YT.Player('player2', {
+    videoId: '',
+    events: {
+      onError: (event) => handleError(event, 'player2')
+    },
+    playerVars: {
+      autoplay: 0, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+
+
+
+
+  function startVideoPlayer() {
+    const validList = getValidVideos();
+    if (validList.length === 0) {
+      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
 
     shuffleArray(validList);
     index = 0;
@@ -1214,8 +1232,7 @@ function loadVideo(player, videoId, playerDivId) {
 
     const div = document.getElementById(playerDivId);
     div.classList.remove("active");
-div.style.opacity = "0";
-div.style.display = "none"; // ❗BU YENİ
+    div.style.opacity = "0";
 
     try {
       player.loadVideoById(videoId);
@@ -1228,9 +1245,8 @@ div.style.display = "none"; // ❗BU YENİ
         const state = player.getPlayerState();
         if (state === 1) {
           clearInterval(interval);
-        div.classList.add("active");
-div.style.opacity = "1";
-div.style.display = "block"; // ❗BU YENİ
+          div.classList.add("active");
+          div.style.opacity = "1";
           stopMp4();
         } else {
           attempt++;
@@ -1454,9 +1470,8 @@ var player = new YT.Player('player', {
 
 // Tüm YouTube iframe'lerini gizle
 document.querySelectorAll('.player').forEach(div => {
-  div.classList.remove("active");
   div.style.opacity = "0";
-  div.style.display = "none"; // ❗YouTube iframe'leri tamamen gizlenir
+  div.style.pointerEvents = "none";
 });
 
 function handleError(event, playerDivId) {
@@ -1516,117 +1531,21 @@ function isYouTubeEmbeddable(videoId, callback) {
 
 
 	
-function startVideoPlayer() {
-  const validList = getValidVideos();
-  if (validList.length === 0) {
-    console.warn("❌ Geçerli video kalmadı, MP4'e geçiliyor...");
-    playMp4Fallback();
-    return;
-  }
-
-  shuffleArray(validList);
-  index = 0;
-  loadVideo(players.player1, validList[index], 'player1');
-  scheduleNext(validList);
-}
-
-
-
-let tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
-
-let players = {};
-let index = 0;
-let activePlayer = 1;
-
-function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: '',
-    events: {
-      onReady: () => startVideoPlayer(),
-      onError: (event) => handleError(event, 'player1')
-    },
-    playerVars: {
-      autoplay: 1, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-
-  players.player2 = new YT.Player('player2', {
-    videoId: '',
-    events: {
-      onError: (event) => handleError(event, 'player2')
-    },
-    playerVars: {
-      autoplay: 0, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-}
-
-let tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
-
-
-
-let players = {};
-let index = 0;
-let activePlayer = 1;
-
-
-function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: '',
-    events: {
-      onReady: () => startVideoPlayer(),
-      onError: (event) => handleError(event, 'player1')
-    },
-    playerVars: {
-      autoplay: 1, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-
-  players.player2 = new YT.Player('player2', {
-    videoId: '',
-    events: {
-      onError: (event) => handleError(event, 'player2')
-    },
-    playerVars: {
-      autoplay: 0, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-}
 	
 	
-
-function startVideoPlayer() {
-  const validList = getValidVideos();
-  if (validList.length === 0) {
-    console.warn("❌ Geçerli video yok. MP4'e geçiliyor...");
-    playMp4Fallback();
-    return;
-  }
-
-  shuffleArray(validList);
-  index = 0;
-  loadVideo(players.player1, validList[index], 'player1');
-  scheduleNext(validList);
-}
-
-	
-
-
-
-
-
-
-	
-
 </script>
+
+
+	
+
+
+
+
+
+
+	
+
+
 	
 
 
