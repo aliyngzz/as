@@ -610,11 +610,11 @@ function shuffleArray(array) {
 
   function startVideoPlayer() {
     const validList = getValidVideos();
-    if (validList.length === 0) {
-      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
-      playMp4Fallback();
-      return;
-    }
+  if (validList.length === 0) {
+  console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+  playMp4Fallback();
+  return;
+}
 
     shuffleArray(validList);
     index = 0;
@@ -1229,32 +1229,38 @@ function loadVideo(player, videoId, playerDivId) {
     player.loadVideoById(videoId);
     player.mute();
 
-    let attempt = 0;
-    const maxAttempts = 10; // 100ms x 10 = 1 saniye
-    const interval = setInterval(() => {
+    let testDuration = 1000; // 1 saniye
+    let checkInterval = 100;
+    let elapsed = 0;
+
+    const test = setInterval(() => {
       const state = player.getPlayerState();
-      attempt++;
+      elapsed += checkInterval;
 
       if (state === 1) {
-        clearInterval(interval);
+        // ✅ Video oynuyor
+        clearInterval(test);
         div.classList.add("active");
         div.style.opacity = "1";
-        stopMp4(); // MP4 varsa durdur
-      } else if (attempt >= maxAttempts) {
-        clearInterval(interval);
-        console.warn("🚫 Video 1 saniyede başlamadı:", videoId);
-        logBadVideo(videoId);
-        playMp4Fallback();
-        skipToNext();
+        stopMp4(); // MP4 kapat
       }
-    }, 100);
+
+      else if (elapsed >= testDuration) {
+        // ❌ Video bozuk veya başlamadı
+        clearInterval(test);
+        console.warn("❌ Video oynatılmıyor:", videoId);
+        logBadVideo(videoId);
+        playMp4Fallback();  // MP4 aç
+        skipToNext();       // sıradaki videoya hazırlan
+      }
+    }, checkInterval);
+
   } catch (err) {
     logBadVideo(videoId);
     playMp4Fallback();
     skipToNext();
-   }
+  }
 }
-
 	
 
 function logBadVideo(badId) {
