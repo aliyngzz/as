@@ -575,7 +575,7 @@ function onYouTubeIframeAPIReady() {
   players.player1 = new YT.Player('player1', {
     videoId: '',
     events: {
-      onReady: () => startVideoPlayer(),
+   
       onError: (event) => handleError(event, 'player1')
     },
     playerVars: {
@@ -608,20 +608,19 @@ function shuffleArray(array) {
 
 
 
-  function startVideoPlayer() {
-    const validList = getValidVideos();
+ function startVideoPlayer() {
+  const validList = validVideoIds;
   if (validList.length === 0) {
-  console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
-  playMp4Fallback();
-  return;
-}
-
-    shuffleArray(validList);
-    index = 0;
-    loadVideo(players.player1, validList[index], 'player1');
-    scheduleNext(validList);
+    console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+    playMp4Fallback();
+    return;
   }
 
+  shuffleArray(validList);
+  index = 0;
+  loadVideo(players.player1, validList[index], 'player1');
+  scheduleNext(validList);
+}
 
 
     
@@ -698,24 +697,25 @@ function logBadVideo(badId) {
 
 
 
-  function scheduleNext(validList = getValidVideos()) {
-    const nextIndex = (index + 1) % validList.length;
-    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
+ function scheduleNext(validList) {
+  const nextIndex = (index + 1) % validList.length;
+  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-    setTimeout(() => {
-      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 8000);
+  setTimeout(() => {
+    loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+  }, 18000); // sonraki videoyu yükle (arka planda)
 
-    setTimeout(() => {
-      document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
-      index = nextIndex;
-      activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext(validList);
-    }, 12000);
-  }
+  setTimeout(() => {
+    document.getElementById(currentDivId).classList.remove("active");
+    document.getElementById(nextDivId).classList.add("active");
+    index = nextIndex;
+    activePlayer = activePlayer === 1 ? 2 : 1;
+    scheduleNext(validList);
+  }, 20000); // geçiş süresi → 20 saniye
+}
+
 
 
 
@@ -729,7 +729,7 @@ function logBadVideo(badId) {
 document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("startBtn").style.display = "none";
   enterFullscreen(document.documentElement); // ✅ Bu satır TAM EKRAN başlatır
-  startVideoPlayer();
+
 });
 
     function enterFullscreen(elem) {
@@ -1524,9 +1524,39 @@ function isYouTubeEmbeddable(videoId, callback) {
 }
 
 
+let validVideoIds = [];
+let testIndex = 0;
 
+function testYouTubeVideosSequentially() {
+  if (testIndex >= videoIds.length) return;
 
+  const id = videoIds[testIndex];
+  if (badVideoIds.includes(id) || validVideoIds.includes(id)) {
+    testIndex++;
+    testYouTubeVideosSequentially();
+    return;
+  }
 
+  isYouTubeEmbeddable(id, (canPlay) => {
+    if (canPlay) {
+      validVideoIds.push(id);
+    } else {
+      logBadVideo(id);
+    }
+    testIndex++;
+    setTimeout(testYouTubeVideosSequentially, 500); // her test 0.5 sn
+  });
+}
+
+window.addEventListener("load", () => {
+  playMp4Fallback();
+  testYouTubeVideosSequentially();
+
+  setTimeout(() => {
+    stopMp4();
+    startVideoPlayer(); // 2 dakika sonra YouTube başlasın
+  }, 120000); // 2 dakika = 120000 ms
+});
 	
 	
 	
