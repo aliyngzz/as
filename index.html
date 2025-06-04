@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube ve MP4 Video Sistemi</title>
+  <title>Doğa Sever Sistemi</title>
   <style>
     html, body {
       margin: 0;
@@ -39,6 +39,37 @@
       display: none;
       z-index: -1;
     }
+    #musicControl {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      z-index: 1000;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #nature-controls {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+    #nature-controls button {
+      padding: 10px;
+      font-size: 14px;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -46,6 +77,14 @@
 <div id="player1" class="player"></div>
 <div id="player2" class="player"></div>
 <video id="mp4Player" muted autoplay loop></video>
+
+<button id="musicControl">🎵 Türkü Aç</button>
+<div id="nature-controls">
+  <button id="play-sound">Doğa Sesini Aç</button>
+  <button id="pause-sound" style="display:none;">Doğa Sesini Kapat</button>
+</div>
+<audio id="audioPlayer"></audio>
+<audio id="nature-sound"></audio>
 
 <script>
 let players = {};
@@ -56,6 +95,8 @@ const badVideoIds = JSON.parse(localStorage.getItem("badVideoIds")) || [];
 
 const videoIds = ["eT_W9pSC3mY", "B4-L2nfGcuE", "ZQ5OqjssArE"];
 const mp4Videos = ["video1.mp4", "video2.mp4", "yedek.mp4"];
+const turkeySongs = ["turku1.mp3", "turku2.mp3", "sabahat.mp3"];
+const natureSounds = ["kus.mp3", "orman.mp3", "dere.mp3"];
 
 let tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
@@ -214,6 +255,52 @@ function skipToNext() {
   index = (index + 1) % validList.length;
   loadVideo(players[`player${activePlayer}`], validList[index], `player${activePlayer}`);
 }
+
+// Türkü Müzik Sistemi
+let musicIndex = 0;
+let isPlaying = false;
+const musicPlayer = document.getElementById("audioPlayer");
+const musicButton = document.getElementById("musicControl");
+let shuffled = shuffleArray([...turkeySongs]);
+
+function playNextTurku() {
+  musicPlayer.src = shuffled[musicIndex];
+  musicPlayer.play();
+}
+musicPlayer.addEventListener("ended", () => {
+  musicIndex = (musicIndex + 1) % shuffled.length;
+  playNextTurku();
+});
+musicButton.addEventListener("click", () => {
+  if (!isPlaying) {
+    playNextTurku();
+    musicButton.textContent = "⏸ Türkü Kapat";
+    isPlaying = true;
+  } else {
+    musicPlayer.pause();
+    musicButton.textContent = "🎵 Türkü Aç";
+    isPlaying = false;
+  }
+});
+
+// Doğa Sesi Sistemi
+const natureAudio = document.getElementById("nature-sound");
+const playBtn = document.getElementById("play-sound");
+const pauseBtn = document.getElementById("pause-sound");
+
+playBtn.addEventListener("click", () => {
+  const rand = Math.floor(Math.random() * natureSounds.length);
+  natureAudio.src = natureSounds[rand];
+  natureAudio.play();
+  playBtn.style.display = "none";
+  pauseBtn.style.display = "inline-block";
+});
+pauseBtn.addEventListener("click", () => {
+  natureAudio.pause();
+  natureAudio.currentTime = 0;
+  pauseBtn.style.display = "none";
+  playBtn.style.display = "inline-block";
+});
 </script>
 
 </body>
