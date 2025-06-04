@@ -697,22 +697,20 @@ function logBadVideo(badId) {
 
 
 
-
- function scheduleNext(validList = getValidVideos()) {
+function scheduleNext(validList = getValidVideos()) {
   const nextIndex = (index + 1) % validList.length;
   const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
   const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
   const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  let hasStarted = false;
+  // Önce yeni videoyu yükle
+  loadVideo(nextPlayer, validList[nextIndex], nextDivId);
 
-  const checkInterval = setInterval(() => {
-    const state = nextPlayer.getPlayerState();
-    if (state === YT.PlayerState.PLAYING && !hasStarted) {
-      hasStarted = true;
-      clearInterval(checkInterval);
+  // 12 saniye sonra geçişi garanti altına alalım
+  nextPlayer.addEventListener("onStateChange", function handleState(event) {
+    if (event.data === YT.PlayerState.PLAYING) {
+      nextPlayer.removeEventListener("onStateChange", handleState);
 
-      // 🎯 12 saniye sonra geçiş yap
       setTimeout(() => {
         document.getElementById(currentDivId).classList.remove("active");
         document.getElementById(nextDivId).classList.add("active");
@@ -721,14 +719,8 @@ function logBadVideo(badId) {
         scheduleNext(validList);
       }, 12000);
     }
-  }, 200);
-
-  // Videoyu önceden yükle
-  loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+  });
 }
-
-
-
 
 
 
