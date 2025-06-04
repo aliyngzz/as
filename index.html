@@ -1516,6 +1516,54 @@ function isYouTubeEmbeddable(videoId, callback) {
 
 
 	
+function startVideoPlayer() {
+  const validList = getValidVideos();
+  if (validList.length === 0) {
+    console.warn("❌ Geçerli video kalmadı, MP4'e geçiliyor...");
+    playMp4Fallback();
+    return;
+  }
+
+  shuffleArray(validList);
+  index = 0;
+  loadVideo(players.player1, validList[index], 'player1');
+  scheduleNext(validList);
+}
+
+
+
+let tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+let players = {};
+let index = 0;
+let activePlayer = 1;
+
+function onYouTubeIframeAPIReady() {
+  players.player1 = new YT.Player('player1', {
+    videoId: '',
+    events: {
+      onReady: () => startVideoPlayer(),
+      onError: (event) => handleError(event, 'player1')
+    },
+    playerVars: {
+      autoplay: 1, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+
+  players.player2 = new YT.Player('player2', {
+    videoId: '',
+    events: {
+      onError: (event) => handleError(event, 'player2')
+    },
+    playerVars: {
+      autoplay: 0, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+}
 	
 	
 </script>
