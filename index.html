@@ -706,7 +706,7 @@ function logBadVideo(badId) {
 
     setTimeout(() => {
       loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 5000);
+    }, 3000);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -714,7 +714,7 @@ function logBadVideo(badId) {
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext(validList);
-    }, 10000);
+    }, 6000);
   }
 
 
