@@ -1558,13 +1558,26 @@ window.addEventListener("load", () => {
   }, 120000); // 2 dakika = 120000 ms
 });
 	
-	
-	
+<script src="https://www.youtube.com/iframe_api"></script>
+	<script>	
+setTimeout(() => {
+  stopMp4();
+  startVideoPlayer(); // 🔹 Bu olmazsa hiçbir video başlamaz
+}, 120000);
+
+
+
+if (validVideoIds.length === 0) {
+  console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+  playMp4Fallback();
+  return;
+}
+
+		
 </script>
 
 
 	
-
 
 
 
