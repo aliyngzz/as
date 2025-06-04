@@ -580,8 +580,7 @@ function onYouTubeIframeAPIReady() {
     },
     playerVars: {
       autoplay: 1, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1,
-	     enablejsapi: 1 // ✅ Bunu ekledik
+      rel: 0, modestbranding: 1, playsinline: 1
     }
   });
 
@@ -698,30 +697,30 @@ function logBadVideo(badId) {
 
 
 
-function scheduleNext(validList = getValidVideos()) {
-  const nextIndex = (index + 1) % validList.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  // Önce yeni videoyu yükle
-  loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+  function scheduleNext(validList = getValidVideos()) {
+    const nextIndex = (index + 1) % validList.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  // 12 saniye sonra geçişi garanti altına alalım
-  nextPlayer.addEventListener("onStateChange", function handleState(event) {
-    if (event.data === YT.PlayerState.PLAYING) {
-      nextPlayer.removeEventListener("onStateChange", handleState);
+    setTimeout(() => {
+      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+    }, 8000);
 
-      setTimeout(() => {
-        document.getElementById(currentDivId).classList.remove("active");
-        document.getElementById(nextDivId).classList.add("active");
-        index = nextIndex;
-        activePlayer = activePlayer === 1 ? 2 : 1;
-        scheduleNext(validList);
-      }, 12000);
-    }
-  });
-}
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext(validList);
+    }, 12000);
+  }
+
+
+
+
+
 
 
 
@@ -1283,50 +1282,77 @@ function logBadVideo(badId) {
 <script>
   let currentMp4Index = 0;
 
+  function playMp4Fallback() {
+    // YouTube videosu çalışıyorsa MP4 oynatma
+    if (players && (
+      players.player1?.getPlayerState() === 1 ||
+      players.player2?.getPlayerState() === 1
+    )) {
+      return; // YouTube çalışıyorsa MP4'e geçme
+    }
 
+    const mp4 = document.getElementById("mp4Player");
 
+    // Liste bitti mi? Baştan karıştır ve sıfırla
+    if (currentMp4Index >= mp4Videos.length) {
+      shuffleArray(mp4Videos); // 🔁 tekrar karıştır
+      currentMp4Index = 0;
+    }
 
+    // Mevcut videoyu ayarla ve başlat
+    mp4.pause();
+    mp4.removeAttribute('src');
+    mp4.load();
 
-function playMp4Fallback() {
-  const mp4 = document.getElementById("mp4Player");
+    mp4.src = mp4Videos[currentMp4Index++];
+    mp4.playbackRate = 1.0;
+    mp4.style.display = "block";
+    mp4.play();
 
-  // YouTube oynuyorsa MP4'e geçme
-  if (players && (
-    players.player1?.getPlayerState() === 1 ||
-    players.player2?.getPlayerState() === 1
-  )) return;
-
-  if (currentMp4Index >= mp4Videos.length) {
-    shuffleArray(mp4Videos);
-    currentMp4Index = 0;
+    // MP4 video bittiğinde sıradakine geç
+   mp4.onended = () => {
+  skipToNext(); // ✅ MP4 bitti → YouTube’a geç
+};
+ }
+  function stopMp4() {
+    const mp4 = document.getElementById("mp4Player");
+    mp4.pause();
+    mp4.removeAttribute('src');
+    mp4.load();
+    mp4.style.display = "none";
   }
+</script>
 
-  mp4.pause();
-  mp4.removeAttribute('src');
-  mp4.load();
+<script>
+  function loadVideo(player, videoId, playerDivId) {
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
 
-  mp4.src = mp4Videos[currentMp4Index++];
-  mp4.playbackRate = 1.0;
-  mp4.style.display = "block";
-  mp4.play();
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
 
-  // 🔁 8 saniye sonra sıradaki videoya geç
-  setTimeout(() => {
-    playMp4Fallback();
-  }, 8000);
-}
+      let attempt = 0;
+      const maxAttempts = 5;
 
+      const checkInterval = setInterval(() => {
+        const state = player.getPlayerState();
 
-
-
-
-
-
-
-
-
-
-	
+        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
+        if (state === 1) {
+          clearInterval(checkInterval);
+          div.classList.add("active");
+          stopMp4();  // YouTube başarılıysa MP4’ü kapat
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(checkInterval);
+            logBadVideo(videoId);
+            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
+            skipToNext();
+          }
+        }
+      }, 1000);
     } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
