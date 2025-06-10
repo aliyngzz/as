@@ -1220,15 +1220,7 @@ function logBadVideo(badId) {
 
 
 
-function loadVideo(player, videoId, playerDivId) {
-  isYouTubeEmbeddable(videoId, function (canPlay) {
-    if (!canPlay) {
-      console.warn("❌ EMBED EDİLEMİYOR:", videoId);
-      logBadVideo(videoId);
-      playMp4Fallback();
-      skipToNext();
-      return;
-    }
+
 
     const div = document.getElementById(playerDivId);
     div.classList.remove("active");
@@ -1529,9 +1521,21 @@ function isYouTubeEmbeddable(videoId, callback) {
 
 
 
-
+function setQualityHigh(player) {
+  try {
+    player.setPlaybackQuality('hd1080'); // veya 'hd720'
+  } catch (e) {
+    console.warn("Kalite ayarlanamadı:", e);
+  }
+}
 	
-	
+	if (state === 1) {
+  clearInterval(interval);
+  setQualityHigh(player); // Kaliteyi YÜKSEK yap
+  div.classList.add("active");
+  div.style.opacity = "1";
+  stopMp4();
+}
 	
 </script>
 
