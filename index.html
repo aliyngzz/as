@@ -364,22 +364,9 @@
 }
 
 
-.player {
-  opacity: 0 !important;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
 
-.player.active {
-  opacity: 1 !important;
-  pointer-events: auto;
-}
 
-.player {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
-}
+
 
 	  
   </style>
@@ -1412,11 +1399,7 @@ window.addEventListener('offline', checkConnection);
     localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
   }
 
-  function logBadVideo(badId) {
-    const note = document.getElementById("noteText");
-    const currentNote = note.value;
-    if (!currentNote.includes(badId)) {
-      note.value += `\nHatalı Video ID: ${badId}`;
+ 
     }
     if (!badVideoIds.includes(badId)) {
       badVideoIds.push(badId);
