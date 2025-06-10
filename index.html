@@ -1542,19 +1542,32 @@ if (state === 1) {
   stopMp4();
 }	
 	
+
+
+
+	
+
+
+
+
+function skipToNext() {
+  const validList = getValidVideos();
+  if (validList.length === 0) {
+    console.warn("Geçerli video kalmadı. MP4'e geçiliyor.");
+    playMp4Fallback();
+    return;
+  }
+
+  index = (index + 1) % validList.length;
+  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+
+  loadVideo(nextPlayer, validList[index], nextDivId);
+}
+
+	
+
 </script>
-
-
-	
-
-
-
-
-
-
-	
-
-
 	
 
 
