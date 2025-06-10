@@ -680,25 +680,24 @@ function logBadVideo(badId) {
 
 
 
-  function scheduleNext(validList = getValidVideos()) {
-    const nextIndex = (index + 1) % validList.length;
-    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
+ function scheduleNext(validList = getValidVideos()) {
+  const nextIndex = (index + 1) % validList.length;
+  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-    setTimeout(() => {
-      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 8000);
+  loadVideo(nextPlayer, validList[nextIndex], nextDivId);
 
-    setTimeout(() => {
-      document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
-      index = nextIndex;
-      activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext(validList);
-    }, 12000);
-  }
+  setTimeout(() => {
+    document.getElementById(currentDivId).classList.remove("active");
+    document.getElementById(nextDivId).classList.add("active");
 
+    index = nextIndex;
+    activePlayer = activePlayer === 1 ? 2 : 1;
+
+    scheduleNext(validList);
+  }, 12000);
+}
 
 
 
@@ -1526,6 +1525,20 @@ if (state === 1) {
   div.style.opacity = "1";
   stopMp4();
 }	
+
+
+
+
+function skipToNext() {
+  scheduleNext(getValidVideos());
+}
+
+
+
+
+
+
+
 	
 </script>
 
