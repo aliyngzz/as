@@ -364,9 +364,22 @@
 }
 
 
+.player {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
 
+.player.active {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
 
-
+.player {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
 
 	  
   </style>
@@ -536,7 +549,13 @@ let currentMp4Index = 0;
 	  
 
 
-
+function playMp4Fallback() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.src = mp4Videos[currentMp4Index];
+  mp4.style.display = "block";
+  mp4.play();
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+}
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
@@ -1201,7 +1220,15 @@ function logBadVideo(badId) {
 
 
 
-
+function loadVideo(player, videoId, playerDivId) {
+  isYouTubeEmbeddable(videoId, function (canPlay) {
+    if (!canPlay) {
+      console.warn("❌ EMBED EDİLEMİYOR:", videoId);
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+      return;
+    }
 
     const div = document.getElementById(playerDivId);
     div.classList.remove("active");
@@ -1393,7 +1420,11 @@ window.addEventListener('offline', checkConnection);
     localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
   }
 
- 
+  function logBadVideo(badId) {
+    const note = document.getElementById("noteText");
+    const currentNote = note.value;
+    if (!currentNote.includes(badId)) {
+      note.value += `\nHatalı Video ID: ${badId}`;
     }
     if (!badVideoIds.includes(badId)) {
       badVideoIds.push(badId);
@@ -1506,13 +1537,13 @@ function setQualityHigh(player) {
   }
 }
 	
-	if (state === 1) {
+if (state === 1) {
   clearInterval(interval);
   setQualityHigh(player); // Kaliteyi YÜKSEK yap
   div.classList.add("active");
   div.style.opacity = "1";
   stopMp4();
-}
+}	
 	
 </script>
 
