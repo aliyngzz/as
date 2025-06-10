@@ -708,14 +708,20 @@ function logBadVideo(badId) {
       loadVideo(nextPlayer, validList[nextIndex], nextDivId);
     }, 8000);
 
-    setTimeout(() => {
-      document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
-      index = nextIndex;
-      activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext(validList);
-    }, 12000);
+ setTimeout(() => {
+  // 🔒 Geçerli YouTube oynatıcı durumu kontrolü
+  if (players.player1?.getPlayerState?.() !== 1 &&
+      players.player2?.getPlayerState?.() !== 1) {
+    playMp4Fallback(); // YouTube oynatılmıyorsa MP4’e geç
   }
+
+  document.getElementById(currentDivId).classList.remove("active");
+  document.getElementById(nextDivId).classList.add("active");
+
+  index = nextIndex;
+  activePlayer = activePlayer === 1 ? 2 : 1;
+  scheduleNext(validList); // 🔁 devam et
+}, 12000);
 
 
 
@@ -1318,51 +1324,13 @@ function logBadVideo(badId) {
     mp4.load();
     mp4.style.display = "none";
   }
-</script>
-
-<script>
-  function loadVideo(player, videoId, playerDivId) {
-    const div = document.getElementById(playerDivId);
-    div.classList.remove("active");
-
-    try {
-      player.loadVideoById(videoId);
-      player.mute();
-
-      let attempt = 0;
-      const maxAttempts = 5;
-
-      const checkInterval = setInterval(() => {
-        const state = player.getPlayerState();
-
-        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
-        if (state === 1) {
-          clearInterval(checkInterval);
-          div.classList.add("active");
-          stopMp4();  // YouTube başarılıysa MP4’ü kapat
-        } else {
-          attempt++;
-          if (attempt >= maxAttempts) {
-            clearInterval(checkInterval);
-            logBadVideo(videoId);
-            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
-            skipToNext();
-          }
-        }
-      }, 1000);
-    } catch (err) {
-      logBadVideo(videoId);
-      playMp4Fallback();
-      skipToNext();
-    }
-  }
-
-</script>
 
 
 
 
-<script>
+
+
+
 const backupVideo = document.getElementById('backupVideo');
 backupVideo.innerHTML = `<source src="189703-886596102_medium.mp4" type="video/mp4">`;
 
