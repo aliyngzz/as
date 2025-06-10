@@ -536,13 +536,7 @@ let currentMp4Index = 0;
 	  
 
 
-function playMp4Fallback() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.src = mp4Videos[currentMp4Index];
-  mp4.style.display = "block";
-  mp4.play();
-  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
-}
+
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
