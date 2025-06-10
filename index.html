@@ -365,9 +365,9 @@
 
 
 .player {
-  opacity: 0;
+  opacity: 0 !important;
   pointer-events: none;
-  transition: opacity 1s ease;
+  transition: opacity 0.2s ease;
 }
 
 .player.active {
@@ -460,7 +460,7 @@ const videoIds = [
 "Dv-f0LCrQc",
 "Lic2fD18wnw",
 "W3D3dEpR3bs",
-
+"VzKL9oeJCI",
 "F5o1sDTGxd0",
 "QcdEhpuPAw",
 "03P6cS2SXIs",
@@ -474,7 +474,7 @@ const videoIds = [
 "2_ovWpVE9es",
 "0St2Vey_r1E",
 "NRGsOPF-yMg",
-
+"NUh7jIxvh2Q",
 "z_jyvAFOVj4",
 "DGl-cC-IVQ",	  
 "gf6SK0NObfI",
@@ -486,11 +486,11 @@ const videoIds = [
   "hFr5w9KLEA4",  
     "Li3Dvqlo5uE", 
    
-   "czoEAKX9aaM", "D1VM6V6wmU0", 
+    "H8UO0sJvWDw", "czoEAKX9aaM", "D1VM6V6wmU0", 
      
-     "6Ad0iNbv54w", 
+     "7uLRpG2c_Eg", "6Ad0iNbv54w", 
    "7w40FtLA4OQ",
-  
+    "ECmjT2D1SzI", 
     "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
@@ -610,11 +610,11 @@ function shuffleArray(array) {
 
   function startVideoPlayer() {
     const validList = getValidVideos();
-  if (validList.length === 0) {
-  console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
-  playMp4Fallback();
-  return;
-}
+    if (validList.length === 0) {
+      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
 
     shuffleArray(validList);
     index = 0;
@@ -708,20 +708,14 @@ function logBadVideo(badId) {
       loadVideo(nextPlayer, validList[nextIndex], nextDivId);
     }, 8000);
 
- setTimeout(() => {
-  // 🔒 Geçerli YouTube oynatıcı durumu kontrolü
-  if (players.player1?.getPlayerState?.() !== 1 &&
-      players.player2?.getPlayerState?.() !== 1) {
-    playMp4Fallback(); // YouTube oynatılmıyorsa MP4’e geç
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext(validList);
+    }, 12000);
   }
-
-  document.getElementById(currentDivId).classList.remove("active");
-  document.getElementById(nextDivId).classList.add("active");
-
-  index = nextIndex;
-  activePlayer = activePlayer === 1 ? 2 : 1;
-  scheduleNext(validList); // 🔁 devam et
-}, 12000);
 
 
 
@@ -1227,47 +1221,50 @@ function logBadVideo(badId) {
 
 
 function loadVideo(player, videoId, playerDivId) {
-  // 1. Daha önce bozuk olarak işaretlendiyse hiç deneme
-  if (badVideoIds.includes(videoId)) {
-    console.warn("⛔ Önceden bozuk: atlanıyor →", videoId);
-    skipToNext();  // direkt sıradakine geç
-    return;
-  }
+  isYouTubeEmbeddable(videoId, function (canPlay) {
+    if (!canPlay) {
+      console.warn("❌ EMBED EDİLEMİYOR:", videoId);
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+      return;
+    }
 
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
-  div.style.opacity = "0";
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
+    div.style.opacity = "0";
 
-  try {
-    player.loadVideoById(videoId);
-    player.mute();
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
 
-    let attempt = 0;
-    const maxAttempts = 10; // 1 saniye = 10 x 100ms
+      let attempt = 0;
+      const maxAttempts = 10;
 
-    const interval = setInterval(() => {
-      const state = player.getPlayerState();
-      attempt++;
-
-      if (state === 1) {
-        clearInterval(interval);
-        console.log("✅ Video çalışıyor:", videoId);
-        div.classList.add("active");
-        div.style.opacity = "1";
-        stopMp4(); // MP4 kapat
-      } else if (attempt >= maxAttempts) {
-        clearInterval(interval);
-        console.warn("❌ Video başarısız:", videoId);
-        logBadVideo(videoId);
-        playMp4Fallback(); // MP4’e geç
-        skipToNext();      // sıradakini yükle
-      }
-    }, 100); // her 100ms kontrol
-  } catch (err) {
-    logBadVideo(videoId);
-    playMp4Fallback();
-    skipToNext();
-  }
+      const interval = setInterval(() => {
+        const state = player.getPlayerState();
+        if (state === 1) {
+          clearInterval(interval);
+          div.classList.add("active");
+          div.style.opacity = "1";
+          stopMp4();
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(interval);
+            console.warn("🚫 HATA DURUMU:", videoId);
+            logBadVideo(videoId);
+            playMp4Fallback();
+            skipToNext();
+          }
+        }
+      }, 100); // her 100ms kontrol et → toplam 1 saniye
+    } catch (err) {
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  });
 }
 
 	
@@ -1324,13 +1321,51 @@ function logBadVideo(badId) {
     mp4.load();
     mp4.style.display = "none";
   }
+</script>
+
+<script>
+  function loadVideo(player, videoId, playerDivId) {
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
+
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
+
+      let attempt = 0;
+      const maxAttempts = 5;
+
+      const checkInterval = setInterval(() => {
+        const state = player.getPlayerState();
+
+        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
+        if (state === 1) {
+          clearInterval(checkInterval);
+          div.classList.add("active");
+          stopMp4();  // YouTube başarılıysa MP4’ü kapat
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(checkInterval);
+            logBadVideo(videoId);
+            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
+            skipToNext();
+          }
+        }
+      }, 1000);
+    } catch (err) {
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  }
+
+</script>
 
 
 
 
-
-
-
+<script>
 const backupVideo = document.getElementById('backupVideo');
 backupVideo.innerHTML = `<source src="189703-886596102_medium.mp4" type="video/mp4">`;
 
@@ -1492,50 +1527,25 @@ function isYouTubeEmbeddable(videoId, callback) {
 }
 
 
-function setQualityHigh(player) {
-  try {
-    player.setPlaybackQuality('hd1080'); // veya 'hd720'
-  } catch (e) {
-    console.warn("Kalite ayarlanamadı:", e);
-  }
-}
-
-
-	
-if (state === 1) {
-  clearInterval(interval);
-  setQualityHigh(player); // Kaliteyi YÜKSEK yap
-  div.classList.add("active");
-  div.style.opacity = "1";
-  stopMp4();
-}	
-	
 
 
 
 	
-
-
-
-
-function skipToNext() {
-  const validList = getValidVideos();
-  if (validList.length === 0) {
-    console.warn("Geçerli video kalmadı. MP4'e geçiliyor.");
-    playMp4Fallback();
-    return;
-  }
-
-  index = (index + 1) % validList.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-
-  loadVideo(nextPlayer, validList[index], nextDivId);
-}
-
 	
-
+	
 </script>
+
+
+	
+
+
+
+
+
+
+	
+
+
 	
 
 
