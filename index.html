@@ -380,17 +380,7 @@
   pointer-events: none;
   transition: opacity 1s ease;
 }
-#prevSong, #nextSong {
-  background: linear-gradient(135deg, #8e24aa, #5e35b1);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 18px;
-  border-radius: 30px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+
 	  
   </style>
 </head>
@@ -399,14 +389,6 @@
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
-<div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-  <button id="prevSong">⏮</button>
-  <button id="musicControl">🎵 Müziği Aç</button>
-  <button id="nextSong">⏭</button>
-</div>
-
-
-	
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
 <div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
@@ -472,24 +454,24 @@
 const videoIds = [ 
 "t20fPDAZxCA",
 "gf6SK0NObfI",
-
+"z_jyvAFOVj4",
 "0St2Vey_r1E",
-
-
-
-
-
+"2_ovWpVE9es",
+"jzx_n25g3kA",
+"DHUnz4dyb54",
+"ECmjT2D1SzI", 
+"7w40FtLA4OQ",
 "6Ad0iNbv54w",
 "D1VM6V6wmU0",
 "czoEAKX9aaM",	
 "hFr5w9KLEA4",
-
+"Fw9hgttWzIg",
 "4BrvMGznLTo",	
 "dXIyMS61B68",
 "x10vL6_47Dw",
 "OYuD6HIxcXc",
 "W3D3dEpR3bs",
-
+"VzKL9oeJCI",
 "03P6cS2SXIs"
 	
   ];
@@ -698,24 +680,25 @@ function logBadVideo(badId) {
 
 
 
- function scheduleNext(validList = getValidVideos()) {
-  const nextIndex = (index + 1) % validList.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
+  function scheduleNext(validList = getValidVideos()) {
+    const nextIndex = (index + 1) % validList.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+    setTimeout(() => {
+      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+    }, 8000);
 
-  setTimeout(() => {
-    document.getElementById(currentDivId).classList.remove("active");
-    document.getElementById(nextDivId).classList.add("active");
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext(validList);
+    }, 12000);
+  }
 
-    index = nextIndex;
-    activePlayer = activePlayer === 1 ? 2 : 1;
-
-    scheduleNext(validList);
-  }, 32000);
-}
 
 
 
@@ -1543,28 +1526,6 @@ if (state === 1) {
   div.style.opacity = "1";
   stopMp4();
 }	
-
-
-
-
-function skipToNext() {
-  scheduleNext(getValidVideos());
-}
-
-
-
-
-document.getElementById("prevSong").addEventListener("click", () => {
-  currentIndex = (currentIndex - 1 + shuffledSongs.length) % shuffledSongs.length;
-  playSong(currentIndex);
-});
-
-document.getElementById("nextSong").addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % shuffledSongs.length;
-  playSong(currentIndex);
-});
-
-
 	
 </script>
 
