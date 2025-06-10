@@ -412,11 +412,7 @@
 <div id="weather-box">Yükleniyor...</div>
 
 <audio id="nature-sound" preload="auto"></audio>
-<div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-  <button id="prevSong">⏮</button>
-  <button id="musicControl">🎵 Müziği Aç</button>
-  <button id="nextSong">⏭</button>
-</div>
+
 <div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
 <!-- Doğa Sesi Butonları -->
@@ -1530,84 +1526,6 @@ if (state === 1) {
   div.style.opacity = "1";
   stopMp4();
 }	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const player = document.getElementById("audioPlayer");
-const button = document.getElementById("musicControl");
-const prevBtn = document.getElementById("prevSong");
-const nextBtn = document.getElementById("nextSong");
-
-let isPlaying = false;
-let shuffledSongs = shuffleArray([...turkeySongs]);
-let currentIndex = 0;
-
-function shuffleArray(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-function playSong(index) {
-  player.src = shuffledSongs[index];
-  player.play();
-}
-
-button.addEventListener("click", () => {
-  if (!isPlaying) {
-    playSong(currentIndex);
-    button.textContent = "⏸ Müziği Kapat";
-    isPlaying = true;
-  } else {
-    player.pause();
-    button.textContent = "🎵 Müziği Aç";
-    isPlaying = false;
-  }
-});
-
-player.addEventListener("ended", () => {
-  currentIndex = (currentIndex + 1) % shuffledSongs.length;
-  playSong(currentIndex);
-});
-
-// ⏮ Geri butonu
-prevBtn.addEventListener("click", () => {
-  currentIndex = (currentIndex - 1 + shuffledSongs.length) % shuffledSongs.length;
-  playSong(currentIndex);
-  if (!isPlaying) {
-    isPlaying = true;
-    button.textContent = "⏸ Müziği Kapat";
-  }
-});
-
-// ⏭ İleri butonu
-nextBtn.addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % shuffledSongs.length;
-  playSong(currentIndex);
-  if (!isPlaying) {
-    isPlaying = true;
-    button.textContent = "⏸ Müziği Kapat";
-  }
-});
-
-
-
-
-
-
-
-
-
-
 	
 </script>
 
