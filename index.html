@@ -380,7 +380,17 @@
   pointer-events: none;
   transition: opacity 1s ease;
 }
-
+#prevSong, #nextSong {
+  background: linear-gradient(135deg, #8e24aa, #5e35b1);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 	  
   </style>
 </head>
@@ -389,6 +399,14 @@
 <audio id="audioPlayer"></audio>
 
 <button id="musicControl">🎵 Müziği Aç</button>
+<div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+  <button id="prevSong">⏮</button>
+  <button id="musicControl">🎵 Müziği Aç</button>
+  <button id="nextSong">⏭</button>
+</div>
+
+
+	
   <div id="player1" class="player"></div>
   <div id="player2" class="player"></div>
 <div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
@@ -1536,7 +1554,15 @@ function skipToNext() {
 
 
 
+document.getElementById("prevSong").addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + shuffledSongs.length) % shuffledSongs.length;
+  playSong(currentIndex);
+});
 
+document.getElementById("nextSong").addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % shuffledSongs.length;
+  playSong(currentIndex);
+});
 
 
 	
