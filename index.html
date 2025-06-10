@@ -1240,7 +1240,7 @@ function loadVideo(player, videoId, playerDivId) {
             skipToNext();
           }
         }
-      }, 100); // her 100ms kontrol et → toplam 1 saniye
+      }, 2000); // her 100ms kontrol et → toplam 1 saniye
     } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
