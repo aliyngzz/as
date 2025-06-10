@@ -1524,11 +1524,23 @@ function isYouTubeEmbeddable(videoId, callback) {
 }
 
 
-
+function setQualityHigh(player) {
+  try {
+    player.setPlaybackQuality('hd1080'); // veya 'hd720'
+  } catch (e) {
+    console.warn("Kalite ayarlanamadı:", e);
+  }
+}
 
 
 	
-	
+if (state === 1) {
+  clearInterval(interval);
+  setQualityHigh(player); // Kaliteyi YÜKSEK yap
+  div.classList.add("active");
+  div.style.opacity = "1";
+  stopMp4();
+}	
 	
 </script>
 
