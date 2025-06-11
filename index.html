@@ -380,30 +380,7 @@
   pointer-events: none;
   transition: opacity 1s ease;
 }
-.toggle-ui-btn {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  border: none;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-  color: white;
-  font-size: 30px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  z-index: 999999;
-  transition: all 0.3s ease;
-  animation: pulseToggle 2s infinite;
-}
 
-@keyframes pulseToggle {
-  0% { box-shadow: 0 0 10px #00c6ff; }
-  50% { box-shadow: 0 0 25px #00c6ff; }
-  100% { box-shadow: 0 0 10px #00c6ff; }
-}
 	  
   </style>
 </head>
@@ -451,7 +428,7 @@
   <source src="189703-886596102_medium.mp4" type="video/mp4">
 </video>
 
-<button id="toggleUIBtn" class="toggle-ui-btn">☰</button>
+
 	
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
@@ -475,21 +452,27 @@
 
   <script>
 const videoIds = [ 
-"z_jyvAFOVj4",
-"0St2Vey_r1E",
-"2_ovWpVE9es",
-"t20fPDAZxCA"	
+"t20fPDAZxCA",
 "gf6SK0NObfI",
 "z_jyvAFOVj4",
 "0St2Vey_r1E",
-"2_ovWpVE9es"
-
-
-
-
-
-
-
+"2_ovWpVE9es",
+"jzx_n25g3kA",
+"DHUnz4dyb54",
+"ECmjT2D1SzI", 
+"7w40FtLA4OQ",
+"6Ad0iNbv54w",
+"D1VM6V6wmU0",
+"czoEAKX9aaM",	
+"hFr5w9KLEA4",
+"Fw9hgttWzIg",
+"4BrvMGznLTo",	
+"dXIyMS61B68",
+"x10vL6_47Dw",
+"OYuD6HIxcXc",
+"W3D3dEpR3bs",
+"VzKL9oeJCI",
+"03P6cS2SXIs"
 	
   ];
 
@@ -1543,43 +1526,6 @@ if (state === 1) {
   div.style.opacity = "1";
   stopMp4();
 }	
-
-
-
-
-const toggleUIBtn = document.getElementById("toggleUIBtn");
-let uiHidden = false;
-
-toggleUIBtn.addEventListener("click", () => {
-  uiHidden = !uiHidden;
-  
-  const elementsToToggle = [
-    document.getElementById("musicControl"),
-    document.getElementById("youtubeBtn"),
-    document.getElementById("nature-controls"),
-    document.getElementById("notTrigger"),
-    document.getElementById("tvOpenBtn"),
-    document.getElementById("weather-box"),
-    document.getElementById("closeBtn"),
-    document.getElementById("miniTVContainer"),
-  ];
-  
-  elementsToToggle.forEach(el => {
-    if (el) el.style.display = uiHidden ? "none" : "";
-  });
-
-  // Buton simgesini değiştir
-  toggleUIBtn.textContent = uiHidden ? "✖" : "☰";
-});
-
-
-
-
-
-
-
-
-
 	
 </script>
 
