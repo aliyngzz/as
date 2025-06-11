@@ -394,7 +394,7 @@
   font-size: 30px;
   font-weight: bold;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  opacity: 0.4; /* yarı saydamlık burada */
+  opacity: 0.4;
   cursor: pointer;
   z-index: 999999;
   transition: all 0.3s ease;
@@ -1559,36 +1559,35 @@ if (state === 1) {
 }	
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const toggleUIBtn = document.getElementById("toggleUIBtn");
   let uiHidden = false;
 
+  const elementIds = [
+    "musicControl",
+    "youtubeBtn",
+    "nature-controls",
+    "notTrigger",
+    "tvOpenBtn",
+    "weather-box",
+    "closeBtn",
+    "miniTVContainer"
+  ];
+
+  const elements = elementIds.map(id => document.getElementById(id)).filter(el => el !== null);
+
   toggleUIBtn.addEventListener("click", () => {
     uiHidden = !uiHidden;
 
-    const elementsToToggle = [
-      "musicControl",
-      "youtubeBtn",
-      "nature-controls",
-      "notTrigger",
-      "tvOpenBtn",
-      "weather-box",
-      "closeBtn",
-      "miniTVContainer"
-    ];
-
-    elementsToToggle.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.style.display = uiHidden ? "none" : "";
-      }
+    elements.forEach(el => {
+      el.style.visibility = uiHidden ? "hidden" : "visible";
+      el.style.opacity = uiHidden ? "0" : "1";
+      el.style.pointerEvents = uiHidden ? "none" : "auto";
     });
 
     toggleUIBtn.textContent = uiHidden ? "✖" : "☰";
   });
 });
-
 
 
 	
