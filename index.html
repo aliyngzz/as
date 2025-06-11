@@ -394,7 +394,7 @@
   font-size: 30px;
   font-weight: bold;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  opacity: 0.4;
+  opacity: 0.3;
   cursor: pointer;
   z-index: 999999;
   transition: all 0.3s ease;
@@ -454,12 +454,12 @@
 <video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
-
+<button id="toggleUIBtn" class="toggle-ui-btn">☰</button>
 <video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
   <source src="189703-886596102_medium.mp4" type="video/mp4">
 </video>
 
-<button id="toggleUIBtn" class="toggle-ui-btn">☰</button>
+
 	
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
@@ -1559,35 +1559,46 @@ if (state === 1) {
 }	
 
 
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const toggleUIBtn = document.getElementById("toggleUIBtn");
   let uiHidden = false;
 
-  const elementIds = [
-    "musicControl",
-    "youtubeBtn",
-    "nature-controls",
-    "notTrigger",
-    "tvOpenBtn",
-    "weather-box",
-    "closeBtn",
-    "miniTVContainer"
+  const elementMap = [
+    { id: "musicControl", display: "block" },
+    { id: "youtubeBtn", display: "flex" },
+    { id: "nature-controls", display: "flex" },
+    { id: "notTrigger", display: "block" },
+    { id: "tvOpenBtn", display: "block" },
+    { id: "weather-box", display: "block" },
+    { id: "closeBtn", display: "block" },
+    { id: "miniTVContainer", display: "flex" }
   ];
-
-  const elements = elementIds.map(id => document.getElementById(id)).filter(el => el !== null);
 
   toggleUIBtn.addEventListener("click", () => {
     uiHidden = !uiHidden;
 
-    elements.forEach(el => {
-      el.style.visibility = uiHidden ? "hidden" : "visible";
-      el.style.opacity = uiHidden ? "0" : "1";
-      el.style.pointerEvents = uiHidden ? "none" : "auto";
+    elementMap.forEach(item => {
+      const el = document.getElementById(item.id);
+      if (el) {
+        el.style.display = uiHidden ? "none" : item.display;
+      }
     });
 
     toggleUIBtn.textContent = uiHidden ? "✖" : "☰";
   });
 });
+
+
+
+
+
+
+
+
+
 
 
 	
