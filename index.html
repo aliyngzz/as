@@ -428,9 +428,7 @@
   <source src="189703-886596102_medium.mp4" type="video/mp4">
 </video>
 
-<div id="uiContainer">
-   <!-- tüm butonları ve panelleri buraya koyacağız -->
-</div>
+
 	
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
@@ -1528,20 +1526,6 @@ if (state === 1) {
   div.style.opacity = "1";
   stopMp4();
 }	
-
-
-const toggleUIBtn = document.getElementById("toggleUIBtn");
-const uiContainer = document.getElementById("uiContainer");
-let uiHidden = false;
-
-toggleUIBtn.addEventListener("click", () => {
-  uiHidden = !uiHidden;
-  uiContainer.style.display = uiHidden ? "none" : "block";
-  toggleUIBtn.textContent = uiHidden ? "✖" : "☰";
-});
-
-
-
 	
 </script>
 
