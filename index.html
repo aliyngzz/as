@@ -590,6 +590,21 @@ function shuffleArray(array) {
 
 
 
+  function startVideoPlayer() {
+    const validList = getValidVideos();
+    if (validList.length === 0) {
+      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
+
+    shuffleArray(validList);
+    index = 0;
+    loadVideo(players.player1, validList[index], 'player1');
+    scheduleNext(validList);
+  }
+
+
 
     
   
@@ -1511,57 +1526,6 @@ if (state === 1) {
   div.style.opacity = "1";
   stopMp4();
 }	
-
-
-
-
-
-let validVideos = [];
-let badVideoIds = [];
-
-function preloadVideoValidation(callback) {
-  let checked = 0;
-
-  videoIds.forEach(id => {
-    isYouTubeEmbeddable(id, function(isValid) {
-      if (isValid) {
-        validVideos.push(id);
-      } else {
-        badVideoIds.push(id);
-        console.warn("Embed edilemeyen video:", id);
-      }
-
-      checked++;
-      if (checked === videoIds.length) {
-        localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
-        callback();
-      }
-    });
-  });
-}
-
-
-
-function startVideoPlayer() {
-  if (validVideos.length === 0) {
-    console.warn("Geçerli video kalmadı. MP4 fallback devreye giriyor.");
-    playMp4Fallback();
-    return;
-  }
-
-  shuffleArray(validVideos);
-  index = 0;
-  loadVideo(players.player1, validVideos[index], 'player1');
-  scheduleNext(validVideos);
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  preloadVideoValidation(() => {
-    startVideoPlayer();
-  });
-});
-	
 	
 </script>
 
