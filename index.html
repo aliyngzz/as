@@ -380,73 +380,68 @@
   pointer-events: none;
   transition: opacity 1s ease;
 }
- #mainMenuBtn {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    border: 2px solid white;
-    cursor: pointer;
-    z-index: 9999;
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: pulse 2s infinite;
-  }
+#mainMenuBtn {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  border: 2px solid white;
+  cursor: pointer;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s infinite;
+}
 
-  #mainMenuBtn:hover {
-    transform: translateX(-50%) scale(1.1);
-    box-shadow: 0 0 30px rgba(255,255,255,0.8);
-  }
+#mainMenuBtn:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 0 30px rgba(255,255,255,0.8);
+}
 
-  @keyframes pulse {
-    0% { box-shadow: 0 0 10px rgba(255,255,255,0.5); }
-    50% { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
-    100% { box-shadow: 0 0 10px rgba(255,255,255,0.5); }
-  }
+@keyframes pulse {
+  0% { box-shadow: 0 0 10px rgba(255,255,255,0.4); }
+  50% { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+  100% { box-shadow: 0 0 10px rgba(255,255,255,0.4); }
+}
 
-  #mainMenuBtn img {
-    width: 50%;
-    height: 50%;
-  }
+/* Alt Menü */
+#subMenu {
+  position: fixed;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  z-index: 9998;
+}
 
-  /* Alt Menü */
-  #subMenu {
-    position: fixed;
-    bottom: 130px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    z-index: 9998;
-  }
+.subMenuBtn {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
-  .subMenuBtn {
-    padding: 12px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    backdrop-filter: blur(4px);
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .subMenuBtn:hover {
-    background: rgba(0, 0, 0, 0.8);
-    transform: scale(1.05);
-  }
+.subMenuBtn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.05);
+}
 	  
   </style>
 </head>
@@ -493,18 +488,18 @@
 <video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
   <source src="189703-886596102_medium.mp4" type="video/mp4">
 </video>
+
 <div id="mainMenuBtn">
-  <img src="home.png" alt="Ana Menü">
+  <img src="home.png" alt="Menu" style="width: 50%; height: 50%;">
 </div>
 
-<!-- Alt Menü -->
+<!-- Alt Menü Butonları -->
 <div id="subMenu">
-  <button class="subMenuBtn" id="soundBtn">Doğa Sesi</button>
-  <button class="subMenuBtn" id="musicBtn">Müzik</button>
-  <button class="subMenuBtn" id="tvBtn">TV Aç</button>
-  <button class="subMenuBtn" id="noteBtn">Not Paneli</button>
+  <button class="subMenuBtn" id="musicBtn">🎼 Müzik</button>
+  <button class="subMenuBtn" id="soundBtn">🌿 Doğa Sesi</button>
+  <button class="subMenuBtn" id="tvBtn">📺 TV</button>
+  <button class="subMenuBtn" id="noteBtn">📝 Not Paneli</button>
 </div>
-
 	
 <!-- Not butonu -->
 <div id="notTrigger">📝</div>
@@ -548,27 +543,7 @@ const videoIds = [
 "OYuD6HIxcXc",
 "W3D3dEpR3bs",
 "VzKL9oeJCI",
-"03P6cS2SXIs",
-"F0GOOP82094v",
-"B4-L2nfGcuE",
-"LCGYWfbyBWc",
-"ZQ5OqjssArE",
-"LZSrqZ562Po",
-"Sq-X4Ga1oyc",
-"VzKL9oeJCI",
-"UJbDTIYlM4",
-"2we-TrM7U1w",
-"oBTGY6Ax870",
-"RNKg_XD84UM",
-"LtzkkAeW_Qg",
-"tEtg5Kg3voQ",
-"fuCeRkeDxtQ",
-"bEmFpjwMOvs"
-
-
-
-
-	
+"03P6cS2SXIs"
 	
   ];
 
@@ -792,7 +767,7 @@ function logBadVideo(badId) {
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext(validList);
-    }, 42000);
+    }, 12000);
   }
 
 
@@ -898,9 +873,9 @@ document.getElementById("channelBtn").addEventListener("click", () => {
   "mustafa-ozarslan-ayrilamam-ben-o-gul-yuzlu-yardan.mp3",
   "mustafa-ozarslan-bu-senede-boyle-oldu.mp3",
   "mustafa-ozarslan-hey-onbesli.mp3",
-  "ozcan-ture-ben-omrume-yanarim.mp3",
-  "dertli-divani-yol-nerde-kaldi",
-"dertli-divani-goremediler"
+  "ozcan-ture-ben-omrume-yanarim.mp3"
+  
+
 
     
   ];
@@ -1624,32 +1599,34 @@ if (state === 1) {
 }	
 
 
- const mainMenuBtn = document.getElementById("mainMenuBtn");
-  const subMenu = document.getElementById("subMenu");
-  let menuOpen = false;
 
-  mainMenuBtn.addEventListener("click", () => {
-    menuOpen = !menuOpen;
-    subMenu.style.display = menuOpen ? "flex" : "none";
-  });
+const mainMenuBtn = document.getElementById("mainMenuBtn");
+const subMenu = document.getElementById("subMenu");
+let menuOpen = false;
 
-  // Örnek: butonlara işlev bağlayabilirsin
-  document.getElementById("soundBtn").addEventListener("click", () => {
-    alert("Doğa sesi açıldı!");
-  });
+mainMenuBtn.addEventListener("click", () => {
+  menuOpen = !menuOpen;
+  subMenu.style.display = menuOpen ? "flex" : "none";
+});
 
-  document.getElementById("musicBtn").addEventListener("click", () => {
-    alert("Müzik açıldı!");
-  });
+// Alt buton işlevleri buraya bağlanacak:
+document.getElementById("musicBtn").addEventListener("click", () => {
+  toggleMusic(); // senin mevcut müzik fonksiyonunu çağır
+});
 
-  document.getElementById("tvBtn").addEventListener("click", () => {
-    alert("TV açıldı!");
-  });
+document.getElementById("soundBtn").addEventListener("click", () => {
+  toggleNatureSound(); // senin mevcut doğa sesi fonksiyonunu çağır
+});
 
-  document.getElementById("noteBtn").addEventListener("click", () => {
-    alert("Not paneli açıldı!");
-  });
-</script>
+document.getElementById("tvBtn").addEventListener("click", () => {
+  toggleTV(); // senin mevcut TV açma kapama fonksiyonunu çağır
+});
+
+document.getElementById("noteBtn").addEventListener("click", () => {
+  toggleNotes(); // senin mevcut not panelini açma kapama fonksiyonunu çağır
+});
+
+
 
 
 
