@@ -406,6 +406,7 @@
 
 <audio id="nature-sound" preload="auto"></audio>
 
+<div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
@@ -1153,7 +1154,14 @@ pauseButton.addEventListener("click", () => {
   setInterval(updateWeather, 5000);
 </script>
 
+<script>
 
+document.getElementById("youtubeBtn").addEventListener("click", function () {
+  // Kanalınızın adresini buraya koyun
+  window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
+});
+
+</script>
 
 
 
@@ -1545,24 +1553,10 @@ document.getElementById("tvCloseBtn").addEventListener("click", () => {
 
 	
 <script>
-function toggleButtonsLoop() {
-  const elements = document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls");
-
-  function showButtons() {
-    elements.forEach(el => el.style.display = "");
-    setTimeout(hideButtons, 30000); // 30 saniye sonra gizle
-  }
-
-  function hideButtons() {
-    elements.forEach(el => el.style.display = "none");
-    setTimeout(showButtons, 120000); // 2 dakika sonra tekrar göster
-  }
-
-  showButtons(); // ilk başlangıç
-}
-
-window.addEventListener("load", toggleButtonsLoop);
+setTimeout(() => document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls").forEach(el => el.style.display = "none"), 60000);
 </script>
+
+
 
 
 
@@ -1577,3 +1571,4 @@ window.addEventListener("load", toggleButtonsLoop);
 
 </body>
 </html>
+
