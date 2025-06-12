@@ -1,175 +1,1573 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Tek Menü Kontrol Sistemi</title>
+  <title>Full Screen Video</title>
+    <title>Hava Durumu</title>
   <style>
-    /* Sayfa Temel Stil */
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      background: #000;
-      font-family: Arial, sans-serif;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: black;
     }
 
-    /* Ana Menü Butonu */
-    #mainMenuBtn {
-      position: fixed;
-      bottom: 30px;
+  #startBtn {
+  display: none; /* Sayfa yüklendiğinde gizli */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 40px;
+  font-size: 20px;
+  background: #000;
+  color: white;
+  border: 2px solid white;
+  cursor: pointer;
+  z-index: 999;
+}
+
+    .player {
+      position: absolute;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      border: 2px solid white;
-      cursor: pointer;
-      z-index: 9999;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: pulse 2s infinite;
+      width: 120vw;
+      height: 67.5vw;
+      max-height: 120vh;
+      max-width: 213.33vh;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 2s ease;
+      pointer-events: none;
     }
 
-    #mainMenuBtn:hover {
-      transform: translateX(-50%) scale(1.1);
-      box-shadow: 0 0 30px rgba(255,255,255,0.8);
+    .player.active {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px rgba(255,255,255,0.4); }
-      50% { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
-      100% { box-shadow: 0 0 10px rgba(255,255,255,0.4); }
-    }
-
-    #mainMenuBtn img {
-      width: 50%;
-      height: 50%;
-    }
-
-    /* Alt Menü */
-    #subMenu {
-      position: fixed;
-      bottom: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      z-index: 9998;
-    }
-
-    .subMenuBtn {
-      padding: 12px 24px;
-      font-size: 16px;
+    .player iframe {
+      width: 100%;
+      height: 100%;
       border: none;
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.6);
+    }
+
+    /* /// YENİ /// Mini TV ekranı ve butonları */
+    #miniTVContainer {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 300px;
+      height: 170px;
+      background: black;
+      border: 2px solid white;
+      display: flex;
+      flex-direction: column;
+      z-index: 20;
+    }
+
+    #miniTV {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #tvControls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .tvBtn {
+      background: #222;
       color: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
+      border: 1px solid white;
       cursor: pointer;
-      transition: all 0.3s;
+      padding: 5px;
+      flex: 1;
+      font-size: 12px;
     }
 
-    .subMenuBtn:hover {
-      background: rgba(0, 0, 0, 0.8);
-      transform: scale(1.05);
+   #tvOpenBtn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 18px 30px;
+  font-size: 20px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff4081, #7c4dff);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  z-index: 9999;
+  display: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#tvOpenBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+
     }
 
-    /* Mevcut TV, not kutusu ve diğer sistemlerin tasarımını koruyoruz */
-    #tvDiv, #noteDiv {
-      position: fixed;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 10px;
-      display: none;
-      z-index: 9000;
-    }
+#musicControl {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #8e24aa, #5e35b1);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+#weather {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 10px;
+  z-index: 999;
+}
+
+ #nature-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999999; /* Çok yüksek z-index, iframe bile geçemez */
+    background: rgba(255, 255, 255, 0.85);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    display: flex;
+    gap: 10px;
+    backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
+  }
+
+  #nature-controls button {
+    padding: 8px 14px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+#sloganText {
+  position: fixed;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow:
+    0 0 5px #00ffcc,
+    0 0 10px #00ffcc,
+    0 0 20px #00ffcc,
+    0 0 40px #00ffcc;
+  z-index: 99999;
+  opacity: 0;
+  transition: opacity 2s ease;
+  font-family: 'Arial Black', Gadget, sans-serif;
+}
+ #notTrigger {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #fff;
+    animation: pulse 2s infinite;
+    z-index: 1000;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px #fff; }
+    50% { box-shadow: 0 0 20px #f0f; }
+    100% { box-shadow: 0 0 10px #fff; }
+  }
+
+  #notPanel {
+    position: fixed;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #222;
+    color: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 0 20px #0ff;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+
+  #noteText {
+    height: 80px;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    resize: none;
+    font-size: 14px;
+  }
+
+  #alarmTime {
+    border-radius: 8px;
+    padding: 5px;
+  }
+
+  #notPanel button {
+    background: linear-gradient(45deg, #74ebd5, #9face6);
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  #notPanel button:hover {
+    background: #fff;
+  }
+    #introImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('pexels-pixabay-158063.jpg') no-repeat center center;
+  background-size: cover;
+  z-index: -1;
+}
+
+
+#weather-box {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: transparent;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  width: 160px;
+  height: auto;
+  line-height: 1.4;
+   box-shadow: none;
+  z-index: 9999;
+}
+
+#weather-box img {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
+
+#youtubeBtn {
+  position: fixed;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background: red;
+  border-radius: 50%;
+  box-shadow: 0 0 15px red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  z-index: 9999;
+  animation: pulseYT 2s infinite;
+}
+
+@keyframes pulseYT {
+  0% { box-shadow: 0 0 5px red; }
+  50% { box-shadow: 0 0 20px red; }
+  100% { box-shadow: 0 0 5px red; }
+}
+    #startBtn {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 40px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc, #ffcc00);
+  color: white;
+  cursor: pointer;
+  animation: glow 3s linear infinite;
+  box-shadow: 0 0 15px #fff;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px #ff00cc; }
+  25% { box-shadow: 0 0 20px #3333ff; }
+  50% { box-shadow: 0 0 20px #00ffcc; }
+  75% { box-shadow: 0 0 25px #ffcc00; }
+  100% { box-shadow: 0 0 10px #ff00cc; }
+}
+
+/* Şeffaf parlak animasyonlu kapat butonu */
+#closeBtn {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: bold;
+  padding: 12px 25px;
+  border: 2px solid white;
+  border-radius: 25px;
+  font-size: 18px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  display: none;
+  animation: shine 2s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% { box-shadow: 0 0 5px white; }
+  50% { box-shadow: 0 0 20px white; }
+  100% { box-shadow: 0 0 5px white; }
+}
+
+
+.player {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.player.active {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+
+.player {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+	  
   </style>
 </head>
-
 <body>
+  <button id="startBtn">EKRANI TIKLA WEBCAM İLE DOĞA İZLE MÜZİK DİNLE.TV İZLE</button>
+<audio id="audioPlayer"></audio>
 
-  <!-- Ana Menü Butonu -->
-  <div id="mainMenuBtn">
-    <img src="home.png" alt="Menu">
+<button id="musicControl">🎵 Müziği Aç</button>
+  <div id="player1" class="player"></div>
+  <div id="player2" class="player"></div>
+<div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
+  <!-- /// YENİ /// Mini TV ekranı -->
+  <div id="miniTVContainer">
+<iframe id="miniTV" src="https://www.youtube.com/embed/ztmY_cCtUl0" allowfullscreen></iframe>
+    <div id="tvControls">
+      <button class="tvBtn" id="channelBtn">Kanal Değiştir</button>
+      <button class="tvBtn" id="closeTVBtn">TV Kapat</button>
+    </div>
   </div>
+<div id="mainContent" style="display: none;">
+  <!-- mevcut tüm içeriğin buraya taşınacak -->
+</div>
 
-  <!-- Alt Menü Butonları -->
-  <div id="subMenu">
-    <button class="subMenuBtn" id="musicBtn">🎼 Müzik</button>
-    <button class="subMenuBtn" id="soundBtn">🌿 Doğa Sesi</button>
-    <button class="subMenuBtn" id="tvBtn">📺 TV</button>
-    <button class="subMenuBtn" id="noteBtn">📝 Not</button>
-  </div>
+<div id="countdownScreen" style="text-align: center; padding-top: 100px;">
+  <div id="countdown" style="font-size: 60px; color: green;">5</div>
+  <div id="message" style="font-size: 24px; color: blue; margin-top: 20px;"></div>
+</div>
+  <button id="closeBtn">KAPAT</button>
+<div id="weather-box">Yükleniyor...</div>
 
-  <!-- TV ve Not kutusu örneği -->
-  <div id="tvDiv">TV Açıldı (örnek)</div>
-  <div id="noteDiv">Not Paneli (örnek)</div>
+<audio id="nature-sound" preload="auto"></audio>
 
-  <!-- Ses kaynakları örnek -->
-  <audio id="natureAudio" loop>
-    <source src="nature.mp3" type="audio/mp3">
-  </audio>
+<div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
-  <audio id="musicAudio" loop>
-    <source src="music.mp3" type="audio/mp3">
-  </audio>
+<!-- Doğa Sesi Butonları -->
+<div id="nature-controls">
+  <button id="play-sound">Doğa Sesini Aç</button>
+  <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
+</div>
+<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
+<audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+
+
+<video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
+  <source src="189703-886596102_medium.mp4" type="video/mp4">
+</video>
+
+
+	
+<!-- Not butonu -->
+<div id="notTrigger">📝</div>
+
+<!-- Not paneli -->
+<div id="notPanel">
+  <textarea id="noteText" placeholder="Notunu yaz..."></textarea>
+  <input type="datetime-local" id="alarmTime">
+  <button onclick="setAlarm()">⏰ Hatırlat</button>
+  <button onclick="saveNote()">💾 Kaydet</button>
+  <button onclick="closePanel()">❌ Kapat</button>
+</div>
+
+<!-- Ana içerik -->
+<div id="mainContent" style="display:none;">
+  <!-- Diğer içerikler -->
+  <!-- Örneğin doğa videoları veya butonlar burada olacak -->
+</div>
+  
+  <button id="tvOpenBtn">TV Aç</button>
 
   <script>
-    const mainMenuBtn = document.getElementById("mainMenuBtn");
-    const subMenu = document.getElementById("subMenu");
-    let menuOpen = false;
+const videoIds = [ 
+"t20fPDAZxCA",
+"gf6SK0NObfI",
+"z_jyvAFOVj4",
+"0St2Vey_r1E",
+"2_ovWpVE9es",
+"jzx_n25g3kA",
+"DHUnz4dyb54",
+"ECmjT2D1SzI", 
+"7w40FtLA4OQ",
+"6Ad0iNbv54w",
+"D1VM6V6wmU0",
+"czoEAKX9aaM",	
+"hFr5w9KLEA4",
+"Fw9hgttWzIg",
+"4BrvMGznLTo",	
+"dXIyMS61B68",
+"x10vL6_47Dw",
+"OYuD6HIxcXc",
+"W3D3dEpR3bs",
+"VzKL9oeJCI",
+"03P6cS2SXIs",
+"z_jyvAFOVj4",
+"0St2Vey_r1E",
+"2_ovWpVE9es",
+"t20fPDAZxCA",	
+"gf6SK0NObfI",
+"z_jyvAFOVj4",
+"0St2Vey_r1E",
+"2_ovWpVE9es",
+"F0GOOP82094",
+"B4-L2nfGcuE",
+"LCGYWfbyBWc",
+"ZQ5OqjssArE",
+"LZSrqZ562Po",
+"Sq-X4Ga1oyc",
+"VzKL9oeJCI",
+"VUJbDTIYlM4",
+"2we-TrM7U1w",
+"oBTGY6Ax870",
+"RNKg_XD84UM",
+"tEtg5Kg3voQ",
+"fuCeRkeDxtQ"
 
-    mainMenuBtn.addEventListener("click", () => {
-      menuOpen = !menuOpen;
-      subMenu.style.display = menuOpen ? "flex" : "none";
+
+	
+  ];
+
+const mp4Videos = [
+      "158349-816637197_tiny.mp4",
+      "246856_tiny.mp4",
+      "120739-724673230_tiny.mp4",
+      "28746-371345147_tiny.mp4",
+      "57647-486227472_tiny.mp4",
+     
+      "35427-407130886_small.mp4",
+"263208_small.mp4",
+"242228_small.mp4",
+ 
+    "180057-863401699_small.mp4",
+      "159309-818469332.mp4",
+      
+          "144959-785568576_medium.mp4",
+            "6847-196978755_medium.mp4",
+              "16012-268207204_small.mp4",
+ "228847_tiny.mp4",
+ "71350-538489808.mp4",
+ "71571-538974136.mp4",   
+ "854982-hd_1280_720_25fps.mp4",
+"107027-674703679_medium.mp4",
+	"113004-696349232_medium.mp4",
+		"114552-701830169_tiny.mp4",
+	"145059-785786266_medium.mp4",
+		"155242-809619008_tiny.mp4",
+			"resim.mp4",
+	  "170727-843752865_tiny.mp4",
+		  "178807-860734626_medium.mp4",
+			  "178809-860734631_small.mp4",
+				  "184261-873087820_tiny.mp4",
+					  "189703-886596102_medium.mp4",
+		"198416-907598367_tiny.mp4",
+			"201446-915698703_medium.mp4",
+				"5744426-hd_1280_720_30fps.mp4",
+
+ "44798-440001069_small.mp4",
+        "28746-371345147_tiny.mp4",
+        "186405-877993676_tiny.mp4",
+             "214732_tiny.mp4",
+      "35427-407130886_small.mp4",
+      "3904-175596530_medium.mp4",
+      "184972-874460313_medium.mp4",
+
+	      
+	  "133101-755975121_medium.mp4"
+
+];
+
+
+shuffleArray(mp4Videos);
+let currentMp4Index = 0;
+	  
+
+
+function playMp4Fallback() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.src = mp4Videos[currentMp4Index];
+  mp4.style.display = "block";
+  mp4.play();
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+}
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
+}
+
+    
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+
+  let players = {};
+  let index = 0;
+  let activePlayer = 1;
+
+function onYouTubeIframeAPIReady() {
+  players.player1 = new YT.Player('player1', {
+    videoId: '',
+    events: {
+      onReady: () => startVideoPlayer(),
+      onError: (event) => handleError(event, 'player1')
+    },
+    playerVars: {
+      autoplay: 1, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+
+  players.player2 = new YT.Player('player2', {
+    videoId: '',
+    events: {
+      onError: (event) => handleError(event, 'player2')
+    },
+    playerVars: {
+      autoplay: 0, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+
+
+
+
+  function startVideoPlayer() {
+    const validList = getValidVideos();
+    if (validList.length === 0) {
+      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
+
+    shuffleArray(validList);
+    index = 0;
+    loadVideo(players.player1, validList[index], 'player1');
+    scheduleNext(validList);
+  }
+
+
+
+    
+  
+
+
+
+
+function playMp4Fallback() {
+  // YouTube aktifse MP4 oynatma
+  if (players && (
+    players.player1?.getPlayerState() === 1 ||
+    players.player2?.getPlayerState() === 1
+  )) return;
+
+  const mp4 = document.getElementById("mp4Player");
+  const backup = document.getElementById("backupVideo");
+
+  if (currentMp4Index >= mp4Videos.length) {
+    shuffleArray(mp4Videos);
+    currentMp4Index = 0;
+  }
+
+  mp4.pause();
+  mp4.removeAttribute('src');
+  mp4.load();
+
+  mp4.src = mp4Videos[currentMp4Index++];
+  mp4.playbackRate = 1.0;
+  mp4.style.display = "block";
+  mp4.play();
+
+  let tried = false;
+
+  // 1 saniye sonra hâlâ başlamadıysa backup video oynat
+  setTimeout(() => {
+    if (!tried && mp4.currentTime < 0.2) {
+      tried = true;
+      console.log("MP4 başlamadı, yedek devrede!");
+      mp4.style.display = "none";
+      backup.style.display = "block";
+      backup.play();
+    }
+  }, 1000);
+
+  mp4.onended = () => {
+    playMp4Fallback();
+  };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+	  
+
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
+
+
+
+
+
+
+  function scheduleNext(validList = getValidVideos()) {
+    const nextIndex = (index + 1) % validList.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
+
+    setTimeout(() => {
+      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+    }, 8000);
+
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext(validList);
+    }, 12000);
+  }
+
+
+
+
+
+
+
+
+	  
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("startBtn").style.display = "none";
+  enterFullscreen(document.documentElement); // ✅ Bu satır TAM EKRAN başlatır
+  startVideoPlayer();
+});
+
+    function enterFullscreen(elem) {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+}
+
+
+
+const tvChannels = [
+  "https://www.youtube.com/embed/ztmY_cCtUl0",
+  "https://www.youtube.com/embed/ma1zaH2WSDc"
+];
+   let tvIndex = 0;
+const miniTV = document.getElementById("miniTV");
+document.getElementById("channelBtn").addEventListener("click", () => {
+  tvIndex = (tvIndex + 1) % tvChannels.length;
+  miniTV.src = tvChannels[tvIndex];
+}); 
+</script>
+
+
+
+
+
+
+
+
+<script>
+  const turkeySongs = [
+    "Turku-Ervahi-Ezelden-14 (1).mp3",
+    "Erdal-Erzincan-Deyis.mp3",
+    "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
+    "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+    "Erdal-Erzincan-Yol-Havasi-87.mp3",
+    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
+    "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
+    "Erdal-Erzincan-Sarma-Havasi-67.mp3",
+    "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
+    "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
+    "ates-i-askina-semah.mp3",
+    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3",
+    "Deyiş Devran - Gerçek Olan.mp3",
+    "Erdal Erzincan - Deyiş.mp3",
+    "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
+    "miraz-uryan-geldim.mp3",
+    "Muhabbet Bağında - Deyiş.mp3",
+    "sabahat-akkiraz-tevhid.mp3",
+    "Zülfükâr Arslan - Deyiş.mp3",
+    "bugun-bize-pir-geldi.mp3",
+    "Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
+    "Erdal-Erzincan-Felek-Senin-Elinden.mp3",
+    "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
+    "Erdal-Erzincan-Nem-kaldi.mp3",
+    "Erdal-Erzincan-Urfa-Havasi-55.mp3",
+    "Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
+    "Erdal-Erzincan-Goc-54.mp3",
+    "dertli-divani-ayirma-bizi.mp3",
+  "dertli-divani-bilesin (1).mp3",
+  "dertli-divani-bir-dunya-istiyoruz.mp3",
+  "dertli-divani-birisi-muhammed-biri-ali-dir.mp3",
+  "dertli-divani-bulandi-askimin-seli.mp3",
+  "dertli-divani-candan-ya-ali.mp3",
+  "dertli-divani-cehalet-ruzgari.mp3",
+  "dertli-divani-diktigimiz-fidanlar.mp3",
+  "dertli-divani-direzi-nedir.mp3",
+  "dertli-divani-donen-de-oldu.mp3",
+  "dertli-divani-erenler-cemi.mp3",
+  "dertli-divani-geldik-bu-hana.mp3",
+  "dertli-divani-goremediler.mp3",
+
+  "asik-gulabi-abdal-musa.mp3",
+"asik-gulabi-acilin-kapilar-saha-gidelim.mp3",
+
+  "asik-gulabi-aglar-huseyin-askina.mp3",
+  "asik-gulabi-alin-var-haci-bektas.mp3",
+  "asik-gulabi-ali-olmasaydi.mp3",
+  "erdal-erzincan-al-mendil.mp3",
+  "mustafa-ozarslan-agir-halay.mp3",
+  "mustafa-ozarslan-ahu-bakislim.mp3",
+  "mustafa-ozarslan-arayi-arayi.mp3",
+  "mustafa-ozarslan-asagidan-bir-yel-esti.mp3",
+  "mustafa-ozarslan-ayrilamam-ben-o-gul-yuzlu-yardan.mp3",
+  "mustafa-ozarslan-bu-senede-boyle-oldu.mp3",
+  "mustafa-ozarslan-hey-onbesli.mp3",
+  "ozcan-ture-ben-omrume-yanarim.mp3",
+  "dertli-divani-yol-nerde-kaldi",
+"dertli-divani-goremediler"
+
+    
+  ];
+
+  const player = document.getElementById("audioPlayer");
+  const button = document.getElementById("musicControl");
+  let isPlaying = false;
+  let shuffledSongs = shuffleArray([...turkeySongs]);
+  let currentIndex = 0;
+
+  function shuffleArray(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
+  function playSong(index) {
+    player.src = shuffledSongs[index];
+    player.play();
+  }
+
+  player.addEventListener("ended", () => {
+    currentIndex = (currentIndex + 1) % shuffledSongs.length;
+    playSong(currentIndex);
+  });
+
+  button.addEventListener("click", () => {
+    if (!isPlaying) {
+      playSong(currentIndex);
+      button.textContent = "⏸ Müziği Kapat";
+      isPlaying = true;
+    } else {
+      player.pause();
+      button.textContent = "🎵 Müziği Aç";
+      isPlaying = false;
+    }
+  });
+</script>
+
+
+
+
+<script>
+  const natureSounds = [
+    "birds-in-forest-on-sunny-day-14444.mp3",
+    "forest-birds-summer-sweden-18333.mp3",
+    "woodpecker-and-other-birds-23488.mp3",
+    "bees-29400.mp3",
+    "evening-birds-singing-in-spring-background-sounds-of-nature-146388.mp3",
+    "fire-sound-310285.mp3",
+    "forest-atmosphere-002localization-poland-329733.mp3",
+    "forest-atmosphere-007localization-poland-330007.mp3",
+    "nature-sound-near-river-or-waterfall-247409.mp3",
+    "relaxing-rain-and-birds-6-minutes-52191.mp3",
+    "soft-wind-314945.mp3",
+    "soft-wind-318856.mp3",
+    "waterfall-176958 (1).mp3",
+    "waterfall-176958.mp3",
+    "water-splashing-108887.mp3",
+    "tui-birdsong-new-zealand-31660.mp3",
+    "smallwaterfall-218855.mp3",
+    "small-mountain-waterfall_nature-sound-203003.mp3",
+    "singing-barn-swallows-3-306979.mp3",
+    "mar-agitado-272999.mp3",
+    "french-coutryside-sunrise-17100.mp3",
+    "black-cockatoo-calyptorhynchus-banksii-95945.mp3",
+    "bird-sounds-of-knysna-20130.mp3",
+    "bird-singing-and-water-splashing-nature-sounds-7802.mp3"
+  ];
+
+ const audio = document.getElementById("nature-sound");
+const playButton = document.getElementById("play-sound");
+const pauseButton = document.getElementById("pause-sound");
+
+playButton.addEventListener("click", () => {
+  const randomIndex = Math.floor(Math.random() * natureSounds.length);
+  audio.src = natureSounds[randomIndex];
+  audio.play();
+  playButton.style.display = "none";
+  pauseButton.style.display = "inline-block";
+});
+
+pauseButton.addEventListener("click", () => {
+  audio.pause();
+  audio.currentTime = 0;
+  pauseButton.style.display = "none";
+  playButton.style.display = "inline-block";
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  let count = 5;
+  const countdownEl = document.getElementById("countdown");
+  const messageEl = document.getElementById("message");
+  const countdownScreen = document.getElementById("countdownScreen");
+  const mainContent = document.getElementById("mainContent");
+
+  const timer = setInterval(() => {
+    count--;
+    countdownEl.textContent = count;
+
+    if (count === 0) {
+      clearInterval(timer);
+      messageEl.textContent = "Şimdi tıklayabilirsin!";
+      setTimeout(() => {
+        countdownScreen.style.display = "none";
+        mainContent.style.display = "block";
+      }, 1000); // 1 saniye sonra ekranı kapat, içeriği göster
+    }
+  }, 1000);
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  function showSlogan() {
+    const slogan = document.getElementById("sloganText");
+    slogan.style.opacity = 1;
+    setTimeout(() => {
+      slogan.style.opacity = 0;
+    }, 20000); // 20 saniye görünür
+  }
+
+  // Sayfa açılınca ilk gösterim
+  window.addEventListener("load", () => {
+    setTimeout(showSlogan, 1000); // Açılıştan 1 saniye sonra
+    setInterval(showSlogan, 240000); // Her 4 dakikada bir tekrar
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  const panel = document.getElementById('notPanel');
+  const trigger = document.getElementById('notTrigger');
+  const noteInput = document.getElementById('noteText');
+  const alarmInput = document.getElementById('alarmTime');
+  const alarmSound = document.getElementById('alarmSound');
+
+  // Aç/kapat butonu
+  trigger.onclick = () => {
+    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    loadNote();
+  }
+
+  function closePanel() {
+    panel.style.display = 'none';
+  }
+
+  // Notu kaydet
+  function saveNote() {
+    localStorage.setItem('myNote', noteInput.value);
+    alert('Not kaydedildi!');
+  }
+
+  // Notu yükle
+  function loadNote() {
+    noteInput.value = localStorage.getItem('myNote') || '';
+  }
+
+  // Alarm kur
+  function setAlarm() {
+    const alarmTime = new Date(alarmInput.value).getTime();
+    if (!alarmTime) {
+      alert('Tarih seç!');
+      return;
+    }
+    const now = Date.now();
+    const delay = alarmTime - now;
+    if (delay < 0) {
+      alert('Geçmiş zaman seçilemez!');
+      return;
+    }
+
+    setTimeout(() => {
+      alarmSound.play();
+      alert('⏰ Hatırlatma zamanı!');
+    }, delay);
+    alert('Alarm kuruldu!');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+
+<script>
+  // 5 saniye sonra butonu göster
+  setTimeout(() => {
+    document.getElementById("startBtn").style.display = "block";
+  }, 5000);
+
+  // 10 saniye sonra butonu gizle
+  setTimeout(() => {
+    document.getElementById("startBtn").style.display = "none";
+  }, 60000);
+</script>
+
+
+<script>
+  window.addEventListener("load", () => {
+    // 5 saniye sonra resmi gizle ve içeriği göster
+    setTimeout(() => {
+      document.getElementById("introImage").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
+    }, 5000);
+  });
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  // Sayfa yüklendiğinde butonu görünür yap
+  document.addEventListener("DOMContentLoaded", () => {
+    const tvOpenBtn = document.getElementById("tvOpenBtn");
+    const miniTVContainer = document.getElementById("miniTVContainer");
+
+    // İlk başta TV gizli olacak
+    miniTVContainer.style.display = "none";
+
+    // TV Aç butonunu göster
+    tvOpenBtn.style.display = "block";
+
+    // TV Aç düğmesine tıklanınca miniTV görünür hale gelsin
+    tvOpenBtn.addEventListener("click", () => {
+      miniTVContainer.style.display = "flex";
+      tvOpenBtn.style.display = "none"; // Açıldıktan sonra butonu gizle
     });
 
-    // Müzik kontrol
-    const musicAudio = document.getElementById("musicAudio");
-    let musicPlaying = false;
-    document.getElementById("musicBtn").addEventListener("click", () => {
-      if (musicPlaying) {
-        musicAudio.pause();
-      } else {
-        musicAudio.play();
+    // TV Kapat butonu: miniTV'yi gizle ve "TV Aç" butonunu tekrar göster
+    const closeTVBtn = document.getElementById("closeTVBtn");
+    closeTVBtn.addEventListener("click", () => {
+      miniTVContainer.style.display = "none";
+      tvOpenBtn.style.display = "block";
+    });
+  });
+
+</script>
+
+<script>
+
+ const apiKey = '77fe7ca2c5710d0b9e4b56b12b6b679e';
+  const cities = [
+    "Kutahya", "Karabuk", "Usak", "Istanbul", "Ankara",
+    "Izmir", "Adana", "Antalya", "Samsun", "Eskisehir"
+  ];
+
+  let currentCityIndex = 0;
+  const weatherBox = document.getElementById('weather-box');
+
+  async function fetchWeather(city) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},TR&units=metric&lang=tr&appid=${apiKey}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.cod !== 200) {
+        throw new Error(data.message);
       }
-      musicPlaying = !musicPlaying;
-    });
 
-    // Doğa sesi kontrol
-    const natureAudio = document.getElementById("natureAudio");
-    let naturePlaying = false;
-    document.getElementById("soundBtn").addEventListener("click", () => {
-      if (naturePlaying) {
-        natureAudio.pause();
-      } else {
-        natureAudio.play();
+      const temp = Math.round(data.main.temp);
+      const description = data.weather[0].description;
+      const icon = data.weather[0].icon;
+      const cityName = data.name;
+
+      weatherBox.innerHTML = `
+        <strong>${cityName}</strong><br>
+        ${description}<br>
+        Sıcaklık: ${temp}°C<br>
+        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}" />
+      `;
+    } catch (error) {
+      weatherBox.innerHTML = `Hata: ${error.message}`;
+    }
+  }
+
+  function updateWeather() {
+    const city = cities[currentCityIndex];
+    fetchWeather(city);
+    currentCityIndex = (currentCityIndex + 1) % cities.length;
+  }
+
+  // İlk çağırma
+  updateWeather();
+  // 5 saniyede bir güncelle
+  setInterval(updateWeather, 5000);
+</script>
+
+<script>
+
+document.getElementById("youtubeBtn").addEventListener("click", function () {
+  // Kanalınızın adresini buraya koyun
+  window.open("https://www.youtube.com/", "YouTubePopup", "width=800,height=600");
+});
+
+</script>
+
+
+
+
+<script>
+
+  const startBtn = document.getElementById('startBtn');
+const closeBtn = document.getElementById('closeBtn');
+const videoSection = document.getElementById('videoSection'); // varsa yoksa sen ekle
+
+startBtn.addEventListener('click', () => {
+  startBtn.style.display = 'none';
+  videoSection.style.display = 'block';
+  closeBtn.style.display = 'block';
+});
+
+closeBtn.addEventListener('click', () => {
+  startBtn.style.display = 'inline-block';
+  videoSection.style.display = 'none';
+  closeBtn.style.display = 'none';
+
+  // YouTube iframe'i durdur
+const iframe = document.querySelector('iframe');
+if (iframe && iframe.contentWindow) {
+  iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+}
+});
+</script>
+
+
+
+<script>
+  function forceAllowFullscreen() {
+    const frames = document.querySelectorAll("iframe");
+    frames.forEach(frame => {
+      frame.setAttribute("allowfullscreen", "true");
+    });
+  }
+
+  // Her 1 saniyede bir kontrol edip ekler
+  setInterval(forceAllowFullscreen, 1000);
+</script>
+
+
+<script>
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
+
+
+
+
+function loadVideo(player, videoId, playerDivId) {
+  isYouTubeEmbeddable(videoId, function (canPlay) {
+    if (!canPlay) {
+      console.warn("❌ EMBED EDİLEMİYOR:", videoId);
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+      return;
+    }
+
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
+    div.style.opacity = "0";
+
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
+
+      let attempt = 0;
+      const maxAttempts = 10;
+
+      const interval = setInterval(() => {
+        const state = player.getPlayerState();
+        if (state === 1) {
+          clearInterval(interval);
+          div.classList.add("active");
+          div.style.opacity = "1";
+          stopMp4();
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(interval);
+            console.warn("🚫 HATA DURUMU:", videoId);
+            logBadVideo(videoId);
+            playMp4Fallback();
+            skipToNext();
+          }
+        }
+      }, 2000); // her 100ms kontrol et → toplam 1 saniye
+    } catch (err) {
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  });
+}
+
+	
+
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
+</script>
+
+
+<script>
+  let currentMp4Index = 0;
+
+  function playMp4Fallback() {
+    // YouTube videosu çalışıyorsa MP4 oynatma
+    if (players && (
+      players.player1?.getPlayerState() === 1 ||
+      players.player2?.getPlayerState() === 1
+    )) {
+      return; // YouTube çalışıyorsa MP4'e geçme
+    }
+
+    const mp4 = document.getElementById("mp4Player");
+
+    // Liste bitti mi? Baştan karıştır ve sıfırla
+    if (currentMp4Index >= mp4Videos.length) {
+      shuffleArray(mp4Videos); // 🔁 tekrar karıştır
+      currentMp4Index = 0;
+    }
+
+    // Mevcut videoyu ayarla ve başlat
+    mp4.pause();
+    mp4.removeAttribute('src');
+    mp4.load();
+
+    mp4.src = mp4Videos[currentMp4Index++];
+    mp4.playbackRate = 1.0;
+    mp4.style.display = "block";
+    mp4.play();
+
+    // MP4 video bittiğinde sıradakine geç
+   mp4.onended = () => {
+  skipToNext(); // ✅ MP4 bitti → YouTube’a geç
+};
+ }
+  function stopMp4() {
+    const mp4 = document.getElementById("mp4Player");
+    mp4.pause();
+    mp4.removeAttribute('src');
+    mp4.load();
+    mp4.style.display = "none";
+  }
+</script>
+
+<script>
+  function loadVideo(player, videoId, playerDivId) {
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
+
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
+
+      let attempt = 0;
+      const maxAttempts = 5;
+
+      const checkInterval = setInterval(() => {
+        const state = player.getPlayerState();
+
+        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
+        if (state === 1) {
+          clearInterval(checkInterval);
+          div.classList.add("active");
+          stopMp4();  // YouTube başarılıysa MP4’ü kapat
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(checkInterval);
+            logBadVideo(videoId);
+            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
+            skipToNext();
+          }
+        }
+      }, 1000);
+    } catch (err) {
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  }
+
+</script>
+
+
+
+
+<script>
+const backupVideo = document.getElementById('backupVideo');
+backupVideo.innerHTML = `<source src="189703-886596102_medium.mp4" type="video/mp4">`;
+
+// İnternet kontrolü
+function checkConnection() {
+  if (!navigator.onLine) {
+    // YouTube videoları ve sesleri durdur, yedek videoyu göster
+    document.querySelectorAll('iframe, audio, video').forEach(el => {
+      if (el !== backupVideo) el.style.display = 'none';
+    });
+    backupVideo.style.display = 'block';
+    backupVideo.play();
+  } else {
+    backupVideo.pause();
+    backupVideo.style.display = 'none';
+    // Diğer öğeleri geri getir
+    document.querySelectorAll('iframe, audio, video').forEach(el => {
+      if (el !== backupVideo) el.style.display = '';
+    });
+  }
+}
+
+// Sayfa ilk açıldığında ve bağlantı değiştiğinde kontrol et
+window.addEventListener('load', checkConnection);
+window.addEventListener('online', checkConnection);
+window.addEventListener('offline', checkConnection);
+</script>
+
+
+
+<script>
+  const badVideoIds = [];
+
+  // Sayfa yüklenince hafızadakileri yükle
+  window.addEventListener('load', loadBadIds);
+
+  function loadBadIds() {
+    const stored = localStorage.getItem('badVideoIds');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          badVideoIds.push(...parsed);
+        }
+      } catch (e) {
+        console.warn("Kayıtlı hatalı video verisi okunamadı:", e);
       }
-      naturePlaying = !naturePlaying;
-    });
+    }
+  }
 
-    // TV kontrol
-    const tvDiv = document.getElementById("tvDiv");
-    document.getElementById("tvBtn").addEventListener("click", () => {
-      tvDiv.style.display = tvDiv.style.display === "none" ? "block" : "none";
-    });
+  function saveBadIds() {
+    localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
+  }
 
-    // Not kontrol
-    const noteDiv = document.getElementById("noteDiv");
-    document.getElementById("noteBtn").addEventListener("click", () => {
-      noteDiv.style.display = noteDiv.style.display === "none" ? "block" : "none";
-    });
-  </script>
+  function logBadVideo(badId) {
+    const note = document.getElementById("noteText");
+    const currentNote = note.value;
+    if (!currentNote.includes(badId)) {
+      note.value += `\nHatalı Video ID: ${badId}`;
+    }
+    if (!badVideoIds.includes(badId)) {
+      badVideoIds.push(badId);
+      saveBadIds();
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  function getValidVideos() {
+    return videoIds.filter(id => !badVideoIds.includes(id));
+  }
+
+
+function onPlayerError(event) {
+  const errorCode = event.data;
+  const videoId = event.target.getVideoData().video_id;
+
+  // Geçerli hata kodları: 2, 5, 100, 101, 150
+  if ([2, 5, 100, 101, 150].includes(errorCode)) {
+    console.warn("Hatalı video algılandı:", videoId);
+    logBadVideo(videoId); // senin fonksiyonun
+  }
+}
+
+var player = new YT.Player('player', {
+  videoId: currentVideoId,
+  events: {
+    'onReady': onPlayerReady,
+    'onStateChange': onPlayerStateChange,
+    'onError': onPlayerError // ← burası eksikse çalışmaz
+  }
+});
+
+
+// Tüm YouTube iframe'lerini gizle
+document.querySelectorAll('.player').forEach(div => {
+  div.style.opacity = "0";
+  div.style.pointerEvents = "none";
+});
+
+function handleError(event, playerDivId) {
+  const badId = event.target.getVideoData().video_id;
+  console.warn("onError ile bozuk video tespit edildi:", badId);
+  logBadVideo(badId);
+
+  const div = document.getElementById(playerDivId);
+  div.classList.remove("active");
+  div.style.opacity = "0";
+
+  playMp4Fallback();
+  skipToNext();
+}
+
+
+
+function isEmbeddable(videoId, callback) {
+  const testIframe = document.createElement("iframe");
+  testIframe.style.display = "none";
+  testIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1`;
+  document.body.appendChild(testIframe);
+
+  const timeout = setTimeout(() => {
+    document.body.removeChild(testIframe);
+    callback(false);
+  }, 1000); // sadece 1 saniye test süresi
+
+  testIframe.onload = () => {
+    clearTimeout(timeout);
+    document.body.removeChild(testIframe);
+    callback(true);
+  };
+}
+
+
+function isYouTubeEmbeddable(videoId, callback) {
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0`;
+  document.body.appendChild(iframe);
+
+  const timeout = setTimeout(() => {
+    document.body.removeChild(iframe);
+    callback(false); // 1 saniye içinde yüklenmezse bozuk
+  }, 1000);
+
+  iframe.onload = () => {
+    clearTimeout(timeout);
+    document.body.removeChild(iframe);
+    callback(true); // iframe düzgün yüklendiyse kullanılabilir
+  };
+}
+
+
+
+
+function setQualityHigh(player) {
+  try {
+    player.setPlaybackQuality('hd1080'); // veya 'hd720'
+  } catch (e) {
+    console.warn("Kalite ayarlanamadı:", e);
+  }
+}
+	
+if (state === 1) {
+  clearInterval(interval);
+  setQualityHigh(player); // Kaliteyi YÜKSEK yap
+  div.classList.add("active");
+  div.style.opacity = "1";
+  stopMp4();
+}	
+	
+</script>
+
+
+	
+
+
+
+
+
+
+	
+
+
+	
+
+
+
+    
 
 </body>
 </html>
