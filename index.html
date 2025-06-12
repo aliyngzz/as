@@ -1448,7 +1448,25 @@ var player = new YT.Player('player', {
 
 
 
+<script>
+function toggleButtonsLoop() {
+  const elements = document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls");
 
+  function showButtons() {
+    elements.forEach(el => el.style.display = "");
+    setTimeout(hideButtons, 30000); // 30 saniye sonra gizle
+  }
+
+  function hideButtons() {
+    elements.forEach(el => el.style.display = "none");
+    setTimeout(showButtons, 120000); // 2 dakika sonra tekrar göster
+  }
+
+  showButtons(); // ilk başlangıç
+}
+
+window.addEventListener("load", toggleButtonsLoop);
+</script>
 
 
 	
