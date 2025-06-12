@@ -1553,10 +1553,31 @@ document.getElementById("tvCloseBtn").addEventListener("click", () => {
 
 	
 <script>
-setTimeout(() => document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls").forEach(el => el.style.display = "none"), 60000);
+function toggleButtonsLoop() {
+  const elements = document.querySelectorAll("button, #tvOpenBtn, #notTrigger, #nature-controls");
+
+  function showButtons() {
+    elements.forEach(el => el.style.display = "");
+    setTimeout(hideButtons, 30000); // 30 saniye göster
+  }
+
+  function hideButtons() {
+    elements.forEach(el => el.style.display = "none");
+    setTimeout(showButtons, 120000); // 2 dakika gizle
+  }
+
+  showButtons();
+}
+
+window.addEventListener("load", () => {
+  // TV aç butonunu ilk 5 sn sonra görünür yap
+  setTimeout(() => {
+    document.getElementById("tvOpenBtn").style.display = "block";
+  }, 5000);
+
+  toggleButtonsLoop();
+});
 </script>
-
-
 
 
 
