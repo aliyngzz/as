@@ -92,18 +92,18 @@
       font-size: 12px;
     }
 
-  #tvOpenBtn {
+   #tvOpenBtn {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  padding: 6px 12px;
-  font-size: 12px;
+  padding: 18px 30px;
+  font-size: 20px;
   font-weight: bold;
-  background: transparent;
+  background: linear-gradient(135deg, #ff4081, #7c4dff);
   color: white;
   border: none;
-  border-radius: 10px;
-  box-shadow:none;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
   cursor: pointer;
   z-index: 9999;
   display: none;
@@ -112,7 +112,7 @@
 
 #tvOpenBtn:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.03);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
 
     }
 
@@ -121,13 +121,13 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background:  transparent;
+  background: linear-gradient(135deg, #8e24aa, #5e35b1);
   color: white;
   border: none;
-  padding: 5px 10px;
-  font-size: 12px;
-  border-radius: 20px;
-  box-shadow:none;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 9999;
@@ -138,36 +138,37 @@
   left: 20px;
   font-size: 18px;
   font-weight: bold;
-  padding: 5px 10px;
+  padding: 10px 15px;
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border-radius: 10px;
   z-index: 999;
 }
 
-#nature-controls {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 999999;
-  background: transparent;
-  padding: 4px;
-  border-radius: 8px;
-  box-shadow:none;
-  display: flex;
-  gap: 4px;
-  backdrop-filter: blur(2px);
-}
- #nature-controls button {
-  padding:  4px 8px;
-  font-size: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: transparent;
-  color: white;
-  font-weight: bold;
-  transition: background 0.3s ease;
+ #nature-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999999; /* Çok yüksek z-index, iframe bile geçemez */
+    background: rgba(255, 255, 255, 0.85);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    display: flex;
+    gap: 10px;
+    backdrop-filter: blur(4px); /* Şık bulanıklık efekti */
+  }
+
+  #nature-controls button {
+    padding: 8px 14px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease;
   }
 #sloganText {
   position: fixed;
@@ -187,24 +188,23 @@
   transition: opacity 2s ease;
   font-family: 'Arial Black', Gadget, sans-serif;
 }
-#notTrigger {
-  position: fixed;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 16px;
-  text-align: center;
-  line-height: 30px;
-  cursor: pointer;
-  box-shadow: 0 0 5px #fff;
-  animation: pulse 2s infinite;
-  z-index: 1000;
-  opacity: 0.8;
-}
+ #notTrigger {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #fff;
+    animation: pulse 2s infinite;
+    z-index: 1000;
+  }
 
   @keyframes pulse {
     0% { box-shadow: 0 0 10px #fff; }
@@ -220,7 +220,7 @@
     background: #222;
     color: #fff;
     border-radius: 15px;
-    padding: 10px;
+    padding: 15px;
     width: 250px;
     box-shadow: 0 0 20px #0ff;
     display: none;
@@ -233,7 +233,7 @@
     height: 80px;
     border: none;
     border-radius: 8px;
-    padding: 5px;
+    padding: 8px;
     resize: none;
     font-size: 14px;
   }
@@ -292,6 +292,25 @@
   vertical-align: middle;
 }
 
+#youtubeBtn {
+  position: fixed;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background: red;
+  border-radius: 50%;
+  box-shadow: 0 0 15px red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  z-index: 9999;
+  animation: pulseYT 2s infinite;
+}
 
 @keyframes pulseYT {
   0% { box-shadow: 0 0 5px red; }
@@ -325,18 +344,17 @@
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
   color: white;
   font-weight: bold;
-  padding: 5px 10px;
-  border: 1px solid white;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 12px 25px;
+  border: 2px solid white;
+  border-radius: 25px;
+  font-size: 18px;
   cursor: pointer;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(5px);
   display: none;
   animation: shine 2s ease-in-out infinite;
-  opacity: 0.4;
 }
 
 @keyframes shine {
@@ -345,25 +363,6 @@
   100% { box-shadow: 0 0 5px white; }
 }
 
-
-.player {
-  opacity: 0 !important;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.player.active {
-  opacity: 1 !important;
-  pointer-events: auto;
-}
-
-.player {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
-}
-
-	  
   </style>
 </head>
 <body>
@@ -380,17 +379,6 @@
     <div id="tvControls">
       <button class="tvBtn" id="channelBtn">Kanal Değiştir</button>
       <button class="tvBtn" id="closeTVBtn">TV Kapat</button>
-
-	    <button id="tvCloseBtn" style="
-  margin-top: 10px;
-  padding: 5px 15px;
-  font-size: 12px;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  cursor: pointer;
-">Gizle</button>
     </div>
   </div>
 <div id="mainContent" style="display: none;">
@@ -406,7 +394,7 @@
 
 <audio id="nature-sound" preload="auto"></audio>
 
-
+<div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
@@ -445,51 +433,33 @@
 
   <script>
 const videoIds = [ 
-"t20fPDAZxCA",
-"gf6SK0NObfI",
-"z_jyvAFOVj4",
-"0St2Vey_r1E",
-"2_ovWpVE9es",
-"jzx_n25g3kA",
-"DHUnz4dyb54",
-"ECmjT2D1SzI", 
-"7w40FtLA4OQ",
-"6Ad0iNbv54w",
-"D1VM6V6wmU0",
-"czoEAKX9aaM",	
-"hFr5w9KLEA4",
-"Fw9hgttWzIg",
-"4BrvMGznLTo",	
-"dXIyMS61B68",
-"x10vL6_47Dw",
+
+  "V08ET209nvU",
+"eT_W9pSC3mY",
+"17L1ahq27ro",
+"OteVW3af3BU",
+
+"sgtA6GUJk2I",
+"NqOmHpwMUxs",
+"FrULPuxyhWE",
+  "V_I168MM-ik",
 "OYuD6HIxcXc",
-"W3D3dEpR3bs",
-"VzKL9oeJCI",
-"03P6cS2SXIs",
-"z_jyvAFOVj4",
-"0St2Vey_r1E",
-"2_ovWpVE9es",
-"t20fPDAZxCA",	
-"gf6SK0NObfI",
-"z_jyvAFOVj4",
-"0St2Vey_r1E",
-"2_ovWpVE9es",
-"F0GOOP82094",
-"B4-L2nfGcuE",
-"LCGYWfbyBWc",
-"ZQ5OqjssArE",
-"LZSrqZ562Po",
-"Sq-X4Ga1oyc",
-"VzKL9oeJCI",
-"VUJbDTIYlM4",
-"2we-TrM7U1w",
-"oBTGY6Ax870",
-"RNKg_XD84UM",
-"tEtg5Kg3voQ",
-"fuCeRkeDxtQ"
-
-
-	
+"xBBRLWF0mM",
+"Lic2fD18wnw",
+"pW_S5RTdnSQ",
+"z6BNMoj9Pyo",
+"EoARdUpNjJ8",
+"aNxF7t9-HgI",
+    "g4CmWNxgsic", "LCGYWfbyBWc", "Fw9hgttWzIg", "RmP5eN7gQ6A",
+    "CcnlJI_UXyM", "hFr5w9KLEA4", "DsNtwGJXTTs", "FrULPuxyhWE",
+    "Li3Dvqlo5uE", "wBVq_Qoegmo",  "oHbMM9JfCs",
+     "IIPvs--98sc", 
+    "H8UO0sJvWDw", "czoEAKX9aaM", "D1VM6V6wmU0", "EvsLqQS_80E",
+    "8pvXU1aEQZ0", "djEyd01KpNU", "0St2Vey_r1E", "5F0dNX7sFzU",
+    "SUXX8nC7RoM", "7uLRpG2c_Eg", "6Ad0iNbv54w", "798qd_SQU3I",
+    "FzdXt1drdp0", "mnCOp-xmpCo", "E5T2eHM8tcI", "7w40FtLA4OQ",
+    "ECmjT2D1SzI", "yalfhK84SNU", "F0GOOP82094", "qGfqox0CSrI",
+    "4kRzwJXaeIM", "mIPHBwY5aS0", "DHUnz4dyb54", "jzx_n25g3kA"
   ];
 
 const mp4Videos = [
@@ -569,30 +539,23 @@ function stopMp4() {
   let index = 0;
   let activePlayer = 1;
 
-function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: '',
-    events: {
-      onReady: () => startVideoPlayer(),
-      onError: (event) => handleError(event, 'player1')
-    },
-    playerVars: {
-      autoplay: 1, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-
-  players.player2 = new YT.Player('player2', {
-    videoId: '',
-    events: {
-      onError: (event) => handleError(event, 'player2')
-    },
-    playerVars: {
-      autoplay: 0, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-}
+  function onYouTubeIframeAPIReady() {
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
+      playerVars: {
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+    players.player2 = new YT.Player('player2', {
+      videoId: '',
+      playerVars: {
+        autoplay: 0, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+  }
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -704,7 +667,7 @@ function logBadVideo(badId) {
 
     setTimeout(() => {
       loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 8000);
+    }, 30000);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -712,7 +675,7 @@ function logBadVideo(badId) {
       index = nextIndex;
       activePlayer = activePlayer === 1 ? 2 : 1;
       scheduleNext(validList);
-    }, 42000);
+    }, 40000);
   }
 
 
@@ -818,9 +781,9 @@ document.getElementById("channelBtn").addEventListener("click", () => {
   "mustafa-ozarslan-ayrilamam-ben-o-gul-yuzlu-yardan.mp3",
   "mustafa-ozarslan-bu-senede-boyle-oldu.mp3",
   "mustafa-ozarslan-hey-onbesli.mp3",
-  "ozcan-ture-ben-omrume-yanarim.mp3",
-  "dertli-divani-yol-nerde-kaldi",
-"dertli-divani-goremediler"
+  "ozcan-ture-ben-omrume-yanarim.mp3"
+  
+
 
     
   ];
@@ -1218,52 +1181,49 @@ function logBadVideo(badId) {
 
 
 
+
+
+
 function loadVideo(player, videoId, playerDivId) {
-  isYouTubeEmbeddable(videoId, function (canPlay) {
-    if (!canPlay) {
-      console.warn("❌ EMBED EDİLEMİYOR:", videoId);
-      logBadVideo(videoId);
-      playMp4Fallback();
-      skipToNext();
-      return;
-    }
+  const div = document.getElementById(playerDivId);
+  div.classList.remove("active");
 
-    const div = document.getElementById(playerDivId);
-    div.classList.remove("active");
-    div.style.opacity = "0";
+  try {
+    player.loadVideoById(videoId);
+    player.mute();
 
-    try {
-      player.loadVideoById(videoId);
-      player.mute();
+    let attempt = 0;
+    const maxAttempts = 5;
 
-      let attempt = 0;
-      const maxAttempts = 10;
+    const checkInterval = setInterval(() => {
+      const state = player.getPlayerState();
 
-      const interval = setInterval(() => {
-        const state = player.getPlayerState();
-        if (state === 1) {
-          clearInterval(interval);
-          div.classList.add("active");
-          div.style.opacity = "1";
-          stopMp4();
-        } else {
-          attempt++;
-          if (attempt >= maxAttempts) {
-            clearInterval(interval);
-            console.warn("🚫 HATA DURUMU:", videoId);
-            logBadVideo(videoId);
-            playMp4Fallback();
-            skipToNext();
-          }
+      if (state === 1) {
+        clearInterval(checkInterval);
+        div.classList.add("active"); // ✅ SADECE çalışıyorsa görünür
+        stopMp4(); // MP4 görünmesin
+      } else {
+        attempt++;
+        if (attempt >= maxAttempts) {
+          clearInterval(checkInterval);
+          logBadVideo(videoId);
+          playMp4Fallback(); // ❗MP4 hemen göster
+          skipToNext();      // YouTube bozuksa sıradaki denensin
         }
-      }, 2000); // her 100ms kontrol et → toplam 1 saniye
-    } catch (err) {
-      logBadVideo(videoId);
-      playMp4Fallback();
-      skipToNext();
-    }
-  });
+      }
+    }, 1000);
+  } catch (err) {
+    logBadVideo(videoId);
+    playMp4Fallback();
+    skipToNext();
+  }
 }
+
+
+
+
+
+
 
 	
 
@@ -1464,120 +1424,14 @@ var player = new YT.Player('player', {
     'onError': onPlayerError // ← burası eksikse çalışmaz
   }
 });
-
-
-// Tüm YouTube iframe'lerini gizle
-document.querySelectorAll('.player').forEach(div => {
-  div.style.opacity = "0";
-  div.style.pointerEvents = "none";
-});
-
-function handleError(event, playerDivId) {
-  const badId = event.target.getVideoData().video_id;
-  console.warn("onError ile bozuk video tespit edildi:", badId);
-  logBadVideo(badId);
-
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
-  div.style.opacity = "0";
-
-  playMp4Fallback();
-  skipToNext();
-}
-
-
-
-function isEmbeddable(videoId, callback) {
-  const testIframe = document.createElement("iframe");
-  testIframe.style.display = "none";
-  testIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1`;
-  document.body.appendChild(testIframe);
-
-  const timeout = setTimeout(() => {
-    document.body.removeChild(testIframe);
-    callback(false);
-  }, 1000); // sadece 1 saniye test süresi
-
-  testIframe.onload = () => {
-    clearTimeout(timeout);
-    document.body.removeChild(testIframe);
-    callback(true);
-  };
-}
-
-
-function isYouTubeEmbeddable(videoId, callback) {
-  const iframe = document.createElement("iframe");
-  iframe.style.display = "none";
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0`;
-  document.body.appendChild(iframe);
-
-  const timeout = setTimeout(() => {
-    document.body.removeChild(iframe);
-    callback(false); // 1 saniye içinde yüklenmezse bozuk
-  }, 1000);
-
-  iframe.onload = () => {
-    clearTimeout(timeout);
-    document.body.removeChild(iframe);
-    callback(true); // iframe düzgün yüklendiyse kullanılabilir
-  };
-}
-
-
-
-
-function setQualityHigh(player) {
-  try {
-    player.setPlaybackQuality('hd1080'); // veya 'hd720'
-  } catch (e) {
-    console.warn("Kalite ayarlanamadı:", e);
-  }
-}
-	
-if (state === 1) {
-  clearInterval(interval);
-  setQualityHigh(player); // Kaliteyi YÜKSEK yap
-  div.classList.add("active");
-  div.style.opacity = "1";
-  stopMp4();
-}	
-
-
-document.getElementById("tvCloseBtn").addEventListener("click", () => {
-  document.getElementById("tvDiv").style.display = "none";
-});
 	
 </script>
 
 
 	
-<script>
-function toggleButtonsLoop() {
-  const elements = document.querySelectorAll("button, #tvOpenBtn, #notTrigger, #nature-controls");
 
-  function showButtons() {
-    elements.forEach(el => el.style.display = "");
-    setTimeout(hideButtons, 30000); // 30 saniye göster
-  }
 
-  function hideButtons() {
-    elements.forEach(el => el.style.display = "none");
-    setTimeout(showButtons, 120000); // 2 dakika gizle
-  }
 
-  showButtons();
-}
-
-window.addEventListener("load", () => {
-  // TV aç butonunu ilk 5 sn sonra görünür yap
-  setTimeout(() => {
-    document.getElementById("tvOpenBtn").style.display = "block";
-  }, 5000);
-
-  toggleButtonsLoop();
-});
-</script>
 
 
 
@@ -1592,4 +1446,3 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
-
