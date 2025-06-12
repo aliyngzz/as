@@ -362,7 +362,21 @@
   pointer-events: none;
   transition: opacity 1s ease;
 }
-
+<button id="showButtonsManual" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+  z-index: 99999;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+">Butonları Aç</button>
 	  
   </style>
 </head>
@@ -1575,7 +1589,13 @@ window.addEventListener("load", toggleButtonsLoop);
 
 
 	
-
+<script>
+document.getElementById("showButtonsManual").addEventListener("click", () => {
+  document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls").forEach(el => {
+    if (el.id !== "showButtonsManual") el.style.display = "";
+  });
+});
+</script>
 
 	
 
