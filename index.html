@@ -362,21 +362,7 @@
   pointer-events: none;
   transition: opacity 1s ease;
 }
-<button id="showButtonsManual" style="
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid white;
-  z-index: 99999;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-">Butonları Aç</button>
+
 	  
   </style>
 </head>
@@ -420,7 +406,7 @@
 
 <audio id="nature-sound" preload="auto"></audio>
 
-
+<div id="youtubeBtn" title="YouTube Aç">▶️</div>
 
 <!-- Doğa Sesi Butonları -->
 <div id="nature-controls">
@@ -1565,37 +1551,17 @@ document.getElementById("tvCloseBtn").addEventListener("click", () => {
 </script>
 
 
+	
 <script>
-function toggleButtonsLoop() {
-  const elements = document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls");
-
-  function showButtons() {
-    elements.forEach(el => el.style.display = "");
-    setTimeout(hideButtons, 30000); // 30 saniye sonra gizle
-  }
-
-  function hideButtons() {
-    elements.forEach(el => el.style.display = "none");
-    setTimeout(showButtons, 120000); // 2 dakika sonra tekrar göster
-  }
-
-  showButtons(); // ilk başlangıç
-}
-
-window.addEventListener("load", toggleButtonsLoop);
+setTimeout(() => document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls").forEach(el => el.style.display = "none"), 60000);
 </script>
+
 
 
 
 
 	
-<script>
-document.getElementById("showButtonsManual").addEventListener("click", () => {
-  document.querySelectorAll("button, #notTrigger, #youtubeBtn, #nature-controls").forEach(el => {
-    if (el.id !== "showButtonsManual") el.style.display = "";
-  });
-});
-</script>
+
 
 	
 
