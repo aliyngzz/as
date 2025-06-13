@@ -1442,6 +1442,58 @@ var player = new YT.Player('player', {
     'onError': onPlayerError // ← burası eksikse çalışmaz
   }
 });
+
+
+
+<script>
+// Kontrol edilecek butonlar:
+const buttons = [
+  document.getElementById('musicControl'),
+  document.getElementById('youtubeBtn'),
+  document.getElementById('nature-controls'),
+  document.getElementById('notTrigger'),
+  document.getElementById('tvOpenBtn')
+];
+
+// Saydam açma butonu ekle
+const showButtonsBtn = document.createElement("button");
+showButtonsBtn.textContent = "Butonları Aç";
+showButtonsBtn.style.position = "fixed";
+showButtonsBtn.style.bottom = "10px";
+showButtonsBtn.style.left = "50%";
+showButtonsBtn.style.transform = "translateX(-50%)";
+showButtonsBtn.style.background = "rgba(255, 255, 255, 0.3)";
+showButtonsBtn.style.border = "2px solid white";
+showButtonsBtn.style.padding = "10px 20px";
+showButtonsBtn.style.borderRadius = "20px";
+showButtonsBtn.style.zIndex = "100000";
+showButtonsBtn.style.backdropFilter = "blur(5px)";
+document.body.appendChild(showButtonsBtn);
+
+let hideTimer;
+
+function showAllButtons() {
+  buttons.forEach(btn => {
+    if (btn) btn.style.display = (btn.id === 'nature-controls') ? 'flex' : 'block';
+  });
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(hideAllButtons, 10000);
+}
+
+function hideAllButtons() {
+  buttons.forEach(btn => {
+    if (btn) btn.style.display = "none";
+  });
+}
+
+// İlk 10 saniye görünür
+showAllButtons();
+
+// Butonlara tıklayınca tekrar görünür
+showButtonsBtn.addEventListener("click", showAllButtons);
+
+
+
 	
 </script>
 
