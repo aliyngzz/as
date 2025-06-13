@@ -371,7 +371,7 @@
 
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
-
+  <div id="player2" class="player"></div>
 <div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
@@ -478,7 +478,14 @@ const videoIds = [
 "fuCeRkeDxtQ"
   ];
 
-
+async function getValidVideosAsync() {
+  const results = await Promise.all(videoIds.map(async id => {
+    if (badVideoIds.includes(id)) return null;
+    const isValid = await checkVideoValid(id);
+    return isValid ? id : null;
+  }));
+  return results.filter(id => id);
+}
 async function startVideoPlayer() {
   const validList = await getValidVideosAsync();
   if (validList.length === 0) {
@@ -487,7 +494,11 @@ async function startVideoPlayer() {
     return;
   }
 
- 
+  shuffleArray(validList);
+  index = 0;
+  loadVideo(players.player1, validList[index], 'player1');
+  scheduleNext(validList);
+}
 	  
 const mp4Videos = [
       "158349-816637197_tiny.mp4",
@@ -568,9 +579,14 @@ function stopMp4() {
 
   function onYouTubeIframeAPIReady() {
     players.player1 = new YT.Player('player1', {
-    
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
+      playerVars: {
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
     });
-  
+    players.player2 = new YT.Player('player2', {
       videoId: '',
       playerVars: {
         autoplay: 0, controls: 0, mute: 1,
@@ -591,7 +607,20 @@ function shuffleArray(array) {
 
 
 
- 
+  function startVideoPlayer() {
+    const validList = getValidVideos();
+    if (validList.length === 0) {
+      console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
+
+    shuffleArray(validList);
+    index = 0;
+    loadVideo(players.player1, validList[index], 'player1');
+    scheduleNext(validList);
+  }
+
 
 
     
@@ -668,7 +697,26 @@ function logBadVideo(badId) {
 
 
 
-  
+  function scheduleNext(validList = getValidVideos()) {
+    const nextIndex = (index + 1) % validList.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
+
+    setTimeout(() => {
+      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+    }, 30000);
+
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext(validList);
+    }, 40000);
+  }
+
+
 
 
 
@@ -772,8 +820,8 @@ document.getElementById("channelBtn").addEventListener("click", () => {
   "mustafa-ozarslan-bu-senede-boyle-oldu.mp3",
   "mustafa-ozarslan-hey-onbesli.mp3",
   "ozcan-ture-ben-omrume-yanarim.mp3",
-   "dertli-divani-yol-nerde-kaldi.mp3",
-   "dertli-divani-goremediler.mp3"
+   "dertli-divani-yol-nerde-kaldi",
+   "dertli-divani-goremediler"
 
 
 
@@ -1204,7 +1252,7 @@ function logBadVideo(badId) {
 
     // MP4 video bittiğinde sıradakine geç
    mp4.onended = () => {
-  
+  skipToNext(); // ✅ MP4 bitti → YouTube’a geç
 };
  }
   function stopMp4() {
@@ -1216,6 +1264,44 @@ function logBadVideo(badId) {
   }
 </script>
 
+<script>
+  function loadVideo(player, videoId, playerDivId) {
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
+
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
+
+      let attempt = 0;
+      const maxAttempts = 5;
+
+      const checkInterval = setInterval(() => {
+        const state = player.getPlayerState();
+
+        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
+        if (state === 1) {
+          clearInterval(checkInterval);
+          div.classList.add("active");
+          stopMp4();  // YouTube başarılıysa MP4’ü kapat
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(checkInterval);
+            logBadVideo(videoId);
+            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
+            skipToNext();
+          }
+        }
+      }, 1000);
+    } catch (err) {
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  }
+
+</script>
 
 
 
@@ -1302,10 +1388,25 @@ window.addEventListener('offline', checkConnection);
   }
 
 
+function onPlayerError(event) {
+  const errorCode = event.data;
+  const videoId = event.target.getVideoData().video_id;
 
- 
+  // Geçerli hata kodları: 2, 5, 100, 101, 150
+  if ([2, 5, 100, 101, 150].includes(errorCode)) {
+    console.warn("Hatalı video algılandı:", videoId);
+    logBadVideo(videoId); // senin fonksiyonun
+  }
+}
 
-
+var player = new YT.Player('player', {
+  videoId: currentVideoId,
+  events: {
+    'onReady': onPlayerReady,
+    'onStateChange': onPlayerStateChange,
+    'onError': onPlayerError // ← burası eksikse çalışmaz
+  }
+});
 </script>
 
 
@@ -1376,78 +1477,32 @@ function hideAllButtons() {
     if (btn) btn.style.display = "none";
   });
 }
+async function checkVideoValid(videoId) {
+  try {
+    const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+    if (!response.ok) throw new Error("Not playable");
+    return true;
+  } catch {
+    logBadVideo(videoId);
+    return false;
+  }
+}	
 
-function startVideoPlayer() {
-  const validList = getValidVideos();
-  if (validList.length === 0) {
-    playMp4Fallback();
-    return;
-  }
-  index = 0;
-  loadNextVideo();
-}
-	
-  function loadNextVideo() {
-  const validList = getValidVideos();
-  if (validList.length === 0) {
-    playMp4Fallback();
-    return;
-  }
-  if (index >= validList.length) index = 0;
-  const videoId = validList[index];
-  players.player1.loadVideoById(videoId);
-  players.player1.mute();
-}
-	function onPlayerError(event) {
-  const badId = event.target.getVideoData().video_id;
-  logBadVideo(badId);
-  index++;
-  loadNextVideo();
-}
-	function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.ENDED) {
-    index++;
-    loadNextVideo();
-  }
-}
-	function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: '',
-    events: {
-      'onReady': () => startVideoPlayer(),
-      'onError': onPlayerError,
-      'onStateChange': onPlayerStateChange
-    },
-    playerVars: { autoplay: 1, mute: 1, controls: 0, rel: 0, playsinline: 1 }
-  });
-}
+
 
 	
-function onPlayerError(event) {
-  const badId = event.target.getVideoData().video_id;
-  logBadVideo(badId);
-  index++;
-  loadNextVideo();
-}
-
-function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.ENDED) {
-    index++;
-    loadNextVideo();
+async function checkVideoValid(videoId) {
+  try {
+    const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+    if (!response.ok) throw new Error("Not playable");
+    return true;
+  } catch {
+    logBadVideo(videoId);  // Bozuksa kaydet
+    return false;
   }
 }
 
-	function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: '',
-    events: {
-      'onReady': () => startVideoPlayer(),
-      'onError': onPlayerError,
-      'onStateChange': onPlayerStateChange
-    },
-    playerVars: { autoplay: 1, mute: 1, controls: 0, rel: 0, playsinline: 1 }
-  });
-}
+
 </script>
 
 
