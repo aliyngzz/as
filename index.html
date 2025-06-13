@@ -1492,8 +1492,25 @@ showAllButtons();
 // Butonlara tıklayınca tekrar görünür
 showButtonsBtn.addEventListener("click", showAllButtons);
 
+showButtonsBtn.style.display = "none";
+	
+function showAllButtons() {
+  buttons.forEach(btn => {
+    if (btn) btn.style.display = (btn.id === 'nature-controls') ? 'flex' : 'block';
+  });
+  showButtonsBtn.style.display = "none";
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => {
+    hideAllButtons();
+    showButtonsBtn.style.display = "block";
+  }, 10000);
+}
 
-
+function hideAllButtons() {
+  buttons.forEach(btn => {
+    if (btn) btn.style.display = "none";
+  });
+}
 	
 </script>
 
