@@ -1198,10 +1198,6 @@ function logBadVideo(badId) {
 
 
 
-
-
-
-
 function loadVideo(player, videoId, playerDivId) {
   const div = document.getElementById(playerDivId);
   div.classList.remove("active");
@@ -1210,31 +1206,30 @@ function loadVideo(player, videoId, playerDivId) {
     player.loadVideoById(videoId);
     player.mute();
 
-    let attempt = 0;
-    const maxAttempts = 5;
-
-    const checkInterval = setInterval(() => {
+    // Hemen kontrol et
+    setTimeout(() => {
       const state = player.getPlayerState();
 
       if (state === 1) {
-        clearInterval(checkInterval);
-        div.classList.add("active"); // ✅ SADECE çalışıyorsa görünür
-        stopMp4(); // MP4 görünmesin
+        div.classList.add("active");
+        stopMp4();
       } else {
-        attempt++;
-        if (attempt >= maxAttempts) {
-          clearInterval(checkInterval);
-          logBadVideo(videoId);
-          playMp4Fallback(); // ❗MP4 hemen göster
-          skipToNext();      // YouTube bozuksa sıradaki denensin
-        }
+        logBadVideo(videoId);
+        playMp4Fallback();
+        skipToNext();
       }
-    }, 1000);
+    }, 0);  // sıfır milisaniye → hemen kontrol
+
   } catch (err) {
     logBadVideo(videoId);
     playMp4Fallback();
     skipToNext();
   }
+}
+
+
+
+
 }
 
 
