@@ -371,7 +371,7 @@
 
 <button id="musicControl">🎵 Müziği Aç</button>
   <div id="player1" class="player"></div>
-  <div id="player2" class="player"></div>
+
 <div id="sloganText">ALİ YANGÖZ DOĞAYI SEVİYOR YA SİZ...</div>
   <!-- /// YENİ /// Mini TV ekranı -->
   <div id="miniTVContainer">
@@ -487,11 +487,7 @@ async function startVideoPlayer() {
     return;
   }
 
-  shuffleArray(validList);
-  index = 0;
-  loadVideo(players.player1, validList[index], 'player1');
-  scheduleNext(validList);
-}
+ 
 	  
 const mp4Videos = [
       "158349-816637197_tiny.mp4",
@@ -572,12 +568,7 @@ function stopMp4() {
 
   function onYouTubeIframeAPIReady() {
     players.player1 = new YT.Player('player1', {
-      videoId: '',
-      events: { onReady: () => startVideoPlayer() },
-      playerVars: {
-        autoplay: 1, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
+    
     });
   
       videoId: '',
@@ -1311,25 +1302,10 @@ window.addEventListener('offline', checkConnection);
   }
 
 
-function onPlayerError(event) {
-  const errorCode = event.data;
-  const videoId = event.target.getVideoData().video_id;
 
-  // Geçerli hata kodları: 2, 5, 100, 101, 150
-  if ([2, 5, 100, 101, 150].includes(errorCode)) {
-    console.warn("Hatalı video algılandı:", videoId);
-    logBadVideo(videoId); // senin fonksiyonun
-  }
-}
+ 
 
-var player = new YT.Player('player', {
-  videoId: currentVideoId,
-  events: {
-    'onReady': onPlayerReady,
-    'onStateChange': onPlayerStateChange,
-    'onError': onPlayerError // ← burası eksikse çalışmaz
-  }
-});
+
 </script>
 
 
@@ -1410,7 +1386,8 @@ function startVideoPlayer() {
   index = 0;
   loadNextVideo();
 }
-	function loadNextVideo() {
+	
+  function loadNextVideo() {
   const validList = getValidVideos();
   if (validList.length === 0) {
     playMp4Fallback();
@@ -1446,9 +1423,31 @@ function startVideoPlayer() {
 }
 
 	
+function onPlayerError(event) {
+  const badId = event.target.getVideoData().video_id;
+  logBadVideo(badId);
+  index++;
+  loadNextVideo();
+}
 
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.ENDED) {
+    index++;
+    loadNextVideo();
+  }
+}
 
-
+	function onYouTubeIframeAPIReady() {
+  players.player1 = new YT.Player('player1', {
+    videoId: '',
+    events: {
+      'onReady': () => startVideoPlayer(),
+      'onError': onPlayerError,
+      'onStateChange': onPlayerStateChange
+    },
+    playerVars: { autoplay: 1, mute: 1, controls: 0, rel: 0, playsinline: 1 }
+  });
+}
 </script>
 
 
