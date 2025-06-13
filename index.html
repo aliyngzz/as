@@ -478,6 +478,28 @@ const videoIds = [
 "fuCeRkeDxtQ"
   ];
 
+async function getValidVideosAsync() {
+  const results = await Promise.all(videoIds.map(async id => {
+    if (badVideoIds.includes(id)) return null;
+    const isValid = await checkVideoValid(id);
+    return isValid ? id : null;
+  }));
+  return results.filter(id => id);
+}
+async function startVideoPlayer() {
+  const validList = await getValidVideosAsync();
+  if (validList.length === 0) {
+    console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+    playMp4Fallback();
+    return;
+  }
+
+  shuffleArray(validList);
+  index = 0;
+  loadVideo(players.player1, validList[index], 'player1');
+  scheduleNext(validList);
+}
+	  
 const mp4Videos = [
       "158349-816637197_tiny.mp4",
       "246856_tiny.mp4",
@@ -1195,58 +1217,6 @@ function logBadVideo(badId) {
     note.value += `\nHatalı Video ID: ${badId}`;
   }
 }
-
-
-
-function loadVideo(player, videoId, playerDivId) {
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
-
-  try {
-    player.loadVideoById(videoId);
-    player.mute();
-
-    // Hemen kontrol et
-    setTimeout(() => {
-      const state = player.getPlayerState();
-
-      if (state === 1) {
-        div.classList.add("active");
-        stopMp4();
-      } else {
-        logBadVideo(videoId);
-        playMp4Fallback();
-        skipToNext();
-      }
-    }, 0);  // sıfır milisaniye → hemen kontrol
-
-  } catch (err) {
-    logBadVideo(videoId);
-    playMp4Fallback();
-    skipToNext();
-  }
-}
-
-
-
-
-}
-
-
-
-
-
-
-
-	
-
-function logBadVideo(badId) {
-  const note = document.getElementById("noteText");
-  const currentNote = note.value;
-  if (!currentNote.includes(badId)) {
-    note.value += `\nHatalı Video ID: ${badId}`;
-  }
-}
 </script>
 
 
@@ -1506,15 +1476,33 @@ function hideAllButtons() {
     if (btn) btn.style.display = "none";
   });
 }
+async function checkVideoValid(videoId) {
+  try {
+    const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+    if (!response.ok) throw new Error("Not playable");
+    return true;
+  } catch {
+    logBadVideo(videoId);
+    return false;
+  }
+}	
+
+
+
 	
+async function checkVideoValid(videoId) {
+  try {
+    const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+    if (!response.ok) throw new Error("Not playable");
+    return true;
+  } catch {
+    logBadVideo(videoId);  // Bozuksa kaydet
+    return false;
+  }
+}
+
+
 </script>
-
-
-	
-
-
-
-
 
 
 	
