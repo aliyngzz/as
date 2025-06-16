@@ -555,41 +555,43 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  const backup = document.getElementById("backupVideo");
-
-  if (currentMp4Index >= mp4Videos.length) {
-    shuffleArray(mp4Videos);
-    currentMp4Index = 0;
-  }
-
-  mp4.pause();
-  mp4.removeAttribute('src');
-  mp4.load();
-
-  mp4.src = mp4Videos[currentMp4Index++];
-  mp4.playbackRate = 1.0;
+  mp4.src = mp4Videos[currentMp4Index];
   mp4.style.display = "block";
   mp4.play();
-
-  let timeoutTriggered = false;
-
-  // MP4 açılmazsa 1 saniye içinde backup çalıştır
-  setTimeout(() => {
-    if (!timeoutTriggered && mp4.currentTime < 0.2) {
-      timeoutTriggered = true;
-      console.log("MP4 geç yükleniyor, backup devreye giriyor.");
-      mp4.style.display = "none";
-      backup.style.display = "block";
-      backup.play();
-    }
-  }, 1000);
-
-  mp4.onended = () => {
-    mp4.style.display = "none";
-    backup.style.display = "none";
-    playMp4Fallback(); // döngüyü devam ettir
-  };
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
+}
+
+    
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+
+  let players = {};
+  let index = 0;
+  let activePlayer = 1;
+
+  function onYouTubeIframeAPIReady() {
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
+      playerVars: {
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+    players.player2 = new YT.Player('player2', {
+      videoId: '',
+      playerVars: {
+        autoplay: 0, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+  }
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -670,12 +672,7 @@ function playMp4Fallback() {
 
 
 
-if (badVideoIds.includes(videoId)) {
-  console.warn(`Bu video daha önce hatalıydı: ${videoId}`);
-  playMp4Fallback();
-  skipToNext();
-  return;
-}
+
 
 
 
@@ -1277,7 +1274,7 @@ function logBadVideo(badId) {
       player.mute();
 
       let attempt = 0;
-      const maxAttempts = 2;
+      const maxAttempts = 5;
 
       const checkInterval = setInterval(() => {
         const state = player.getPlayerState();
@@ -1296,7 +1293,7 @@ function logBadVideo(badId) {
             skipToNext();
           }
         }
-    }, 500);
+      }, 1000);
     } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
