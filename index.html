@@ -626,49 +626,38 @@ function shuffleArray(array) {
 
 
 
-
 function playMp4Fallback() {
-  // YouTube aktifse MP4 oynatma
-  if (players && (
-    players.player1?.getPlayerState() === 1 ||
-    players.player2?.getPlayerState() === 1
-  )) return;
-
   const mp4 = document.getElementById("mp4Player");
-  const backup = document.getElementById("backupVideo");
 
-  if (currentMp4Index >= mp4Videos.length) {
-    shuffleArray(mp4Videos);
-    currentMp4Index = 0;
+  // Henüz oynatılmamışları bul
+  let remaining = mp4Videos.filter(mp4 => !playedMp4s.includes(mp4));
+
+  // Hepsi oynatıldıysa belleği sıfırla
+  if (remaining.length === 0) {
+    playedMp4s = [];
+    remaining = [...mp4Videos];
   }
+
+  // Rastgele seç
+  const selected = remaining[Math.floor(Math.random() * remaining.length)];
 
   mp4.pause();
   mp4.removeAttribute('src');
   mp4.load();
 
-  mp4.src = mp4Videos[currentMp4Index++];
+  mp4.src = selected;
   mp4.playbackRate = 1.0;
   mp4.style.display = "block";
   mp4.play();
 
-  let tried = false;
-
-  // 1 saniye sonra hâlâ başlamadıysa backup video oynat
-  setTimeout(() => {
-    if (!tried && mp4.currentTime < 0.2) {
-      tried = true;
-      console.log("MP4 başlamadı, yedek devrede!");
-      mp4.style.display = "none";
-      backup.style.display = "block";
-      backup.play();
-    }
-  }, 1000);
+  // Belleğe kaydet
+  playedMp4s.push(selected);
+  localStorage.setItem("playedMp4s", JSON.stringify(playedMp4s));
 
   mp4.onended = () => {
-    playMp4Fallback();
+    skipToNext();
   };
 }
-
 
 
 
@@ -1274,7 +1263,7 @@ function logBadVideo(badId) {
       player.mute();
 
       let attempt = 0;
-      const maxAttempts = 5;
+      const maxAttempts = 2;
 
       const checkInterval = setInterval(() => {
         const state = player.getPlayerState();
@@ -1501,8 +1490,17 @@ async function checkVideoValid(videoId) {
     return false;
   }
 }
+let playedMp4s = JSON.parse(localStorage.getItem("playedMp4s")) || [];
 
 
+window.addEventListener('load', () => {
+  loadBadIds();
+  playedMp4s = JSON.parse(localStorage.getItem("playedMp4s")) || [];
+});
+
+
+
+	
 </script>
 
 
