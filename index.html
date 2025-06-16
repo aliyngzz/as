@@ -478,7 +478,14 @@ const videoIds = [
 "fuCeRkeDxtQ"
   ];
 
-
+async function getValidVideosAsync() {
+  const results = await Promise.all(videoIds.map(async id => {
+    if (badVideoIds.includes(id)) return null;
+    const isValid = await checkVideoValid(id);
+    return isValid ? id : null;
+  }));
+  return results.filter(id => id);
+}
 async function getValidVideosAsync() {
   const results = await Promise.all(videoIds.map(async id => {
     if (badVideoIds.includes(id)) return null;
@@ -1202,12 +1209,28 @@ if (iframe && iframe.contentWindow) {
 </script>
 
 
+<script>
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
+</script>
 
 
 <script>
   let currentMp4Index = 0;
 
- 
+  function playMp4Fallback() {
+    // YouTube videosu çalışıyorsa MP4 oynatma
+    if (players && (
+      players.player1?.getPlayerState() === 1 ||
+      players.player2?.getPlayerState() === 1
+    )) {
+      return; // YouTube çalışıyorsa MP4'e geçme
+    }
 
     const mp4 = document.getElementById("mp4Player");
 
@@ -1266,7 +1289,7 @@ if (iframe && iframe.contentWindow) {
           if (attempt >= maxAttempts) {
             clearInterval(checkInterval);
             logBadVideo(videoId);
-           
+            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
             skipToNext();
           }
         }
@@ -1336,10 +1359,14 @@ window.addEventListener('offline', checkConnection);
 
   function saveBadIds() {
     localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
-}
+  }
 
- 
-  
+  function logBadVideo(badId) {
+    const note = document.getElementById("noteText");
+    const currentNote = note.value;
+    if (!currentNote.includes(badId)) {
+      note.value += `\nHatalı Video ID: ${badId}`;
+    }
     if (!badVideoIds.includes(badId)) {
       badVideoIds.push(badId);
       saveBadIds();
@@ -1464,19 +1491,17 @@ async function checkVideoValid(videoId) {
 
 
 	
-async function startVideoPlayer() {
-  const validList = await getValidVideosAsync();
-  if (validList.length === 0) {
-    console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
-    playMp4Fallback();
-    return;
+async function checkVideoValid(videoId) {
+  try {
+    const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+    if (!response.ok) throw new Error("Not playable");
+    return true;
+  } catch {
+    logBadVideo(videoId);  // Bozuksa kaydet
+    return false;
   }
-
-  shuffleArray(validList);
-  index = 0;
-  loadVideo(players.player1, validList[index], 'player1');
-  scheduleNext(validList);
 }
+
 
 </script>
 
