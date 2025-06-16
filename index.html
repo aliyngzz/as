@@ -626,38 +626,49 @@ function shuffleArray(array) {
 
 
 
+
 function playMp4Fallback() {
+  // YouTube aktifse MP4 oynatma
+  if (players && (
+    players.player1?.getPlayerState() === 1 ||
+    players.player2?.getPlayerState() === 1
+  )) return;
+
   const mp4 = document.getElementById("mp4Player");
+  const backup = document.getElementById("backupVideo");
 
-  // Henüz oynatılmamışları bul
-  let remaining = mp4Videos.filter(mp4 => !playedMp4s.includes(mp4));
-
-  // Hepsi oynatıldıysa belleği sıfırla
-  if (remaining.length === 0) {
-    playedMp4s = [];
-    remaining = [...mp4Videos];
+  if (currentMp4Index >= mp4Videos.length) {
+    shuffleArray(mp4Videos);
+    currentMp4Index = 0;
   }
-
-  // Rastgele seç
-  const selected = remaining[Math.floor(Math.random() * remaining.length)];
 
   mp4.pause();
   mp4.removeAttribute('src');
   mp4.load();
 
-  mp4.src = selected;
+  mp4.src = mp4Videos[currentMp4Index++];
   mp4.playbackRate = 1.0;
   mp4.style.display = "block";
   mp4.play();
 
-  // Belleğe kaydet
-  playedMp4s.push(selected);
-  localStorage.setItem("playedMp4s", JSON.stringify(playedMp4s));
+  let tried = false;
+
+  // 1 saniye sonra hâlâ başlamadıysa backup video oynat
+  setTimeout(() => {
+    if (!tried && mp4.currentTime < 0.2) {
+      tried = true;
+      console.log("MP4 başlamadı, yedek devrede!");
+      mp4.style.display = "none";
+      backup.style.display = "block";
+      backup.play();
+    }
+  }, 1000);
 
   mp4.onended = () => {
-    skipToNext();
+    playMp4Fallback();
   };
 }
+
 
 
 
@@ -1263,7 +1274,7 @@ function logBadVideo(badId) {
       player.mute();
 
       let attempt = 0;
-      const maxAttempts = 2;
+      const maxAttempts = 5;
 
       const checkInterval = setInterval(() => {
         const state = player.getPlayerState();
@@ -1490,27 +1501,8 @@ async function checkVideoValid(videoId) {
     return false;
   }
 }
-let playedMp4s = JSON.parse(localStorage.getItem("playedMp4s")) || [];
 
 
-window.addEventListener('load', () => {
-  loadBadIds();
-  playedMp4s = JSON.parse(localStorage.getItem("playedMp4s")) || [];
-});
-
-
-if (badVideoIds.includes(videoId)) {
-  console.warn(`Hatalı video daha önce kaydedilmiş: ${videoId}. Direkt MP4'e geçiliyor.`);
-  playMp4Fallback();
-  skipToNext();
-  return;
-}
-function onPlayerError(event) {
-  const videoId = event.target.getVideoData().video_id;
-  logBadVideo(videoId);
-  playMp4Fallback();
-  skipToNext();
-}	
 </script>
 
 
