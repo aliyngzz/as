@@ -1504,30 +1504,25 @@ setTimeout(() => {
 <script>
 document.addEventListener("visibilitychange", function () {
   if (document.visibilityState === "hidden") {
-    // Sayfa başka sekmeye geçti → UYKUYA AL
-    console.log("Sayfa uykuya alındı");
+    console.log("Sekme gizlendi, uykuya geçiliyor...");
 
-    // YouTube oynatıcıyı durdur
+    // YouTube videoları durdurulsun
     if (players?.player1?.pauseVideo) players.player1.pauseVideo();
     if (players?.player2?.pauseVideo) players.player2.pauseVideo();
 
-    // MP4 videoyu durdur
-    const mp4 = document.getElementById("mp4Player");
-    if (mp4 && !mp4.paused) mp4.pause();
+    // Doğa sesi durdurulsun
+    const nature = document.getElementById("nature-sound");
+    if (nature && !nature.paused) nature.pause();
 
-    // Müzik ve doğa sesi durdur
-    document.getElementById("audioPlayer").pause();
-    document.getElementById("nature-sound").pause();
-
+    // 🔔 Müzik ve mp4 olduğu gibi devam eder (dokunulmuyor)
   } else if (document.visibilityState === "visible") {
-    // Sayfaya geri dönüldü → UYAN
-    console.log("Sayfa uyanıyor");
+    console.log("Sekme geri geldi, devam ediliyor...");
 
-    // Videoları/müziği kaldığı yerden başlatabilirsin (isteğe bağlı)
-    // players.player1.playVideo(); // otomatik oynatmayı elle başlatmak gerekebilir
+    // Geri gelince istersen doğa sesi otomatik başlatılabilir
+    // (ama biz elle başlatmayı tercih ediyoruz, o yüzden boş)
   }
 });
-</script>	
+</script>
 
 
 	
