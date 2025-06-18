@@ -1501,7 +1501,33 @@ setTimeout(() => {
 </script>
 
 
-	
+<script>
+document.addEventListener("visibilitychange", function () {
+  if (document.visibilityState === "hidden") {
+    // Sayfa başka sekmeye geçti → UYKUYA AL
+    console.log("Sayfa uykuya alındı");
+
+    // YouTube oynatıcıyı durdur
+    if (players?.player1?.pauseVideo) players.player1.pauseVideo();
+    if (players?.player2?.pauseVideo) players.player2.pauseVideo();
+
+    // MP4 videoyu durdur
+    const mp4 = document.getElementById("mp4Player");
+    if (mp4 && !mp4.paused) mp4.pause();
+
+    // Müzik ve doğa sesi durdur
+    document.getElementById("audioPlayer").pause();
+    document.getElementById("nature-sound").pause();
+
+  } else if (document.visibilityState === "visible") {
+    // Sayfaya geri dönüldü → UYAN
+    console.log("Sayfa uyanıyor");
+
+    // Videoları/müziği kaldığı yerden başlatabilirsin (isteğe bağlı)
+    // players.player1.playVideo(); // otomatik oynatmayı elle başlatmak gerekebilir
+  }
+});
+</script>	
 
 
 	
