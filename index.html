@@ -1498,30 +1498,22 @@ async function checkVideoValid(videoId) {
 setTimeout(() => {
   alert("Sayfa zamanı geldi! Lütfen geri dön :)");
 }, 300000); // 5 dakika = 300.000 ms
-</script>
 
-
-<script>
 document.addEventListener("visibilitychange", function () {
   if (document.visibilityState === "hidden") {
-    console.log("Sekme gizlendi, uykuya geçiliyor...");
-
-    // YouTube videoları durdurulsun
+    // YouTube videolarını durdur
     if (players?.player1?.pauseVideo) players.player1.pauseVideo();
     if (players?.player2?.pauseVideo) players.player2.pauseVideo();
 
-    // Doğa sesi durdurulsun
-    const nature = document.getElementById("nature-sound");
-    if (nature && !nature.paused) nature.pause();
+    // MP4 videoyu durdur
+    const mp4 = document.getElementById("mp4Player");
+    if (mp4 && !mp4.paused) mp4.pause();
 
-    // 🔔 Müzik ve mp4 olduğu gibi devam eder (dokunulmuyor)
-  } else if (document.visibilityState === "visible") {
-    console.log("Sekme geri geldi, devam ediliyor...");
-
-    // Geri gelince istersen doğa sesi otomatik başlatılabilir
-    // (ama biz elle başlatmayı tercih ediyoruz, o yüzden boş)
+    // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
   }
 });
+
+
 </script>
 
 
