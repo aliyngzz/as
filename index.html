@@ -478,14 +478,7 @@ const videoIds = [
 "fuCeRkeDxtQ"
   ];
 
-async function getValidVideosAsync() {
-  const results = await Promise.all(videoIds.map(async id => {
-    if (badVideoIds.includes(id)) return null;
-    const isValid = await checkVideoValid(id);
-    return isValid ? id : null;
-  }));
-  return results.filter(id => id);
-}
+
 async function getValidVideosAsync() {
   const results = await Promise.all(videoIds.map(async id => {
     if (badVideoIds.includes(id)) return null;
@@ -605,9 +598,9 @@ function shuffleArray(array) {
 
 
 
-  function startVideoPlayer() {
-    const validList = getValidVideos();
-    if (validList.length === 0) {
+ function startVideoPlayer() {
+  getValidVideosAsync().then(validList => {
+    if (!validList.length) {
       console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
       playMp4Fallback();
       return;
@@ -617,8 +610,8 @@ function shuffleArray(array) {
     index = 0;
     loadVideo(players.player1, validList[index], 'player1');
     scheduleNext(validList);
-  }
-
+  });
+}
 
 
     
