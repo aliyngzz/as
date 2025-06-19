@@ -1283,7 +1283,7 @@ function logBadVideo(badId) {
             clearInterval(checkInterval);
             logBadVideo(videoId);
             playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
-            
+            skipToNext();
           }
         }
       }, 1000);
@@ -1495,59 +1495,26 @@ async function checkVideoValid(videoId) {
   }
 }
 
+setTimeout(() => {
+  alert("Sayfa zamanı geldi! Lütfen geri dön :)");
+}, 300000); // 5 dakika = 300.000 ms
 
-
-<script>
 document.addEventListener("visibilitychange", function () {
-  const mp4Main = document.getElementById("mp4Player");        // Ana MP4
-  const mp4Backup = document.getElementById("backupVideo");    // Bellek MP4
-  const music = document.getElementById("audioPlayer");
-  const nature = document.getElementById("nature-sound");
-
   if (document.visibilityState === "hidden") {
-    console.log("Sayfa gizlendi → Yalnızca backup MP4 çalışacak, müzik devam");
-
-    // YouTube durdurulsun
+    // YouTube videolarını durdur
     if (players?.player1?.pauseVideo) players.player1.pauseVideo();
     if (players?.player2?.pauseVideo) players.player2.pauseVideo();
 
-    // Ana MP4 durdurulsun
-    if (mp4Main && !mp4Main.paused) mp4Main.pause();
+    // MP4 videoyu durdur
+    const mp4 = document.getElementById("mp4Player");
+    if (mp4 && !mp4.paused) mp4.pause();
 
-    // Doğa sesi durdurulsun
-    if (nature && !nature.paused) nature.pause();
-
-    // Müzik çalmaya devam etsin → dokunmuyoruz
-
-    // Bellek MP4 (yedek video) başlasın
-    if (mp4Backup) {
-      mp4Backup.style.display = "block";
-      mp4Backup.play();
-    }
-
-  } else if (document.visibilityState === "visible") {
-    console.log("Sayfa geri geldi → Backup MP4 duracak, diğerleri devam");
-
-    // Backup MP4 kapansın
-    if (mp4Backup) {
-      mp4Backup.pause();
-      mp4Backup.style.display = "none";
-    }
-
-    // YouTube devam etsin
-    if (players?.player1?.playVideo) players.player1.playVideo();
-    if (players?.player2?.playVideo) players.player2.playVideo();
-
-    // Ana MP4 devam etsin
-    if (mp4Main && mp4Main.paused) mp4Main.play();
-
-    // Müzik zaten devam ediyordu
+    // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
   }
 });
+
+
 </script>
-
-
-
 
 
 	
