@@ -609,7 +609,7 @@ function shuffleArray(array) {
     shuffleArray(validList);
     index = 0;
     loadVideo(players.player1, validList[index], 'player1');
-    scheduleNext(validList);
+    beginVideoTimer(validList);
   });
 }
 
@@ -1273,10 +1273,12 @@ function logBadVideo(badId) {
         const state = player.getPlayerState();
 
         // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
-        if (state === 1) {
-          clearInterval(checkInterval);
-          div.classList.add("active");
-          stopMp4();  // YouTube başarılıysa MP4’ü kapat
+     if (state === 1) {
+  clearInterval(checkInterval);
+  div.classList.add("active");
+  stopMp4();
+  beginVideoTimer(getValidVideos()); // ✅ burada zamanlama başlasın
+}
         } else {
           attempt++;
           if (attempt >= maxAttempts) {
@@ -1511,7 +1513,24 @@ document.addEventListener("visibilitychange", function () {
   }
 });
 
+function beginVideoTimer(validList) {
+  const nextIndex = (index + 1) % validList.length;
+  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
+  setTimeout(() => {
+    loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+  }, 30000); // 30 saniye sonra yeni videoyu hazırlamaya başla
+
+  setTimeout(() => {
+    document.getElementById(currentDivId).classList.remove("active");
+    document.getElementById(nextDivId).classList.add("active");
+    index = nextIndex;
+    activePlayer = activePlayer === 1 ? 2 : 1;
+    beginVideoTimer(validList); // 🔁 devam et
+  }, 40000); // 40 saniye sonra geçiş yap
+}
 </script>
 
 
