@@ -1497,6 +1497,7 @@ async function checkVideoValid(videoId) {
 }
 
 
+let videoPausedManually = false; // 🔁 EN ÜSTE
 
 document.addEventListener("visibilitychange", function () {
   if (document.visibilityState === "hidden") {
@@ -1507,6 +1508,8 @@ document.addEventListener("visibilitychange", function () {
     // MP4 videoyu durdur
     const mp4 = document.getElementById("mp4Player");
     if (mp4 && !mp4.paused) mp4.pause();
+
+    videoPausedManually = true; // ✅ EKLENMESİ GEREKEN SATIR
 
     // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
   }
@@ -1530,6 +1533,19 @@ function beginVideoTimer(validList) {
     beginVideoTimer(validList); // 🔁 devam et
   }, 40000); // 40 saniye sonra geçiş yap
 }
+
+
+function preventAutoResume() {
+  if (document.visibilityState === "hidden" && videoPausedManually) {
+    if (players?.player1?.pauseVideo) players.player1.pauseVideo();
+    if (players?.player2?.pauseVideo) players.player2.pauseVideo();
+    const mp4 = document.getElementById("mp4Player");
+    if (mp4 && !mp4.paused) mp4.pause();
+  }
+}
+setInterval(preventAutoResume, 3000); // Her 3 saniyede kontrol et
+
+	
 </script>
 
 
