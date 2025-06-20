@@ -609,7 +609,7 @@ function shuffleArray(array) {
     shuffleArray(validList);
     index = 0;
     loadVideo(players.player1, validList[index], 'player1');
-    beginVideoTimer(validList);
+    scheduleNext(validList);
   });
 }
 
@@ -1273,20 +1273,19 @@ function logBadVideo(badId) {
         const state = player.getPlayerState();
 
         // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
-    if (state === 1) {
-  clearInterval(checkInterval);
-  div.classList.add("active");
-  stopMp4();
-  beginVideoTimer(getValidVideos());
-} else {
-  attempt++;
-  if (attempt >= maxAttempts) {
-    clearInterval(checkInterval);
-    logBadVideo(videoId);
-    playMp4Fallback();
-    skipToNext();
-  }
-}
+        if (state === 1) {
+          clearInterval(checkInterval);
+          div.classList.add("active");
+          stopMp4();  // YouTube başarılıysa MP4’ü kapat
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(checkInterval);
+            logBadVideo(videoId);
+            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
+            skipToNext();
+          }
+        }
       }, 1000);
     } catch (err) {
       logBadVideo(videoId);
@@ -1496,8 +1495,9 @@ async function checkVideoValid(videoId) {
   }
 }
 
-
-let videoPausedManually = false; // 🔁 EN ÜSTE
+setTimeout(() => {
+  alert("Sayfa zamanı geldi! Lütfen geri dön :)");
+}, 300000); // 5 dakika = 300.000 ms
 
 document.addEventListener("visibilitychange", function () {
   if (document.visibilityState === "hidden") {
@@ -1509,43 +1509,11 @@ document.addEventListener("visibilitychange", function () {
     const mp4 = document.getElementById("mp4Player");
     if (mp4 && !mp4.paused) mp4.pause();
 
-    videoPausedManually = true; // ✅ EKLENMESİ GEREKEN SATIR
-
     // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
   }
 });
 
-function beginVideoTimer(validList) {
-  const nextIndex = (index + 1) % validList.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-  setTimeout(() => {
-    loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-  }, 30000); // 30 saniye sonra yeni videoyu hazırlamaya başla
-
-  setTimeout(() => {
-    document.getElementById(currentDivId).classList.remove("active");
-    document.getElementById(nextDivId).classList.add("active");
-    index = nextIndex;
-    activePlayer = activePlayer === 1 ? 2 : 1;
-    beginVideoTimer(validList); // 🔁 devam et
-  }, 40000); // 40 saniye sonra geçiş yap
-}
-
-
-function preventAutoResume() {
-  if (document.visibilityState === "hidden" && videoPausedManually) {
-    if (players?.player1?.pauseVideo) players.player1.pauseVideo();
-    if (players?.player2?.pauseVideo) players.player2.pauseVideo();
-    const mp4 = document.getElementById("mp4Player");
-    if (mp4 && !mp4.paused) mp4.pause();
-  }
-}
-setInterval(preventAutoResume, 3000); // Her 3 saniyede kontrol et
-
-	
 </script>
 
 
