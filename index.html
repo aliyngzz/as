@@ -568,21 +568,25 @@ function stopMp4() {
   let index = 0;
   let activePlayer = 1;
 
-  function onYouTubeIframeAPIReady() {
-    players.player1 = new YT.Player('player1', {
-      videoId: '',
-      events: { onReady: () => startVideoPlayer() },
-      playerVars: {
-        autoplay: 1, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
+ function onYouTubeIframeAPIReady() {
+  players.player1 = new YT.Player('player1', {
+    videoId: '',
+    events: {
+      onReady: () => startVideoPlayer(),
+      onError: onPlayerError,               // 🔴 yeni satır
+      onStateChange: onPlayerStateChange    // 🔴 yeni satır
+    },
     });
-    players.player2 = new YT.Player('player2', {
-      videoId: '',
-      playerVars: {
-        autoplay: 0, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
+   players.player2 = new YT.Player('player2', {
+  videoId: '',
+  playerVars: {
+    autoplay: 0, controls: 0, mute: 1,
+    rel: 0, modestbranding: 1, playsinline: 1
+  },
+  events: {
+    onError: onPlayerError,               // 🔴 yeni satır
+    onStateChange: onPlayerStateChange    // 🔴 yeni satır
+  }
     });
   }
 
@@ -1261,7 +1265,7 @@ function logBadVideo(badId) {
   function loadVideo(player, videoId, playerDivId) {
     const div = document.getElementById(playerDivId);
     div.classList.remove("active");
-
+ div.style.opacity = 0; // 🔴 bozuk video görünmesin
     try {
       player.loadVideoById(videoId);
       player.mute();
@@ -1510,6 +1514,49 @@ document.addEventListener("visibilitychange", function () {
     // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
   }
 });
+function onPlayerError(event) {
+  const badId = event.target.getVideoData().video_id;
+  if (badId) logBadVideo(badId);   // kötü ID'yi kaydet
+  skipToNext();                    // sıradaki videoya geç
+}
+	function onPlayerStateChange(event) {
+  const divId = event.target.a?.id;
+  if (!divId) return;
+  const div = document.getElementById(divId);
+
+  if (event.data === 1) {
+    div.classList.add("active");
+    stopMp4(); // YouTube çalışıyorsa MP4 durdur
+  } else if (event.data === 0) {
+    div.classList.remove("active");
+  }
+}
+📌 skipToNext
+js
+Kopyala
+Düzenle
+function skipToNext() {
+  const validList = getValidVideos();
+  if (!validList.length) {
+    console.warn("Geçerli video kalmadı, MP4’e geçiliyor.");
+    playMp4Fallback();
+    return;
+  }
+
+  index = (index + 1) % validList.length;
+  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+  const nextDivId  = activePlayer === 1 ? 'player2' : 'player1';
+
+  loadVideo(nextPlayer, validList[index], nextDivId);
+}
+
+
+
+
+
+
+
+
 
 
 </script>
