@@ -694,27 +694,36 @@ function saveBadIds() {
 
 
 
-  function scheduleNext(validList = getValidVideos()) {
-    const nextIndex = (index + 1) % validList.length;
-    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-    const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
-    const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
-
-    setTimeout(() => {
-      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 30000);
-
-    setTimeout(() => {
-      document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
-      index = nextIndex;
-      activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext(validList);
-    }, 40000);
+function scheduleNext(validList) {
+  if (!validList || !validList.length) {
+    getValidVideosAsync().then(newList => {
+      if (!newList.length) {
+        console.warn("Hiç geçerli video kalmadı. MP4'e geçiliyor.");
+        playMp4Fallback();
+        return;
+      }
+      scheduleNext(newList);
+    });
+    return;
   }
 
+  const nextIndex = (index + 1) % validList.length;
+  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+  const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
+  const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
+  setTimeout(() => {
+    loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+  }, 30000);
 
+  setTimeout(() => {
+    document.getElementById(currentDivId).classList.remove("active");
+    document.getElementById(nextDivId).classList.add("active");
+    index = nextIndex;
+    activePlayer = activePlayer === 1 ? 2 : 1;
+    scheduleNext(validList);
+  }, 40000);
+}
 
 
 
@@ -1531,25 +1540,22 @@ function onPlayerError(event) {
     div.classList.remove("active");
   }
 }
-📌 skipToNext
-js
-Kopyala
-Düzenle
+
 function skipToNext() {
-  const validList = getValidVideos();
-  if (!validList.length) {
-    console.warn("Geçerli video kalmadı, MP4’e geçiliyor.");
-    playMp4Fallback();
-    return;
-  }
+  getValidVideosAsync().then(validList => {
+    if (!validList.length) {
+      console.warn("Geçerli video kalmadı, MP4’e geçiliyor.");
+      playMp4Fallback();
+      return;
+    }
 
-  index = (index + 1) % validList.length;
-  const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
-  const nextDivId  = activePlayer === 1 ? 'player2' : 'player1';
+    index = (index + 1) % validList.length;
+    const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
+    const nextDivId  = activePlayer === 1 ? 'player2' : 'player1';
 
-  loadVideo(nextPlayer, validList[index], nextDivId);
+    loadVideo(nextPlayer, validList[index], nextDivId);
+  });
 }
-
 
 
 
