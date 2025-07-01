@@ -1511,7 +1511,40 @@ document.addEventListener("visibilitychange", function () {
   }
 });
 
+<script>
+document.addEventListener("visibilitychange", function () {
+  const backup = document.getElementById("backupVideo");
+  const mp4 = document.getElementById("mp4Player");
 
+  if (document.visibilityState === "hidden") {
+    // 🔇 YouTube videolarını durdur
+    if (players?.player1?.pauseVideo) players.player1.pauseVideo();
+    if (players?.player2?.pauseVideo) players.player2.pauseVideo();
+
+    // 🔇 MP4 videoyu durdur
+    if (mp4 && !mp4.paused) {
+      mp4.pause();
+    }
+
+    // ✅ Yedek MP4 (offline video) devreye girsin
+    backup.style.display = "block";
+    backup.play();
+  } else {
+    // ✅ Sayfa ön plana geldi → YouTube ve MP4 devam etsin
+    backup.pause();
+    backup.style.display = "none";
+
+    // YouTube devam edecekse:
+    if (players?.player1?.playVideo) players.player1.playVideo();
+    if (players?.player2?.playVideo) players.player2.playVideo();
+
+    // MP4 görünürse devam ettir
+    if (mp4 && mp4.style.display === "block") {
+      mp4.play();
+    }
+  }
+});
+</script>
 </script>
 
 
