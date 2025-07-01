@@ -840,7 +840,14 @@ document.getElementById("channelBtn").addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % shuffledSongs.length;
     playSong(currentIndex);
   });
-
+setInterval(() => {
+  if (!player.paused && player.duration > 0) {
+    if (player.currentTime >= player.duration - 0.1) {
+      currentIndex = (currentIndex + 1) % shuffledSongs.length;
+      playSong(currentIndex);
+    }
+  }
+}, 15000);
   button.addEventListener("click", () => {
     if (!isPlaying) {
       playSong(currentIndex);
