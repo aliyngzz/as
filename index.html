@@ -1266,27 +1266,27 @@ function logBadVideo(badId) {
       player.loadVideoById(videoId);
       player.mute();
 
-      let attempt = 0;
-      const maxAttempts = 5;
+    let waited = 0;
+const checkInterval = setInterval(() => {
+  const state = player.getPlayerState();
+  if (state === 1) {
+    clearInterval(checkInterval);
+    div.classList.add("active");
+    stopMp4(); // YouTube video düzgün oynuyorsa MP4’ü durdur
+  } else if (state === -1 || state === 0) {
+    // -1 = yüklenmedi, 0 = bitti
+    waited += 250;
+    if (waited >= 1000) { // sadece 1 saniye bekle
+      clearInterval(checkInterval);
+      logBadVideo(videoId);
+      playMp4Fallback(); // hemen MP4’e geç
+      skipToNext();
+    }
+  }
+}, 250);
 
-      const checkInterval = setInterval(() => {
-        const state = player.getPlayerState();
 
-        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
-        if (state === 1) {
-          clearInterval(checkInterval);
-          div.classList.add("active");
-          stopMp4();  // YouTube başarılıysa MP4’ü kapat
-        } else {
-          attempt++;
-          if (attempt >= maxAttempts) {
-            clearInterval(checkInterval);
-            logBadVideo(videoId);
-            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
-            skipToNext();
-          }
-        }
-      }, 1000);
+	    
     } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
