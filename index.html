@@ -401,7 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
+<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
@@ -545,46 +545,32 @@ shuffleArray(mp4Videos);
 let currentMp4Index = 0;
 	  
 
-
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  mp4.src = mp4Videos[currentMp4Index];
-  mp4.style.display = "block";
-  mp4.play();
-  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
-}
-function stopMp4() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.style.display = "none";
-}
+  const backup = document.getElementById("backupVideo");
 
-    
-  let tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-
-  let players = {};
-  let index = 0;
-  let activePlayer = 1;
-
-  function onYouTubeIframeAPIReady() {
-    players.player1 = new YT.Player('player1', {
-      videoId: '',
-      events: { onReady: () => startVideoPlayer() },
-      playerVars: {
-        autoplay: 1, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
-    });
-    players.player2 = new YT.Player('player2', {
-      videoId: '',
-      playerVars: {
-        autoplay: 0, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
-    });
+  if (currentMp4Index >= mp4Videos.length) {
+    shuffleArray(mp4Videos);
+    currentMp4Index = 0;
   }
+
+  stopMp4(); // Önce mevcut videoyu durdur
+
+  const currentVideo = mp4Videos[currentMp4Index++];
+  mp4.src = currentVideo;
+  mp4.style.display = "block";
+  mp4.playbackRate = 1.0;
+  mp4.play();
+
+  // MP4 sona erdiğinde bir sonrakine geç
+  mp4.onended = () => {
+    stopMp4();
+    // Eğer YouTube hala oynatamıyorsa, sıradaki MP4’e geç
+    if (!isYouTubePlaying()) {
+      playMp4Fallback(); // sıradaki MP4'e geç
+    }
+  };
+}
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -1255,13 +1241,13 @@ function logBadVideo(badId) {
   skipToNext(); // ✅ MP4 bitti → YouTube’a geç
 };
  }
-  function stopMp4() {
-    const mp4 = document.getElementById("mp4Player");
-    mp4.pause();
-    mp4.removeAttribute('src');
-    mp4.load();
-    mp4.style.display = "none";
-  }
+ function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.removeAttribute('src');
+  mp4.load();
+  mp4.style.display = "none";
+}
 </script>
 
 <script>
@@ -1520,7 +1506,12 @@ document.addEventListener("visibilitychange", function () {
     // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
   }
 });
-
+function isYouTubePlaying() {
+  if (!players || (!players.player1 && !players.player2)) return false;
+  const state1 = players.player1?.getPlayerState?.();
+  const state2 = players.player2?.getPlayerState?.();
+  return state1 === 1 || state2 === 1; // en az biri oynuyorsa
+}
 
 </script>
 
