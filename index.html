@@ -401,7 +401,9 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
+<video id="mp4Player" muted autoplay playsinline style="display: none;
+position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover;
+z-index: 1;"></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
@@ -556,6 +558,8 @@ function playMp4Fallback() {
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
+  mp4.removeAttribute("src");
+  mp4.load();
   mp4.style.display = "none";
 }
 
@@ -1266,27 +1270,25 @@ function logBadVideo(badId) {
       player.loadVideoById(videoId);
       player.mute();
 
-      let attempt = 0;
-      const maxAttempts = 5;
+    let attempt = 0;
+const maxAttempts = 1;
+const checkInterval = setInterval(() => {
+  const state = player.getPlayerState();
 
-      const checkInterval = setInterval(() => {
-        const state = player.getPlayerState();
-
-        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
-        if (state === 1) {
-          clearInterval(checkInterval);
-          div.classList.add("active");
-          stopMp4();  // YouTube başarılıysa MP4’ü kapat
-        } else {
-          attempt++;
-          if (attempt >= maxAttempts) {
-            clearInterval(checkInterval);
-            logBadVideo(videoId);
-            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
-            skipToNext();
-          }
-        }
-      }, 1000);
+  if (state === 1) {
+    clearInterval(checkInterval);
+    div.classList.add("active");
+    stopMp4(); // YouTube düzgün → MP4 durdur
+  } else {
+    attempt++;
+    if (attempt >= maxAttempts) {
+      clearInterval(checkInterval);
+      logBadVideo(videoId);
+      playMp4Fallback();  // ✅ YouTube bozuksa anında MP4'e geç
+      skipToNext();       // sıradaki YouTube denensin
+    }
+  }
+}, 200); // 0.2 saniyelik deneme
     } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
