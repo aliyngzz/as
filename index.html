@@ -546,7 +546,13 @@ let currentMp4Index = 0;
 	  
 
 
-
+function playMp4Fallback() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.src = mp4Videos[currentMp4Index];
+  mp4.style.display = "block";
+  mp4.play();
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+}
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
@@ -614,7 +620,12 @@ function shuffleArray(array) {
 
 
 
-
+function playMp4Fallback() {
+  // YouTube aktifse MP4 oynatma
+  if (players && (
+    players.player1?.getPlayerState() === 1 ||
+    players.player2?.getPlayerState() === 1
+  )) return;
 
   const mp4 = document.getElementById("mp4Player");
   const backup = document.getElementById("backupVideo");
