@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Full Screen Video</title>
-    <title>Hava Durumu</title>
+   
   <style>
     html, body {
       margin: 0;
@@ -15,20 +15,7 @@
       background: black;
     }
 
-  #startBtn {
-  display: none; /* Sayfa yüklendiğinde gizli */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px 40px;
-  font-size: 20px;
-  background: #000;
-  color: white;
-  border: 2px solid white;
-  cursor: pointer;
-  z-index: 999;
-}
+
 
     .player {
       position: absolute;
@@ -424,10 +411,7 @@
 </div>
 
 <!-- Ana içerik -->
-<div id="mainContent" style="display:none;">
-  <!-- Diğer içerikler -->
-  <!-- Örneğin doğa videoları veya butonlar burada olacak -->
-</div>
+
   
   <button id="tvOpenBtn">TV Aç</button>
 
@@ -546,18 +530,7 @@ let currentMp4Index = 0;
 	  
 
 
-function playMp4Fallback() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.src = mp4Videos[currentMp4Index];
-  mp4.style.display = "block";
-  mp4.play();
-  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
-}
-function stopMp4() {
-  const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.style.display = "none";
-}
+
 
     
   let tag = document.createElement('script');
@@ -620,20 +593,7 @@ function shuffleArray(array) {
 
 
 
-function playMp4Fallback() {
-  // YouTube aktifse MP4 oynatma
-  if (players && (
-    players.player1?.getPlayerState() === 1 ||
-    players.player2?.getPlayerState() === 1
-  )) return;
 
-  const mp4 = document.getElementById("mp4Player");
-  const backup = document.getElementById("backupVideo");
-
-  if (currentMp4Index >= mp4Videos.length) {
-    shuffleArray(mp4Videos);
-    currentMp4Index = 0;
-  }
 
   mp4.pause();
   mp4.removeAttribute('src');
@@ -675,16 +635,7 @@ function playMp4Fallback() {
 
 	  
 
-function logBadVideo(badId) {
-  if (!badVideoIds.includes(badId)) {
-    badVideoIds.push(badId);
-    saveBadIds();
-  }
-}
 
-function saveBadIds() {
-  localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
-}
 
 
 
@@ -827,10 +778,7 @@ document.getElementById("channelBtn").addEventListener("click", () => {
   let shuffledSongs = shuffleArray([...turkeySongs]);
   let currentIndex = 0;
 
-  function shuffleArray(array) {
-    return array.sort(() => Math.random() - 0.5);
-  }
-
+ 
   function playSong(index) {
     player.src = shuffledSongs[index];
     player.play();
