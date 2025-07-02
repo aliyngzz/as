@@ -383,8 +383,6 @@
   </div>
 <div id="mainContent" style="display: none;">
   <!-- mevcut tüm içeriğin buraya taşınacak -->
-
-	
 </div>
 
 <div id="countdownScreen" style="text-align: center; padding-top: 100px;">
@@ -426,7 +424,11 @@
 </div>
 
 <!-- Ana içerik -->
-
+<div id="mainContent" style="display:none;">
+  <!-- Diğer içerikler -->
+  <!-- Örneğin doğa videoları veya butonlar burada olacak -->
+</div>
+  
   <button id="tvOpenBtn">TV Aç</button>
 
   <script>
@@ -544,7 +546,13 @@ let currentMp4Index = 0;
 	  
 
 
-
+function playMp4Fallback() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.src = mp4Videos[currentMp4Index];
+  mp4.style.display = "block";
+  mp4.play();
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
+}
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
@@ -612,7 +620,20 @@ function shuffleArray(array) {
 
 
 
+function playMp4Fallback() {
+  // YouTube aktifse MP4 oynatma
+  if (players && (
+    players.player1?.getPlayerState() === 1 ||
+    players.player2?.getPlayerState() === 1
+  )) return;
 
+  const mp4 = document.getElementById("mp4Player");
+  const backup = document.getElementById("backupVideo");
+
+  if (currentMp4Index >= mp4Videos.length) {
+    shuffleArray(mp4Videos);
+    currentMp4Index = 0;
+  }
 
   mp4.pause();
   mp4.removeAttribute('src');
@@ -661,6 +682,9 @@ function logBadVideo(badId) {
   }
 }
 
+function saveBadIds() {
+  localStorage.setItem('badVideoIds', JSON.stringify(badVideoIds));
+}
 
 
 
@@ -803,7 +827,9 @@ document.getElementById("channelBtn").addEventListener("click", () => {
   let shuffledSongs = shuffleArray([...turkeySongs]);
   let currentIndex = 0;
 
- 
+  function shuffleArray(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
 
   function playSong(index) {
     player.src = shuffledSongs[index];
@@ -1176,7 +1202,15 @@ if (iframe && iframe.contentWindow) {
 </script>
 
 
-
+<script>
+function logBadVideo(badId) {
+  const note = document.getElementById("noteText");
+  const currentNote = note.value;
+  if (!currentNote.includes(badId)) {
+    note.value += `\nHatalı Video ID: ${badId}`;
+  }
+}
+</script>
 
 
 <script>
