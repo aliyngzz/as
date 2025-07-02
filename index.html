@@ -720,7 +720,7 @@ function saveBadIds() {
     const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
-const HD_QUALITIES = ['hd1080', 'hd1440', 'hd2160', 'highres'];
+
     setTimeout(() => {
       loadVideo(nextPlayer, validList[nextIndex], nextDivId);
     }, 30000);
@@ -1283,47 +1283,39 @@ function logBadVideo(badId) {
 </script>
 
 <script>
- function loadVideo(player, videoId, playerDivId) {
-  const div = document.getElementById(playerDivId);
-  div.classList.remove("active");
+  function loadVideo(player, videoId, playerDivId) {
+    const div = document.getElementById(playerDivId);
+    div.classList.remove("active");
 
-  // ▶️ Video’yu yükle
-  try {
-    player.loadVideoById(videoId);
-    player.mute();
-  } catch (err) {
-    logBadVideo(videoId);
-    playMp4Fallback();
-    skipToNext();
-    return;
-  }
+    try {
+      player.loadVideoById(videoId);
+      player.mute();
 
-  // ⏳ HD1080 olana kadar bekle – max 15 sn
-  const checkDelay   = 300;  // ms
-  const maxWait      = 15000;
-  let   waited       = 0;
+    let attempt = 0;
+const maxAttempts = 1;
+const checkInterval = setInterval(() => {
+  const state = player.getPlayerState();
 
-  const checker = setInterval(() => {
-    const state   = player.getPlayerState();        // 1 → PLAYING
-    const quality = player.getPlaybackQuality();    // small | medium | hd720 | hd1080…
-
-    if (state === 1 && HD_QUALITIES.includes(quality)) {
-      // ✅ Yeterli kaliteye ulaştı → YouTube’u göster
-      clearInterval(checker);
-      div.classList.add("active");
-      stopMp4();                 // MP4’ü gizle/durdur
-    } else {
-      waited += checkDelay;
-      if (waited >= maxWait) {
-        // ❌ 15 sn’de istenen kalite gelmedi
-        clearInterval(checker);
-        logBadVideo(videoId);
-        playMp4Fallback();       // MP4’e geri dön
-        skipToNext();            // sonraki YouTube denensin
-      }
+  if (state === 1) {
+    clearInterval(checkInterval);
+    div.classList.add("active");
+    stopMp4(); // YouTube düzgün → MP4 durdur
+  } else {
+    attempt++;
+    if (attempt >= maxAttempts) {
+      clearInterval(checkInterval);
+      logBadVideo(videoId);
+      playMp4Fallback();  // ✅ YouTube bozuksa anında MP4'e geç
+      skipToNext();       // sıradaki YouTube denensin
     }
-  }, checkDelay);
-}
+  }
+}, 200); // 0.2 saniyelik deneme
+    } catch (err) {
+      logBadVideo(videoId);
+      playMp4Fallback();
+      skipToNext();
+    }
+  }
 
 </script>
 
