@@ -593,23 +593,31 @@ function stopMp4() {
   let index = 0;
   let activePlayer = 1;
 
-  function onYouTubeIframeAPIReady() {
-    players.player1 = new YT.Player('player1', {
-      videoId: '',
-      events: { onReady: () => startVideoPlayer() },
-      playerVars: {
-        autoplay: 1, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
-    });
-    players.player2 = new YT.Player('player2', {
-      videoId: '',
-      playerVars: {
-        autoplay: 0, controls: 0, mute: 1,
-        rel: 0, modestbranding: 1, playsinline: 1
-      }
-    });
-  }
+ function onYouTubeIframeAPIReady() {
+  players.player1 = new YT.Player('player1', {
+    videoId: '',
+    events: {
+      onReady: () => startVideoPlayer(),
+      onError: onPlayerError
+    },
+    playerVars: {
+      autoplay: 1, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+
+  players.player2 = new YT.Player('player2', {
+    videoId: '',
+    events: {
+      onError: onPlayerError
+    },
+    playerVars: {
+      autoplay: 0, controls: 0, mute: 1,
+      rel: 0, modestbranding: 1, playsinline: 1
+    }
+  });
+}
+
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -1291,25 +1299,26 @@ function logBadVideo(badId) {
       player.loadVideoById(videoId);
       player.mute();
 
-    let attempt = 0;
-const maxAttempts = 1;
+   let attempt = 0;
+const maxAttempts = 3; // Artık 3 kez deneyecek
 const checkInterval = setInterval(() => {
   const state = player.getPlayerState();
 
   if (state === 1) {
     clearInterval(checkInterval);
     div.classList.add("active");
-    stopMp4(); // YouTube düzgün → MP4 durdur
+    div.style.display = "block"; // Garantili görünürlük
+    stopMp4(); // MP4 oynuyorsa durdur
   } else {
     attempt++;
     if (attempt >= maxAttempts) {
       clearInterval(checkInterval);
-      logBadVideo(videoId);
-      playMp4Fallback();  // ✅ YouTube bozuksa anında MP4'e geç
-      skipToNext();       // sıradaki YouTube denensin
+      logBadVideo(videoId);       // Bozuk ID’yi kaydet
+      playMp4Fallback();          // MP4’e geç
+      skipToNext();               // sıradaki YouTube videosunu dene
     }
   }
-}, 200); // 0.2 saniyelik deneme
+}, 300); // 300ms bekleme ile 3 kez kontrol
     } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
@@ -1533,7 +1542,12 @@ document.addEventListener("visibilitychange", function () {
     // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
   }
 });
-
+function onPlayerError(event) {
+  const videoId = event.target.getVideoData().video_id;
+  logBadVideo(videoId);         // Listeye ekle
+  playMp4Fallback();            // MP4’e geç
+  skipToNext();                 // sıradaki videoya geç
+}
 
 </script>
 
