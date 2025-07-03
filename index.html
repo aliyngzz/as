@@ -653,57 +653,6 @@ function shuffleArray(array) {
 
 
 
-function playMp4Fallback() {
-  // YouTube aktifse MP4 oynatma
-  if (players && (
-    players.player1?.getPlayerState() === 1 ||
-    players.player2?.getPlayerState() === 1
-  )) return;
-
-  const mp4 = document.getElementById("mp4Player");
-  const backup = document.getElementById("backupVideo");
-
-  if (currentMp4Index >= mp4Videos.length) {
-    shuffleArray(mp4Videos);
-    currentMp4Index = 0;
-  }
-
-  mp4.pause();
-  mp4.removeAttribute('src');
-  mp4.load();
-
-  mp4.src = mp4Videos[currentMp4Index++];
-  mp4.playbackRate = 1.0;
-  mp4.style.display = "block";
-  mp4.play();
-
-  let tried = false;
-
-  // 1 saniye sonra hâlâ başlamadıysa backup video oynat
-  setTimeout(() => {
-    if (!tried && mp4.currentTime < 0.2) {
-      tried = true;
-      console.log("MP4 başlamadı, yedek devrede!");
-      mp4.style.display = "none";
-      backup.style.display = "block";
-      backup.play();
-    }
-  }, 1000);
-
-  mp4.onended = () => {
-    playMp4Fallback();
-  };
-}
-
-
-
-
-
-
-
-
-
-
 
 
 	  
