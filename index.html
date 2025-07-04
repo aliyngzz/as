@@ -571,11 +571,18 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
+  mp4.pause(); // Güvenlik
+  mp4.removeAttribute("src");
+  mp4.load();
+
   mp4.src = mp4Videos[currentMp4Index];
+  mp4.load(); // Yeni kaynağı yükle
   mp4.style.display = "block";
   mp4.play();
+
   currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
+
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
@@ -1460,6 +1467,24 @@ function onPlayerError(event) {
   playMp4Fallback();            // MP4’e geç
   skipToNext();                 // sıradaki videoya geç
 }
+
+const mp4Player = document.getElementById("mp4Player");
+
+mp4Player.addEventListener("ended", () => {
+  // Video bittiğinde hemen sıradaki oynatılsın
+  playMp4Fallback();
+});
+
+	<script>
+window.addEventListener("load", () => {
+  const mp4Player = document.getElementById("mp4Player");
+  mp4Player.addEventListener("ended", () => {
+    playMp4Fallback();
+  });
+
+  // Başlangıçta ilk videoyu başlat
+  playMp4Fallback();
+});
 
 </script>
 
