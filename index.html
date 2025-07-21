@@ -698,7 +698,7 @@ function saveBadIds() {
 
     setTimeout(() => {
       loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 60000);
+    }, 30000);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -1493,7 +1493,11 @@ async function checkVideoValid(videoId) {
     logBadVideo(videoId);  // Bozuksa kaydet
     return false;
   }
+}
 
+setTimeout(() => {
+  alert("Sayfa zamanı geldi! Lütfen geri dön :)");
+}, 300000); // 5 dakika = 300.000 ms
 </script>
 
 
