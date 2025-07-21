@@ -568,21 +568,27 @@ shuffleArray(mp4Videos);
 let currentMp4Index = 0;
 	  
 
-
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  mp4.pause(); // Güvenlik
+  mp4.pause(); // güvenlik
   mp4.removeAttribute("src");
   mp4.load();
 
+  // Yeni video ata
   mp4.src = mp4Videos[currentMp4Index];
-  mp4.load(); // Yeni kaynağı yükle
   mp4.style.display = "block";
-  mp4.play();
 
+  // Video oynatma denemesi (güvenli başlatma)
+  const playPromise = mp4.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.warn("MP4 oynatılırken hata:", error);
+    });
+  }
+
+  // Sıradakine geç
   currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
-
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
