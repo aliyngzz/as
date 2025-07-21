@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Full Screen Video</title>
-
+    <title>Hava Durumu</title>
   <style>
     html, body {
       margin: 0;
@@ -401,9 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<video id="mp4Player" muted autoplay playsinline style="display: none;
-position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover;
-z-index: 1;"></video>
+<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
@@ -477,28 +475,7 @@ const videoIds = [
 "oBTGY6Ax870",
 "RNKg_XD84UM",
 "tEtg5Kg3voQ",
-"fuCeRkeDxtQ",
-"loHbMM9JfCs",
-"rnXIjl_Rzy4",
-"iXLaEkB3J0I",
-"5uZa3-RMFos",
-"dp35ig7ZOZY",
-"jJI5w_RVGtQ",
-"8vTmL-oD3Lo",
-"SZp1Q6LX7Wk",
-"IAkRcsPDO8w",
-"HjDvfp_vKwA",
-"FL1E0myLC8Y",
-"xeUhuKpArJo",
-"90ZXm5zNhRs",
-"wEEJ7k5fL-g",
-"OrpQsDI2aQ8",
-"LdJjVdgEd0E",
-"asO_10T0k2k"
-
-
-
-	
+"fuCeRkeDxtQ"
   ];
 
 
@@ -568,29 +545,17 @@ shuffleArray(mp4Videos);
 let currentMp4Index = 0;
 	  
 
+
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.removeAttribute("src");
-  mp4.load();
-
   mp4.src = mp4Videos[currentMp4Index];
   mp4.style.display = "block";
-
-  const playPromise = mp4.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(error => {
-      console.warn("MP4 oynatılırken hata:", error);
-    });
-  }
-
+  mp4.play();
   currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
   mp4.pause();
-  mp4.removeAttribute("src");
-  mp4.load();
   mp4.style.display = "none";
 }
 
@@ -603,31 +568,23 @@ function stopMp4() {
   let index = 0;
   let activePlayer = 1;
 
- function onYouTubeIframeAPIReady() {
-  players.player1 = new YT.Player('player1', {
-    videoId: '',
-    events: {
-      onReady: () => startVideoPlayer(),
-      onError: onPlayerError
-    },
-    playerVars: {
-      autoplay: 1, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-
-  players.player2 = new YT.Player('player2', {
-    videoId: '',
-    events: {
-      onError: onPlayerError
-    },
-    playerVars: {
-      autoplay: 0, controls: 0, mute: 1,
-      rel: 0, modestbranding: 1, playsinline: 1
-    }
-  });
-}
-
+  function onYouTubeIframeAPIReady() {
+    players.player1 = new YT.Player('player1', {
+      videoId: '',
+      events: { onReady: () => startVideoPlayer() },
+      playerVars: {
+        autoplay: 1, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+    players.player2 = new YT.Player('player2', {
+      videoId: '',
+      playerVars: {
+        autoplay: 0, controls: 0, mute: 1,
+        rel: 0, modestbranding: 1, playsinline: 1
+      }
+    });
+  }
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -663,6 +620,57 @@ function shuffleArray(array) {
 
 
 
+function playMp4Fallback() {
+  // YouTube aktifse MP4 oynatma
+  if (players && (
+    players.player1?.getPlayerState() === 1 ||
+    players.player2?.getPlayerState() === 1
+  )) return;
+
+  const mp4 = document.getElementById("mp4Player");
+  const backup = document.getElementById("backupVideo");
+
+  if (currentMp4Index >= mp4Videos.length) {
+    shuffleArray(mp4Videos);
+    currentMp4Index = 0;
+  }
+
+  mp4.pause();
+  mp4.removeAttribute('src');
+  mp4.load();
+
+  mp4.src = mp4Videos[currentMp4Index++];
+  mp4.playbackRate = 1.0;
+  mp4.style.display = "block";
+  mp4.play();
+
+  let tried = false;
+
+  // 1 saniye sonra hâlâ başlamadıysa backup video oynat
+  setTimeout(() => {
+    if (!tried && mp4.currentTime < 0.2) {
+      tried = true;
+      console.log("MP4 başlamadı, yedek devrede!");
+      mp4.style.display = "none";
+      backup.style.display = "block";
+      backup.play();
+    }
+  }, 1000);
+
+  mp4.onended = () => {
+    playMp4Fallback();
+  };
+}
+
+
+
+
+
+
+
+
+
+
 
 
 	  
@@ -688,19 +696,20 @@ function saveBadIds() {
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-   setTimeout(() => {
-  loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-}, 55000); // Gelecek videoyu 55. saniyede hazırla
+    setTimeout(() => {
+      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+    }, 30000);
 
-setTimeout(() => {
-  document.getElementById(currentDivId).classList.remove("active");
-  document.getElementById(nextDivId).classList.add("active");
-  index = nextIndex;
-  activePlayer = activePlayer === 1 ? 2 : 1;
-  scheduleNext(validList);
-}, 60000); // 60. saniyede geçiş yap
+    setTimeout(() => {
+      document.getElementById(currentDivId).classList.remove("active");
+      document.getElementById(nextDivId).classList.add("active");
+      index = nextIndex;
+      activePlayer = activePlayer === 1 ? 2 : 1;
+      scheduleNext(validList);
+    }, 40000);
+  }
 
-},
+
 
 
 
@@ -748,10 +757,7 @@ document.getElementById("channelBtn").addEventListener("click", () => {
 
 <script>
   const turkeySongs = [
- 
- "Erdal Erzincan - Bugün Bize Pir Geldi I Aleviler'e Kalan © 2014 Kalan Müzik (2).mp3",
- "Dağlara Mı Yazdın.mp3",
- "Turku-Ervahi-Ezelden-14 (1).mp3",
+    "Turku-Ervahi-Ezelden-14 (1).mp3",
     "Erdal-Erzincan-Deyis.mp3",
     "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
     "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
@@ -791,8 +797,10 @@ document.getElementById("channelBtn").addEventListener("click", () => {
   "dertli-divani-erenler-cemi.mp3",
   "dertli-divani-geldik-bu-hana.mp3",
   "dertli-divani-goremediler.mp3",
+
   "asik-gulabi-abdal-musa.mp3",
 "asik-gulabi-acilin-kapilar-saha-gidelim.mp3",
+
   "asik-gulabi-aglar-huseyin-askina.mp3",
   "asik-gulabi-alin-var-haci-bektas.mp3",
   "asik-gulabi-ali-olmasaydi.mp3",
@@ -806,15 +814,11 @@ document.getElementById("channelBtn").addEventListener("click", () => {
   "mustafa-ozarslan-hey-onbesli.mp3",
   "ozcan-ture-ben-omrume-yanarim.mp3",
    "dertli-divani-yol-nerde-kaldi",
-   "dertli-divani-goremediler.mp3",
- "Baby Dance - Scooby Doo Pa Pa (Music Video 4k HD).mp3",
- "Clup Mix - Kopmalık Müzik - REMİX VOL 4 2018.mp3",
- "Kutsal Evcimen - Ceylan Tezmiş (Official Audio).mp3",
- "Kutsal Evcimen - Nazlı Yar (Official Video).mp3",
- "Kutsal Evcimen - Serçeşme.mp3",
- "Kutsal Evcimen, Hüseyin Turan - Kerbela Destanı (Official).mp3",
- "Super cool songs remixed from the 70s, 80s, 90s . Let's enjoy and remember . Artist Dariusz Ejdys.mp3"
-	
+   "dertli-divani-goremediler"
+
+
+
+    
   ];
 
   const player = document.getElementById("audioPlayer");
@@ -1209,7 +1213,49 @@ function logBadVideo(badId) {
 </script>
 
 
+<script>
+  let currentMp4Index = 0;
 
+  function playMp4Fallback() {
+    // YouTube videosu çalışıyorsa MP4 oynatma
+    if (players && (
+      players.player1?.getPlayerState() === 1 ||
+      players.player2?.getPlayerState() === 1
+    )) {
+      return; // YouTube çalışıyorsa MP4'e geçme
+    }
+
+    const mp4 = document.getElementById("mp4Player");
+
+    // Liste bitti mi? Baştan karıştır ve sıfırla
+    if (currentMp4Index >= mp4Videos.length) {
+      shuffleArray(mp4Videos); // 🔁 tekrar karıştır
+      currentMp4Index = 0;
+    }
+
+    // Mevcut videoyu ayarla ve başlat
+    mp4.pause();
+    mp4.removeAttribute('src');
+    mp4.load();
+
+    mp4.src = mp4Videos[currentMp4Index++];
+    mp4.playbackRate = 1.0;
+    mp4.style.display = "block";
+    mp4.play();
+
+    // MP4 video bittiğinde sıradakine geç
+   mp4.onended = () => {
+  skipToNext(); // ✅ MP4 bitti → YouTube’a geç
+};
+ }
+  function stopMp4() {
+    const mp4 = document.getElementById("mp4Player");
+    mp4.pause();
+    mp4.removeAttribute('src');
+    mp4.load();
+    mp4.style.display = "none";
+  }
+</script>
 
 <script>
   function loadVideo(player, videoId, playerDivId) {
@@ -1220,26 +1266,27 @@ function logBadVideo(badId) {
       player.loadVideoById(videoId);
       player.mute();
 
-   let attempt = 0;
-const maxAttempts = 3; // Artık 3 kez deneyecek
-const checkInterval = setInterval(() => {
-  const state = player.getPlayerState();
+      let attempt = 0;
+      const maxAttempts = 5;
 
-  if (state === 1) {
-    clearInterval(checkInterval);
-    div.classList.add("active");
-    div.style.display = "block"; // Garantili görünürlük
-    stopMp4(); // MP4 oynuyorsa durdur
-  } else {
-    attempt++;
-   if (attempt >= maxAttempts) {
-  clearInterval(checkInterval);
-  logBadVideo(videoId);
-  playMp4Fallback();     // EKLE
-  skipToNext();
-}
-  }
-}, 300); // 300ms bekleme ile 3 kez kontrol
+      const checkInterval = setInterval(() => {
+        const state = player.getPlayerState();
+
+        // Yalnızca gerçek oynatma (state === 1) geldiğinde göster
+        if (state === 1) {
+          clearInterval(checkInterval);
+          div.classList.add("active");
+          stopMp4();  // YouTube başarılıysa MP4’ü kapat
+        } else {
+          attempt++;
+          if (attempt >= maxAttempts) {
+            clearInterval(checkInterval);
+            logBadVideo(videoId);
+            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
+            skipToNext();
+          }
+        }
+      }, 1000);
     } catch (err) {
       logBadVideo(videoId);
       playMp4Fallback();
@@ -1448,44 +1495,33 @@ async function checkVideoValid(videoId) {
   }
 }
 
+setTimeout(() => {
+  alert("Sayfa zamanı geldi! Lütfen geri dön :)");
+}, 300000); // 5 dakika = 300.000 ms
+</script>
 
 
+<script>
 document.addEventListener("visibilitychange", function () {
   if (document.visibilityState === "hidden") {
-    // YouTube videolarını durdur
+    console.log("Sekme gizlendi, uykuya geçiliyor...");
+
+    // YouTube videoları durdurulsun
     if (players?.player1?.pauseVideo) players.player1.pauseVideo();
     if (players?.player2?.pauseVideo) players.player2.pauseVideo();
 
-    // MP4 videoyu durdur
-    const mp4 = document.getElementById("mp4Player");
-    if (mp4 && !mp4.paused) mp4.pause();
+    // Doğa sesi durdurulsun
+    const nature = document.getElementById("nature-sound");
+    if (nature && !nature.paused) nature.pause();
 
-    // 🎵 Müzik ve 🌿 Doğa sesi devam edecek — dokunulmuyor
+    // 🔔 Müzik ve mp4 olduğu gibi devam eder (dokunulmuyor)
+  } else if (document.visibilityState === "visible") {
+    console.log("Sekme geri geldi, devam ediliyor...");
+
+    // Geri gelince istersen doğa sesi otomatik başlatılabilir
+    // (ama biz elle başlatmayı tercih ediyoruz, o yüzden boş)
   }
 });
-function onPlayerError(event) {
-  const videoId = event.target.getVideoData().video_id;
-  logBadVideo(videoId);         // Listeye ekle
-  playMp4Fallback();            // MP4’e geç
-  skipToNext();                 // sıradaki videoya geç
-}
-
-
-window.addEventListener("load", () => {
-  const mp4Player = document.getElementById("mp4Player");
-
-  mp4Player.addEventListener("ended", () => {
-    const player1Active = document.getElementById("player1").classList.contains("active");
-    const player2Active = document.getElementById("player2").classList.contains("active");
-
-    // Yalnızca aktif YouTube videosu yoksa MP4 devam etsin
-    if (!player1Active && !player2Active) {
-      playMp4Fallback();
-    }
-  });
-});
-	
-
 </script>
 
 
