@@ -685,20 +685,19 @@ function saveBadIds() {
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
 
-    setTimeout(() => {
-      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 30000);
+   setTimeout(() => {
+  loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+}, 55000); // Gelecek videoyu 55. saniyede hazırla
 
-    setTimeout(() => {
-      document.getElementById(currentDivId).classList.remove("active");
-      document.getElementById(nextDivId).classList.add("active");
-      index = nextIndex;
-      activePlayer = activePlayer === 1 ? 2 : 1;
-      scheduleNext(validList);
-    }, 40000);
-  }
+setTimeout(() => {
+  document.getElementById(currentDivId).classList.remove("active");
+  document.getElementById(nextDivId).classList.add("active");
+  index = nextIndex;
+  activePlayer = activePlayer === 1 ? 2 : 1;
+  scheduleNext(validList);
+}, 60000); // 60. saniyede geçiş yap
 
-
+},
 
 
 
