@@ -1484,9 +1484,13 @@ mp4Player.addEventListener("ended", () => {
 window.addEventListener("load", () => {
   const mp4Player = document.getElementById("mp4Player");
   mp4Player.addEventListener("ended", () => {
-   
+    // Yalnızca aktif YouTube videosu yoksa MP4 devam etsin
+    if (!document.getElementById("player1").classList.contains("active") &&
+        !document.getElementById("player2").classList.contains("active")) {
+      playMp4Fallback();
+    }
   });
-
+});
  
 
 </script>
