@@ -1477,7 +1477,7 @@ const mp4Player = document.getElementById("mp4Player");
 
 mp4Player.addEventListener("ended", () => {
   // Video bittiğinde hemen sıradaki oynatılsın
-  
+  playMp4Fallback();
 });
 
 	
@@ -1487,17 +1487,7 @@ window.addEventListener("load", () => {
    
   });
 
- const mp4Player = document.getElementById("mp4Player");
-
-mp4Player.addEventListener("ended", () => {
-  // Sadece YouTube oynatıcı aktif değilse MP4 devam etsin
-  const player1Active = document.getElementById("player1").classList.contains("active");
-  const player2Active = document.getElementById("player2").classList.contains("active");
-
-  if (!player1Active && !player2Active) {
-    playMp4Fallback();
-  }
-});
+ 
 
 </script>
 
