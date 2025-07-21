@@ -570,15 +570,13 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  mp4.pause(); // güvenlik
+  mp4.pause();
   mp4.removeAttribute("src");
   mp4.load();
 
-  // Yeni video ata
   mp4.src = mp4Videos[currentMp4Index];
   mp4.style.display = "block";
 
-  // Video oynatma denemesi (güvenli başlatma)
   const playPromise = mp4.play();
   if (playPromise !== undefined) {
     playPromise.catch(error => {
@@ -586,7 +584,6 @@ function playMp4Fallback() {
     });
   }
 
-  // Sıradakine geç
   currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
 function stopMp4() {
@@ -1235,12 +1232,12 @@ const checkInterval = setInterval(() => {
     stopMp4(); // MP4 oynuyorsa durdur
   } else {
     attempt++;
-    if (attempt >= maxAttempts) {
-      clearInterval(checkInterval);
-      logBadVideo(videoId);       // Bozuk ID’yi kaydet
-      playMp4Fallback();          // MP4’e geç
-      skipToNext();               // sıradaki YouTube videosunu dene
-    }
+   if (attempt >= maxAttempts) {
+  clearInterval(checkInterval);
+  logBadVideo(videoId);
+  playMp4Fallback();     // EKLE
+  skipToNext();
+}
   }
 }, 300); // 300ms bekleme ile 3 kez kontrol
     } catch (err) {
@@ -1473,6 +1470,7 @@ function onPlayerError(event) {
   skipToNext();                 // sıradaki videoya geç
 }
 
+
 window.addEventListener("load", () => {
   const mp4Player = document.getElementById("mp4Player");
 
@@ -1486,7 +1484,7 @@ window.addEventListener("load", () => {
     }
   });
 });
- 
+	
 
 </script>
 
