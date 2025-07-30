@@ -691,10 +691,14 @@ function saveBadIds() {
     const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
-
-    setTimeout(() => {
-      loadVideo(nextPlayer, validList[nextIndex], nextDivId);
-    }, 60000);
+function skipToNext() {
+   setTimeout(() => {
+  if (!badVideoIds.includes(validList[nextIndex])) {
+    loadVideo(nextPlayer, validList[nextIndex], nextDivId);
+  } else {
+    skipToNext(); // Bozuksa atla
+  }
+}, 60000);
 
     setTimeout(() => {
       document.getElementById(currentDivId).classList.remove("active");
@@ -1276,11 +1280,10 @@ function logBadVideo(badId) {
         } else {
           attempt++;
           if (attempt >= maxAttempts) {
-            clearInterval(checkInterval);
-            logBadVideo(videoId);
-            playMp4Fallback(); // YouTube başarısızsa MP4’ü çal
-            skipToNext();
-          }
+  clearInterval(checkInterval);
+  logBadVideo(videoId);
+  skipToNext(); // 1 saniye beklemeden geç
+}
         }
       }, 1000);
     } catch (err) {
