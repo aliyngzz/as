@@ -1263,40 +1263,41 @@ function logBadVideo(badId) {
 </script>
 
 <script>
-  function loadVideo(player, videoId, playerDivId) {
-    const div = document.getElementById(playerDivId);
-    div.classList.remove("active");
+ function loadVideo(player, videoId, playerDivId) {
+  const div = document.getElementById(playerDivId);
+  div.classList.remove("active");
 
-    try {
-      player.loadVideoById(videoId);
-      player.mute();
+  try {
+    player.loadVideoById(videoId);
+    player.mute();
 
     let attempt = 0;
-const maxAttempts = 10;
+    const maxAttempts = 10;
 
-const checkInterval = setInterval(() => {
-  const state = player.getPlayerState();
+    const checkInterval = setInterval(() => {
+      const state = player.getPlayerState();
 
-  if (state === 1) {
-    clearInterval(checkInterval);
-    div.classList.add("active");
-    stopMp4();
-  } else {
-    attempt++;
-    if (attempt >= maxAttempts) {
-      clearInterval(checkInterval);
-      logBadVideo(videoId);
-      playMp4Fallback();
-      skipToNext(); // ⚡ hemen geç
-    }
+      if (state === 1) {
+        clearInterval(checkInterval);
+        div.classList.add("active");
+        stopMp4();
+      } else {
+        attempt++;
+        if (attempt >= maxAttempts) {
+          clearInterval(checkInterval);
+          logBadVideo(videoId);
+          playMp4Fallback();
+          skipToNext();  // ✅ hemen geç
+        }
+      }
+    }, 100); // ✅ 0.1 saniyede bir kontrol (en fazla 1 saniye bekler)
+
+  } catch (err) {
+    logBadVideo(videoId);
+    playMp4Fallback();
+    skipToNext();  // ✅ hemen geç
   }
-}, 100); // ⏱ 0.1 saniyede bir kontrol
-    } catch (err) {
-      logBadVideo(videoId);
-      playMp4Fallback();
-      skipToNext();
-    }
-  }
+}
 
 </script>
 
