@@ -1518,6 +1518,16 @@ document.addEventListener("visibilitychange", function () {
     
   }
 });
+
+
+
+	function skipToNext() {
+  const validList = getValidVideos();
+  index = (index + 1) % validList.length;
+  const playerId = activePlayer === 1 ? 'player2' : 'player1';
+  const playerObj = activePlayer === 1 ? players.player2 : players.player1;
+  loadVideo(playerObj, validList[index], playerId);
+}
 </script>
 
 
