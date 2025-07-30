@@ -687,7 +687,7 @@ function saveBadIds() {
 
 
   function scheduleNext(validList = getValidVideos()) {
-    const nextIndex = (index + 1) % validList.length;
+  const nextIndex = Math.floor(Math.random() * validList.length);
     const nextPlayer = activePlayer === 1 ? players.player2 : players.player1;
     const nextDivId = activePlayer === 1 ? 'player2' : 'player1';
     const currentDivId = activePlayer === 1 ? 'player1' : 'player2';
