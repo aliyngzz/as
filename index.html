@@ -553,7 +553,11 @@ function playMp4Fallback() {
   mp4.play();
   currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
-
+function stopMp4() {
+  const mp4 = document.getElementById("mp4Player");
+  mp4.pause();
+  mp4.style.display = "none";
+}
 
     
   let tag = document.createElement('script');
@@ -1276,25 +1280,25 @@ function logBadVideo(badId) {
       if (state === 1) {
         clearInterval(checkInterval);
         div.classList.add("active");
-
-        stopMp4();           // ✅ MP4 kapat
-        stopBackupVideo();   // ✅ Yedek MP4 de kapat
+        stopMp4();
       } else {
         attempt++;
         if (attempt >= maxAttempts) {
           clearInterval(checkInterval);
           logBadVideo(videoId);
           playMp4Fallback();
-          skipToNext();
+          skipToNext();  // ✅ hemen geç
         }
       }
-    }, 100);
+    }, 100); // ✅ 0.1 saniyede bir kontrol (en fazla 1 saniye bekler)
+
   } catch (err) {
     logBadVideo(videoId);
     playMp4Fallback();
-    skipToNext();
+    skipToNext();  // ✅ hemen geç
   }
 }
+
 </script>
 
 
@@ -1520,16 +1524,6 @@ document.addEventListener("visibilitychange", function () {
     
   }
 });
-
-function stopBackupVideo() {
-  const backup = document.getElementById("backupVideo");
-  backup.pause();
-  backup.removeAttribute('src');
-  backup.load();
-  backup.style.display = "none";
-}
-
-	
 </script>
 
 
