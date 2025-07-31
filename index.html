@@ -1524,7 +1524,16 @@ document.addEventListener("visibilitychange", function () {
     
   }
 });
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // #backupVideo öğesini DOM’dan kaldırır
+    document.getElementById('backupVideo')?.remove();
+  });
 </script>
+
+	
+
 
 
 	
