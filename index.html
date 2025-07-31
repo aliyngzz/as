@@ -401,7 +401,7 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
-<video id="mp4Player" style="display:none !important; width:0; height:0;" muted autoplay loop></video>
+<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
 <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
 
@@ -548,11 +548,10 @@ let currentMp4Index = 0;
 
 function playMp4Fallback() {
   const mp4 = document.getElementById("mp4Player");
-  mp4.pause();
-  mp4.removeAttribute('src');  // 🔒 kaynak da yok
-  mp4.load();
-  mp4.style.display = "none";
-  console.log("MP4 oynatma devre dışı");
+  mp4.src = mp4Videos[currentMp4Index];
+  mp4.style.display = "block";
+  mp4.play();
+  currentMp4Index = (currentMp4Index + 1) % mp4Videos.length;
 }
 function stopMp4() {
   const mp4 = document.getElementById("mp4Player");
