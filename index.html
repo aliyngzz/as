@@ -401,7 +401,13 @@
   <button id="play-sound">Doğa Sesini Aç</button>
   <button id="pause-sound" style="display: none;">Doğa Sesini Kapat</button>
 </div>
+<video id="mp4Player" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:100vw; height:100vh; object-fit:cover; z-index:1;" muted autoplay loop></video>
+<audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
 
+
+<video id="backupVideo" width="100%" height="100%" autoplay muted loop style="display: none;">
+  <source src="189703-886596102_medium.mp4" type="video/mp4">
+</video>
 
 
 	
