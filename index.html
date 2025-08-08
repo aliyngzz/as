@@ -1,295 +1,110 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Kesin Tam Ekran YouTube + Müzik</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tam Ekran Video + Müzik</title>
 <style>
-  :root { --btn-size: 60px; }
-  html,body {
-    height:100%;
-    margin:0;
-    background:#000;
-    overflow:hidden;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
   }
-
-  /* video container - tüm ekranı kaplar ve taşan iframe ile "cover" efekti sağlar */
-  .video-wrap {
-    position:fixed;
-    inset:0;             /* top:0; right:0; bottom:0; left:0; */
-    overflow:hidden;
-    background:black;
-    z-index:1;
+  #videoContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
   }
-
-  /* player div — YT iframe buraya eklenecek */
-  #player {
-    position:absolute;
-    inset:0;
+  iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 177.78vh; /* 16:9 oranı için genişlik */
+    height: 100vh;
+    transform: translate(-50%, -50%);
   }
-
-  /* iframe'i tam ortala ve min-width/min-height ile cover yap */
-  #player iframe {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:auto;
-    height:auto;
-    min-width:100%;
-    min-height:100%;
-    max-width:none;
-    max-height:none;
+  /* Ekran çok dar ise yükseklik bazlı boyutlandır */
+  @media (max-aspect-ratio: 16/9) {
+    iframe {
+      width: 100vw;
+      height: 56.25vw; /* 16:9 oranı için yükseklik */
+    }
   }
-
-  /* Butonlar */
-  .btn {
-    position:fixed;
-    z-index:9999;
-    width:var(--btn-size);
-    height:var(--btn-size);
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(255,255,255,0.12);
-    color:#fff;
-    border:1px solid rgba(255,255,255,0.18);
-    backdrop-filter: blur(6px);
-    cursor:pointer;
-    transition:transform .18s ease, background .18s ease;
-    user-select:none;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
-    -webkit-tap-highlight-color: transparent;
+  #controls {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
   }
-  .btn:active { transform: scale(.98); }
-  .btn:hover { transform: scale(1.06); }
-
-  #fullscreenBtn { top: 14px; right: 14px; }
-  #musicBtn { bottom: calc(14px + env(safe-area-inset-bottom)); left: 14px; }
-
-  /* küçük ekran ikon yazı boyutu */
-  .btn span { font-size:22px; line-height:1; }
-
-  /* görsel feedback */
-  .playing { box-shadow: 0 8px 24px rgba(0,200,100,0.18); background: rgba(0,200,100,0.12); color:#9cffb8 }
+  button {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
-<div class="video-wrap">
-  <div id="player"></div>
+<div id="videoContainer">
+  <iframe id="ytPlayer"
+    src="https://www.youtube.com/embed/VIDEO_ID_1?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&loop=1&playlist=VIDEO_ID_1"
+    frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen>
+  </iframe>
 </div>
 
-<div id="fullscreenBtn" class="btn" title="Tam ekran (çıkmak için tekrar tıkla)"><span>⛶</span></div>
-<div id="musicBtn" class="btn" title="Müzik oynat/durdur"><span id="musicIcon">🎵</span></div>
+<div id="controls">
+  <button id="musicBtn">Müziği Aç</button>
+</div>
 
-<!-- gizli audio (aynı klasördeki mp3 dosyalarını kullan) -->
-<audio id="musicPlayer" preload="metadata"></audio>
+<audio id="bgMusic" loop>
+  <source src="MUSIC_FILE_1.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-/* === KISA AYARLAR (Burayı daha sonra genişletebilirsin) === */
-const videoIds = ["RsdiBvgeGpg", "UHgF74ieHUM", "gf6SK0NObfI"]; // 3 video
-const turkeySongs = ["muzik1.mp3", "muzik2.mp3", "muzik3.mp3"]; // 3 muzik
-const VIDEO_DURATION_MS = 40000; // 40s
-const SKIP_ON_BUFFER_MS = 1000;  // buffer/advert vs uzunlarsa 1s içinde geç
+  const videos = [
+    "VIDEO_ID_1",
+    "VIDEO_ID_2",
+    "VIDEO_ID_3"
+  ];
 
-/* === GLOBALLER === */
-let player = null;
-let playTimeout = null;
-let bufferTimeout = null;
-let lastVideoIndex = -1;
+  const musics = [
+    "MUSIC_FILE_1.mp3",
+    "MUSIC_FILE_2.mp3",
+    "MUSIC_FILE_3.mp3"
+  ];
 
-/* Rastgele index ama bir öncekiyle aynı olmasın (tekrar etmeyi azaltır) */
-function randomIndexExcept(length, exceptIndex) {
-  if (length <= 1) return 0;
-  let i;
-  do { i = Math.floor(Math.random() * length); } while (i === exceptIndex);
-  return i;
-}
+  let videoIndex = 0;
+  let musicIndex = 0;
+  const player = document.getElementById("ytPlayer");
+  const bgMusic = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicBtn");
 
-/* YouTube API yükle (iframe API) */
-(function loadYouTubeAPI(){
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-})();
+  // Video değiştir (örnek: 30 saniyede bir)
+  setInterval(() => {
+    videoIndex = (videoIndex + 1) % videos.length;
+    player.src = `https://www.youtube.com/embed/${videos[videoIndex]}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&loop=1&playlist=${videos[videoIndex]}`;
+  }, 30000);
 
-/* YT API hazır olduğunda çağrılır */
-function onYouTubeIframeAPIReady() {
-  const startIndex = randomIndexExcept(videoIds.length, -1);
-  lastVideoIndex = startIndex;
-  player = new YT.Player('player', {
-    videoId: videoIds[startIndex],
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      rel: 0,
-      modestbranding: 1,
-      playsinline: 1, // iOS'ta inline oynatmak için
-      mute: 1         // autoplay'ı güvenli hale getirmek için sessiz başlat
-    },
-    events: {
-      onReady: onPlayerReady,
-      onStateChange: onPlayerStateChange,
-      onError: onPlayerError
+  // Müzik butonu
+  musicBtn.addEventListener("click", () => {
+    if (bgMusic.paused) {
+      bgMusic.src = musics[musicIndex];
+      bgMusic.play();
+      musicBtn.textContent = "Müziği Kapat";
+    } else {
+      bgMusic.pause();
+      musicBtn.textContent = "Müziği Aç";
     }
   });
-}
-
-/* Player hazır -> küçük ayarlar */
-function onPlayerReady() {
-  // iframe'e izinleri ekleyelim (bazı tarayıcılarda)
-  setTimeout(()=> {
-    const iframe = document.querySelector('#player iframe');
-    if (iframe) {
-      iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
-      iframe.setAttribute('allowfullscreen', '');
-      iframe.style.willChange = 'transform';
-    }
-  }, 200);
-
-  // ilk videoyu oynat (zaten autoplay ile başlıyor sessizde)
-  scheduleNextByState(); // video başladığında 40s sonra geçecek
-}
-
-/* Hata durumunda bir sonraki videoya hemen geç */
-function onPlayerError(e) {
-  console.warn('YT player error:', e.data);
-  clearTimers();
-  playNextVideoImmediate();
-}
-
-/* State değişimleri: playing / buffering / ended */
-function onPlayerStateChange(e) {
-  const S = YT.PlayerState;
-  if (e.data === S.PLAYING) {
-    // oynama başladığında 40s sonra diğerine geç
-    clearTimers();
-    playTimeout = setTimeout(playNextVideoImmediate, VIDEO_DURATION_MS);
-    // buffering timeout'ını temizle
-    if (bufferTimeout) { clearTimeout(bufferTimeout); bufferTimeout = null; }
-  } else if (e.data === S.BUFFERING) {
-    // buffering veya reklam gelirse 1s içinde hala oynamıyorsa atla
-    if (bufferTimeout) clearTimeout(bufferTimeout);
-    bufferTimeout = setTimeout(()=> {
-      console.warn('Buffering too long -> skip video');
-      playNextVideoImmediate();
-    }, SKIP_ON_BUFFER_MS);
-  } else if (e.data === S.ENDED) {
-    clearTimers();
-    playNextVideoImmediate();
-  } else {
-    // diğer durumlarda (PAUSED, CUED vb) timer temizle
-    // ama bırakıyoruz; hatalı durumları onError'le yakalıyoruz
-  }
-}
-
-/* zamanlayıcıları temizle */
-function clearTimers() {
-  if (playTimeout) { clearTimeout(playTimeout); playTimeout = null; }
-  if (bufferTimeout) { clearTimeout(bufferTimeout); bufferTimeout = null; }
-}
-
-/* Bir sonraki videoyu seç ve hemen yükle/oynat */
-function playNextVideoImmediate() {
-  if (!player) return;
-  clearTimers();
-  const nextIdx = randomIndexExcept(videoIds.length, lastVideoIndex);
-  lastVideoIndex = nextIdx;
-  try {
-    player.loadVideoById({ videoId: videoIds[nextIdx], startSeconds: 0 });
-    // YT bazen loadVideoById'e hemen dönmeyebilir; onStateChange PLAYING tetiklenecek.
-  } catch (err) {
-    console.error('loadVideoById error', err);
-    // Eğer hata alırsak hemen başka birini dene küçük gecikme ile
-    setTimeout(playNextVideoImmediate, 200);
-  }
-}
-
-/* Kullanıcı tam ekran butonu */
-document.getElementById('fullscreenBtn').addEventListener('click', async () => {
-  try {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-    } else {
-      await document.exitFullscreen();
-    }
-  } catch (err) {
-    console.warn('Fullscreen error', err);
-  }
-});
-
-/* Müzik butonu ve oynatıcı mantığı */
-const musicPlayer = document.getElementById('musicPlayer');
-const musicBtn = document.getElementById('musicBtn');
-const musicIcon = document.getElementById('musicIcon');
-let musicIndex = Math.floor(Math.random()*turkeySongs.length);
-musicPlayer.src = turkeySongs[musicIndex];
-musicPlayer.preload = 'metadata';
-musicPlayer.loop = false;
-
-musicPlayer.addEventListener('ended', () => {
-  musicIndex = (musicIndex + 1) % turkeySongs.length;
-  musicPlayer.src = turkeySongs[musicIndex];
-  // otomatik devam etsin:
-  const p = musicPlayer.play();
-  if (p && p.catch) p.catch(()=>{/* kullanıcı etkileşimi gerekebilir */});
-});
-
-musicBtn.addEventListener('click', async () => {
-  try {
-    if (musicPlayer.paused) {
-      // kullanıcı tıklaması ile çal: mobilde bu izin verilir
-      await musicPlayer.play();
-      musicBtn.classList.add('playing');
-      musicIcon.textContent = '🔊';
-    } else {
-      musicPlayer.pause();
-      musicBtn.classList.remove('playing');
-      musicIcon.textContent = '🎵';
-    }
-  } catch (err) {
-    console.warn('Music play rejected:', err);
-    // fallback: user gesture gerekiyorsa küçük uyarı koyabiliriz
-    alert('Tarayıcı otomatik çalmayı engelledi. Lütfen müzik butonuna tekrar basın.');
-  }
-});
-
-/* Eğer kullanıcı sayfayı yenilerse müzik farklı yerden başlar. 
-   (aynı müziğe başlamama isteğine uygun başlangıç indeksi rastgele) */
-
-/* Yardımcı: video state kontrolü için fallback zamanlayıcı */
-function scheduleNextByState() {
-  // Eğer player hazırsa ve oynuyorsa set timer, değilse bekle
-  try {
-    const state = player && player.getPlayerState ? player.getPlayerState() : -1;
-    if (state === YT.PlayerState.PLAYING) {
-      clearTimers();
-      playTimeout = setTimeout(playNextVideoImmediate, VIDEO_DURATION_MS);
-    } else {
-      // 200ms sonra tekrar kontrol et
-      setTimeout(scheduleNextByState, 200);
-    }
-  } catch(e) {
-    setTimeout(scheduleNextByState, 300);
-  }
-}
-
-/* sayfa kapanırken timers temizle */
-window.addEventListener('beforeunload', () => clearTimers());
-
-/* -- Açıklama: 
-   1) iframe CSS: min-width:100% + min-height:100% kullandık -> iframe her zaman viewport'u kaplar. 
-   2) Video sessiz (mute:1) başlar — böylece mobilde autoplay çalışır. 
-   3) Müzik, kullanıcı butonuna bastığında çalar; autoplay kısıtlamaları yüzünden butona ihtiyaç vardır. 
-   4) Hatalı / reklamlı / uzun buffer durumunda 1s içinde diğer videoya geçilir. 
-*/
-
-/* Eğer konsolda hata görürsen (özellikle mp3 yüklenemediğine dair) 
-   mp3 dosyalarının gerçekten aynı klasörde ve doğru isimde olduğundan emin ol. */
 </script>
 
 </body>
