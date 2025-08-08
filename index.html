@@ -150,11 +150,15 @@ function onPlayerReady() {
   startVideoRotation();
 }
 
-
+setTimeout(() => {
+  document.getElementById('fullscreenBtn').style.display = 'none';
+  document.getElementById('musicBtn').style.display = 'none';
+}, 20000);
   
 </script>
 
 </body>
 </html>
+
 
 
