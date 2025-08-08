@@ -227,31 +227,32 @@ function onPlayerReady() {
   startVideoRotation();
 }
 
- let hideTimeout;
+let hideTimeout;
 
-  function hideButtons() {
-    console.log("hideButtons tetiklendi");
-    document.getElementById('fullscreenBtn').style.display = 'none';
-    document.getElementById('musicBtn').style.display = 'none';
-  }
+function hideButtons() {
+  document.getElementById('fullscreenBtn').classList.add('hidden');
+  document.getElementById('musicBtn').classList.add('hidden');
+}
 
-  function showButtons() {
-    console.log("showButtons tetiklendi");
-    document.getElementById('fullscreenBtn').style.display = 'flex';
-    document.getElementById('musicBtn').style.display = 'flex';
-    clearTimeout(hideTimeout);
-    hideTimeout = setTimeout(hideButtons, 20000);
-  }
+function showButtons() {
+  document.getElementById('fullscreenBtn').classList.remove('hidden');
+  document.getElementById('musicBtn').classList.remove('hidden');
 
-  document.addEventListener('mousemove', showButtons);
-  document.addEventListener('touchstart', showButtons);
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(hideButtons, 20000); // 20 saniye sonra gizle
+}
 
-  // Başlangıçta göster
-  showButtons();
+// Başlangıçta butonları göster
+showButtons();
+
+// Fare hareketi ve dokunma algıla
+document.addEventListener('mousemove', showButtons);
+document.addEventListener('touchstart', showButtons);
 </script>
 
 </body>
 </html>
+
 
 
 
