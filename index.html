@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>YouTube + Müzik Oynatıcı</title>
 <style>
   html, body {
@@ -20,16 +20,16 @@
     height: 100%;
     overflow: hidden;
   }
-  /* Zoom ile siyah kenarları kaldır */
+  /* Dinamik tam ekran video: boşluk bırakmaz */
   #player iframe {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 120vw;   /* %20 büyüttük */
-    height: 67.5vw; /* 16:9 orana göre yükseklik */
-    min-height: 120vh;
-    min-width: 213.33vh;
     transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
   }
   .btn {
     position: fixed;
