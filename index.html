@@ -226,6 +226,11 @@ function onPlayerReady() {
   player.setPlaybackQuality('highres');
   startVideoRotation();
 }
+function onPlayerReady(event) {
+  player.setPlaybackQuality('highres');
+  startVideoRotation();
+  showButtons(); // Sayfa açılır açılmaz butonları görünür yap
+}
 
 let hideTimeout;
 
@@ -238,14 +243,17 @@ function showButtons() {
   document.getElementById('fullscreenBtn').style.display = 'flex';
   document.getElementById('musicBtn').style.display = 'flex';
   clearTimeout(hideTimeout);
-  hideTimeout = setTimeout(hideButtons, 20000);
+  hideTimeout = setTimeout(hideButtons, 20000); // 20 saniye sonra gizle
 }
 
+// Fare veya dokunma ile butonları göster
 document.addEventListener('mousemove', showButtons);
 document.addEventListener('touchstart', showButtons);
 
-hideTimeout = setTimeout(hideButtons, 20000);
+// Sayfa yüklenince butonları gösterip gizleme zamanlayıcısını başlat
+showButtons();
 </script>
 
 </body>
 </html>
+
