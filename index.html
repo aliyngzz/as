@@ -227,17 +227,29 @@ function onPlayerReady() {
   startVideoRotation();
 }
 
-document.addEventListener('mousemove', showButtons);
-document.addEventListener('touchstart', showButtons);
+let hideTimeout;
+
+function hideButtons() {
+  document.getElementById('fullscreenBtn').style.display = 'none';
+  document.getElementById('musicBtn').style.display = 'none';
+}
 
 function showButtons() {
   document.getElementById('fullscreenBtn').style.display = 'flex';
   document.getElementById('musicBtn').style.display = 'flex';
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(hideButtons, 20000);
 }
+
+document.addEventListener('mousemove', showButtons);
+document.addEventListener('touchstart', showButtons);
+
+hideTimeout = setTimeout(hideButtons, 20000);
 </script>
 
 </body>
 </html>
+
 
 
 
