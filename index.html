@@ -230,34 +230,22 @@ function onPlayerReady() {
 let hideTimeout;
 
 function hideButtons() {
-  document.getElementById('fullscreenBtn').classList.add('hidden');
-  document.getElementById('musicBtn').classList.add('hidden');
+  document.getElementById('fullscreenBtn').style.display = 'none';
+  document.getElementById('musicBtn').style.display = 'none';
 }
 
 function showButtons() {
-  document.getElementById('fullscreenBtn').classList.remove('hidden');
-  document.getElementById('musicBtn').classList.remove('hidden');
-
+  document.getElementById('fullscreenBtn').style.display = 'flex';
+  document.getElementById('musicBtn').style.display = 'flex';
   clearTimeout(hideTimeout);
-  hideTimeout = setTimeout(hideButtons, 20000); // 20 saniye sonra gizle
+  hideTimeout = setTimeout(hideButtons, 20000);
 }
 
-// Başlangıçta butonları göster
-showButtons();
-
-// Fare hareketi ve dokunma algıla
 document.addEventListener('mousemove', showButtons);
 document.addEventListener('touchstart', showButtons);
+
+hideTimeout = setTimeout(hideButtons, 20000);
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
