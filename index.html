@@ -231,11 +231,15 @@ setTimeout(() => {
   document.getElementById('fullscreenBtn').style.display = 'none';
   document.getElementById('musicBtn').style.display = 'none';
 }, 20000);
-  
+  document.addEventListener('mousemove', () => {
+  document.getElementById('fullscreenBtn').style.display = 'flex';
+  document.getElementById('musicBtn').style.display = 'flex';
+});
 </script>
 
 </body>
 </html>
+
 
 
 
