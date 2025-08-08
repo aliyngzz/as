@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tam Ekran Video + Müzik</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube + Müzik Oynatıcı</title>
 <style>
   html, body {
     margin: 0;
@@ -11,98 +11,155 @@
     background: black;
     overflow: hidden;
     height: 100%;
-    width: 100%;
   }
-  #videoContainer {
+  #player {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    z-index: 0;
+    width: 100%;
+    height: 100%;
   }
-  iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 177.78vh; /* 16:9 oranı için genişlik */
-    height: 100vh;
-    transform: translate(-50%, -50%);
-  }
-  /* Ekran çok dar ise yükseklik bazlı boyutlandır */
-  @media (max-aspect-ratio: 16/9) {
-    iframe {
-      width: 100vw;
-      height: 56.25vw; /* 16:9 oranı için yükseklik */
-    }
-  }
-  #controls {
+  .btn {
     position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 10;
-  }
-  button {
-    padding: 10px 15px;
-    font-size: 16px;
+    z-index: 999;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: transform 0.3s;
+  }
+  .btn:hover {
+    transform: scale(1.1);
+  }
+  #fullscreenBtn {
+    top: 20px;
+    right: 20px;
+  }
+  #musicBtn {
+    bottom: 20px;
+    left: 20px;
+  }
+  audio {
+    display: none;
   }
 </style>
 </head>
 <body>
 
-<div id="videoContainer">
-  <iframe id="ytPlayer"
-    src="https://www.youtube.com/embed/VIDEO_ID_1?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&loop=1&playlist=VIDEO_ID_1"
-    frameborder="0"
-    allow="autoplay; fullscreen"
-    allowfullscreen>
-  </iframe>
-</div>
+<div id="player"></div>
 
-<div id="controls">
-  <button id="musicBtn">Müziği Aç</button>
-</div>
+<div id="fullscreenBtn" class="btn">⛶</div>
+<div id="musicBtn" class="btn">🎵</div>
 
-<audio id="bgMusic" loop>
-  <source src="MUSIC_FILE_1.mp3" type="audio/mpeg">
-</audio>
+<audio id="musicPlayer" controls></audio>
 
 <script>
-  const videos = [
-    "VIDEO_ID_1",
-    "VIDEO_ID_2",
-    "VIDEO_ID_3"
+  const videoIds = ["RsdiBvgeGpg","UHgF74ieHUM","gf6SK0NObfI","z_jyvAFOVj4",
+      "0St2Vey_r1E","2_ovWpVE9es","jzx_n25g3kA","DHUnz4dyb54","ECmjT2D1SzI",
+      "7w40FtLA4OQ","6Ad0iNbv54w","D1VM6V6wmU0","czoEAKX9aaM","hFr5w9KLEA4",
+      "Fw9hgttWzIg","4BrvMGznLTo","dXIyMS61B68","x10vL6_47Dw","OYuD6HIxcXc",
+      "W3D3dEpR3bs","VzKL9oeJCI","03P6cS2SXIs","F0GOOP82094","B4-L2nfGcuE",
+      "LCGYWfbyBWc","ZQ5OqjssArE","LZSrqZ562Po","Sq-X4Ga1oyc","VUJbDTIYlM4",
+      "2we-TrM7U1w","oBTGY6Ax870","RNKg_XD84UM","tEtg5Kg3voQ","fuCeRkeDxtQ",
+      "loHbMM9JfCs","rnXIjl_Rzy4","iXLaEkB3J0I","5uZa3-RMFos","dp35ig7ZOZY",
+      "jJI5w_RVGtQ","8vTmL-oD3Lo","SZp1Q6LX7Wk","IAkRcsPDO8w","HjDvfp_vKwA",
+      "FL1E0myLC8Y","xeUhuKpArJo","90ZXm5zNhRs","wEEJ7k5fL-g","OrpQsDI2aQ8",
+      "LdJjVdgEd0E","vPhg6sc1Mk4","C2rQhlVuU7A","daqB3i9WYIY","EmdtE7sRMSY",
+      "SLKYxiTR5UM","u6s-76xDTzQ","G1rkqS7tnfo","FwbZM32VwLE","YEJVG8Xlgrs",
+      "SlHbrLj0dEM","e4BcXxJ6Ljs","cwDAcufOTCw","5e8ZxHYtmrM","g3EizPKDJyM",
+      "kHOdKaPsFk8","asO_10T0k2k","HHi8qOtHnhE","qwjt-gnItvg","nta1YhicoGw",
+      "edz0ux7JClE","bZ4uxyLqV-E","iirWnnUWSTw","LM1YPBWn5jQ","fu5wy_CINP8",
+      "YEJVG8Xlgrs","RT2GjQ1pDco","DpQ3ZtkvvAw","zq9jhZLxs2k","fAX531acmYk",
+      "8bMrSm0Ap20","Qjg7D6SLcRI","t20fPDAZxCA"
   ];
 
-  const musics = [
-    "MUSIC_FILE_1.mp3",
-    "MUSIC_FILE_2.mp3",
-    "MUSIC_FILE_3.mp3"
+  const turkeySongs = [
+    "Turku-Ervahi-Ezelden-14 (1).mp3",
+    "Erdal-Erzincan-Deyis.mp3",
+    "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
+    "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+    // ... tüm liste buraya
   ];
 
-  let videoIndex = 0;
-  let musicIndex = 0;
-  const player = document.getElementById("ytPlayer");
-  const bgMusic = document.getElementById("bgMusic");
-  const musicBtn = document.getElementById("musicBtn");
+  let player;
+  let videoTimer;
+  let currentIndex = -1;
 
-  // Video değiştir (örnek: 30 saniyede bir)
-  setInterval(() => {
-    videoIndex = (videoIndex + 1) % videos.length;
-    player.src = `https://www.youtube.com/embed/${videos[videoIndex]}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&loop=1&playlist=${videos[videoIndex]}`;
-  }, 30000);
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      videoId: getRandomVideo(),
+      playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1 },
+      events: {
+        'onReady': onPlayerReady,
+        'onError': onPlayerError,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  function getRandomVideo() {
+    return videoIds[Math.floor(Math.random() * videoIds.length)];
+  }
+
+  function playNextVideo() {
+    player.loadVideoById(getRandomVideo());
+  }
+
+  function onPlayerReady() {
+    startVideoRotation();
+  }
+
+  function onPlayerError() {
+    playNextVideo(); // Hatalıysa hemen geç
+  }
+
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED) {
+      playNextVideo();
+    }
+  }
+
+  function startVideoRotation() {
+    clearInterval(videoTimer);
+    videoTimer = setInterval(playNextVideo, 40000); // 40 saniye
+  }
+
+  // YouTube API yükleme
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
+
+  // Tam ekran butonu
+  document.getElementById('fullscreenBtn').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
 
   // Müzik butonu
-  musicBtn.addEventListener("click", () => {
-    if (bgMusic.paused) {
-      bgMusic.src = musics[musicIndex];
-      bgMusic.play();
-      musicBtn.textContent = "Müziği Kapat";
+  const musicPlayer = document.getElementById('musicPlayer');
+  let musicIndex = Math.floor(Math.random() * turkeySongs.length);
+  musicPlayer.src = turkeySongs[musicIndex];
+
+  musicPlayer.addEventListener('ended', () => {
+    musicIndex = (musicIndex + 1) % turkeySongs.length;
+    musicPlayer.src = turkeySongs[musicIndex];
+    musicPlayer.play();
+  });
+
+  document.getElementById('musicBtn').addEventListener('click', () => {
+    if (musicPlayer.paused) {
+      musicPlayer.play();
     } else {
-      bgMusic.pause();
-      musicBtn.textContent = "Müziği Aç";
+      musicPlayer.pause();
     }
   });
 </script>
