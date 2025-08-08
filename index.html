@@ -18,6 +18,18 @@
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden; /* Kenar taşmalarını gizle */
+  }
+  /* YouTube iframe'i tam ekran dolduracak şekilde kırpma */
+  #player iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 56.25vw; /* 16:9 oran */
+    min-height: 100vh;
+    min-width: 177.78vh; /* 16:9 oran */
+    transform: translate(-50%, -50%);
   }
   .btn {
     position: fixed;
@@ -83,18 +95,16 @@
     "Turku-Ervahi-Ezelden-14 (1).mp3",
     "Erdal-Erzincan-Deyis.mp3",
     "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-    "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
-    // ... tüm liste buraya
+    "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
   ];
 
   let player;
   let videoTimer;
-  let currentIndex = -1;
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
       videoId: getRandomVideo(),
-      playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1 },
+      playerVars: { 'autoplay': 1, 'controls': 0, 'mute': 1, 'rel': 0, 'playsinline': 1 },
       events: {
         'onReady': onPlayerReady,
         'onError': onPlayerError,
@@ -116,7 +126,7 @@
   }
 
   function onPlayerError() {
-    playNextVideo(); // Hatalıysa hemen geç
+    playNextVideo();
   }
 
   function onPlayerStateChange(event) {
@@ -127,7 +137,7 @@
 
   function startVideoRotation() {
     clearInterval(videoTimer);
-    videoTimer = setInterval(playNextVideo, 40000); // 40 saniye
+    videoTimer = setInterval(playNextVideo, 40000);
   }
 
   // YouTube API yükleme
