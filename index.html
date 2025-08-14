@@ -27,20 +27,41 @@
   }
 
   /* Butonlar */
-  .btn {
-    position: fixed;
-    z-index: 999;
-    background: rgba(255,255,255,0.2);
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 60px; height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(4px);
-    transition: transform 0.3s;
-  }
+.btn {
+  position: fixed;
+  z-index: 999;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 60px; height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: transform 0.3s;
+  opacity: 1;
+  transition: opacity 0s;
+
+  /* Gökkuşağı iç dolgu */
+  background: linear-gradient(
+    270deg,
+    #ff0000, #ff7f00, #ffff00,
+    #00ff00, #0000ff, #4b0082, #8f00ff
+  );
+  background-size: 400% 400%;
+  animation: btnRainbow 6s ease infinite;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}
+
+/* Gökkuşağı animasyonu */
+@keyframes btnRainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
   .btn:hover {
     transform: scale(1.1);
   }
@@ -228,6 +249,7 @@ showButtons();
 
 </body>
 </html>
+
 
 
 
