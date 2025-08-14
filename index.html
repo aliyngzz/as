@@ -187,16 +187,18 @@
     document.getElementById('musicBtn').style.display = 'none';
   }
 
-  function showButtons() {
-    document.getElementById('fullscreenBtn').style.display = 'flex';
-    document.getElementById('musicBtn').style.display = 'flex';
-    clearTimeout(hideTimeout);
-    hideTimeout = setTimeout(hideButtons, 20000);
-  }
+function showButtons() {
+  document.getElementById('fullscreenBtn').style.display = 'flex';
+  document.getElementById('musicBtn').style.display = 'flex';
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(hideButtons, 20000);
+}
 
-  // Fare veya dokunma ile butonları göster
-  document.addEventListener('mousemove', showButtons);
-  document.addEventListener('touchstart', showButtons);
+// Hem mobil hem PC için çalışır
+['mousemove', 'touchstart', 'pointerdown'].forEach(eventName => {
+  document.addEventListener(eventName, showButtons, { passive: true });
+  document.getElementById('player').addEventListener(eventName, showButtons, { passive: true });
+});
 
   // Sayfa yüklenince butonları gösterip gizleme zamanlayıcısını başlat
   showButtons();
@@ -213,3 +215,4 @@
 
 </body>
 </html>
+
