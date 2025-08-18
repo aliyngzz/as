@@ -27,49 +27,46 @@
   }
 
   /* Butonlar */
-.btn {
-  position: fixed;
-  z-index: 999;
-  border: 2px solid white;
-  border-radius: 50%;
-  width: 60px; height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  transition: transform 0.3s;
-  opacity: 1;
-  transition: opacity 0s;
+  .btn {
+    position: fixed;
+    z-index: 999;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 60px; height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: transform 0.3s, opacity 0.5s;
+    opacity: 1;
 
-  /* Gökkuşağı iç dolgu */
-  background: linear-gradient(
-    270deg,
-    #ff0000, #ff7f00, #ffff00,
-    #00ff00, #0000ff, #4b0082, #8f00ff
-  );
-  background-size: 400% 400%;
-  animation: btnRainbow 6s ease infinite;
-}
+    /* Gökkuşağı iç dolgu */
+    background: linear-gradient(
+      270deg,
+      #ff0000, #ff7f00, #ffff00,
+      #00ff00, #0000ff, #4b0082, #8f00ff
+    );
+    background-size: 400% 400%;
+    animation: btnRainbow 6s ease infinite;
+  }
 
-.btn:hover {
-  transform: scale(1.1);
-}
-
-/* Gökkuşağı animasyonu */
-@keyframes btnRainbow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
   .btn:hover {
     transform: scale(1.1);
   }
+
+  /* Gökkuşağı animasyonu */
+  @keyframes btnRainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   #fullscreenBtn { bottom: 20px; right: 20px; top: auto; }
   #musicBtn { bottom: 20px; left: 20px; top: auto; }
   audio { display: none; }
 
-  /* Gökkuşağı animasyonlu yükleme ekranı */
+  /* Yükleme ekranı */
   #loadingOverlay {
     position: fixed;
     top: 0; left: 0;
@@ -90,15 +87,10 @@
     100% { background-position: 0% 50%; }
   }
 
-.btn {
-  opacity: 1;
-  transition: opacity 0s;
-}
-.btn.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-  
+  .btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
@@ -114,31 +106,102 @@
 <audio id="musicPlayer" controls></audio>
 
 <script>
-  const videoIds = ["RsdiBvgeGpg", "UHgF74ieHUM", "gf6SK0NObfI", "z_jyvAFOVj4",
-      "0St2Vey_r1E", "2_ovWpVE9es", "jzx_n25g3kA", "DHUnz4dyb54", "ECmjT2D1SzI",
-      "7w40FtLA4OQ", "6Ad0iNbv54w", "D1VM6V6wmU0", "czoEAKX9aaM", "hFr5w9KLEA4",
-      "Fw9hgttWzIg", "4BrvMGznLTo", "dXIyMS61B68", "x10vL6_47Dw", "OYuD6HIxcXc",
-      "W3D3dEpR3bs", "VzKL9oeJCI", "03P6cS2SXIs", "F0GOOP82094", "B4-L2nfGcuE",
-      "LCGYWfbyBWc", "ZQ5OqjssArE", "LZSrqZ562Po", "Sq-X4Ga1oyc", "VUJbDTIYlM4",
-      "2we-TrM7U1w", "oBTGY6Ax870", "RNKg_XD84UM", "tEtg5Kg3voQ", "fuCeRkeDxtQ",
-      "loHbMM9JfCs", "rnXIjl_Rzy4", "iXLaEkB3J0I", "5uZa3-RMFos", "dp35ig7ZOZY",
-      "jJI5w_RVGtQ", "8vTmL-oD3Lo", "SZp1Q6LX7Wk", "IAkRcsPDO8w", "HjDvfp_vKwA",
-      "FL1E0myLC8Y", "xeUhuKpArJo", "90ZXm5zNhRs", "wEEJ7k5fL-g", "OrpQsDI2aQ8",
-      "LdJjVdgEd0E", "vPhg6sc1Mk4", "C2rQhlVuU7A", "daqB3i9WYIY", "EmdtE7sRMSY",
-      "SLKYxiTR5UM", "u6s-76xDTzQ", "G1rkqS7tnfo", "FwbZM32VwLE", "YEJVG8Xlgrs",
-      "SlHbrLj0dEM", "e4BcXxJ6Ljs", "cwDAcufOTCw", "5e8ZxHYtmrM", "g3EizPKDJyM",
-      "kHOdKaPsFk8", "asO_10T0k2k", "HHi8qOtHnhE", "qwjt-gnItvg", "nta1YhicoGw",
-      "edz0ux7JClE", "bZ4uxyLqV-E", "iirWnnUWSTw", "LM1YPBWn5jQ", "fu5wy_CINP8",
-      "YEJVG8Xlgrs", "RT2GjQ1pDco", "DpQ3ZtkvvAw", "zq9jhZLxs2k", "fAX531acmYk",
-      "8bMrSm0Ap20", "Qjg7D6SLcRI", "t20fPDAZxCA"];
+  const videoIds = [
+    "RsdiBvgeGpg","UHgF74ieHUM","gf6SK0NObfI","z_jyvAFOVj4",
+    "0St2Vey_r1E","2_ovWpVE9es","jzx_n25g3kA","DHUnz4dyb54",
+    "ECmjT2D1SzI","7w40FtLA4OQ","6Ad0iNbv54w","D1VM6V6wmU0",
+    "czoEAKX9aaM","hFr5w9KLEA4","Fw9hgttWzIg","4BrvMGznLTo",
+    "dXIyMS61B68","x10vL6_47Dw","OYuD6HIxcXc","W3D3dEpR3bs",
+    "VzKL9oeJCI","03P6cS2SXIs","F0GOOP82094","B4-L2nfGcuE",
+    "LCGYWfbyBWc","ZQ5OqjssArE","LZSrqZ562Po","Sq-X4Ga1oyc",
+    "VUJbDTIYlM4","2we-TrM7U1w","oBTGY6Ax870","RNKg_XD84UM",
+    "tEtg5Kg3voQ","fuCeRkeDxtQ","loHbMM9JfCs","rnXIjl_Rzy4",
+    "iXLaEkB3J0I","5uZa3-RMFos","dp35ig7ZOZY","jJI5w_RVGtQ",
+    "8vTmL-oD3Lo","SZp1Q6LX7Wk","IAkRcsPDO8w","HjDvfp_vKwA",
+    "FL1E0myLC8Y","xeUhuKpArJo","90ZXm5zNhRs","wEEJ7k5fL-g",
+    "OrpQsDI2aQ8","LdJjVdgEd0E","vPhg6sc1Mk4","C2rQhlVuU7A",
+    "daqB3i9WYIY","EmdtE7sRMSY","SLKYxiTR5UM","u6s-76xDTzQ",
+    "G1rkqS7tnfo","FwbZM32VwLE","YEJVG8Xlgrs","SlHbrLj0dEM",
+    "e4BcXxJ6Ljs","cwDAcufOTCw","5e8ZxHYtmrM","g3EizPKDJyM",
+    "kHOdKaPsFk8","asO_10T0k2k","HHi8qOtHnhE","qwjt-gnItvg",
+    "nta1YhicoGw","edz0ux7JClE","bZ4uxyLqV-E","iirWnnUWSTw",
+    "LM1YPBWn5jQ","fu5wy_CINP8","RT2GjQ1pDco","DpQ3ZtkvvAw",
+    "zq9jhZLxs2k","fAX531acmYk","8bMrSm0Ap20","Qjg7D6SLcRI",
+    "t20fPDAZxCA"
+  ];
 
   const turkeySongs = [
     "Turku-Ervahi-Ezelden-14 (1).mp3",
     "Erdal-Erzincan-Deyis.mp3",
     "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3",
-     "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3"
-     // Liste kısaltıldı (tamamı senin listende var)
+    "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3",
+     "Erdal-Erzincan-Yol-Havasi-87.mp3",
+    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3",
+    "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3",
+    "Erdal-Erzincan-Sarma-Havasi-67.mp3",
+    "sabahat-akkiraz-tevhid_(mp3tur.com).mp3",
+    "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3",
+    "ates-i-askina-semah.mp3",
+    "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3",
+    "Deyiş Devran - Gerçek Olan.mp3",
+    "Erdal Erzincan - Deyiş.mp3",
+    "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3",
+    "miraz-uryan-geldim.mp3",
+    "Muhabbet Bağında - Deyiş.mp3",
+    "sabahat-akkiraz-tevhid.mp3",
+    "Zülfükâr Arslan - Deyiş.mp3",
+    "bugun-bize-pir-geldi.mp3",
+    "Erdal-Erzincan-Emlek-Bozlagi-30.mp3",
+    "Erdal-Erzincan-Felek-Senin-Elinden.mp3",
+    "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3",
+    "Erdal-Erzincan-Nem-kaldi.mp3",
+    "Erdal-Erzincan-Urfa-Havasi-55.mp3",
+    "Erdal-Erzincan-Yara-Bende-yeni-2.mp3",
+    "Erdal-Erzincan-Goc-54.mp3",
+    "dertli-divani-ayirma-bizi.mp3",
+  "dertli-divani-bilesin (1).mp3",
+  "dertli-divani-bir-dunya-istiyoruz.mp3",
+  "dertli-divani-birisi-muhammed-biri-ali-dir.mp3",
+  "dertli-divani-bulandi-askimin-seli.mp3",
+  "dertli-divani-candan-ya-ali.mp3",
+  "dertli-divani-cehalet-ruzgari.mp3",
+  "dertli-divani-diktigimiz-fidanlar.mp3",
+  "dertli-divani-direzi-nedir.mp3",
+  "dertli-divani-donen-de-oldu.mp3",
+  "dertli-divani-erenler-cemi.mp3",
+  "dertli-divani-geldik-bu-hana.mp3",
+  "dertli-divani-goremediler.mp3",
+  "asik-gulabi-abdal-musa.mp3",
+"asik-gulabi-acilin-kapilar-saha-gidelim.mp3",
+  "asik-gulabi-aglar-huseyin-askina.mp3",
+  "asik-gulabi-alin-var-haci-bektas.mp3",
+  "asik-gulabi-ali-olmasaydi.mp3",
+  "erdal-erzincan-al-mendil.mp3",
+  "mustafa-ozarslan-agir-halay.mp3",
+  "mustafa-ozarslan-ahu-bakislim.mp3",
+  "mustafa-ozarslan-arayi-arayi.mp3",
+  "mustafa-ozarslan-asagidan-bir-yel-esti.mp3",
+  "mustafa-ozarslan-ayrilamam-ben-o-gul-yuzlu-yardan.mp3",
+  "mustafa-ozarslan-bu-senede-boyle-oldu.mp3",
+  "mustafa-ozarslan-hey-onbesli.mp3",
+  "ozcan-ture-ben-omrume-yanarim.mp3",
+   "dertli-divani-yol-nerde-kaldi.mp3",
+   "dertli-divani-goremediler.mp3",
+  "Dünyada Tükenmez Murat Var İmiş.mp3",
+  "Erdal Erzincan - Çiçekler Ekiliyor.mp3",
+  "Erdal Erzincan - Can Maral.mp3",
+  "Erdal ERZİNCAN - Leyli Leyli.mp3",
+  "Erdal Erzincan - Öyledir Deli Gönül.mp3",
+  "Erdal Erzincan - Yar Senin Derdinden.mp3",
+  "Erdal Erzincan - Yozgat Sürmelisi.mp3",
+  "Erdal Erzincan ft Arzu - Nasıl Yaşarız-Düzgün Baba-Ağıtlar Yaktım.mp3",
+  "Gül Yüzlü Sultanım.mp3",
+  "Kerbela (Hüseyin Turan) YAAli  Ehl-i Deyişler - 2017.mp3",
+  "Sevcan Orhan - Sevenlere Gönül Verdim (Official Video).mp3",
+  "Sevcan Orhan - Yar Demedin .mp3"   
   ];
+
+
 
   let player;
   let videoTimer;
@@ -160,7 +223,9 @@
   }
 
   function playNextVideo() {
+    clearInterval(videoTimer);
     player.loadVideoById(getRandomVideo());
+    startVideoRotation();
   }
 
   function onPlayerError() {
@@ -175,7 +240,15 @@
 
   function startVideoRotation() {
     clearInterval(videoTimer);
-    videoTimer = setInterval(playNextVideo, 40000);
+    videoTimer = setInterval(playNextVideo, 40000); // 40 saniye
+  }
+
+  function onPlayerReady(event) {
+    player.setPlaybackQuality('highres');
+    player.playVideo();
+    startVideoRotation();
+    showButtons();
+    document.getElementById("loadingOverlay").style.display = "none";
   }
 
   // YouTube API yükle
@@ -211,45 +284,24 @@
     }
   });
 
+  // Butonları gizle/göster
   let hideTimeout;
-
-function hideButtons() {
-  document.getElementById('fullscreenBtn').classList.add('hidden');
-  document.getElementById('musicBtn').classList.add('hidden');
-}
-
-function showButtons() {
-  document.getElementById('fullscreenBtn').classList.remove('hidden');
-  document.getElementById('musicBtn').classList.remove('hidden');
-  clearTimeout(hideTimeout);
-  hideTimeout = setTimeout(hideButtons, 20000);
-}
-
-// Hem PC hem mobil hem YouTube üstü dokunma
-['mousemove', 'touchstart', 'pointerdown'].forEach(evt => {
-  document.addEventListener(evt, showButtons, { passive: true });
-  document.getElementById('player').addEventListener(evt, showButtons, { passive: true });
-});
-
-// İlk yüklemede butonları göster
-showButtons();
-
-  // Sayfa yüklenince butonları gösterip gizleme zamanlayıcısını başlat
-  showButtons();
-
-  // Video hazır olunca overlay'i kaldır
-  function onPlayerReady(event) {
-    player.setPlaybackQuality('highres');
-    startVideoRotation();
-    showButtons();
-    player.playVideo();
-    document.getElementById("loadingOverlay").style.display = "none";
+  function hideButtons() {
+    document.getElementById('fullscreenBtn').classList.add('hidden');
+    document.getElementById('musicBtn').classList.add('hidden');
   }
+  function showButtons() {
+    document.getElementById('fullscreenBtn').classList.remove('hidden');
+    document.getElementById('musicBtn').classList.remove('hidden');
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(hideButtons, 20000);
+  }
+  ['mousemove','touchstart','pointerdown'].forEach(evt => {
+    document.addEventListener(evt, showButtons, { passive: true });
+    document.getElementById('player').addEventListener(evt, showButtons, { passive: true });
+  });
+  showButtons();
 </script>
 
 </body>
 </html>
-
-
-
-
