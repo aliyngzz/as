@@ -1,69 +1,56 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>YouTube Fullscreen</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Full Screen YouTube</title>
 <style>
   html, body {
-    margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden;
-    background: black;
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:black;
   }
-
   #player {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: black;
-    overflow: hidden;
+    position:fixed;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:black;
   }
-
   #player iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:100%;
+    height:100%;
+    min-width:100%;
+    min-height:100%;
   }
-
-  /* Butonlar */
+  /* Butonlar ve loading */
   .btn {
-    position: fixed;
-    z-index: 999;
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 60px; height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(4px);
-    transition: transform 0.3s, opacity 0.5s;
-    opacity: 1;
-    background: linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff);
-    background-size: 400% 400%;
-    animation: btnRainbow 6s ease infinite;
+    position:fixed; z-index:999; border:2px solid white; border-radius:50%;
+    width:60px; height:60px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; backdrop-filter:blur(4px);
+    background:linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff);
+    background-size:400% 400%; animation:btnRainbow 6s linear infinite;
+    transition:transform 0.3s,opacity 0.5s;
   }
-
-  .btn:hover { transform: scale(1.1); }
-  @keyframes btnRainbow { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
-
-  #fullscreenBtn { bottom: 20px; right: 20px; }
-  #musicBtn { bottom: 20px; left: 20px; }
-
-  .btn.hidden { opacity: 0; pointer-events: none; }
-
-  audio { display: none; }
-
-  #loadingOverlay {
-    position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 998;
-    background: linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff);
-    background-size: 1400% 1400%;
-    animation: rainbowMove 8s ease infinite;
+  .btn:hover{ transform:scale(1.1); }
+  #fullscreenBtn{ bottom:20px; right:20px; }
+  #musicBtn{ bottom:20px; left:20px; }
+  .btn.hidden{ opacity:0; pointer-events:none; }
+  @keyframes btnRainbow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  #loadingOverlay{
+    position:fixed; top:0; left:0; width:100%; height:100%; z-index:998;
+    background:linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff);
+    background-size:1400% 1400%; animation:rainbowMove 8s linear infinite;
   }
-  @keyframes rainbowMove { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+  @keyframes rainbowMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 </style>
 </head>
 <body>
@@ -77,26 +64,28 @@
 <script>
 const videoIds = ["RsdiBvgeGpg","UHgF74ieHUM","gf6SK0NObfI","z_jyvAFOVj4"];
 const turkeySongs = ["Turku-Ervahi-Ezelden-14 (1).mp3","Erdal-Erzincan-Deyis.mp3"];
-
 let player, videoTimer;
 
 function getRandomVideo(){ return videoIds[Math.floor(Math.random()*videoIds.length)]; }
-function playNextVideo(){ player.loadVideoById(getRandomVideo()); startVideoRotation(); }
+function playNextVideo(){ clearInterval(videoTimer); player.loadVideoById(getRandomVideo()); startVideoRotation(); }
 function startVideoRotation(){ clearInterval(videoTimer); videoTimer=setInterval(playNextVideo,40000); }
-
 function onPlayerReady(){ player.setPlaybackQuality('highres'); player.playVideo(); startVideoRotation(); document.getElementById("loadingOverlay").style.display="none"; resizePlayer(); }
 function onPlayerError(){ playNextVideo(); }
-function onPlayerStateChange(event){ if(event.data===YT.PlayerState.ENDED) playNextVideo(); }
+function onPlayerStateChange(e){ if(e.data===YT.PlayerState.ENDED) playNextVideo(); }
 
 // YouTube API
-const tag = document.createElement('script'); tag.src="https://www.youtube.com/iframe_api"; document.body.appendChild(tag);
+const tag=document.createElement('script'); tag.src="https://www.youtube.com/iframe_api"; document.body.appendChild(tag);
 window.onYouTubeIframeAPIReady=function(){
-  player=new YT.Player('player',{videoId:getRandomVideo(), playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1}, events:{onReady:onPlayerReady,onError:onPlayerError,onStateChange:onPlayerStateChange}});
+  player=new YT.Player('player',{
+    videoId:getRandomVideo(),
+    playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1},
+    events:{onReady:onPlayerReady,onError:onPlayerError,onStateChange:onPlayerStateChange}
+  });
 }
 
 // Müzik çalar
-const musicPlayer = document.getElementById('musicPlayer');
-let musicIndex = Math.floor(Math.random()*turkeySongs.length);
+const musicPlayer=document.getElementById('musicPlayer');
+let musicIndex=Math.floor(Math.random()*turkeySongs.length);
 musicPlayer.src=turkeySongs[musicIndex];
 musicPlayer.addEventListener('ended',()=>{ musicIndex=(musicIndex+1)%turkeySongs.length; musicPlayer.src=turkeySongs[musicIndex]; musicPlayer.play(); });
 document.getElementById('musicBtn').addEventListener('click',()=>{ if(musicPlayer.paused) musicPlayer.play(); else musicPlayer.pause(); });
@@ -111,17 +100,17 @@ function showButtons(){ document.getElementById('fullscreenBtn').classList.remov
 ['mousemove','touchstart','pointerdown'].forEach(evt=>{ document.addEventListener(evt,showButtons,{passive:true}); document.getElementById('player').addEventListener(evt,showButtons,{passive:true});});
 showButtons();
 
-// Ekran boyutuna göre video resize
+// Video ekranı her zaman doldursun
 function resizePlayer(){
-  const iframe = document.querySelector('#player iframe');
+  const iframe=document.querySelector('#player iframe');
   if(!iframe) return;
   const w=window.innerWidth, h=window.innerHeight;
-  const scale = Math.max(w/16*9/h, h/9*16/w);
-  iframe.style.width = `${16*scale}vh`;
-  iframe.style.height = `${9*scale}vh`;
+  const scale=Math.max(w/16*9/h,h/9*16/w);
+  iframe.style.width=`${16*scale}vh`;
+  iframe.style.height=`${9*scale}vh`;
 }
-window.addEventListener('resize', resizePlayer);
-window.addEventListener('orientationchange', resizePlayer);
+window.addEventListener('resize',resizePlayer);
+window.addEventListener('orientationchange',resizePlayer);
 </script>
 
 </body>
