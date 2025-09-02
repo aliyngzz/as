@@ -8,7 +8,7 @@
   html, body {
     margin: 0; padding: 0; height: 100%; background: black; overflow: hidden;
   }
- #player {
+#player {
   position: fixed;
   top: 0; left: 0;
   width: 100vw;
@@ -21,10 +21,10 @@
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 56.25vw; /* 16:9 oranına göre */
-  min-width: 177.78vh; /* 9/16 oranına göre genişlet */
-  min-height: 100vh;
+  width: 177.78vh;   /* ekran yüksekliğine göre genişlik (16:9 oran) */
+  height: 100vh;
+  min-width: 100vw;  /* yatay ekranda boşluk kalmasın */
+  min-height: 56.25vw;
   border: none;
 }
 
@@ -350,6 +350,7 @@
 
 </body>
 </html>
+
 
 
 
