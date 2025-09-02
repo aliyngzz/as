@@ -22,13 +22,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100vw;
+  /* 16:9 oranı */
+  width: 177.78vh;   /* height * 16/9 */
   height: 100vh;
+  min-width: 100vw;  /* ekran genişliği kadar en az */
+  min-height: 56.25vw; /* width * 9/16 */
   border: none;
-
-  /* Trik: her zaman ekranı kapla */
-  min-width: 177.78vh;   /* (16/9) * height */
-  min-height: 100vw;     /* (9/16) * width */
 }
   /* Butonlar */
   .btn {
@@ -352,6 +351,7 @@
 
 </body>
 </html>
+
 
 
 
