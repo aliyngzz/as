@@ -22,11 +22,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* 16:9 oranı */
-  width: 177.78vh;   /* height * 16/9 */
-  height: 100vh;
-  min-width: 100vw;  /* ekran genişliği kadar en az */
-  min-height: 56.25vw; /* width * 9/16 */
   border: none;
 }
   /* Butonlar */
@@ -347,10 +342,65 @@
     document.getElementById('player').addEventListener(evt, showButtons, { passive: true });
   });
   showButtons();
+
+
+
+
+function resizePlayer() {
+    const playerDiv = document.getElementById('player');
+    const iframe = playerDiv.querySelector('iframe');
+    if (!iframe) return;
+
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const windowRatio = windowWidth / windowHeight;
+    const videoRatio = 16 / 9;
+
+    if (windowRatio > videoRatio) {
+        // ekran yatay → yükseklik tam, genişlik taşacak
+        iframe.style.width = (windowHeight * videoRatio) + 'px';
+        iframe.style.height = windowHeight + 'px';
+    } else {
+        // ekran dik → genişlik tam, yükseklik taşacak
+        iframe.style.width = windowWidth + 'px';
+        iframe.style.height = (windowWidth / videoRatio) + 'px';
+    }
+}
+
+// iframe oluşturulduktan sonra çağır
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    videoId: getRandomVideo(),
+    playerVars: { autoplay: 1, controls: 0, mute: 1, rel: 0, playsinline: 1 },
+    events: {
+      onReady: (event) => {
+        resizePlayer();
+        event.target.playVideo();
+      },
+      onError: () => playNextVideo(),
+      onStateChange: onPlayerStateChange
+    }
+  });
+}
+
+// pencere boyutu değişince yeniden hesapla
+window.addEventListener('resize', resizePlayer);
+
+
+
+
+
+
+
+
+
+
+  
 </script>
 
 </body>
 </html>
+
 
 
 
