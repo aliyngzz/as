@@ -347,48 +347,39 @@
 
 
 function resizePlayer() {
-    const playerDiv = document.getElementById('player');
-    const iframe = playerDiv.querySelector('iframe');
+    const iframe = document.querySelector('#player iframe');
     if (!iframe) return;
 
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const windowRatio = windowWidth / windowHeight;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
     const videoRatio = 16 / 9;
+    const windowRatio = w / h;
 
     if (windowRatio > videoRatio) {
-        // ekran yatay → yükseklik tam, genişlik taşacak
-        iframe.style.width = (windowHeight * videoRatio) + 'px';
-        iframe.style.height = windowHeight + 'px';
+        iframe.style.width = (h * videoRatio) + 'px';
+        iframe.style.height = h + 'px';
     } else {
-        // ekran dik → genişlik tam, yükseklik taşacak
-        iframe.style.width = windowWidth + 'px';
-        iframe.style.height = (windowWidth / videoRatio) + 'px';
+        iframe.style.width = w + 'px';
+        iframe.style.height = (w / videoRatio) + 'px';
     }
 }
 
-// iframe oluşturulduktan sonra çağır
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-    videoId: getRandomVideo(),
-    playerVars: { autoplay: 1, controls: 0, mute: 1, rel: 0, playsinline: 1 },
-    events: {
-      onReady: (event) => {
-        resizePlayer();
-        event.target.playVideo();
-      },
-      onError: () => playNextVideo(),
-      onStateChange: onPlayerStateChange
-    }
-  });
+    player = new YT.Player('player', {
+        videoId: getRandomVideo(),
+        playerVars: { autoplay:1, controls:0, mute:1, rel:0, playsinline:1 },
+        events: {
+            onReady: (event) => {
+                resizePlayer();       // iframe hazır olunca boyutu ayarla
+                event.target.playVideo();
+            },
+            onError: playNextVideo,
+            onStateChange: onPlayerStateChange
+        }
+    });
 }
 
-// pencere boyutu değişince yeniden hesapla
 window.addEventListener('resize', resizePlayer);
-
-
-
-
 
 
 
@@ -400,6 +391,7 @@ window.addEventListener('resize', resizePlayer);
 
 </body>
 </html>
+
 
 
 
