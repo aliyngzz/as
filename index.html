@@ -8,23 +8,24 @@
   html, body {
     margin: 0; padding: 0; height: 100%; background: black; overflow: hidden;
   }
-  #player {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: black;
-  }
-#player iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
+ #player {
+  position: fixed;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  background: black;
+}
+
+#player iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 56.25vw; /* 16:9 oranına göre */
+  min-width: 177.78vh; /* 9/16 oranına göre genişlet */
+  min-height: 100vh;
   border: none;
-  object-fit: cover;
-  transform: none; /* ortalama gerek yok */
 }
 
   /* Butonlar */
@@ -349,5 +350,6 @@
 
 </body>
 </html>
+
 
 
