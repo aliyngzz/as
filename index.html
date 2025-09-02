@@ -19,15 +19,17 @@
 
 #player iframe {
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 177.78vh;   /* ekran yüksekliğine göre genişlik (16:9 oran) */
+  width: 100vw;
   height: 100vh;
-  min-width: 100vw;  /* yatay ekranda boşluk kalmasın */
-  min-height: 56.25vw;
   border: none;
-}
 
+  /* Trik: her zaman ekranı kapla */
+  min-width: 177.78vh;   /* (16/9) * height */
+  min-height: 100vw;     /* (9/16) * width */
+}
   /* Butonlar */
   .btn {
     position: fixed;
@@ -350,6 +352,7 @@
 
 </body>
 </html>
+
 
 
 
