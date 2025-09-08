@@ -259,14 +259,13 @@ function startCycle(){
   // İlk YouTube arka planda hazırlanacak ama görünmeyecek
   const firstId = getRandomVideoId();
   currentVideoId = firstId;
-  player = new YT.Player('player',{
-      videoId:firstId,
-      playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1},
-      events:{
-        onReady:(e)=>{
-          // İlk 6 saniye boyunca iframe görünmesin
-          const iframe = document.querySelector('#player iframe');
-          if(iframe){ iframe.style.opacity = "0"; }
+  const nextId = getRandomVideoId();
+currentVideoId = nextId;
+setTimeout(() => {
+  tv.style.opacity = 0; // mp4 gizle
+  player.loadVideoById(nextId);
+  player.playVideo();
+}, 6000);
 
           setTimeout(()=>{
             // 6 saniye dolunca MP4 kaybolsun, YouTube görünsün
@@ -294,4 +293,5 @@ function onYouTubeIframeAPIReady(){ startCycle(); }
 </script>
 </body>
 </html>
+
 
