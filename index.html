@@ -5,63 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>YouTube + MP4 + Müzik Oynatıcı</title>
 <style>
-html, body {
-    margin: 0; padding: 0; height: 100%; background: black; overflow: hidden;
-}
-
-/* Container */
-#playerWrapper {
-    position: fixed; top:0; left:0; width:100vw; height:100vh; overflow:hidden; background:black;
-}
-
-/* YouTube iframe & MP4 video */
-#playerWrapper iframe, #playerWrapper video {
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    min-width:100%; min-height:100%;
-    object-fit:cover;
-    transition: opacity 0.5s;
-}
-
-/* Butonlar */
-.btn {
-    position: fixed; z-index: 999;
-    border: 2px solid white; border-radius: 50%; width: 60px; height: 60px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; backdrop-filter: blur(4px);
-    transition: transform 0.3s, opacity 0.5s;
-    opacity: 1;
-    background: linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff);
-    background-size: 400% 400%;
-    animation: btnRainbow 6s ease infinite;
-}
+html, body { margin:0; padding:0; height:100%; background:black; overflow:hidden; }
+#playerWrapper { position:fixed; top:0; left:0; width:100vw; height:100vh; overflow:hidden; background:black; }
+#playerWrapper iframe, #playerWrapper video { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); object-fit:cover; width:100%; height:100%; transition:opacity 0.5s; }
+.btn { position:fixed; z-index:999; border:2px solid white; border-radius:50%; width:60px; height:60px; display:flex; align-items:center; justify-content:center; cursor:pointer; backdrop-filter:blur(4px); transition: transform 0.3s, opacity 0.5s; opacity:1; background: linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff); background-size:400% 400%; animation: btnRainbow 6s ease infinite; }
 .btn:hover { transform: scale(1.1); }
 @keyframes btnRainbow { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
-
-#fullscreenBtn { bottom:20px; right:20px; top:auto; }
-#musicBtn { bottom:20px; left:20px; top:auto; }
+#fullscreenBtn { bottom:20px; right:20px; top:auto; } #musicBtn { bottom:20px; left:20px; top:auto; }
 audio { display:none; }
-
-/* Yükleme animasyonu */
-#loadingOverlay {
-    position: fixed; top:0; left:0; width:100vw; height:100vh; z-index:998;
-    background: linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff);
-    background-size:1400% 1400%;
-    animation: rainbowMove 8s ease infinite;
-}
+#loadingOverlay { position: fixed; top:0; left:0; width:100vw; height:100vh; z-index:998; background: linear-gradient(270deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#8f00ff); background-size:1400% 1400%; animation: rainbowMove 8s ease infinite; }
 @keyframes rainbowMove { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
-
 .btn.hidden { opacity:0; pointer-events:none; }
 </style>
 </head>
 <body>
 
 <div id="loadingOverlay"></div>
-
 <div id="playerWrapper">
     <div id="player"></div>
-    <video id="transitionVideo" muted autoplay playsinline style="opacity:0;"></video>
+    <video id="transitionVideo" muted autoplay playsinline style="opacity:1;"></video>
 </div>
 
 <div id="fullscreenBtn" class="btn">⛶</div>
@@ -70,7 +32,7 @@ audio { display:none; }
 <audio id="musicPlayer" controls></audio>
 
 <script>
-const videoIds = [    "RsdiBvgeGpg","UHgF74ieHUM","gf6SK0NObfI","z_jyvAFOVj4",
+const videoIds = ["RsdiBvgeGpg","UHgF74ieHUM","gf6SK0NObfI","z_jyvAFOVj4",
       "0St2Vey_r1E","2_ovWpVE9es","jzx_n25g3kA","DHUnz4dyb54",
       "ECmjT2D1SzI","7w40FtLA4OQ","6Ad0iNbv54w","D1VM6V6wmU0",
       "czoEAKX9aaM","hFr5w9KLEA4","Fw9hgttWzIg","4BrvMGznLTo",
@@ -180,16 +142,8 @@ const videoIds = [    "RsdiBvgeGpg","UHgF74ieHUM","gf6SK0NObfI","z_jyvAFOVj4",
 "9bZkp7q19f0",
 "3JZ_D3ELwOQ",
 "dQw4w9WgXcQ"
-
-
-
-
-
-
-
 ];
-const transitionVideos = [
-  "205553-927347775_medium.mp4",
+const transitionVideos = [ "205553-927347775_medium.mp4",
 "284566_small.mp4",
 "13704-250154065_medium.mp4",
 "188861-883827797_small.mp4",
@@ -206,34 +160,30 @@ const transitionVideos = [
       "205923_medium.mp4",
       "240320_small.mp4",
       "292827_medium.mp4",
-      "c.mp4"
-];
-const turkeySongs = ["Turku-Ervahi-Ezelden-14 (1).mp3","Erdal-Erzincan-Deyis.mp3"];
+      "c.mp4"];
+const turkeySongs = ["Turku-Ervahi-Ezelden-14 (1).mp3", "Erdal-Erzincan-Deyis.mp3", "haci-bektas-i-veli-dergahindan-deyis-gel-aslin-sorarsan_(mp3tur.com).mp3", "ozlem-ozdil-kainatin-aynasiyim_(mp3tur.com).mp3", "Erdal-Erzincan-Yol-Havasi-87.mp3", "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com).mp3", "erdal-erzincan-bugun-pazar-i-asktir_(mp3tur.com).mp3", "Erdal-Erzincan-Sarma-Havasi-67.mp3", "sabahat-akkiraz-tevhid_(mp3tur.com).mp3", "kutsal-evcimen-harabat-ehliyiz-official_(mp3tur.com).mp3", "ates-i-askina-semah.mp3", "deyisler-ile-mustafa-ozarslan-yeni-yil-ozel-2024_(mp3tur.com) (1).mp3", "Deyiş Devran - Gerçek Olan.mp3", "Erdal Erzincan - Deyiş.mp3", "eren-salkaya-geldi-cagirdi-cebrail-miraclama.mp3", "miraz-uryan-geldim.mp3", "Muhabbet Bağında - Deyiş.mp3", "sabahat-akkiraz-tevhid.mp3", "Zülfükâr Arslan - Deyiş.mp3", "bugun-bize-pir-geldi.mp3", "Erdal-Erzincan-Emlek-Bozlagi-30.mp3", "Erdal-Erzincan-Felek-Senin-Elinden.mp3", "Erdal-Erzincan-Mustezat-Cesitlemesi-45.mp3", "Erdal-Erzincan-Nem-kaldi.mp3", "Erdal-Erzincan-Urfa-Havasi-55.mp3", "Erdal-Erzincan-Yara-Bende-yeni-2.mp3", "Erdal-Erzincan-Goc-54.mp3", "dertli-divani-ayirma-bizi.mp3", "dertli-divani-bilesin (1).mp3", "dertli-divani-bir-dunya-istiyoruz.mp3", "dertli-divani-birisi-muhammed-biri-ali-dir.mp3", "dertli-divani-bulandi-askimin-seli.mp3", "dertli-divani-candan-ya-ali.mp3", "dertli-divani-cehalet-ruzgari.mp3", "dertli-divani-diktigimiz-fidanlar.mp3", "dertli-divani-direzi-nedir.mp3", "dertli-divani-donen-de-oldu.mp3", "dertli-divani-erenler-cemi.mp3", "dertli-divani-geldik-bu-hana.mp3", "dertli-divani-goremediler.mp3", "asik-gulabi-abdal-musa.mp3", "asik-gulabi-acilin-kapilar-saha-gidelim.mp3", "asik-gulabi-aglar-huseyin-askina.mp3", "asik-gulabi-alin-var-haci-bektas.mp3", "asik-gulabi-ali-olmasaydi.mp3", "erdal-erzincan-al-mendil.mp3", "mustafa-ozarslan-agir-halay.mp3", "mustafa-ozarslan-ahu-bakislim.mp3", "mustafa-ozarslan-arayi-arayi.mp3", "mustafa-ozarslan-asagidan-bir-yel-esti.mp3", "mustafa-ozarslan-ayrilamam-ben-o-gul-yuzlu-yardan.mp3", "mustafa-ozarslan-bu-senede-boyle-oldu.mp3", "mustafa-ozarslan-hey-onbesli.mp3", "ozcan-ture-ben-omrume-yanarim.mp3"];
 
-// YouTube player
 let player, currentVideoId = null;
-let autoSwitchEnabled = true, switchTimeout;
-
-// MP4 transition video
 const tv = document.getElementById("transitionVideo");
+let autoSwitchEnabled = true;
 
 // Müzik çalar
-const musicPlayer = document.getElementById("musicPlayer");
-let musicIndex = Math.floor(Math.random()*turkeySongs.length);
-musicPlayer.src = turkeySongs[musicIndex];
+const musicPlayer=document.getElementById("musicPlayer");
+let musicIndex=Math.floor(Math.random()*turkeySongs.length);
+musicPlayer.src=turkeySongs[musicIndex];
 musicPlayer.addEventListener('ended',()=>{
   musicIndex=(musicIndex+1)%turkeySongs.length;
-  musicPlayer.src = turkeySongs[musicIndex];
+  musicPlayer.src=turkeySongs[musicIndex];
   musicPlayer.play();
 });
 
 // Butonlar
-document.getElementById('fullscreenBtn').addEventListener('click',()=>{
-    if(!document.fullscreenElement){ document.documentElement.requestFullscreen(); } 
-    else{ document.exitFullscreen(); }
+document.getElementById('fullscreenBtn').addEventListener('click',()=>{ 
+  if(!document.fullscreenElement){ document.documentElement.requestFullscreen(); } 
+  else{ document.exitFullscreen(); } 
 });
 document.getElementById('musicBtn').addEventListener('click',()=>{
-    if(musicPlayer.paused){ musicPlayer.play(); } else{ musicPlayer.pause(); }
+  if(musicPlayer.paused){ musicPlayer.play(); } else{ musicPlayer.pause(); }
 });
 
 // Buton gizle/göster
@@ -251,64 +201,83 @@ function showButtons(){
 });
 showButtons();
 
-// Player resize
+// Resize
 function resizePlayer(){
-    const wrapper = document.getElementById('playerWrapper');
-    const iframe = wrapper.querySelector('iframe');
+    const wrapper=document.getElementById('playerWrapper');
+    const iframe=wrapper.querySelector('iframe');
     if(!iframe) return;
-    const w = wrapper.offsetWidth, h = wrapper.offsetHeight;
-    const ratio = 16/9, wrapperRatio = w/h;
-    if(wrapperRatio>ratio){ iframe.style.width = (h*ratio)+'px'; iframe.style.height = h+'px'; }
-    else{ iframe.style.width = w+'px'; iframe.style.height = (w/ratio)+'px'; }
+    const w=wrapper.offsetWidth, h=wrapper.offsetHeight, ratio=16/9;
+    if(w/h>ratio){ iframe.style.width=h*ratio+'px'; iframe.style.height=h+'px'; }
+    else{ iframe.style.width=w+'px'; iframe.style.height=w/ratio+'px'; }
 }
 window.addEventListener('resize',resizePlayer);
 
-// YouTube API
-function getRandomVideoId(){
-  let id;
-  do { id = videoIds[Math.floor(Math.random()*videoIds.length)]; } while(id===currentVideoId);
-  return id;
+// YouTube helpers
+function getRandomVideoId(){ 
+    let id; do{ id = videoIds[Math.floor(Math.random()*videoIds.length)]; } while(id===currentVideoId);
+    return id;
 }
 
 function playNextVideo(){
   if(!autoSwitchEnabled) return;
-  // MP4 transition
+  // MP4 geçiş
   tv.src = transitionVideos[Math.floor(Math.random()*transitionVideos.length)];
   tv.style.opacity=1;
   tv.currentTime=0;
   tv.play();
 
-  setTimeout(()=>{
-    tv.style.opacity=0;
-    currentVideoId = getRandomVideoId();
-    player.loadVideoById(currentVideoId);
-    player.mute();
-  }, 5000); // 5 saniye MP4 geçiş
+  // Hazırlıkta yeni YouTube video
+  const nextId = getRandomVideoId();
+  const tempPlayer = new YT.Player('player',{videoId:nextId, playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1},
+      events:{onReady:(e)=>{
+          // 6 saniye MP4 sonrası göster
+          setTimeout(()=>{
+            currentVideoId = nextId;
+            tv.style.opacity=0;
+            resizePlayer();
+            player.loadVideoById(currentVideoId);
+            player.mute();
+            player.playVideo();
+          },6000);
+          document.getElementById("loadingOverlay").style.display="none";
+      }, onError:()=>{ playNextVideo(); } }
+  });
+  player = tempPlayer;
+
+  // 20 saniye sonra tekrar döngü
+  setTimeout(()=>{ if(autoSwitchEnabled) playNextVideo(); },26000); // 6s MP4 + 20s YouTube
 }
 
-function onPlayerReady(event){
-  resizePlayer();
-  player.setPlaybackQuality('highres');
-  player.playVideo();
-  switchTimeout=setInterval(playNextVideo,40000); // 40 saniye otomatik
-  document.getElementById("loadingOverlay").style.display="none";
-}
+// Başlat
+function startCycle(){
+  // İlk MP4
+  tv.src = transitionVideos[Math.floor(Math.random()*transitionVideos.length)];
+  tv.style.opacity=1;
+  tv.currentTime=0;
+  tv.play();
 
-// YouTube API callback
-function onYouTubeIframeAPIReady(){
-  currentVideoId = getRandomVideoId();
-  player = new YT.Player('player',{
-      videoId: currentVideoId,
-      playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1},
-      events:{onReady:onPlayerReady,onError:playNextVideo,onStateChange:(e)=>{ if(e.data===YT.PlayerState.ENDED) playNextVideo(); }}
+  // Arka planda ilk YouTube
+  const firstId = getRandomVideoId();
+  currentVideoId = firstId;
+  player = new YT.Player('player',{videoId:firstId, playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1},
+      events:{onReady:(e)=>{
+          setTimeout(()=>{
+            tv.style.opacity=0;
+            resizePlayer();
+            player.playVideo();
+          },6000);
+          setTimeout(()=>{ if(autoSwitchEnabled) playNextVideo(); },26000);
+          document.getElementById("loadingOverlay").style.display="none";
+      }, onError:()=>{ playNextVideo(); } }
   });
 }
 
 // Load YouTube API
-const tag = document.createElement('script');
+const tag=document.createElement('script');
 tag.src="https://www.youtube.com/iframe_api";
 document.body.appendChild(tag);
+
+function onYouTubeIframeAPIReady(){ startCycle(); }
 </script>
 </body>
 </html>
-
