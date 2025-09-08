@@ -250,28 +250,41 @@ function playNextVideo(){
 
 // Başlat
 function startCycle(){
-  // İlk MP4
+  // İlk MP4 başlasın
   tv.src = transitionVideos[Math.floor(Math.random()*transitionVideos.length)];
   tv.style.opacity=1;
   tv.currentTime=0;
   tv.play();
 
-  // Arka planda ilk YouTube
+  // İlk YouTube arka planda hazırlanacak ama görünmeyecek
   const firstId = getRandomVideoId();
   currentVideoId = firstId;
-  player = new YT.Player('player',{videoId:firstId, playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1},
-      events:{onReady:(e)=>{
+  player = new YT.Player('player',{
+      videoId:firstId,
+      playerVars:{autoplay:1,controls:0,mute:1,rel:0,playsinline:1},
+      events:{
+        onReady:(e)=>{
+          // İlk 6 saniye boyunca iframe görünmesin
+          const iframe = document.querySelector('#player iframe');
+          if(iframe){ iframe.style.opacity = "0"; }
+
           setTimeout(()=>{
+            // 6 saniye dolunca MP4 kaybolsun, YouTube görünsün
             tv.style.opacity=0;
+            if(iframe){ iframe.style.opacity = "1"; }
             resizePlayer();
             player.playVideo();
           },6000);
+
+          // 26 saniyede (6+20) döngüye geç
           setTimeout(()=>{ if(autoSwitchEnabled) playNextVideo(); },26000);
+
           document.getElementById("loadingOverlay").style.display="none";
-      }, onError:()=>{ playNextVideo(); } }
+        },
+        onError:()=>{ playNextVideo(); }
+      }
   });
 }
-
 // Load YouTube API
 const tag=document.createElement('script');
 tag.src="https://www.youtube.com/iframe_api";
@@ -281,3 +294,4 @@ function onYouTubeIframeAPIReady(){ startCycle(); }
 </script>
 </body>
 </html>
+
