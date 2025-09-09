@@ -10,7 +10,7 @@ html, body { margin:0; padding:0; height:100%; background:black; overflow:hidden
 #playerWrapper iframe, #playerWrapper video {
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
   object-fit:cover; width:100%; height:100%;
-  transition:opacity 0.6s ease-in-out;
+  transition:opacity 0.5s ease-in-out;
 }
 #transitionVideo { opacity:1; z-index:2; }
 #player iframe { opacity:0; z-index:1; }
@@ -77,18 +77,30 @@ function playTransition(){
 
 // --- Döngü sistemi ---
 function playNextVideo(){
+  // 1) MP4 başlat
   playTransition();
+
+  // 2) Arka planda YouTube yükle
   const nextId = getRandomVideoId();
+  currentVideoId = nextId;
+
+  player.loadVideoById(nextId);
+  player.pauseVideo(); // ekrana yansıtma, sessiz yükle
+
+  // 3) 6 sn sonra kontrol et → hata yoksa göster
   setTimeout(()=>{
-    currentVideoId = nextId;
-    if(player){
-      player.loadVideoById(nextId);
-      player.playVideo();
-      const iframe = document.querySelector('#player iframe');
+    const iframe = document.querySelector('#player iframe');
+    if(player.getPlayerState() !== -1 && player.getPlayerState() !== 0){ 
+      // Video çalışıyorsa → ekrana getir
       if(iframe) iframe.style.opacity = 1;
+      tv.style.opacity = 0;
+    } else {
+      // Hatalıysa → hiç göstermeden yeni dene
+      playNextVideo();
     }
-    tv.style.opacity = 0;
   },6000);
+
+  // 4) 26 sn sonra yeni döngü
   setTimeout(playNextVideo,32000);
 }
 
@@ -103,11 +115,16 @@ function startCycle(){
     playerVars:{autoplay:0,controls:0,mute:1,rel:0,playsinline:1},
     events:{
       onReady:()=>{
+        // İlk video da aynı kurala tabi
         setTimeout(()=>{
           player.playVideo();
           const iframe = document.querySelector('#player iframe');
-          if(iframe) iframe.style.opacity = 1;
-          tv.style.opacity = 0;
+          if(player.getPlayerState() !== -1 && player.getPlayerState() !== 0){
+            if(iframe) iframe.style.opacity = 1;
+            tv.style.opacity = 0;
+          } else {
+            playNextVideo();
+          }
         },6000);
         setTimeout(playNextVideo,32000);
       },
